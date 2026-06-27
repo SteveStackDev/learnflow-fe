@@ -7,7 +7,7 @@ function Contest() {
   return (
     <>
       <div className={styles.contestpage}>
-        {/* 1. Hero Section */}
+        {/* Hero Section */}
         <section className={styles["contest-hero"]}>
           <div className={styles["contest-hero__container"]}>
             <div className={styles["contest-hero__content"]}>
@@ -40,7 +40,7 @@ function Contest() {
           </div>
         </section>
 
-        {/* 2. Overview Stats Cards Section */}
+        {/* Overview Stats Section */}
         <section className={styles["contest-stats"]}>
           <div className={styles["contest-stats__container"]}>
             <div className={styles["contest-stats__list"]}>
@@ -58,7 +58,7 @@ function Contest() {
           </div>
         </section>
 
-        {/* 3. Filter Tabs & Search Section */}
+        {/* Filter & Search Section */}
         <section className={styles["contest-filters"]}>
           <div className={styles["contest-filters__container"]}>
             <div className={styles["contest-filters__row"]}>
@@ -86,7 +86,7 @@ function Contest() {
           </div>
         </section>
 
-        {/* 4. Contests Grid Section */}
+        {/* Contests Section */}
         <section className={styles["contest-grid"]}>
           <div className={styles["contest-grid__container"]}>
             <div className={styles["contest-grid__list"]}>
@@ -184,7 +184,7 @@ function Contest() {
           </div>
         </section>
 
-        {/* 5. Why Join Section */}
+        {/* Reason Section */}
         <section className={styles["contest-why"]}>
           <div className={styles["contest-why__container"]}>
             <h2
@@ -208,7 +208,7 @@ function Contest() {
           </div>
         </section>
 
-        {/* 6. FAQ Section */}
+        {/* FAQ Section */}
         <section className={styles["contest-faq"]}>
           <div className={styles["contest-faq__container"]}>
             <h2 className={styles["contest-faq__section-title"]}>

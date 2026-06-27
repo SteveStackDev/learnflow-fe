@@ -8,7 +8,7 @@ function SignIn() {
     <>
       <div className={styles.signinpage}>
         <div className={styles.signinpage__container}>
-          {/* Left Side: Welcome & Features Infographic */}
+          {/* Left Side */}
           <div className={styles["signin-info"]}>
             <div className={styles["signin-info__wrapper"]}>
               <button type="button" className={styles["signin-info__back-btn"]}>
@@ -16,7 +16,6 @@ function SignIn() {
                 Trang chủ
               </button>
 
-              {/* Logo */}
               <div className={styles["signin-info__logo-group"]}>
                 <div className={styles["signin-info__logo-box"]} />
                 <span className={styles["signin-info__logo-text"]}>
@@ -32,7 +31,6 @@ function SignIn() {
                 kho bài tập và lộ trình học cá nhân hóa.
               </p>
 
-              {/* Features List */}
               <div className={styles["signin-info__feat-list"]}>
                 {signInData.features.map((feat, index) => (
                   <div key={index} className={styles["signin-info__feat-card"]}>
@@ -53,7 +51,7 @@ function SignIn() {
             </div>
           </div>
 
-          {/* Right Side: Dynamic Form Section */}
+          {/* Right Side */}
           <div className={styles["signin-form"]}>
             <div className={styles["signin-form__wrapper"]}>
               <h2 className={styles["signin-form__title"]}>Đăng nhập</h2>
@@ -61,7 +59,6 @@ function SignIn() {
                 Chào mừng bạn trở lại với cộng đồng LearnFlow.
               </p>
 
-              {/* Credential Form */}
               <form
                 className={styles["signin-form__form"]}
                 onSubmit={(e) => e.preventDefault()}
@@ -133,14 +130,12 @@ function SignIn() {
                 </button>
               </form>
 
-              {/* Social Authentication Splitter */}
               <div className={styles["signin-form__splitter"]}>
                 <span className={styles["signin-form__splitter-text"]}>
                   Hoặc tiếp tục với
                 </span>
               </div>
 
-              {/* Social Authentication Buttons */}
               <div className={styles["signin-form__social-list"]}>
                 {signInData.providers.map((obj, index) => (
                   <button
@@ -156,7 +151,6 @@ function SignIn() {
                 ))}
               </div>
 
-              {/* Redirect Register Action */}
               <div className={styles["signin-form__redirect-group"]}>
                 <span className={styles["signin-form__redirect-text"]}>
                   Chưa có tài khoản?

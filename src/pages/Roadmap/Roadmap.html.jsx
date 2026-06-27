@@ -101,7 +101,7 @@ function Roadmap() {
           </div>
         </section>
 
-        {/* Cards Grid Section */}
+        {/* Cards Section */}
         <section className={styles["roadmap-cards"]}>
           <div className={styles["roadmap-cards__container"]}>
             <div className={styles["roadmap-cards__list"]}>

@@ -59,7 +59,7 @@ function Home() {
               Công nghệ đào tạo cốt lõi
             </h2>
             <div className={styles["home-marquee__wrap"]}>
-              {/* Nội dung các logo đặt ở đây */}
+              {/* Nội dung các logo đặt ở đây - Dùng Marquee Fast React Library */}
             </div>
           </div>
         </section>

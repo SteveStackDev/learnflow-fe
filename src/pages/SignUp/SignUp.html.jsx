@@ -8,7 +8,7 @@ function SignUp() {
     <>
       <div className={styles.signuppage}>
         <div className={styles.signuppage__container}>
-          {/* Left Side: Branding & Value Proposition */}
+          {/* Left Side */}
           <div className={styles["signup-info"]}>
             <div className={styles["signup-info__wrapper"]}>
               <button type="button" className={styles["signup-info__back-btn"]}>
@@ -16,7 +16,6 @@ function SignUp() {
                 về Trang chủ
               </button>
 
-              {/* Logo */}
               <div className={styles["signup-info__logo-group"]}>
                 <div className={styles["signup-info__logo-box"]} />
                 <span className={styles["signup-info__logo-text"]}>
@@ -32,7 +31,6 @@ function SignUp() {
                 trình bền vững qua các lộ trình học bài bản và dự án thực tế.
               </p>
 
-              {/* Benefits Stack */}
               <div className={styles["signup-info__benefits-stack"]}>
                 {signUpData.benefits.map((obj, index) => (
                   <div
@@ -56,7 +54,7 @@ function SignUp() {
             </div>
           </div>
 
-          {/* Right Side: Detailed Registration Form */}
+          {/* Right Side */}
           <div className={styles["signup-form"]}>
             <div className={styles["signup-form__wrapper"]}>
               <h2 className={styles["signup-form__title"]}>Tạo tài khoản</h2>
@@ -65,12 +63,10 @@ function SignUp() {
                 gia contest và theo dõi tiến độ trên LearnFlow.
               </p>
 
-              {/* Form Fields */}
               <form
                 className={styles["signup-form__form"]}
                 onSubmit={(e) => e.preventDefault()}
               >
-                {/* Row: First Name & Username */}
                 <div className={styles["signup-form__form-row"]}>
                   <div className={styles["signup-form__form-group"]}>
                     <label className={styles["signup-form__label"]}>
@@ -94,7 +90,6 @@ function SignUp() {
                   </div>
                 </div>
 
-                {/* Email */}
                 <div className={styles["signup-form__form-group"]}>
                   <label className={styles["signup-form__label"]}>EMAIL</label>
                   <input
@@ -104,7 +99,6 @@ function SignUp() {
                   />
                 </div>
 
-                {/* Password */}
                 <div className={styles["signup-form__form-group"]}>
                   <label className={styles["signup-form__label"]}>
                     MẬT KHẨU
@@ -123,7 +117,6 @@ function SignUp() {
                   </div>
                 </div>
 
-                {/* Confirm Password */}
                 <div className={styles["signup-form__form-group"]}>
                   <label className={styles["signup-form__label"]}>
                     XÁC NHẬN MẬT KHẨU
@@ -142,7 +135,6 @@ function SignUp() {
                   </div>
                 </div>
 
-                {/* Policy Agreement */}
                 <div className={styles["signup-form__checkbox-group"]}>
                   <label className={styles["signup-form__checkbox-label"]}>
                     <input
@@ -163,7 +155,6 @@ function SignUp() {
                   </label>
                 </div>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
                   className={styles["signup-form__submit-btn"]}
@@ -173,14 +164,12 @@ function SignUp() {
                 </button>
               </form>
 
-              {/* Divider */}
               <div className={styles["signup-form__splitter"]}>
                 <span className={styles["signup-form__splitter-text"]}>
                   HOẶC TIẾP TỤC VỚI
                 </span>
               </div>
 
-              {/* Social Registration buttons */}
               <div className={styles["signup-form__social-list"]}>
                 {signUpData.providers.map((obj, index) => (
                   <button
@@ -196,7 +185,6 @@ function SignUp() {
                 ))}
               </div>
 
-              {/* Redirect Sign In Action */}
               <div className={styles["signup-form__redirect-group"]}>
                 <span className={styles["signup-form__redirect-text"]}>
                   Đã có tài khoản?

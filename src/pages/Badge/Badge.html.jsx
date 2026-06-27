@@ -97,7 +97,7 @@ function Badge() {
           </div>
         </section>
 
-        {/* Badges Grid Section */}
+        {/* Badges Section */}
         <section className={styles["badge-grid"]}>
           <div className={styles["badge-grid__container"]}>
             <div className={styles["badge-grid__list"]}>

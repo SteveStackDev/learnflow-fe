@@ -23,7 +23,7 @@ function Leaderboard() {
           </div>
         </section>
 
-        {/* Podium Section (Top 1, 2, 3) */}
+        {/* Podium Section */}
         <section className={styles["board-podium"]}>
           <div className={styles["board-podium__container"]}>
             <div className={styles["board-podium__list"]}>
@@ -50,7 +50,7 @@ function Leaderboard() {
           </div>
         </section>
 
-        {/* Filter & Search Bar Section */}
+        {/* Filter & Search Section */}
         <section className={styles["board-filters"]}>
           <div className={styles["board-filters__container"]}>
             <div className={styles["board-filters__row"]}>

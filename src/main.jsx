@@ -16,8 +16,8 @@ import SignIn from "~/pages/SignIn/SignIn.html";
 import SignUp from "~/pages/SignUp/SignUp.html";
 import NotFound from "~/pages/NotFound/NotFound.html";
 
-// MUI
-import CssBaseline from "@mui/material/CssBaseline";
+// Styles
+import "~/styles/main.css";
 
 // React Router
 import { BrowserRouter, Routes, Route } from "react-router";
@@ -27,7 +27,6 @@ import MainLayout from "~/layouts/MainLayout";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <CssBaseline />
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>

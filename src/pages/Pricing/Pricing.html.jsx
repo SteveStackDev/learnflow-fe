@@ -7,7 +7,7 @@ function Pricing() {
   return (
     <>
       <div className={styles.pricingpage}>
-        {/* Header & Toggle Section */}
+        {/* Header Section */}
         <section className={styles["price-hero"]}>
           <div className={styles["price-hero__container"]}>
             <div className={styles["price-hero__content"]}>
@@ -20,7 +20,6 @@ function Pricing() {
                 cùng mọi giai đoạn sự nghiệp của bạn.
               </p>
 
-              {/* Toggle Billing State */}
               <div className={styles["price-hero__toggle-wrapper"]}>
                 <span className={styles["price-hero__toggle-label"]}>
                   Thanh toán tháng
@@ -42,7 +41,7 @@ function Pricing() {
           </div>
         </section>
 
-        {/* Pricing Cards Section */}
+        {/* Pricing Section */}
         <section className={styles["price-cards"]}>
           <div className={styles["price-cards__container"]}>
             <div className={styles["price-cards__list"]}>
@@ -105,7 +104,7 @@ function Pricing() {
           </div>
         </section>
 
-        {/* Detail Comparison Section */}
+        {/* Comparison Section */}
         <section className={styles["price-comparison"]}>
           <div className={styles["price-comparison__container"]}>
             <h2 className={styles["price-comparison__section-title"]}>

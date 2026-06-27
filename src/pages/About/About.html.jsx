@@ -86,7 +86,7 @@ function About() {
           </div>
         </section>
 
-        {/* About/Story Section */}
+        {/* About Section */}
         <section className={styles["about-story"]}>
           <div className={styles["about-story__container"]}>
             <div className={styles["about-story__content"]}>
@@ -111,7 +111,7 @@ function About() {
           </div>
         </section>
 
-        {/* Future Section (Mission, Vision, Values) */}
+        {/* Future Section */}
         <section className={styles["about-future"]}>
           <div className={styles["about-future__container"]}>
             <div className={styles["about-future__list"]}>

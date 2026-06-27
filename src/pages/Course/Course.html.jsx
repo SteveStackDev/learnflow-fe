@@ -116,7 +116,7 @@ function Course() {
           </div>
         </section>
 
-        {/* Courses Grid Section */}
+        {/* Courses Section */}
         <section className={styles["course-grid"]}>
           <div className={styles["course-grid__container"]}>
             <div className={styles["course-grid__list"]}>

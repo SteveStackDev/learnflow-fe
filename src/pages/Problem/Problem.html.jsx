@@ -7,7 +7,7 @@ function Problem() {
   return (
     <>
       <div className={styles.problempage}>
-        {/* 1. Hero Section */}
+        {/* Hero Section */}
         <section className={styles["prob-hero"]}>
           <div className={styles["prob-hero__container"]}>
             <div className={styles["prob-hero__content"]}>
@@ -51,7 +51,7 @@ function Problem() {
           </div>
         </section>
 
-        {/* 2. Search & Stats Cards Section */}
+        {/* Search & Stats Section */}
         <section className={styles["prob-filter"]}>
           <div className={styles["prob-filter__container"]}>
             <div className={styles["prob-filter__row"]}>
@@ -85,7 +85,7 @@ function Problem() {
           </div>
         </section>
 
-        {/* 3. Challenges Grid Section */}
+        {/* Challenges Section */}
         <section className={styles["prob-challenges"]}>
           <div className={styles["prob-challenges__container"]}>
             <h2 className={styles["prob-challenges__section-title"]}>
@@ -186,7 +186,7 @@ function Problem() {
           </div>
         </section>
 
-        {/* 4. Guide Section */}
+        {/* Guide Section */}
         <section className={styles["prob-guide"]}>
           <div className={styles["prob-guide__container"]}>
             <h2 className={styles["prob-guide__section-title"]}>
@@ -212,7 +212,7 @@ function Problem() {
           </div>
         </section>
 
-        {/* 5. FAQ Section */}
+        {/* FAQ Section */}
         <section className={styles["prob-faq"]}>
           <div className={styles["prob-faq__container"]}>
             <h2 className={styles["prob-faq__section-title"]}>

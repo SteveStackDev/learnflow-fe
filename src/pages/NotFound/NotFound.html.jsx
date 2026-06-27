@@ -7,9 +7,8 @@ function NotFound() {
   return (
     <>
       <div className={styles.notfoundpage}>
-        {/* Main 404 Content Section */}
+        {/* Content Section */}
         <section className={styles["notfound-content"]}>
-          {/* Large 404 Background Text */}
           <h1 className={styles["notfound-content__badge"]}>404</h1>
 
           <h2 className={styles["notfound-content__title"]}>
@@ -22,7 +21,7 @@ function NotFound() {
             bạn ở các trang khác!
           </p>
 
-          {/* Quick Navigation Buttons */}
+          {/* Quick Navigation Section */}
           <div className={styles["notfound-content__btn-group"]}>
             {notFoundData.actions.map((obj, index) => (
               <button
@@ -41,7 +40,7 @@ function NotFound() {
           </div>
         </section>
 
-        {/* Support / Contact Footer Box */}
+        {/* Footer Section */}
         <footer className={styles["notfound-footer"]}>
           <div className={styles["notfound-footer__support-card"]}>
             <div className={styles["notfound-footer__support-content"]}>
