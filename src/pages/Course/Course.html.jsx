@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 // Data
 import { courseData } from "./data";
 
@@ -7,131 +8,228 @@ import heroUrl from "~/assets/images/Home/hero.webp";
 // Import CSS Modules
 import styles from "./Course.module.css";
 
+const SORT_OPTIONS = [
+  { id: "popular", label: "Sắp xếp: Phổ biến nhất" },
+  { id: "latest", label: "Sắp xếp: Mới nhất" },
+  { id: "rating", label: "Sắp xếp: Đánh giá cao nhất" },
+];
+
 function Course() {
+  const [activeCategoryTab, setActiveCategoryTab] = useState(0);
+  const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const sortDropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target)) {
+        setIsSortDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <>
       <div className={styles.coursepage}>
-        {/* Hero Section */}
+        {/* Ambient Background Glow Orbs */}
+        <div className={styles["coursepage__orb-1"]} />
+        <div className={styles["coursepage__orb-2"]} />
+
+        {/* 1. Hero Section */}
         <section className={styles["course-hero"]}>
           <div className={styles["course-hero__container"]}>
             <div className={styles["course-hero__content"]}>
-              <span className={styles["course-hero__tag"]}>
-                Nâng tầm kỹ năng lập trình
-              </span>
-              <h1 className={styles["course-hero__title"]}>
-                Khám phá khóa học phù hợp với mục tiêu của bạn
-              </h1>
-              <p className={styles["course-hero__desc"]}>
-                Hệ thống khóa học từ cơ bản đến nâng cao, được thiết kế bởi các
-                chuyên gia để giúp bạn trở thành lập trình viên thực thụ.
-              </p>
-              <div className={styles["course-hero__btn-group"]}>
-                <button
-                  type="button"
-                  className={`${styles["course-hero__btn"]} ${styles["course-hero__btn--contained"]}`}
-                >
-                  Bắt đầu học ngay
-                </button>
-                <button
-                  type="button"
-                  className={`${styles["course-hero__btn"]} ${styles["course-hero__btn--outlined"]}`}
-                >
-                  Tìm hiểu thêm
-                </button>
+              <div className={styles["course-hero__left"]}>
+                <div className={styles["course-hero__badge-wrap"]}>
+                  <span className={styles["course-hero__tag"]}>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                      <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                    Nâng tầm kỹ năng lập trình
+                  </span>
+                </div>
+                <h1 className={styles["course-hero__title"]}>
+                  Khám phá khóa học phù hợp với mục tiêu của bạn
+                </h1>
+                <p className={styles["course-hero__desc"]}>
+                  Hệ thống khóa học từ cơ bản đến nâng cao, được thiết kế bởi các
+                  chuyên gia để giúp bạn trở thành lập trình viên thực thụ.
+                </p>
+                <div className={styles["course-hero__btn-group"]}>
+                  <button
+                    type="button"
+                    className={`${styles["course-hero__btn"]} ${styles["course-hero__btn--contained"]}`}
+                  >
+                    Bắt đầu học ngay
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles["course-hero__btn"]} ${styles["course-hero__btn--outlined"]}`}
+                  >
+                    Tìm hiểu thêm
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className={styles["course-hero__media"]}>
-              <img
-                src={heroUrl}
-                alt="Hero Image"
-                className={styles["course-hero__img"]}
-              />
+
+              <div className={styles["course-hero__media"]}>
+                <div className={styles["course-hero__img-frame"]}>
+                  <img
+                    src={heroUrl}
+                    alt="Course Hero Image"
+                    className={styles["course-hero__img"]}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Search & Stats Section */}
+        {/* 2. Search & Stats Bar Section */}
         <section className={styles["course-search-stats"]}>
           <div className={styles["course-search-stats__container"]}>
-            <div className={styles["course-search-stats__row"]}>
-              <input
-                type="text"
-                placeholder="Tìm khóa học bạn muốn bắt đầu..."
-                className={styles["course-search-stats__search-input"]}
-              />
-
-              <div className={styles["course-search-stats__select-wrapper"]}>
-                <select
-                  defaultValue="popular"
-                  className={styles["course-search-stats__select"]}
-                >
-                  <option value="popular">Sắp xếp: Phổ biến nhất</option>
-                </select>
+            <div className={styles["course-search-stats__card-wrapper"]}>
+              {/* Search Input */}
+              <div className={styles["course-search-stats__search-box"]}>
+                <span className={styles["course-search-stats__search-icon"]}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  placeholder="Tìm khóa học bạn muốn bắt đầu..."
+                  className={styles["course-search-stats__search-input"]}
+                />
               </div>
 
-              <div className={styles["course-search-stats__stats-group"]}>
-                <div className={styles["course-search-stats__stat-item"]}>
-                  <span className={styles["course-search-stats__stat-number"]}>
-                    120+
-                  </span>
-                  <span className={styles["course-search-stats__stat-label"]}>
-                    Khóa học
-                  </span>
-                </div>
-                <div className={styles["course-search-stats__stat-item"]}>
-                  <span className={styles["course-search-stats__stat-number"]}>
-                    15
-                  </span>
-                  <span className={styles["course-search-stats__stat-label"]}>
-                    Lĩnh vực
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Filter Section */}
-        <section className={styles["course-filters"]}>
-          <div className={styles["course-filters__container"]}>
-            <h2 className={styles["course-filters__section-title"]}>
-              Tất cả khóa học
-            </h2>
-            <p className={styles["course-filters__section-subtitle"]}>
-              Lựa chọn lộ trình học tập tối ưu cho sự nghiệp của bạn.
-            </p>
-            <div className={styles["course-filters__tab-group"]}>
-              {courseData.categories.map((item, index) => (
+              {/* Custom Sort Dropdown */}
+              <div
+                className={styles["course-search-stats__select-wrapper"]}
+                ref={sortDropdownRef}
+              >
                 <button
-                  key={index}
                   type="button"
-                  className={`${styles["course-filters__tab-btn"]} ${
-                    index === 0 ? styles["course-filters__tab-btn--active"] : ""
+                  onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                  className={`${styles["course-search-stats__dropdown-btn"]} ${
+                    isSortDropdownOpen ? styles["course-search-stats__dropdown-btn--open"] : ""
                   }`}
                 >
-                  {item}
+                  <span>{selectedSort.label}</span>
+                  <span className={styles["course-search-stats__dropdown-chevron"]}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </span>
                 </button>
-              ))}
+
+                {isSortDropdownOpen && (
+                  <div className={styles["course-search-stats__dropdown-menu"]}>
+                    {SORT_OPTIONS.map((option) => (
+                      <div
+                        key={option.id}
+                        onClick={() => {
+                          setSelectedSort(option);
+                          setIsSortDropdownOpen(false);
+                        }}
+                        className={`${styles["course-search-stats__dropdown-item"]} ${
+                          selectedSort.id === option.id
+                            ? styles["course-search-stats__dropdown-item--selected"]
+                            : ""
+                        }`}
+                      >
+                        <span>{option.label}</span>
+                        {selectedSort.id === option.id && (
+                          <span className={styles["course-search-stats__dropdown-check"]}>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Stats Badge */}
+              <div className={styles["course-search-stats__stats-group"]}>
+                <div className={styles["course-search-stats__stat-item"]}>
+                  <span className={styles["course-search-stats__stat-number"]}>120+</span>
+                  <span className={styles["course-search-stats__stat-label"]}>Khóa học</span>
+                </div>
+                <div className={styles["course-search-stats__divider"]} />
+                <div className={styles["course-search-stats__stat-item"]}>
+                  <span className={styles["course-search-stats__stat-number"]}>15</span>
+                  <span className={styles["course-search-stats__stat-label"]}>Lĩnh vực</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Courses Section */}
+        {/* 3. Filter Tabs & Header Section */}
+        <section className={styles["course-filters"]}>
+          <div className={styles["course-filters__container"]}>
+            <div className={styles["course-filters__header-row"]}>
+              <div className={styles["course-filters__title-wrap"]}>
+                <h2 className={styles["course-filters__section-title"]}>
+                  Tất cả khóa học
+                </h2>
+                <p className={styles["course-filters__section-subtitle"]}>
+                  Lựa chọn lộ trình học tập tối ưu cho sự nghiệp của bạn.
+                </p>
+              </div>
+
+              <div className={styles["course-filters__tab-group"]}>
+                {courseData.categories.map((item, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => setActiveCategoryTab(index)}
+                    className={`${styles["course-filters__tab-btn"]} ${
+                      activeCategoryTab === index
+                        ? styles["course-filters__tab-btn--active"]
+                        : ""
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Courses Cards Grid Section */}
         <section className={styles["course-grid"]}>
           <div className={styles["course-grid__container"]}>
             <div className={styles["course-grid__list"]}>
               {courseData.items.map((obj, index) => (
                 <div key={index} className={styles["course-grid__card"]}>
-                  <div className={styles["course-grid__card-header"]}>
-                    <span className={styles["course-grid__level-chip"]}>
+                  <div className={styles["course-grid__card-media-wrap"]}>
+                    <span
+                      className={`${styles["course-grid__level-chip"]} ${
+                        obj.level === "Cơ bản"
+                          ? styles["course-grid__level-chip--basic"]
+                          : obj.level === "Trung cấp"
+                          ? styles["course-grid__level-chip--intermediate"]
+                          : styles["course-grid__level-chip--advanced"]
+                      }`}
+                    >
                       {obj.level}
                     </span>
+                    <img
+                      src={heroUrl}
+                      alt={obj.title}
+                      className={styles["course-grid__card-img"]}
+                    />
                   </div>
-                  <img
-                    src={obj.imageUrl}
-                    alt={obj.title}
-                    className={styles["course-grid__card-img"]}
-                  />
+
                   <div className={styles["course-grid__card-body"]}>
                     <h3 className={styles["course-grid__card-title"]}>
                       {obj.title}
@@ -141,13 +239,22 @@ function Course() {
                     </p>
                     <div className={styles["course-grid__card-meta"]}>
                       <span className={styles["course-grid__meta-text"]}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                        </svg>
                         {obj.lessonsCount}
                       </span>
                       <span className={styles["course-grid__meta-text"]}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                          <circle cx="9" cy="7" r="4" />
+                        </svg>
                         {obj.studentsCount} học viên
                       </span>
                     </div>
                   </div>
+
                   <div className={styles["course-grid__card-actions"]}>
                     <button
                       type="button"
@@ -160,7 +267,7 @@ function Course() {
               ))}
             </div>
 
-            {/* Pagination */}
+            {/* Pagination Controls */}
             <div className={styles["course-grid__pagination-wrapper"]}>
               <nav className={styles["course-grid__pagination"]}>
                 <button
@@ -168,7 +275,7 @@ function Course() {
                   className={styles["course-grid__page-btn"]}
                   disabled
                 >
-                  «
+                  ‹
                 </button>
                 <button
                   type="button"
@@ -189,7 +296,7 @@ function Course() {
                   3
                 </button>
                 <span className={styles["course-grid__page-ellipsis"]}>
-                  ...
+                  ..
                 </span>
                 <button
                   type="button"
@@ -201,32 +308,50 @@ function Course() {
                   type="button"
                   className={styles["course-grid__page-btn"]}
                 >
-                  »
+                  ›
                 </button>
               </nav>
             </div>
           </div>
         </section>
 
-        {/* Reason Section */}
+        {/* 5. Reasons Section */}
         <section className={styles["course-reasons"]}>
           <div className={styles["course-reasons__container"]}>
-            <h2
-              className={`${styles["course-reasons__section-title"]} ${styles["course-reasons__section-title--center"]}`}
-            >
-              Tại sao nên học khóa học tại LearnFlow?
-            </h2>
-            <p
-              className={`${styles["course-reasons__section-subtitle"]} ${styles["course-reasons__section-subtitle--center"]}`}
-            >
-              Chúng tôi mang đến môi trường học tập trình khác biệt, tập trung
-              vào kết quả và sự phát triển lâu dài.
-            </p>
+            <div className={styles["course-reasons__header"]}>
+              <h2 className={styles["course-reasons__section-title"]}>
+                Tại sao nên học khóa học tại LearnFlow?
+              </h2>
+              <p className={styles["course-reasons__section-subtitle"]}>
+                Chúng tôi mang đến môi trường học tập lập trình khác biệt, tập trung
+                vào kết quả và sự phát triển lâu dài.
+              </p>
+            </div>
+
             <div className={styles["course-reasons__list"]}>
               {courseData.benefits.map((obj, index) => (
                 <div key={index} className={styles["course-reasons__card"]}>
                   <div className={styles["course-reasons__icon"]}>
-                    {obj.iconName}
+                    {index === 0 && (
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                      </svg>
+                    )}
+                    {index === 1 && (
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+                        <line x1="8" y1="2" x2="8" y2="18" />
+                        <line x1="16" y1="6" x2="16" y2="22" />
+                      </svg>
+                    )}
+                    {index === 2 && (
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                      </svg>
+                    )}
                   </div>
                   <h3 className={styles["course-reasons__title"]}>
                     {obj.title}
@@ -240,12 +365,15 @@ function Course() {
           </div>
         </section>
 
-        {/* FAQ Section */}
+        {/* 6. FAQ Section */}
         <section className={styles["course-faq"]}>
           <div className={styles["course-faq__container"]}>
-            <h2 className={styles["course-faq__section-title"]}>
-              Câu hỏi thường gặp
-            </h2>
+            <div className={styles["course-faq__header"]}>
+              <h2 className={styles["course-faq__section-title"]}>
+                Câu hỏi thường gặp
+              </h2>
+            </div>
+
             <div className={styles["course-faq__accordion-group"]}>
               {courseData.faqs.map((obj, index) => (
                 <details
@@ -256,6 +384,11 @@ function Course() {
                   <summary className={styles["course-faq__accordion-summary"]}>
                     <span className={styles["course-faq__accordion-title"]}>
                       {obj.question}
+                    </span>
+                    <span className={styles["course-faq__accordion-icon"]}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
                     </span>
                   </summary>
                   <div className={styles["course-faq__accordion-details"]}>

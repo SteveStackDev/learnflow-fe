@@ -40,10 +40,10 @@ createRoot(document.getElementById("root")).render(
           <Route path="/course" element={<Course />} />
           <Route path="/problem" element={<Problem />} />
           <Route path="/contest" element={<Contest />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

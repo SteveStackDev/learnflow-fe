@@ -11,7 +11,12 @@ function Contact() {
         <section className={styles["contact-hero"]}>
           <div className={styles["contact-hero__container"]}>
             <div className={styles["contact-hero__content"]}>
-              <span className={styles["contact-hero__badge"]}>Hỗ trợ 24/7</span>
+              <span className={styles["contact-hero__badge"]}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                Hỗ trợ 24/7
+              </span>
               <h1 className={styles["contact-hero__title"]}>
                 Liên hệ với LearnFlow
               </h1>

@@ -1,0 +1,357 @@
+/* ==========================================================================
+   LearnFlow - Footer Styling (Design Tokens matched with DESIGN.md)
+   ========================================================================== */
+
+.footer {
+  background-color: #faf8ff;
+  color: #191b22;
+  font-family: "Inter", "Be Vietnam Pro", sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.footer__container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.footer__container--cta {
+  margin-top: 50px;
+  margin-bottom: 60px;
+}
+
+/* 1. Floating CTA Banner */
+.footer__cta {
+  background: linear-gradient(135deg, #eef4ff 0%, #e0ebff 100%);
+  border-radius: 24px;
+  padding: 36px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.06);
+}
+
+.footer__cta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 640px;
+}
+
+.footer__cta-title {
+  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #191b22;
+  line-height: 1.3;
+}
+
+.footer__cta-description {
+  font-size: 0.975rem;
+  color: #434653;
+  line-height: 1.6;
+}
+
+.footer__cta-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.footer__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: "Inter", sans-serif;
+  border: none;
+}
+
+.footer__btn--primary {
+  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+  color: #ffffff;
+  border: 1.5px solid #0950c3;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+}
+
+.footer__btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.35);
+}
+
+.footer__btn--secondary {
+  background: #ffffff;
+  color: #0950c3;
+  border: 1.5px solid #0950c3;
+}
+
+.footer__btn--secondary:hover {
+  background: #0950c3;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.2);
+}
+
+.footer__btn--sm {
+  padding: 10px 18px;
+  font-size: 0.875rem;
+}
+
+/* 2. Main Footer Columns */
+.footer__container--main {
+  margin-bottom: 60px;
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.3fr 2.7fr;
+  gap: 56px;
+}
+
+.footer__col--brand {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.footer__brand-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.25);
+}
+
+.footer__brand-name {
+  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #003a95;
+  letter-spacing: -0.01em;
+}
+
+.footer__about {
+  font-size: 0.9rem;
+  color: #434653;
+  line-height: 1.65;
+}
+
+.footer__newsletter {
+  background-color: #f0f3fa;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer__newsletter-title {
+  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #191b22;
+}
+
+.footer__newsletter-desc {
+  font-size: 0.825rem;
+  color: #737785;
+  line-height: 1.5;
+}
+
+.footer__newsletter-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.footer__newsletter-input {
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  font-family: "Inter", sans-serif;
+  border: 1px solid rgba(169, 183, 203, 0.4);
+  border-radius: 10px;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.footer__newsletter-input:focus {
+  border-color: #0950c3;
+  box-shadow: 0 0 0 3px rgba(9, 80, 195, 0.15);
+}
+
+.footer__nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.footer__nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer__nav-title {
+  font-family: "Geist", monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #003a95;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.footer__nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer__nav-link {
+  font-size: 0.9rem;
+  color: #434653;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 400;
+}
+
+.footer__nav-link:hover {
+  color: #0950c3;
+  font-weight: 600;
+}
+
+/* 3. Bottom Bar */
+.footer__divider {
+  border: none;
+  height: 1px;
+  background-color: rgba(169, 183, 203, 0.3);
+  margin: 0;
+}
+
+.footer__bottom {
+  padding: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 0.875rem;
+  color: #737785;
+  flex-wrap: wrap;
+}
+
+.footer__copyright {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer__copyright-text {
+  color: #737785;
+}
+
+.footer__copyright-heart {
+  color: #434653;
+  font-weight: 500;
+}
+
+.footer__socials {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer__social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #f0f3fa;
+  color: #434653;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+}
+
+.footer__social-icon:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+  transform: translateY(-2px);
+  border-color: #0950c3;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.25);
+}
+
+/* 4. Responsive Breakpoints */
+@media (max-width: 992px) {
+  .footer__cta {
+    flex-direction: column;
+    text-align: center;
+    padding: 32px 24px;
+  }
+
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .footer__nav {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer__cta-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .footer__btn {
+    width: 100%;
+  }
+
+  .footer__nav {
+    grid-template-columns: 1fr;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .footer__copyright {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

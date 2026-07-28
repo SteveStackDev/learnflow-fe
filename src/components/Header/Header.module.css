@@ -1,0 +1,227 @@
+/* ==========================================================================
+   LearnFlow - Header Styling (Design Tokens matched with DESIGN.md)
+   ========================================================================== */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background: rgba(232, 238, 252, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(169, 183, 203, 0.25);
+  box-shadow: 0 4px 20px rgba(9, 80, 195, 0.04);
+}
+
+.header__container {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 10px 24px;
+}
+
+.header__container--fluid {
+  max-width: 100%;
+  padding: 10px 32px;
+}
+
+.header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* 1. Brand & Logo */
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.header__logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.header__brand:hover .header__logo {
+  transform: scale(1.04);
+}
+
+.header__titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.header__title {
+  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #003a95;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.header__subtitle {
+  font-family: "Geist", monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #737785;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* 2. Navigation Links */
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.header__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #434653;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.header__link:hover {
+  background-color: rgba(9, 80, 195, 0.08);
+  color: #0950c3;
+}
+
+/* Active Nav Tab Styling matching design image */
+.header__link--active {
+  background-color: #ffffff;
+  color: #0950c3;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.08);
+}
+
+.header__link--active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  height: 3px;
+  background-color: #0950c3;
+  border-radius: 3px 3px 0 0;
+}
+
+/* 3. Action Buttons */
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.header__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 22px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.header__btn--outlined {
+  background-color: rgba(235, 242, 255, 0.7);
+  color: #0950c3;
+  border: 1.5px solid #0950c3;
+}
+
+.header__btn--outlined:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+  transform: translateY(-1px);
+}
+
+.header__btn--contained {
+  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+  color: #ffffff;
+  border: 1.5px solid #0950c3;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.3);
+}
+
+.header__btn--contained:hover {
+  background: linear-gradient(135deg, #003a95 0%, #002668 100%);
+  border-color: #003a95;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.4);
+}
+
+/* 4. Responsive Breakpoints */
+@media (max-width: 1200px) {
+  .header__container--fluid {
+    padding: 10px 16px;
+  }
+
+  .header__link {
+    padding: 7px 10px;
+    font-size: 0.825rem;
+  }
+
+  .header__btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .header__nav {
+    overflow-x: auto;
+    max-width: 50vw;
+    padding-bottom: 4px;
+  }
+
+  .header__nav::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .header__subtitle {
+    display: none;
+  }
+
+  .header__btn--outlined {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .header__btn--contained {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+}

@@ -11,7 +11,13 @@ function About() {
         <section className={styles["about-hero"]}>
           <div className={styles["about-hero__container"]}>
             <div className={styles["about-hero__content"]}>
-              <span className={styles["about-hero__badge"]}>Về chúng tôi</span>
+              <span className={styles["about-hero__badge"]}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                </svg>
+                Về chúng tôi
+              </span>
               <h1 className={styles["about-hero__title"]}>
                 Kiến tạo tương lai cho lập trình viên Việt
               </h1>
