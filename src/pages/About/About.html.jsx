@@ -7,6 +7,8 @@ function About() {
   return (
     <>
       <div className={styles.aboutpage}>
+
+
         {/* Hero Section */}
         <section className={styles["about-hero"]}>
           <div className={styles["about-hero__container"]}>
@@ -19,7 +21,7 @@ function About() {
                 Về chúng tôi
               </span>
               <h1 className={styles["about-hero__title"]}>
-                Kiến tạo tương lai cho lập trình viên Việt
+                Kiến tạo tương lai <br /> cho lập trình viên Việt
               </h1>
               <p className={styles["about-hero__desc"]}>
                 LearnFlow không chỉ là một nền tảng học tập, mà là bệ phóng cho
@@ -58,7 +60,7 @@ function About() {
           <div className={styles["about-features__container"]}>
             <div className={styles["about-features__content"]}>
               <h2 className={styles["about-features__title"]}>
-                LearnFlow là gì? Hệ sinh thái học tập có định hướng
+                LearnFlow là gì? <br /> Hệ sinh thái học tập có định hướng
               </h2>
 
               <div className={styles["about-features__list"]}>

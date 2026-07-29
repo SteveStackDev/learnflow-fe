@@ -36,6 +36,8 @@ function Leaderboard() {
         <div className={styles["leaderboardpage__orb-1"]} />
         <div className={styles["leaderboardpage__orb-2"]} />
 
+
+
         {/* 1. Hero Section */}
         <section className={styles["board-hero"]}>
           <div className={styles["board-hero__container"]}>
@@ -46,7 +48,7 @@ function Leaderboard() {
                     <circle cx="12" cy="8" r="7" />
                     <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
                   </svg>
-                  Bảng Xếp Hạng Thành Tích
+                  Bảng danh vọng
                 </span>
               </div>
               <h1 className={styles["board-hero__title"]}>

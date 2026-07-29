@@ -16,6 +16,8 @@ function Contest() {
         <div className={styles["contestpage__orb-1"]} />
         <div className={styles["contestpage__orb-2"]} />
 
+
+
         {/* 1. Hero Section */}
         <section className={styles["contest-hero"]}>
           <div className={styles["contest-hero__container"]}>

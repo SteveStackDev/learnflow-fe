@@ -34,6 +34,8 @@ function Problem() {
         <div className={styles["problempage__orb-1"]} />
         <div className={styles["problempage__orb-2"]} />
 
+
+
         {/* 1. Hero Section */}
         <section className={styles["prob-hero"]}>
           <div className={styles["prob-hero__container"]}>
@@ -331,6 +333,7 @@ function Problem() {
                           : styles["prob-challenges__level-badge--hard"]
                       }`}
                     >
+                      <span className={styles["prob-challenges__badge-dot"]} />
                       {obj.level}
                     </span>
                   </div>

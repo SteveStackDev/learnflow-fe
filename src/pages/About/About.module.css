@@ -33,7 +33,7 @@
 
   width: 100%;
   min-height: 100vh;
-  background-color: var(--bg-page);
+  background: linear-gradient(180deg, #fff1f2 0%, #ffffff 40%, #fdf2f8 100%);
   color: var(--text-main);
   font-family: var(--font-body);
   line-height: 1.6;
@@ -44,8 +44,10 @@
    1. Hero Section
    ========================================================================== */
 .about-hero {
-  padding: 60px 24px 80px;
-  background: linear-gradient(180deg, #f0f4ff 0%, var(--bg-page) 100%);
+  padding: 60px 24px 70px;
+  background: transparent;
+  position: relative;
+  z-index: 2;
 }
 
 .about-hero__container {
@@ -53,7 +55,7 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  gap: 40px;
   align-items: center;
 }
 
@@ -165,6 +167,8 @@
   background-color: var(--bg-container);
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
+  position: relative;
+  z-index: 2;
 }
 
 .about-features__container {
@@ -385,7 +389,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  color: #0950c3;
+  color: #16a34a;
   font-weight: 700;
 }
 
@@ -444,8 +448,8 @@
 }
 
 .about-comparison__box--agree {
-  background-color: #f0f4ff;
-  border: 1px solid #bfdbfe;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
 }
 
 .about-comparison__item {
@@ -471,7 +475,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  color: #0950c3;
+  color: #16a34a;
   font-weight: 700;
 }
 
@@ -615,5 +619,16 @@
 
   .about-story__text {
     text-align: left;
+  }
+}
+
+
+
+@keyframes floatAnim {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(8deg);
   }
 }

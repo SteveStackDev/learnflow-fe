@@ -7,6 +7,8 @@ function Contact() {
   return (
     <>
       <div className={styles.contactpage}>
+
+
         {/* Hero Section */}
         <section className={styles["contact-hero"]}>
           <div className={styles["contact-hero__container"]}>

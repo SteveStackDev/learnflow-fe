@@ -38,6 +38,8 @@ function Course() {
         <div className={styles["coursepage__orb-1"]} />
         <div className={styles["coursepage__orb-2"]} />
 
+
+
         {/* 1. Hero Section */}
         <section className={styles["course-hero"]}>
           <div className={styles["course-hero__container"]}>

@@ -16,6 +16,8 @@ function Badge() {
         <div className={styles["badgepage__orb-1"]} />
         <div className={styles["badgepage__orb-2"]} />
 
+
+
         {/* 1. Hero Section */}
         <section className={styles["badge-hero"]}>
           <div className={styles["badge-hero__container"]}>
