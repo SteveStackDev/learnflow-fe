@@ -69,13 +69,14 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #e0ebff;
-  color: #003a95;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
   font-size: 0.825rem;
   font-weight: 700;
   padding: 6px 16px;
   border-radius: 9999px;
-  border: 1px solid rgba(9, 80, 195, 0.2);
+  border: 1px solid rgba(245, 159, 10, 0.4);
+  box-shadow: 0 2px 10px rgba(245, 159, 10, 0.15);
 }
 
 .board-hero__title {
@@ -118,9 +119,17 @@
 }
 
 /* Rank Order Flexing: Rank 2 on Left, Rank 1 in Center, Rank 3 on Right */
-.board-podium__item--rank-2 { order: 1; }
-.board-podium__item--rank-1 { order: 2; }
-.board-podium__item--rank-3 { order: 3; }
+.board-podium__item--rank-2 {
+  order: 1;
+}
+
+.board-podium__item--rank-1 {
+  order: 2;
+}
+
+.board-podium__item--rank-3 {
+  order: 3;
+}
 
 .board-podium__avatar-wrapper {
   position: relative;
@@ -182,9 +191,17 @@
   margin-bottom: 16px;
 }
 
-.board-podium__item--rank-1 .board-podium__points { color: #d97706; }
-.board-podium__item--rank-2 .board-podium__points { color: #0950c3; }
-.board-podium__item--rank-3 .board-podium__points { color: #b45309; }
+.board-podium__item--rank-1 .board-podium__points {
+  color: #d97706;
+}
+
+.board-podium__item--rank-2 .board-podium__points {
+  color: #0950c3;
+}
+
+.board-podium__item--rank-3 .board-podium__points {
+  color: #b45309;
+}
 
 /* Podium Stand Box */
 .board-podium__stand {
@@ -310,15 +327,15 @@
 }
 
 .board-filters__tab-btn:hover {
-  background-color: #f0f4fd;
-  color: #0950c3;
+  background-color: #fef3c7;
+  color: #d97706;
 }
 
 .board-filters__tab-btn--active {
-  background-color: #0950c3;
+  background-color: #d97706;
   color: #ffffff;
   font-weight: 700;
-  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
 }
 
 .board-filters__controls {
@@ -484,7 +501,7 @@
 }
 
 .board-ranking__table-row--current-user {
-  background-color: #f0f4fd !important;
+  background-color: #fffbe6 !important;
 }
 
 .board-ranking__table-row:hover:not(.board-ranking__table-row--header) {
@@ -563,9 +580,22 @@
   align-items: center;
 }
 
-.board-ranking__trend-icon--up { color: #16a34a; display: flex; align-items: center; }
-.board-ranking__trend-icon--down { color: #dc2626; display: flex; align-items: center; }
-.board-ranking__trend-icon--same { color: #64748b; font-weight: 700; }
+.board-ranking__trend-icon--up {
+  color: #16a34a;
+  display: flex;
+  align-items: center;
+}
+
+.board-ranking__trend-icon--down {
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+}
+
+.board-ranking__trend-icon--same {
+  color: #64748b;
+  font-weight: 700;
+}
 
 /* Pagination */
 .board-ranking__pagination-wrapper {
@@ -631,14 +661,14 @@
 }
 
 .board-ranking__page-btn:hover {
-  background-color: #f0f4fd;
-  color: #0950c3;
+  background-color: #fef3c7;
+  color: #d97706;
 }
 
 .board-ranking__page-btn--active {
-  background-color: #0950c3;
+  background-color: #d97706;
   color: #ffffff;
-  box-shadow: 0 3px 10px rgba(9, 80, 195, 0.3);
+  box-shadow: 0 3px 10px rgba(217, 119, 6, 0.3);
 }
 
 .board-ranking__page-ellipsis {
@@ -672,7 +702,7 @@
 .board-guide__section-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #003a95;
+  color: #191b22;
 }
 
 .board-guide__list {
@@ -686,7 +716,7 @@
   border-radius: 20px;
   padding: 32px 24px;
   border: 1px solid rgba(169, 183, 203, 0.35);
-  box-shadow: 0 6px 24px rgba(9, 80, 195, 0.05);
+  box-shadow: 0 6px 24px rgba(245, 159, 10, 0.05);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -695,15 +725,16 @@
 
 .board-guide__card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(9, 80, 195, 0.12);
+  box-shadow: 0 12px 28px rgba(245, 159, 10, 0.15);
+  border-color: rgba(245, 159, 10, 0.4);
 }
 
 .board-guide__icon {
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background-color: #e0ebff;
-  color: #0950c3;
+  background-color: #fef3c7;
+  color: #d97706;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -745,7 +776,7 @@
 .board-faq__section-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #003a95;
+  color: #191b22;
 }
 
 .board-faq__accordion-group {
@@ -762,12 +793,12 @@
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.25s ease;
-  box-shadow: 0 2px 10px rgba(9, 80, 195, 0.03);
+  box-shadow: 0 2px 10px rgba(245, 159, 10, 0.03);
 }
 
 .board-faq__accordion[open] {
-  border-color: #0950c3;
-  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.08);
+  border-color: #d97706;
+  box-shadow: 0 6px 20px rgba(245, 159, 10, 0.12);
 }
 
 .board-faq__accordion-summary {
@@ -793,7 +824,7 @@
 }
 
 .board-faq__accordion-icon {
-  color: #0950c3;
+  color: #d97706;
   display: flex;
   align-items: center;
   transition: transform 0.3s ease;

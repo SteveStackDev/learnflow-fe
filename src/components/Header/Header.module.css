@@ -19,6 +19,7 @@
   max-width: 1140px;
   margin: 0 auto;
   padding: 10px 24px;
+  position: relative;
 }
 
 .header__container--fluid {
@@ -83,7 +84,7 @@
   margin-top: 2px;
 }
 
-/* 2. Navigation Links */
+/* 2. Navigation Links (Desktop) */
 .header__nav {
   display: flex;
   align-items: center;
@@ -181,7 +182,99 @@
   box-shadow: 0 6px 20px rgba(9, 80, 195, 0.4);
 }
 
-/* 4. Responsive Breakpoints */
+.header__btn--full {
+  width: 100%;
+  padding: 12px 20px;
+}
+
+/* 4. Mobile Hamburger Toggle Button */
+.header__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  color: #0950c3;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.08);
+}
+
+.header__toggle:hover {
+  background-color: #f0f4fd;
+}
+
+/* 5. Mobile Dropdown Navigation Drawer */
+.header__mobile-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 16px 40px rgba(9, 80, 195, 0.16);
+  padding: 16px 24px 24px;
+  animation: mobileDropdownSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 999;
+}
+
+@keyframes mobileDropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header__mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.header__mobile-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #434653;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.header__mobile-link:hover {
+  background-color: #f0f4fd;
+  color: #0950c3;
+}
+
+.header__mobile-link--active {
+  background-color: #0950c3;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+}
+
+.header__mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(169, 183, 203, 0.25);
+}
+
+/* 6. Responsive Breakpoints */
 @media (max-width: 1200px) {
   .header__container--fluid {
     padding: 10px 16px;
@@ -198,30 +291,27 @@
   }
 }
 
-@media (max-width: 992px) {
-  .header__nav {
-    overflow-x: auto;
-    max-width: 50vw;
-    padding-bottom: 4px;
+@media (max-width: 1024px) {
+  .header__nav,
+  .header__actions {
+    display: none;
   }
 
-  .header__nav::-webkit-scrollbar {
-    display: none;
+  .header__toggle {
+    display: flex;
+  }
+
+  .header__mobile-dropdown {
+    display: block;
   }
 }
 
 @media (max-width: 600px) {
+  .header__container--fluid {
+    padding: 10px 16px;
+  }
+
   .header__subtitle {
     display: none;
-  }
-
-  .header__btn--outlined {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
-
-  .header__btn--contained {
-    padding: 6px 14px;
-    font-size: 0.8rem;
   }
 }

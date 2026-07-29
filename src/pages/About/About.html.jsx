@@ -66,7 +66,25 @@ function About() {
                   return (
                     <div key={index} className={styles["about-features__item"]}>
                       <span className={styles["about-features__icon"]}>
-                        {obj.iconName}
+                        {index === 0 && (
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                          </svg>
+                        )}
+                        {index === 1 && (
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                          </svg>
+                        )}
+                        {index >= 2 && (
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
+                          </svg>
+                        )}
                       </span>
                       <div className={styles["about-features__info"]}>
                         <h3 className={styles["about-features__item-title"]}>
@@ -85,7 +103,7 @@ function About() {
             <div className={styles["about-features__media"]}>
               <img
                 className={styles["about-features__img"]}
-                src=""
+                src="/src/assets/images/Home/hero.webp"
                 alt="Feature Illustration"
               />
             </div>
@@ -125,7 +143,25 @@ function About() {
                 return (
                   <div key={index} className={styles["about-future__card"]}>
                     <span className={styles["about-future__icon"]}>
-                      {obj.iconName}
+                      {index === 0 && (
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="10" />
+                          <circle cx="12" cy="12" r="6" />
+                          <circle cx="12" cy="12" r="2" fill="currentColor" />
+                        </svg>
+                      )}
+                      {index === 1 && (
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      )}
+                      {index >= 2 && (
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="8" r="6" />
+                          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                        </svg>
+                      )}
                     </span>
                     <h3 className={styles["about-future__title"]}>
                       {obj.title}

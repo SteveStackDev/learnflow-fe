@@ -65,14 +65,15 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #e0ebff;
-  color: #003a95;
+  background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+  color: #c2410c;
   font-family: inherit;
   font-size: 0.825rem;
   font-weight: 700;
   padding: 6px 16px;
   border-radius: 9999px;
-  border: 1px solid rgba(9, 80, 195, 0.2);
+  border: 1px solid rgba(249, 115, 22, 0.4);
+  box-shadow: 0 2px 10px rgba(249, 115, 22, 0.15);
   margin-bottom: 20px;
 }
 
@@ -149,8 +150,8 @@
 }
 
 .contact-features__card:nth-child(2) .contact-features__icon {
-  background-color: #f0f4ff;
-  color: #0950c3;
+  background-color: #ffedd5;
+  color: #ea580c;
 }
 
 .contact-features__card:nth-child(3) .contact-features__icon {
@@ -285,14 +286,15 @@
 }
 
 .contact-main__btn--contained {
-  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
-  color: var(--on-primary);
-  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.3);
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.3);
 }
 
 .contact-main__btn--contained:hover {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.4);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.4);
 }
 
 /* Right Info Box */

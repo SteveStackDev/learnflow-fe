@@ -75,13 +75,14 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #e0ebff;
-  color: #003a95;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
   font-size: 0.825rem;
   font-weight: 700;
   padding: 6px 16px;
   border-radius: 9999px;
-  border: 1px solid rgba(9, 80, 195, 0.2);
+  border: 1px solid rgba(245, 159, 10, 0.4);
+  box-shadow: 0 2px 10px rgba(245, 159, 10, 0.15);
 }
 
 .home-hero__title {
@@ -94,7 +95,9 @@
 }
 
 .home-hero__title--highlight {
-  color: #0950c3;
+  background: linear-gradient(135deg, #0950c3 0%, #0ea5e9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .home-hero__desc {
@@ -601,6 +604,26 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+}
+
+.home-features__card:nth-child(1) .home-features__card-icon {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.home-features__card:nth-child(2) .home-features__card-icon {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.home-features__card:nth-child(3) .home-features__card-icon {
+  background-color: #fef9c3;
+  color: #a16207;
+}
+
+.home-features__card:nth-child(4) .home-features__card-icon {
+  background-color: #f3e8ff;
+  color: #7e22ce;
 }
 
 .home-features__card-title {

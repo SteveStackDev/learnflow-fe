@@ -198,6 +198,26 @@
   flex-shrink: 0;
 }
 
+.signup-info__benefit-card:nth-child(1) .signup-info__benefit-icon {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.signup-info__benefit-card:nth-child(2) .signup-info__benefit-icon {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.signup-info__benefit-card:nth-child(3) .signup-info__benefit-icon {
+  background-color: #fef9c3;
+  color: #a16207;
+}
+
+.signup-info__benefit-card:nth-child(4) .signup-info__benefit-icon {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+}
+
 .signup-info__benefit-content {
   display: flex;
   flex-direction: column;

@@ -4,28 +4,28 @@
 
 /* Design Tokens & CSS Variables scoped to About Page */
 .aboutpage {
-  --primary: #0950c3;
-  --primary-hover: #003a95;
-  --primary-container: #d5e4f9;
-  --primary-light: #eef4ff;
+  --primary: #ec4899;
+  --primary-hover: #be185d;
+  --primary-container: #fce7f3;
+  --primary-light: #fdf2f8;
   --on-primary: #ffffff;
   --accent: #f59f0a;
   
   --bg-page: #faf8ff;
   --bg-surface: #ffffff;
-  --bg-container: #f3f3fd;
+  --bg-container: #fcf4f9;
   
   --text-main: #191b22;
   --text-muted: #434653;
   --text-light: #737785;
 
-  --border-color: rgba(169, 183, 203, 0.35);
+  --border-color: rgba(236, 72, 153, 0.2);
   --border-danger: rgba(186, 26, 26, 0.25);
-  --border-success: rgba(9, 80, 195, 0.25);
+  --border-success: rgba(236, 72, 153, 0.3);
   
-  --shadow-sm: 0 2px 8px rgba(9, 80, 195, 0.04);
-  --shadow-md: 0 4px 20px rgba(9, 80, 195, 0.06);
-  --shadow-lg: 0 12px 32px rgba(25, 27, 34, 0.08);
+  --shadow-sm: 0 2px 8px rgba(236, 72, 153, 0.05);
+  --shadow-md: 0 4px 20px rgba(236, 72, 153, 0.08);
+  --shadow-lg: 0 12px 32px rgba(236, 72, 153, 0.12);
 
   --font-heading: "Inter", "Be Vietnam Pro", system-ui, sans-serif;
   --font-body: "Inter", "Be Vietnam Pro", sans-serif;
@@ -67,14 +67,15 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #e0ebff;
-  color: #003a95;
+  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+  color: #9d174d;
   font-family: inherit;
   font-size: 0.825rem;
   font-weight: 700;
   padding: 6px 16px;
   border-radius: 9999px;
-  border: 1px solid rgba(9, 80, 195, 0.2);
+  border: 1px solid rgba(236, 72, 153, 0.4);
+  box-shadow: 0 2px 10px rgba(236, 72, 153, 0.15);
   margin-bottom: 20px;
 }
 
@@ -115,27 +116,27 @@
 }
 
 .about-hero__btn--contained {
-  background-color: var(--primary);
-  color: var(--on-primary);
-  border-color: var(--primary);
-  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+  background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+  color: #ffffff;
+  border-color: #ec4899;
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.3);
 }
 
 .about-hero__btn--contained:hover {
-  background-color: var(--primary-hover);
-  border-color: var(--primary-hover);
+  background: linear-gradient(135deg, #be185d 0%, #9d174d 100%);
+  border-color: #be185d;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.35);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
 }
 
 .about-hero__btn--outlined {
   background-color: transparent;
-  color: var(--primary);
-  border-color: var(--primary);
+  color: #be185d;
+  border-color: #ec4899;
 }
 
 .about-hero__btn--outlined:hover {
-  background-color: rgba(9, 80, 195, 0.08);
+  background-color: #fce7f3;
   transform: translateY(-2px);
 }
 
@@ -384,7 +385,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  color: var(--primary);
+  color: #0950c3;
   font-weight: 700;
 }
 
@@ -443,8 +444,8 @@
 }
 
 .about-comparison__box--agree {
-  background-color: var(--primary-light);
-  border: 1px solid var(--border-success);
+  background-color: #f0f4ff;
+  border: 1px solid #bfdbfe;
 }
 
 .about-comparison__item {
@@ -470,7 +471,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  color: var(--primary);
+  color: #0950c3;
   font-weight: 700;
 }
 
@@ -548,8 +549,8 @@
 
 .about-team__card-role {
   font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--primary);
+  font-weight: 700;
+  color: #be185d;
   margin-bottom: 6px;
 }
 

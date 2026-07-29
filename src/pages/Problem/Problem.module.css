@@ -74,13 +74,14 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #e0ebff;
-  color: #003a95;
+  background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+  color: #9f1239;
   font-size: 0.825rem;
   font-weight: 700;
   padding: 6px 16px;
   border-radius: 9999px;
-  border: 1px solid rgba(9, 80, 195, 0.2);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  box-shadow: 0 2px 10px rgba(244, 63, 94, 0.15);
 }
 
 .prob-hero__title {
@@ -123,28 +124,29 @@
 }
 
 .prob-hero__btn--contained {
-  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+  background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
   color: #ffffff;
-  border-color: #0950c3;
-  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.25);
+  border-color: #f43f5e;
+  box-shadow: 0 4px 16px rgba(244, 63, 94, 0.3);
 }
 
 .prob-hero__btn--contained:hover {
+  background: linear-gradient(135deg, #be123c 0%, #9f1239 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 22px rgba(9, 80, 195, 0.35);
+  box-shadow: 0 6px 22px rgba(244, 63, 94, 0.4);
 }
 
 .prob-hero__btn--outlined {
   background-color: #ffffff;
-  color: #0950c3;
-  border-color: #0950c3;
+  color: #be123c;
+  border-color: #f43f5e;
 }
 
 .prob-hero__btn--outlined:hover {
-  background-color: #0950c3;
+  background-color: #f43f5e;
   color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.2);
+  box-shadow: 0 4px 16px rgba(244, 63, 94, 0.25);
 }
 
 /* Right Side Code Editor Card */
@@ -184,9 +186,17 @@
   border-radius: 50%;
 }
 
-.prob-hero__dot--red { background-color: #ef4444; }
-.prob-hero__dot--yellow { background-color: #f59e0b; }
-.prob-hero__dot--green { background-color: #10b981; }
+.prob-hero__dot--red {
+  background-color: #ef4444;
+}
+
+.prob-hero__dot--yellow {
+  background-color: #f59e0b;
+}
+
+.prob-hero__dot--green {
+  background-color: #10b981;
+}
 
 .prob-hero__code-filename {
   font-family: "Geist", monospace;
@@ -214,12 +224,32 @@
   word-break: break-word;
 }
 
-.prob-hero__code-comment { color: #8b949e; font-style: italic; }
-.prob-hero__code-keyword { color: #ff7b72; font-weight: 700; }
-.prob-hero__code-func { color: #38bdf8; font-weight: 700; }
-.prob-hero__code-var { color: #79c0ff; }
-.prob-hero__code-method { color: #f69d50; }
-.prob-hero__code-num { color: #a5d6ff; }
+.prob-hero__code-comment {
+  color: #8b949e;
+  font-style: italic;
+}
+
+.prob-hero__code-keyword {
+  color: #ff7b72;
+  font-weight: 700;
+}
+
+.prob-hero__code-func {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.prob-hero__code-var {
+  color: #79c0ff;
+}
+
+.prob-hero__code-method {
+  color: #f69d50;
+}
+
+.prob-hero__code-num {
+  color: #a5d6ff;
+}
 
 /* ==========================================================================
    2. Search, Filter & Stats Section
@@ -313,17 +343,17 @@
 }
 
 .prob-filter__dropdown-btn:hover {
-  border-color: #0950c3;
-  color: #0950c3;
+  border-color: #f43f5e;
+  color: #be123c;
 }
 
 .prob-filter__dropdown-btn--open {
-  border-color: #0950c3;
-  box-shadow: 0 0 0 3px rgba(9, 80, 195, 0.15);
+  border-color: #f43f5e;
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15);
 }
 
 .prob-filter__dropdown-chevron {
-  color: #0950c3;
+  color: #be123c;
   display: flex;
   align-items: center;
   transition: transform 0.25s ease;
@@ -345,7 +375,7 @@
   border-radius: 16px;
   padding: 8px;
   border: 1px solid rgba(169, 183, 203, 0.35);
-  box-shadow: 0 16px 40px rgba(9, 80, 195, 0.18);
+  box-shadow: 0 16px 40px rgba(244, 63, 94, 0.18);
   z-index: 9999;
   animation: dropdownFadeIn 0.2s ease;
 }
@@ -355,6 +385,7 @@
     opacity: 0;
     transform: translateY(-6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -376,19 +407,19 @@
 }
 
 .prob-filter__dropdown-item:hover {
-  background-color: #f0f4fd;
-  color: #0950c3;
+  background-color: #ffe4e6;
+  color: #be123c;
   font-weight: 600;
 }
 
 .prob-filter__dropdown-item--selected {
-  background-color: rgba(9, 80, 195, 0.08);
-  color: #0950c3;
+  background-color: rgba(244, 63, 94, 0.1);
+  color: #be123c;
   font-weight: 700;
 }
 
 .prob-filter__dropdown-check {
-  color: #0950c3;
+  color: #be123c;
   display: flex;
   align-items: center;
 }
@@ -421,8 +452,8 @@
 }
 
 .prob-filter__stat-icon--blue {
-  background-color: #e0ebff;
-  color: #0950c3;
+  background-color: #ffe4e6;
+  color: #be123c;
 }
 
 .prob-filter__stat-icon--yellow {
@@ -603,22 +634,23 @@
 }
 
 .prob-challenges__action-btn {
-  padding: 8px 20px;
-  font-size: 0.875rem;
+  width: 100%;
+  padding: 9px;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #ffffff;
-  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+  background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.25s ease;
   font-family: inherit;
-  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.2);
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25);
 }
 
 .prob-challenges__action-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(9, 80, 195, 0.3);
+  box-shadow: 0 6px 18px rgba(244, 63, 94, 0.35);
 }
 
 /* Pagination Bar */
@@ -656,14 +688,14 @@
 }
 
 .prob-challenges__page-btn:hover:not(:disabled) {
-  background-color: #f0f4fd;
-  color: #0950c3;
+  background-color: #ffe4e6;
+  color: #be123c;
 }
 
 .prob-challenges__page-btn--active {
-  background-color: #0950c3;
+  background-color: #be123c;
   color: #ffffff;
-  box-shadow: 0 3px 10px rgba(9, 80, 195, 0.3);
+  box-shadow: 0 3px 10px rgba(190, 18, 60, 0.3);
 }
 
 .prob-challenges__page-btn:disabled {
@@ -702,7 +734,7 @@
 .prob-guide__section-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #003a95;
+  color: #191b22;
   margin-bottom: 10px;
 }
 
@@ -725,7 +757,7 @@
   border-radius: 20px;
   padding: 32px 24px;
   border: 1px solid rgba(169, 183, 203, 0.35);
-  box-shadow: 0 6px 24px rgba(9, 80, 195, 0.05);
+  box-shadow: 0 6px 24px rgba(244, 63, 94, 0.05);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -734,15 +766,16 @@
 
 .prob-guide__card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(9, 80, 195, 0.12);
+  box-shadow: 0 12px 28px rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.4);
 }
 
 .prob-guide__icon {
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background-color: #e0ebff;
-  color: #0950c3;
+  background-color: #ffe4e6;
+  color: #be123c;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -784,7 +817,7 @@
 .prob-faq__section-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #003a95;
+  color: #191b22;
   margin-bottom: 10px;
 }
 
@@ -802,12 +835,12 @@
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.25s ease;
-  box-shadow: 0 2px 10px rgba(9, 80, 195, 0.03);
+  box-shadow: 0 2px 10px rgba(244, 63, 94, 0.03);
 }
 
 .prob-faq__accordion[open] {
-  border-color: #0950c3;
-  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.08);
+  border-color: #be123c;
+  box-shadow: 0 6px 20px rgba(244, 63, 94, 0.12);
 }
 
 .prob-faq__accordion-summary {
@@ -833,7 +866,7 @@
 }
 
 .prob-faq__accordion-icon {
-  color: #0950c3;
+  color: #be123c;
   display: flex;
   align-items: center;
   transition: transform 0.3s ease;
@@ -871,6 +904,7 @@
 }
 
 @media (max-width: 600px) {
+
   .prob-challenges__list,
   .prob-guide__list {
     grid-template-columns: 1fr;
