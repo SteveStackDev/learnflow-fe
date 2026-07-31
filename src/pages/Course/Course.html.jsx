@@ -31,6 +31,45 @@ function Course() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
+  // Intersection Observer for scroll animations (Staggered)
+  useEffect(() => {
+    let delay = 0;
+    let timeoutId;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${delay * 100}ms`;
+            entry.target.classList.add("reveal-card--visible");
+            delay++;
+            observer.unobserve(entry.target);
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          delay = 0;
+        }, 150);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const cards = document.querySelectorAll(".reveal-card");
+    cards.forEach((card) => {
+      // Reset any inline delay if re-running
+      card.style.transitionDelay = "0ms";
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+
   return (
     <>
       <div className={styles.coursepage}>
@@ -86,6 +125,33 @@ function Course() {
                   />
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 1.5 Continue Learning Widget */}
+        <section className={styles["course-continue"]}>
+          <div className={styles["course-continue__container"]}>
+            <div className={styles["course-continue__header"]}>
+              <h2 className={styles["course-continue__title"]}>Khóa học đang học</h2>
+            </div>
+            <div className={styles["course-continue__card"]}>
+              <div className={styles["course-continue__info"]}>
+                <h3 className={styles["course-continue__course-title"]}>Lập trình ReactJS Cơ bản đến Nâng cao</h3>
+                <p className={styles["course-continue__lesson"]}>Bài học tiếp theo: Hooks trong React (useState, useEffect)</p>
+              </div>
+              <div className={styles["course-continue__progress-area"]}>
+                <div className={styles["course-continue__progress-text"]}>
+                  <span>Tiến độ</span>
+                  <span className={styles["course-continue__percentage"]}>68%</span>
+                </div>
+                <div className={styles["course-continue__progress-bar-bg"]}>
+                  <div className={styles["course-continue__progress-bar-fill"]} style={{ width: "68%" }}></div>
+                </div>
+              </div>
+              <button type="button" className={styles["course-continue__btn"]}>
+                Tiếp tục học
+              </button>
             </div>
           </div>
         </section>
@@ -212,7 +278,7 @@ function Course() {
           <div className={styles["course-grid__container"]}>
             <div className={styles["course-grid__list"]}>
               {courseData.items.map((obj, index) => (
-                <div key={index} className={styles["course-grid__card"]}>
+                <div key={index} className={`${styles["course-grid__card"]} reveal-card`}>
                   <div className={styles["course-grid__card-media-wrap"]}>
                     <span
                       className={`${styles["course-grid__level-chip"]} ${
@@ -332,7 +398,7 @@ function Course() {
 
             <div className={styles["course-reasons__list"]}>
               {courseData.benefits.map((obj, index) => (
-                <div key={index} className={styles["course-reasons__card"]}>
+                <div key={index} className={`${styles["course-reasons__card"]} reveal-card`}>
                   <div className={styles["course-reasons__icon"]}>
                     {index === 0 && (
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

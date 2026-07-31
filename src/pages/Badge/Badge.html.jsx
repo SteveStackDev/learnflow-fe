@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react";
 
 // Data
@@ -8,6 +9,45 @@ import styles from "./Badge.module.css";
 
 function Badge() {
   const [activeTab, setActiveTab] = useState(0);
+
+
+  // Intersection Observer for scroll animations (Staggered)
+  useEffect(() => {
+    let delay = 0;
+    let timeoutId;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${delay * 100}ms`;
+            entry.target.classList.add("reveal-card--visible");
+            delay++;
+            observer.unobserve(entry.target);
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          delay = 0;
+        }, 150);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const cards = document.querySelectorAll(".reveal-card");
+    cards.forEach((card) => {
+      // Reset any inline delay if re-running
+      card.style.transitionDelay = "0ms";
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
 
   return (
     <>
@@ -59,7 +99,7 @@ function Badge() {
 
               {/* Right Gamification Showcase Card */}
               <div className={styles["badge-hero__showcase"]}>
-                <div className={styles["badge-showcase__card"]}>
+                <div className={`${styles["badge-showcase__card"]} reveal-card`}>
                   <div className={styles["badge-showcase__badge-header"]}>
                     <div className={styles["badge-showcase__medal-box"]}>
                       <span className={styles["badge-showcase__medal-emoji"]}>🥇</span>
@@ -103,7 +143,7 @@ function Badge() {
         <section className={styles["badge-stats"]}>
           <div className={styles["badge-stats__container"]}>
             <div className={styles["badge-stats__list"]}>
-              <div className={styles["badge-stats__card"]}>
+              <div className={`${styles["badge-stats__card"]} reveal-card`}>
                 <div className={`${styles["badge-stats__icon"]} ${styles["badge-stats__icon--blue"]}`}>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <circle cx="12" cy="8" r="7" />
@@ -118,7 +158,7 @@ function Badge() {
                 </div>
               </div>
 
-              <div className={styles["badge-stats__card"]}>
+              <div className={`${styles["badge-stats__card"]} reveal-card`}>
                 <div className={`${styles["badge-stats__icon"]} ${styles["badge-stats__icon--yellow"]}`}>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
@@ -133,7 +173,7 @@ function Badge() {
                 </div>
               </div>
 
-              <div className={styles["badge-stats__card"]}>
+              <div className={`${styles["badge-stats__card"]} reveal-card`}>
                 <div className={styles["badge-stats__progress-wrapper"]}>
                   <div className={styles["badge-stats__progress-info"]}>
                     <span className={styles["badge-stats__label"]}>
@@ -359,7 +399,7 @@ function Badge() {
             </div>
             <div className={styles["badge-guide__list"]}>
               {badgeData.guides.map((obj, index) => (
-                <div key={index} className={styles["badge-guide__card"]}>
+                <div key={index} className={`${styles["badge-guide__card"]} reveal-card`}>
                   <div className={styles["badge-guide__icon"]}>
                     {index === 0 && (
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

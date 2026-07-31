@@ -29,6 +29,45 @@ function Leaderboard() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
+  // Intersection Observer for scroll animations (Staggered)
+  useEffect(() => {
+    let delay = 0;
+    let timeoutId;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${delay * 100}ms`;
+            entry.target.classList.add("reveal-card--visible");
+            delay++;
+            observer.unobserve(entry.target);
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          delay = 0;
+        }, 150);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const cards = document.querySelectorAll(".reveal-card");
+    cards.forEach((card) => {
+      // Reset any inline delay if re-running
+      card.style.transitionDelay = "0ms";
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+
   return (
     <>
       <div className={styles.leaderboardpage}>
@@ -376,7 +415,7 @@ function Leaderboard() {
             </div>
             <div className={styles["board-guide__list"]}>
               {leaderboardData.guides.map((obj, index) => (
-                <div key={index} className={styles["board-guide__card"]}>
+                <div key={index} className={`${styles["board-guide__card"]} reveal-card`}>
                   <div className={styles["board-guide__icon"]}>
                     {index === 0 && (
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

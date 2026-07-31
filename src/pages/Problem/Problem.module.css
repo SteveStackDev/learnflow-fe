@@ -5,7 +5,7 @@
 .problempage {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(180deg, #fff1f2 0%, #ffffff 40%, #fff1f2 100%);
+  background: linear-gradient(180deg, #f9fbff 0%, #ffffff 40%, #f9fbff 100%);
   color: #191b22;
   font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   position: relative;
@@ -20,7 +20,7 @@
   width: 460px;
   height: 460px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(244, 63, 94, 0.22) 0%, rgba(244, 63, 94, 0) 70%);
+  background: radial-gradient(circle, rgba(9, 80, 195, 0.22) 0%, rgba(9, 80, 195, 0) 70%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 1;
@@ -33,7 +33,7 @@
   width: 440px;
   height: 440px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(190, 18, 60, 0.18) 0%, rgba(190, 18, 60, 0) 70%);
+  background: radial-gradient(circle, rgba(5, 55, 135, 0.18) 0%, rgba(5, 55, 135, 0) 70%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 1;
@@ -74,14 +74,14 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
-  color: #9f1239;
+  background: linear-gradient(135deg, var(--primary-light, #e0ebff) 0%, #cce0ff 100%);
+  color: #032563;
   font-size: 0.825rem;
   font-weight: 700;
   padding: 6px 16px;
   border-radius: 9999px;
-  border: 1px solid rgba(244, 63, 94, 0.4);
-  box-shadow: 0 2px 10px rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(9, 80, 195, 0.4);
+  box-shadow: 0 2px 10px rgba(9, 80, 195, 0.15);
 }
 
 .prob-hero__title {
@@ -124,29 +124,29 @@
 }
 
 .prob-hero__btn--contained {
-  background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
+  background: linear-gradient(135deg, var(--primary-color, #0950c3) 0%, var(--primary-dark, #053787) 100%);
   color: #ffffff;
-  border-color: #f43f5e;
-  box-shadow: 0 4px 16px rgba(244, 63, 94, 0.3);
+  border-color: var(--primary-color, #0950c3);
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.3);
 }
 
 .prob-hero__btn--contained:hover {
-  background: linear-gradient(135deg, #be123c 0%, #9f1239 100%);
+  background: linear-gradient(135deg, var(--primary-dark, #053787) 0%, #032563 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 22px rgba(244, 63, 94, 0.4);
+  box-shadow: 0 6px 22px rgba(9, 80, 195, 0.4);
 }
 
 .prob-hero__btn--outlined {
   background-color: #ffffff;
-  color: #be123c;
-  border-color: #f43f5e;
+  color: var(--primary-dark, #053787);
+  border-color: var(--primary-color, #0950c3);
 }
 
 .prob-hero__btn--outlined:hover {
-  background-color: #f43f5e;
+  background-color: var(--primary-color, #0950c3);
   color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(244, 63, 94, 0.25);
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.25);
 }
 
 /* Right Side Code Editor Card */
@@ -343,17 +343,17 @@
 }
 
 .prob-filter__dropdown-btn:hover {
-  border-color: #f43f5e;
-  color: #be123c;
+  border-color: var(--primary-color, #0950c3);
+  color: var(--primary-dark, #053787);
 }
 
 .prob-filter__dropdown-btn--open {
-  border-color: #f43f5e;
-  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15);
+  border-color: var(--primary-color, #0950c3);
+  box-shadow: 0 0 0 3px rgba(9, 80, 195, 0.15);
 }
 
 .prob-filter__dropdown-chevron {
-  color: #be123c;
+  color: var(--primary-dark, #053787);
   display: flex;
   align-items: center;
   transition: transform 0.25s ease;
@@ -375,7 +375,7 @@
   border-radius: 16px;
   padding: 8px;
   border: 1px solid rgba(169, 183, 203, 0.35);
-  box-shadow: 0 16px 40px rgba(244, 63, 94, 0.18);
+  box-shadow: 0 16px 40px rgba(9, 80, 195, 0.18);
   z-index: 9999;
   animation: dropdownFadeIn 0.2s ease;
 }
@@ -407,19 +407,19 @@
 }
 
 .prob-filter__dropdown-item:hover {
-  background-color: #ffe4e6;
-  color: #be123c;
+  background-color: var(--primary-light, #e0ebff);
+  color: var(--primary-dark, #053787);
   font-weight: 600;
 }
 
 .prob-filter__dropdown-item--selected {
-  background-color: rgba(244, 63, 94, 0.1);
-  color: #be123c;
+  background-color: rgba(9, 80, 195, 0.1);
+  color: var(--primary-dark, #053787);
   font-weight: 700;
 }
 
 .prob-filter__dropdown-check {
-  color: #be123c;
+  color: var(--primary-dark, #053787);
   display: flex;
   align-items: center;
 }
@@ -432,13 +432,21 @@
 }
 
 .prob-filter__stat-card {
-  background-color: #f8fafc;
+  background-color: #ffffff;
   border-radius: 14px;
   padding: 16px 20px;
   display: flex;
   align-items: center;
   gap: 14px;
-  border: 1px solid rgba(169, 183, 203, 0.25);
+  border: 1px solid rgba(9, 80, 195, 0.18);
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.05);
+  transition: all 0.25s ease;
+}
+
+.prob-filter__stat-card:hover {
+  border-color: rgba(9, 80, 195, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(9, 80, 195, 0.12);
 }
 
 .prob-filter__stat-icon {
@@ -452,8 +460,8 @@
 }
 
 .prob-filter__stat-icon--blue {
-  background-color: #ffe4e6;
-  color: #be123c;
+  background-color: var(--primary-light, #e0ebff);
+  color: var(--primary-dark, #053787);
 }
 
 .prob-filter__stat-icon--yellow {
@@ -518,18 +526,36 @@
 .prob-challenges__card {
   background-color: #ffffff;
   border-radius: 20px;
-  border: 1px solid rgba(169, 183, 203, 0.35);
+  border: 1px solid rgba(9, 80, 195, 0.18);
   padding: 24px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 6px 24px rgba(9, 80, 195, 0.06);
+  box-shadow: 0 6px 24px rgba(9, 80, 195, 0.08);
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.prob-challenges__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color, #0950c3) 0%, #38bdf8 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .prob-challenges__card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 14px 32px rgba(9, 80, 195, 0.14);
-  border-color: rgba(9, 80, 195, 0.3);
+  box-shadow: 0 16px 36px rgba(9, 80, 195, 0.16);
+  border-color: rgba(9, 80, 195, 0.4);
+}
+
+.prob-challenges__card:hover::before {
+  opacity: 1;
 }
 
 .prob-challenges__card-header {
@@ -668,18 +694,18 @@
   font-size: 0.85rem;
   font-weight: 700;
   color: #ffffff;
-  background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
+  background: linear-gradient(135deg, var(--primary-color, #0950c3) 0%, var(--primary-dark, #053787) 100%);
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.25s ease;
   font-family: inherit;
-  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25);
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.25);
 }
 
 .prob-challenges__action-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(244, 63, 94, 0.35);
+  box-shadow: 0 6px 18px rgba(9, 80, 195, 0.35);
 }
 
 /* Pagination Bar */
@@ -717,14 +743,14 @@
 }
 
 .prob-challenges__page-btn:hover:not(:disabled) {
-  background-color: #ffe4e6;
-  color: #be123c;
+  background-color: var(--primary-light, #e0ebff);
+  color: var(--primary-dark, #053787);
 }
 
 .prob-challenges__page-btn--active {
-  background-color: #be123c;
+  background-color: var(--primary-dark, #053787);
   color: #ffffff;
-  box-shadow: 0 3px 10px rgba(190, 18, 60, 0.3);
+  box-shadow: 0 3px 10px rgba(5, 55, 135, 0.3);
 }
 
 .prob-challenges__page-btn:disabled {
@@ -786,7 +812,7 @@
   border-radius: 20px;
   padding: 32px 24px;
   border: 1px solid rgba(169, 183, 203, 0.35);
-  box-shadow: 0 6px 24px rgba(244, 63, 94, 0.05);
+  box-shadow: 0 6px 24px rgba(9, 80, 195, 0.05);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -795,16 +821,16 @@
 
 .prob-guide__card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(244, 63, 94, 0.15);
-  border-color: rgba(244, 63, 94, 0.4);
+  box-shadow: 0 12px 28px rgba(9, 80, 195, 0.15);
+  border-color: rgba(9, 80, 195, 0.4);
 }
 
 .prob-guide__icon {
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background-color: #ffe4e6;
-  color: #be123c;
+  background-color: var(--primary-light, #e0ebff);
+  color: var(--primary-dark, #053787);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -864,12 +890,12 @@
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.25s ease;
-  box-shadow: 0 2px 10px rgba(244, 63, 94, 0.03);
+  box-shadow: 0 2px 10px rgba(9, 80, 195, 0.03);
 }
 
 .prob-faq__accordion[open] {
-  border-color: #be123c;
-  box-shadow: 0 6px 20px rgba(244, 63, 94, 0.12);
+  border-color: var(--primary-dark, #053787);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.12);
 }
 
 .prob-faq__accordion-summary {
@@ -895,7 +921,7 @@
 }
 
 .prob-faq__accordion-icon {
-  color: #be123c;
+  color: var(--primary-dark, #053787);
   display: flex;
   align-items: center;
   transition: transform 0.3s ease;
@@ -948,10 +974,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    linear-gradient(rgba(244, 63, 94, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(244, 63, 94, 0.05) 1px, transparent 1px);
+  background-image:
+    linear-gradient(to bottom, rgba(9, 80, 195, 0.14) 0 1px, transparent 0 100%),
+    linear-gradient(to right, rgba(9, 80, 195, 0.14) 0 1px, transparent 0 100%);
   background-size: 40px 40px;
+  background-position: 0 0;
   pointer-events: none;
   z-index: 1;
 }
@@ -959,19 +986,173 @@
 
 
 @keyframes floatAnim {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
+
   50% {
     transform: translateY(-16px) rotate(8deg);
   }
 }
 
 @keyframes floatAnim {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
+
   50% {
     transform: translateY(-16px) rotate(8deg);
   }
+}
+
+/* ==========================================================================
+   1.5 Daily Challenge Section
+   ========================================================================== */
+.prob-daily {
+  padding: 0 24px 40px;
+  position: relative;
+  z-index: 20;
+}
+
+.prob-daily__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.prob-daily__card {
+  background-color: #0f172a;
+  border-radius: 20px;
+  padding: 30px;
+  border: 2px solid var(--primary-color, #0950c3);
+  box-shadow: 0 0 24px rgba(9, 80, 195, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.prob-daily__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 100% 0%, rgba(9, 80, 195, 0.2) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.prob-daily__info {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+  z-index: 2;
+}
+
+.prob-daily__badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #0950c3 0%, #0ea5e9 100%);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.prob-daily__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 8px;
+}
+
+.prob-daily__desc {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.prob-daily__meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.prob-daily__reward {
+  color: #f59e0b;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prob-daily__action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.prob-daily__timer {
+  text-align: right;
+}
+
+.prob-daily__timer-label {
+  font-size: 0.825rem;
+  color: #94a3b8;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.prob-daily__countdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Geist", monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.prob-daily__countdown span {
+  background-color: #1e293b;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 44px;
+  text-align: center;
+}
+
+.prob-daily__btn {
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  border: 1px solid #0950c3;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 16px rgba(9, 80, 195, 0.4);
+}
+
+.prob-daily__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 24px rgba(9, 80, 195, 0.6);
+  background: linear-gradient(135deg, #0ea5e9 0%, #0950c3 100%);
 }

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react";
 
 // Data
@@ -8,6 +9,45 @@ import styles from "./Contest.module.css";
 
 function Contest() {
   const [activeTab, setActiveTab] = useState(0);
+
+
+  // Intersection Observer for scroll animations (Staggered)
+  useEffect(() => {
+    let delay = 0;
+    let timeoutId;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${delay * 100}ms`;
+            entry.target.classList.add("reveal-card--visible");
+            delay++;
+            observer.unobserve(entry.target);
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          delay = 0;
+        }, 150);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const cards = document.querySelectorAll(".reveal-card");
+    cards.forEach((card) => {
+      // Reset any inline delay if re-running
+      card.style.transitionDelay = "0ms";
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
 
   return (
     <>
@@ -67,7 +107,7 @@ function Contest() {
           <div className={styles["contest-stats__container"]}>
             <div className={styles["contest-stats__list"]}>
               {contestData.stats.map((obj, index) => (
-                <div key={index} className={styles["contest-stats__card"]}>
+                <div key={index} className={`${styles["contest-stats__card"]} reveal-card`}>
                   <div
                     className={`${styles["contest-stats__icon"]} ${
                       index === 0
@@ -159,7 +199,7 @@ function Contest() {
           <div className={styles["contest-grid__container"]}>
             <div className={styles["contest-grid__list"]}>
               {contestData.items.map((obj, index) => (
-                <div key={index} className={styles["contest-grid__card"]}>
+                <div key={index} className={`${styles["contest-grid__card"]} reveal-card`}>
                   {/* Banner Image with Status Badge */}
                   <div className={styles["contest-grid__card-media"]}>
                     <span
@@ -285,7 +325,7 @@ function Contest() {
 
             <div className={styles["contest-why__list"]}>
               {contestData.benefits.map((obj, index) => (
-                <div key={index} className={styles["contest-why__card"]}>
+                <div key={index} className={`${styles["contest-why__card"]} reveal-card`}>
                   <div className={styles["contest-why__icon"]}>
                     {index === 0 && (
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

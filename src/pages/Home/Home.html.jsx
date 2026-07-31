@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router";
 // Styles
 import styles from "./Home.module.css";
@@ -9,6 +10,26 @@ import heroUrl from "~/assets/images/Home/hero.webp";
 import { homeData } from "./data";
 
 function Home() {
+  useEffect(() => {
+    const observerCallback = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add(styles["reveal-card--visible"]);
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      threshold: 0.1,
+      rootMargin: "0px 0px -30px 0px"
+    });
+
+    const elements = document.querySelectorAll(`.${styles["reveal-card"]}`);
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
   return (
     <>
       <div className={styles.homepage}>
@@ -260,7 +281,11 @@ function Home() {
           <div className={styles["home-stats__container"]}>
             <div className={styles["home-stats__list"]}>
               {homeData.stats.map((obj, index) => (
-                <div key={index} className={styles["home-stats__card"]}>
+                <div
+                  key={index}
+                  className={`${styles["home-stats__card"]} ${styles["reveal-card"]}`}
+                  style={{ transitionDelay: `${index * 130}ms` }}
+                >
                   <span className={styles["home-stats__card-number"]}>
                     {obj.value}
                   </span>
@@ -288,7 +313,11 @@ function Home() {
 
             <div className={styles["home-features__list"]}>
               {homeData.features.map((obj, index) => (
-                <div key={index} className={styles["home-features__card"]}>
+                <div
+                  key={index}
+                  className={`${styles["home-features__card"]} ${styles["reveal-card"]}`}
+                  style={{ transitionDelay: `${index * 130}ms` }}
+                >
                   <div className={styles["home-features__card-icon"]}>
                     {index === 0 && (
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -343,7 +372,11 @@ function Home() {
 
             <div className={styles["home-team__list"]}>
               {homeData.team.map((obj, index) => (
-                <div key={index} className={styles["home-team__card"]}>
+                <div
+                  key={index}
+                  className={`${styles["home-team__card"]} ${styles["reveal-card"]}`}
+                  style={{ transitionDelay: `${index * 130}ms` }}
+                >
                   <img
                     className={styles["home-team__card-avatar"]}
                     alt={obj.name}

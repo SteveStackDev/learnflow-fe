@@ -973,3 +973,16 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Scroll Reveal Staggered Card Micro-Animations */
+.reveal-card {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-card--visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}

@@ -27,6 +27,45 @@ function Problem() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
+  // Intersection Observer for scroll animations (Staggered)
+  useEffect(() => {
+    let delay = 0;
+    let timeoutId;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${delay * 100}ms`;
+            entry.target.classList.add("reveal-card--visible");
+            delay++;
+            observer.unobserve(entry.target);
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          delay = 0;
+        }, 150);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const cards = document.querySelectorAll(".reveal-card");
+    cards.forEach((card) => {
+      // Reset any inline delay if re-running
+      card.style.transitionDelay = "0ms";
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+
   return (
     <>
       <div className={styles.problempage}>
@@ -140,6 +179,37 @@ function Problem() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 1.5 Daily Challenge */}
+        <section className={styles["prob-daily"]}>
+          <div className={styles["prob-daily__container"]}>
+            <div className={`${styles["prob-daily__card"]} reveal-card`}>
+              <div className={styles["prob-daily__info"]}>
+                <div className={styles["prob-daily__badge"]}>Thử thách hằng ngày</div>
+                <h3 className={styles["prob-daily__title"]}>Merge k Sorted Lists</h3>
+                <p className={styles["prob-daily__desc"]}>Cho mảng k danh sách liên kết đã sắp xếp, kết hợp tất cả chúng lại thành một danh sách liên kết duy nhất.</p>
+                <div className={styles["prob-daily__meta"]}>
+                  <span className={`${styles["prob-challenges__level-badge"]} ${styles["prob-challenges__level-badge--hard"]}`}>
+                    <span className={styles["prob-challenges__badge-dot"]} />
+                    Khó
+                  </span>
+                  <span className={styles["prob-daily__reward"]}>+50 XP</span>
+                </div>
+              </div>
+              <div className={styles["prob-daily__action"]}>
+                <div className={styles["prob-daily__timer"]}>
+                  <span className={styles["prob-daily__timer-label"]}>Kết thúc sau</span>
+                  <div className={styles["prob-daily__countdown"]}>
+                    <span>14</span>:<span>22</span>:<span>59</span>
+                  </div>
+                </div>
+                <button type="button" className={styles["prob-daily__btn"]}>
+                  Giải ngay
+                </button>
               </div>
             </div>
           </div>
@@ -274,7 +344,7 @@ function Problem() {
 
             <div className={styles["prob-challenges__list"]}>
               {problemData.items.map((obj, index) => (
-                <div key={index} className={styles["prob-challenges__card"]}>
+                <div key={index} className={`${styles["prob-challenges__card"]} reveal-card`}>
                   <div className={styles["prob-challenges__card-header"]}>
                     <div className={styles["prob-challenges__card-icon"]}>
                       {index === 0 && (
@@ -439,7 +509,7 @@ function Problem() {
 
             <div className={styles["prob-guide__list"]}>
               {problemData.guides.map((obj, index) => (
-                <div key={index} className={styles["prob-guide__card"]}>
+                <div key={index} className={`${styles["prob-guide__card"]} reveal-card`}>
                   <div className={styles["prob-guide__icon"]}>
                     {index === 0 && (
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

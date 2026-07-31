@@ -1,9 +1,50 @@
+import { useEffect } from "react";
 // Data
 import { aboutData } from "./data";
 // Import CSS Modules
 import styles from "./About.module.css";
 
 function About() {
+
+
+  // Intersection Observer for scroll animations (Staggered)
+  useEffect(() => {
+    let delay = 0;
+    let timeoutId;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${delay * 100}ms`;
+            entry.target.classList.add("reveal-card--visible");
+            delay++;
+            observer.unobserve(entry.target);
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          delay = 0;
+        }, 150);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const cards = document.querySelectorAll(".reveal-card");
+    cards.forEach((card) => {
+      // Reset any inline delay if re-running
+      card.style.transitionDelay = "0ms";
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+
   return (
     <>
       <div className={styles.aboutpage}>
@@ -55,6 +96,24 @@ function About() {
           </div>
         </section>
 
+        {/* 1.5 Stats Widget */}
+        <section className={`${styles["about-hero__stats-widget"]} reveal-card`}>
+          <div className={styles["about-hero__stats-item"]}>
+            <span className={styles["about-hero__stats-value"]}>50K+</span>
+            <span className={styles["about-hero__stats-label"]}>Học viên</span>
+          </div>
+          <div className={styles["about-hero__stats-divider"]}></div>
+          <div className={styles["about-hero__stats-item"]}>
+            <span className={styles["about-hero__stats-value"]}>120+</span>
+            <span className={styles["about-hero__stats-label"]}>Khóa học</span>
+          </div>
+          <div className={styles["about-hero__stats-divider"]}></div>
+          <div className={styles["about-hero__stats-item"]}>
+            <span className={styles["about-hero__stats-value"]}>15+</span>
+            <span className={styles["about-hero__stats-label"]}>Chủ đề lập trình</span>
+          </div>
+        </section>
+
         {/* Feature Section */}
         <section className={styles["about-features"]}>
           <div className={styles["about-features__container"]}>
@@ -65,8 +124,9 @@ function About() {
 
               <div className={styles["about-features__list"]}>
                 {aboutData.features.map((obj, index) => {
+
                   return (
-                    <div key={index} className={styles["about-features__item"]}>
+                    <div key={index} className={`${styles["about-features__item"]} reveal-card`}>
                       <span className={styles["about-features__icon"]}>
                         {index === 0 && (
                           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -142,8 +202,9 @@ function About() {
           <div className={styles["about-future__container"]}>
             <div className={styles["about-future__list"]}>
               {aboutData.companyValues.map((obj, index) => {
+
                 return (
-                  <div key={index} className={styles["about-future__card"]}>
+                  <div key={index} className={`${styles["about-future__card"]} reveal-card`}>
                     <span className={styles["about-future__icon"]}>
                       {index === 0 && (
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -203,6 +264,7 @@ function About() {
                 className={`${styles["about-comparison__box"]} ${styles["about-comparison__box--disagree"]}`}
               >
                 {aboutData.comparison.cons.map((item, index) => {
+
                   return (
                     <p key={index} className={styles["about-comparison__item"]}>
                       {item}
@@ -215,6 +277,7 @@ function About() {
                 className={`${styles["about-comparison__box"]} ${styles["about-comparison__box--agree"]}`}
               >
                 {aboutData.comparison.pros.map((item, index) => {
+
                   return (
                     <p key={index} className={styles["about-comparison__item"]}>
                       {item}
@@ -236,8 +299,9 @@ function About() {
 
             <div className={styles["about-team__list"]}>
               {aboutData.team.map((obj, index) => {
+
                 return (
-                  <div key={index} className={styles["about-team__card"]}>
+                  <div key={index} className={`${styles["about-team__card"]} reveal-card`}>
                     <img
                       className={styles["about-team__card-media"]}
                       alt={obj.name}

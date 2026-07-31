@@ -32,6 +32,45 @@ function Roadmap() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
+  // Intersection Observer for scroll animations (Staggered)
+  useEffect(() => {
+    let delay = 0;
+    let timeoutId;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${delay * 100}ms`;
+            entry.target.classList.add("reveal-card--visible");
+            delay++;
+            observer.unobserve(entry.target);
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          delay = 0;
+        }, 150);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const cards = document.querySelectorAll(".reveal-card");
+    cards.forEach((card) => {
+      // Reset any inline delay if re-running
+      card.style.transitionDelay = "0ms";
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+
   return (
     <>
       <div className={styles.roadmappage}>
@@ -94,6 +133,37 @@ function Roadmap() {
                     alt="Hero Roadmap Image"
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 1.5 Milestone Progress Tracker */}
+        <section className={styles["roadmap-progress"]}>
+          <div className={styles["roadmap-progress__container"]}>
+            <div className={styles["roadmap-progress__header"]}>
+              <h2 className={styles["roadmap-progress__title"]}>Tiến trình học tập của bạn</h2>
+              <span className={styles["roadmap-progress__percentage"]}>45%</span>
+            </div>
+            <div className={styles["roadmap-progress__bar-bg"]}>
+              <div className={styles["roadmap-progress__bar-fill"]} style={{ width: "45%" }}></div>
+            </div>
+            <div className={styles["roadmap-progress__milestones"]}>
+              <div className={`${styles["roadmap-progress__milestone"]} ${styles["roadmap-progress__milestone--completed"]}`}>
+                <div className={styles["roadmap-progress__dot"]}>✓</div>
+                <span>Tân binh</span>
+              </div>
+              <div className={`${styles["roadmap-progress__milestone"]} ${styles["roadmap-progress__milestone--current"]}`}>
+                <div className={styles["roadmap-progress__dot"]}></div>
+                <span>Thực tập sinh</span>
+              </div>
+              <div className={styles["roadmap-progress__milestone"]}>
+                <div className={styles["roadmap-progress__dot"]}></div>
+                <span>Lập trình viên</span>
+              </div>
+              <div className={styles["roadmap-progress__milestone"]}>
+                <div className={styles["roadmap-progress__dot"]}></div>
+                <span>Chuyên gia</span>
               </div>
             </div>
           </div>
@@ -210,7 +280,7 @@ function Roadmap() {
           <div className={styles["roadmap-cards__container"]}>
             <div className={styles["roadmap-cards__list"]}>
               {roadmapData.items.map((card, index) => (
-                <div key={index} className={styles["roadmap-cards__card"]}>
+                <div key={index} className={`${styles["roadmap-cards__card"]} reveal-card`}>
                   {card.statusLabel && (
                     <span
                       className={`${styles["roadmap-cards__card-badge"]} ${
@@ -318,7 +388,7 @@ function Roadmap() {
               {roadmapData.suggestions.map((obj, index) => (
                 <div
                   key={index}
-                  className={styles["roadmap-suggestions__card"]}
+                  className={`${styles["roadmap-suggestions__card"]} reveal-card`}
                 >
                   <div className={styles["roadmap-suggestions__icon-wrapper"]}>
                     {(obj.iconName === "IconEye" || index === 0) && (
