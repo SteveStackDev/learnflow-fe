@@ -36,6 +36,8 @@ function Home() {
         {/* Ambient Glow Orbs */}
         <div className={styles["homepage__orb-1"]} />
         <div className={styles["homepage__orb-2"]} />
+        <div className={styles["homepage__orb-3"]} />
+        <div className={styles["homepage__orb-4"]} />
 
         {/* 1. Hero Section */}
         <section className={styles["home-hero"]}>

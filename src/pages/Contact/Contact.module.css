@@ -638,3 +638,130 @@
     transform: translateY(-16px) rotate(8deg);
   }
 }
+
+/* ==========================================================================
+   Dark Mode Overrides
+   ========================================================================== */
+:global([data-theme="dark"]) .contactpage {
+  background: #0b1120 !important;
+  color: #f8fafc !important;
+}
+
+:global([data-theme="dark"]) .contact-hero {
+  background: transparent !important;
+}
+
+:global([data-theme="dark"]) .contact-hero__title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contact-hero__desc {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .contact-features {
+  background-color: #0b1120 !important;
+}
+
+:global([data-theme="dark"]) .contact-features__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+:global([data-theme="dark"]) .contact-features__title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contact-features__desc {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .contact-main {
+  background-color: #0b1120 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+:global([data-theme="dark"]) .contact-main__content {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .contact-main__section-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contact-main__form-label {
+  color: #f8fafc !important;
+}
+
+:global([data-theme="dark"]) .contact-main__form-input,
+:global([data-theme="dark"]) .contact-main__form-select {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .contact-main__form-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Specialized Channels Section */
+:global([data-theme="dark"]) .contact-channels {
+  background-color: #0b1120 !important;
+}
+
+:global([data-theme="dark"]) .contact-channels__section-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contact-channels__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+:global([data-theme="dark"]) .contact-channels__card:hover {
+  background-color: #1e293b !important;
+}
+
+:global([data-theme="dark"]) .contact-channels__icon {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .contact-channels__title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contact-channels__desc {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .contact-channels__link {
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .contact-channels__link:hover {
+  color: #7dd3fc !important;
+}
+
+/* Contact FAQ Section */
+:global([data-theme="dark"]) .contact-faq {
+  background-color: #0b1120 !important;
+}
+
+:global([data-theme="dark"]) .contact-faq__accordion {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .contact-faq__accordion-summary {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contact-faq__accordion-details {
+  color: #cbd5e1 !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+}

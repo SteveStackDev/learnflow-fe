@@ -523,9 +523,10 @@
   border-color: var(--primary-color, #0950c3);
 }
 
-.badge-filters__tab-btn--active {
+.badge-filters__tab-btn--active,
+.badge-filters__tab-btn--active:hover {
   background: linear-gradient(135deg, var(--primary-color, #0950c3) 0%, var(--primary-dark, #053787) 100%);
-  color: #ffffff;
+  color: #ffffff !important;
   border-color: var(--primary-dark, #053787);
   font-weight: 700;
   box-shadow: 0 3px 12px rgba(9, 80, 195, 0.25);
@@ -682,15 +683,16 @@
 }
 
 .badge-grid__btn--contained {
-  background: linear-gradient(135deg, var(--primary-color, #0950c3) 0%, var(--primary-dark, #053787) 100%);
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
   color: #ffffff;
-  border-color: var(--primary-color, #0950c3);
-  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+  border-color: #16a34a;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
 }
 
 .badge-grid__btn--contained:hover {
+  background: linear-gradient(135deg, #15803d 0%, #166534 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.35);
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.4);
 }
 
 .badge-grid__btn--disabled {
@@ -946,4 +948,184 @@
   .badge-guide__list {
     grid-template-columns: 1fr;
   }
+}
+
+/* ==========================================================================
+   Dark Mode Overrides
+   ========================================================================== */
+:global([data-theme="dark"]) .badgepage {
+  background: #0b1120 !important;
+  color: #f8fafc !important;
+}
+
+:global([data-theme="dark"]) .badge-hero__title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .badge-hero__desc {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .badge-showcase__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .badge-showcase__badge-name {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .badge-showcase__xp-wrapper {
+  background-color: #1e293b !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+:global([data-theme="dark"]) .badge-showcase__xp-label {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .badge-showcase__xp-val {
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .badge-stats__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .badge-stats__value {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .badge-stats__label {
+  color: #94a3b8 !important;
+}
+
+/* Filter Card Wrapper & Search Input */
+:global([data-theme="dark"]) .badge-filters__card-wrapper {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .badge-filters__search-box {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:global([data-theme="dark"]) .badge-filters__search-icon {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .badge-filters__search-input {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .badge-filters__search-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .badge-filters__tab-btn {
+  background-color: #1e293b !important;
+  color: #cbd5e1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+:global([data-theme="dark"]) .badge-filters__tab-btn--active {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+}
+
+:global([data-theme="dark"]) .badge-grid__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .badge-grid__card-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .badge-grid__card-desc {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .badge-grid__pagination {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .badge-grid__page-btn {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .badge-grid__page-btn:hover:not(:disabled) {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .badge-grid__page-btn--active {
+  background-color: #0950c3 !important;
+  color: #ffffff !important;
+}
+
+/* Guide Section ("Làm thế nào để kiếm Badge?") */
+:global([data-theme="dark"]) .badge-guide {
+  background-color: #0b1120 !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+:global([data-theme="dark"]) .badge-guide__section-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .badge-guide__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .badge-guide__card:hover {
+  background-color: #1e293b !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .badge-guide__icon {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .badge-guide__title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .badge-guide__desc {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .badge-faq__section-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .badge-faq__section-subtitle {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .badge-faq__accordion {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .badge-faq__accordion-summary {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .badge-faq__accordion-details {
+  color: #cbd5e1 !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
 }

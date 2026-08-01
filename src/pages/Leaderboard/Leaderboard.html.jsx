@@ -74,6 +74,8 @@ function Leaderboard() {
         {/* Ambient Background Glow Orbs */}
         <div className={styles["leaderboardpage__orb-1"]} />
         <div className={styles["leaderboardpage__orb-2"]} />
+        <div className={styles["leaderboardpage__orb-3"]} />
+        <div className={styles["leaderboardpage__orb-4"]} />
 
 
 
@@ -360,45 +362,43 @@ function Leaderboard() {
               <nav className={styles["board-ranking__pagination"]}>
                 <button
                   type="button"
-                  className={styles["board-ranking__page-nav-btn"]}
+                  className={styles["board-ranking__page-btn"]}
                   disabled
                 >
-                  ‹ Trang trước
+                  ‹
                 </button>
-                <div className={styles["board-ranking__page-numbers"]}>
-                  <button
-                    type="button"
-                    className={`${styles["board-ranking__page-btn"]} ${styles["board-ranking__page-btn--active"]}`}
-                  >
-                    1
-                  </button>
-                  <button
-                    type="button"
-                    className={styles["board-ranking__page-btn"]}
-                  >
-                    2
-                  </button>
-                  <button
-                    type="button"
-                    className={styles["board-ranking__page-btn"]}
-                  >
-                    3
-                  </button>
-                  <span className={styles["board-ranking__page-ellipsis"]}>
-                    ..
-                  </span>
-                  <button
-                    type="button"
-                    className={styles["board-ranking__page-btn"]}
-                  >
-                    15
-                  </button>
-                </div>
                 <button
                   type="button"
-                  className={styles["board-ranking__page-nav-btn"]}
+                  className={`${styles["board-ranking__page-btn"]} ${styles["board-ranking__page-btn--active"]}`}
                 >
-                  Trang sau ›
+                  1
+                </button>
+                <button
+                  type="button"
+                  className={styles["board-ranking__page-btn"]}
+                >
+                  2
+                </button>
+                <button
+                  type="button"
+                  className={styles["board-ranking__page-btn"]}
+                >
+                  3
+                </button>
+                <span className={styles["board-ranking__page-ellipsis"]}>
+                  ..
+                </span>
+                <button
+                  type="button"
+                  className={styles["board-ranking__page-btn"]}
+                >
+                  15
+                </button>
+                <button
+                  type="button"
+                  className={styles["board-ranking__page-btn"]}
+                >
+                  ›
                 </button>
               </nav>
             </div>

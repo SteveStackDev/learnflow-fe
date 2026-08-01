@@ -72,6 +72,8 @@ function Problem() {
         {/* Ambient Background Glow Orbs */}
         <div className={styles["problempage__orb-1"]} />
         <div className={styles["problempage__orb-2"]} />
+        <div className={styles["problempage__orb-3"]} />
+        <div className={styles["problempage__orb-4"]} />
 
 
 

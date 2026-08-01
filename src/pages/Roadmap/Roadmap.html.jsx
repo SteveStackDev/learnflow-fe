@@ -77,6 +77,8 @@ function Roadmap() {
         {/* Ambient Background Glow Orbs */}
         <div className={styles["roadmappage__orb-1"]} />
         <div className={styles["roadmappage__orb-2"]} />
+        <div className={styles["roadmappage__orb-3"]} />
+        <div className={styles["roadmappage__orb-4"]} />
 
 
 

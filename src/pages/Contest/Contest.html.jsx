@@ -55,6 +55,8 @@ function Contest() {
         {/* Ambient Background Glow Orbs */}
         <div className={styles["contestpage__orb-1"]} />
         <div className={styles["contestpage__orb-2"]} />
+        <div className={styles["contestpage__orb-3"]} />
+        <div className={styles["contestpage__orb-4"]} />
 
 
 

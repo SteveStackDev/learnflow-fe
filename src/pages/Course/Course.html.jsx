@@ -76,6 +76,8 @@ function Course() {
         {/* Ambient Background Glow Orbs */}
         <div className={styles["coursepage__orb-1"]} />
         <div className={styles["coursepage__orb-2"]} />
+        <div className={styles["coursepage__orb-3"]} />
+        <div className={styles["coursepage__orb-4"]} />
 
 
 

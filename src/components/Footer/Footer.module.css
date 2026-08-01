@@ -355,3 +355,53 @@
     gap: 8px;
   }
 }
+
+/* ==========================================================================
+   Dark Mode Overrides
+   ========================================================================== */
+:global([data-theme="dark"]) .footer {
+  background-color: #070b14;
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .footer__cta {
+  background: linear-gradient(135deg, #131c31 0%, #1e293b 100%);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .footer__cta-title {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .footer__cta-description {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .footer__title {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .footer__desc {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .footer__column-title {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .footer__link {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .footer__link:hover {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .footer__bottom {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .footer__copyright {
+  color: #94a3b8;
+}

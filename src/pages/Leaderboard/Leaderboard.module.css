@@ -196,13 +196,13 @@
 }
 
 .board-podium__item--rank-2 .board-podium__avatar {
-  border: 3.5px solid var(--primary-color, #0950c3);
-  box-shadow: 0 0 18px rgba(9, 80, 195, 0.3);
+  border: 3.5px solid #94a3b8;
+  box-shadow: 0 0 18px rgba(148, 163, 184, 0.35);
 }
 
 .board-podium__item--rank-3 .board-podium__avatar {
-  border: 3.5px solid #38bdf8;
-  box-shadow: 0 0 18px rgba(56, 189, 248, 0.3);
+  border: 3.5px solid #d97706;
+  box-shadow: 0 0 18px rgba(217, 119, 6, 0.35);
 }
 
 .board-podium__rank-badge {
@@ -224,6 +224,16 @@
   color: #ffffff;
 }
 
+.board-podium__item--rank-2 .board-podium__rank-badge {
+  background-color: #64748b;
+  color: #ffffff;
+}
+
+.board-podium__item--rank-3 .board-podium__rank-badge {
+  background-color: #b45309;
+  color: #ffffff;
+}
+
 .board-podium__name {
   font-size: 1.05rem;
   font-weight: 700;
@@ -242,11 +252,11 @@
 }
 
 .board-podium__item--rank-2 .board-podium__points {
-  color: var(--primary-color, #0950c3);
+  color: #475569;
 }
 
 .board-podium__item--rank-3 .board-podium__points {
-  color: var(--primary-dark, #053787);
+  color: #b45309;
 }
 
 /* Podium Stand Box */
@@ -260,7 +270,7 @@
   justify-content: center;
   padding: 24px;
   box-shadow: 0 8px 30px rgba(9, 80, 195, 0.08);
-  border: 1px solid rgba(9, 80, 195, 0.18);
+  border: 1px solid rgba(169, 183, 203, 0.35);
   border-bottom: none;
   position: relative;
 }
@@ -273,14 +283,14 @@
 
 .board-podium__item--rank-2 .board-podium__stand {
   height: 140px;
-  background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
-  border-top: 4px solid var(--primary-color, #0950c3);
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  border-top: 4px solid #94a3b8;
 }
 
 .board-podium__item--rank-3 .board-podium__stand {
   height: 110px;
-  background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
-  border-top: 4px solid #38bdf8;
+  background: linear-gradient(180deg, #fff7ed 0%, #ffffff 100%);
+  border-top: 4px solid #d97706;
 }
 
 /* Medal Graphic inside Stand */
@@ -305,16 +315,19 @@
 .board-podium__medal--gold {
   background: linear-gradient(135deg, #fef08a 0%, #f59e0b 100%);
   color: #78350f;
+  box-shadow: 0 4px 14px rgba(245, 159, 10, 0.4);
 }
 
 .board-podium__medal--silver {
-  background: linear-gradient(135deg, #e0ebff 0%, #0950c3 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%);
+  color: #1e293b;
+  box-shadow: 0 4px 14px rgba(148, 163, 184, 0.4);
 }
 
 .board-podium__medal--bronze {
-  background: linear-gradient(135deg, #bae6fd 0%, #0284c7 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #ffedd5 0%, #d97706 100%);
+  color: #7c2d12;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.4);
 }
 
 .board-podium__medal-num {
@@ -377,9 +390,10 @@
   color: var(--primary-dark, #053787);
 }
 
-.board-filters__tab-btn--active {
+.board-filters__tab-btn--active,
+.board-filters__tab-btn--active:hover {
   background: linear-gradient(135deg, var(--primary-color, #0950c3) 0%, var(--primary-dark, #053787) 100%);
-  color: #ffffff;
+  color: #ffffff !important;
   font-weight: 700;
   box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
 }
@@ -923,4 +937,248 @@
   .board-guide__list {
     grid-template-columns: 1fr;
   }
+}
+
+/* ==========================================================================
+   Dark Mode Overrides
+   ========================================================================== */
+:global([data-theme="dark"]) .leaderboardpage {
+  background: #0b1120 !important;
+  color: #f8fafc !important;
+}
+
+:global([data-theme="dark"]) .leaderboardpage::before {
+  background-image: 
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.08) 0 1px, transparent 0 100%),
+    linear-gradient(to right, rgba(56, 189, 248, 0.08) 0 1px, transparent 0 100%) !important;
+}
+
+:global([data-theme="dark"]) .board-tech-pill {
+  background: rgba(19, 28, 49, 0.85) !important;
+  color: #38bdf8 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .board-hero__title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .board-hero__desc {
+  color: #cbd5e1 !important;
+}
+
+/* Podium Section */
+:global([data-theme="dark"]) .board-podium__stand {
+  background: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .board-podium__item--rank-1 .board-podium__stand {
+  background: linear-gradient(180deg, #1e293b 0%, #131c31 100%) !important;
+}
+
+:global([data-theme="dark"]) .board-podium__item--rank-2 .board-podium__stand {
+  background: linear-gradient(180deg, #1e293b 0%, #131c31 100%) !important;
+}
+
+:global([data-theme="dark"]) .board-podium__item--rank-3 .board-podium__stand {
+  background: linear-gradient(180deg, #1e293b 0%, #131c31 100%) !important;
+}
+
+:global([data-theme="dark"]) .board-podium__name {
+  color: #ffffff !important;
+}
+
+/* Filter Card Wrapper & Search Input */
+:global([data-theme="dark"]) .board-filters__card-wrapper {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .board-filters__search-box {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:global([data-theme="dark"]) .board-filters__search-icon {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .board-filters__search-input {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .board-filters__search-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .board-filters__tab-btn {
+  background-color: #1e293b !important;
+  color: #cbd5e1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+:global([data-theme="dark"]) .board-filters__tab-btn--active {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+}
+
+/* Filter Controls (Dropdown & Search) */
+:global([data-theme="dark"]) .board-filters__dropdown-btn {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .board-filters__dropdown-chevron {
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .board-filters__dropdown-menu {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+:global([data-theme="dark"]) .board-filters__dropdown-item {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .board-filters__dropdown-item:hover {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .board-filters__dropdown-item--selected {
+  background-color: rgba(56, 189, 248, 0.1) !important;
+  color: #38bdf8 !important;
+}
+
+/* Ranking Table Section */
+:global([data-theme="dark"]) .board-ranking__table-wrapper {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__table-row {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__table-row--header {
+  background-color: #1e293b !important;
+  border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__table-row:hover:not(.board-ranking__table-row--header) {
+  background-color: rgba(56, 189, 248, 0.06) !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__table-row--current-user {
+  background-color: rgba(56, 189, 248, 0.14) !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__table-cell {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__table-cell--header {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__table-cell--rank {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__user-name {
+  color: #ffffff !important;
+}
+
+/* Table Pagination Bar */
+:global([data-theme="dark"]) .board-ranking__pagination {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__page-btn {
+  background-color: transparent !important;
+  border: none !important;
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__page-btn:hover:not(:disabled) {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__page-btn--active {
+  background-color: #0950c3 !important;
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__page-ellipsis {
+  color: #94a3b8 !important;
+}
+
+/* Guide Section ("Làm thế nào để leo hạng?") */
+:global([data-theme="dark"]) .board-guide {
+  background-color: #0b1120 !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+:global([data-theme="dark"]) .board-guide__section-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .board-guide__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .board-guide__card:hover {
+  background-color: #1e293b !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .board-guide__icon {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .board-guide__title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .board-guide__desc {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .board-faq__section-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .board-faq__section-subtitle {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .board-faq__accordion {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .board-faq__accordion-summary {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .board-faq__accordion-details {
+  color: #cbd5e1 !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
 }

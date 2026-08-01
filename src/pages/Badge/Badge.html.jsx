@@ -55,6 +55,8 @@ function Badge() {
         {/* Ambient Background Glow Orbs */}
         <div className={styles["badgepage__orb-1"]} />
         <div className={styles["badgepage__orb-2"]} />
+        <div className={styles["badgepage__orb-3"]} />
+        <div className={styles["badgepage__orb-4"]} />
 
 
 
@@ -84,15 +86,22 @@ function Badge() {
                     type="button"
                     className={`${styles["badge-hero__btn"]} ${styles["badge-hero__btn--contained"]}`}
                   >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
                     <span>Khám phá nhiệm vụ</span>
-                    <span className={styles["badge-hero__btn-icon"]}>🚀</span>
                   </button>
                   <button
                     type="button"
                     className={`${styles["badge-hero__btn"]} ${styles["badge-hero__btn--outlined"]}`}
                   >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1.3.5 2.6 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+                      <path d="M9 18h6" />
+                      <path d="M10 22h4" />
+                    </svg>
                     <span>Cách kiếm Badge</span>
-                    <span className={styles["badge-hero__btn-icon"]}>💡</span>
                   </button>
                 </div>
               </div>

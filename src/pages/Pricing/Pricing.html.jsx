@@ -13,6 +13,8 @@ function Pricing() {
         {/* Ambient Background Glow Orbs */}
         <div className={styles["pricingpage__orb-1"]} />
         <div className={styles["pricingpage__orb-2"]} />
+        <div className={styles["pricingpage__orb-3"]} />
+        <div className={styles["pricingpage__orb-4"]} />
 
         {/* 1. Header Hero Section */}
         <section className={styles["price-hero"]}>

@@ -7,7 +7,11 @@ function Contact() {
   return (
     <>
       <div className={styles.contactpage}>
-
+        {/* Ambient Background Glow Orbs */}
+        <div className={styles["contactpage__orb-1"]} />
+        <div className={styles["contactpage__orb-2"]} />
+        <div className={styles["contactpage__orb-3"]} />
+        <div className={styles["contactpage__orb-4"]} />
 
         {/* Hero Section */}
         <section className={styles["contact-hero"]}>

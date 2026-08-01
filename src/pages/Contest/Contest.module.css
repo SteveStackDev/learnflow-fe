@@ -336,9 +336,10 @@
   border-color: var(--primary-color, #0950c3);
 }
 
-.contest-filters__tab-btn--active {
+.contest-filters__tab-btn--active,
+.contest-filters__tab-btn--active:hover {
   background: linear-gradient(135deg, var(--primary-color, #0950c3) 0%, var(--primary-dark, #053787) 100%);
-  color: #ffffff;
+  color: #ffffff !important;
   border-color: var(--primary-dark, #053787);
   font-weight: 700;
   box-shadow: 0 3px 12px rgba(9, 80, 195, 0.25);
@@ -502,15 +503,16 @@
 }
 
 .contest-grid__action-btn--contained {
-  background: linear-gradient(135deg, var(--primary-color, #0950c3) 0%, var(--primary-dark, #053787) 100%);
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
   color: #ffffff;
-  border-color: var(--primary-color, #0950c3);
-  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+  border-color: #f97316;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.3);
 }
 
 .contest-grid__action-btn--contained:hover {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.35);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.42);
 }
 
 .contest-grid__action-btn--outlined {
@@ -775,4 +777,191 @@
   .contest-why__list {
     grid-template-columns: 1fr;
   }
+}
+
+/* ==========================================================================
+   Dark Mode Overrides
+   ========================================================================== */
+/* ==========================================================================
+   Dark Mode Overrides
+   ========================================================================== */
+:global([data-theme="dark"]) .contestpage {
+  background: #0b1120 !important;
+  color: #f8fafc !important;
+}
+
+:global([data-theme="dark"]) .contest-hero__title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contest-hero__desc {
+  color: #cbd5e1 !important;
+}
+
+/* Stats Widgets Section */
+:global([data-theme="dark"]) .contest-stats__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+:global([data-theme="dark"]) .contest-stats__value {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contest-stats__label {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .contest-stats__icon--blue,
+:global([data-theme="dark"]) .contest-stats__icon--yellow,
+:global([data-theme="dark"]) .contest-stats__icon--purple {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+/* Search & Filter Bar */
+:global([data-theme="dark"]) .contest-filters__card-wrapper {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .contest-filters__search-box {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:global([data-theme="dark"]) .contest-filters__search-icon {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .contest-filters__search-input {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .contest-filters__search-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .contest-filters__tab-btn {
+  background-color: #1e293b !important;
+  color: #cbd5e1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+:global([data-theme="dark"]) .contest-filters__tab-btn--active {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+}
+
+/* Contest Cards Grid & Pagination */
+:global([data-theme="dark"]) .contest-grid__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .contest-grid__card-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contest-grid__card-desc {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .contest-grid__meta-item {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .contest-grid__action-btn--outlined {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .contest-grid__action-btn--outlined:hover {
+  background-color: #0950c3 !important;
+  color: #ffffff !important;
+  border-color: #0950c3 !important;
+}
+
+:global([data-theme="dark"]) .contest-grid__pagination {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .contest-grid__page-btn {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .contest-grid__page-btn:hover:not(:disabled) {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .contest-grid__page-btn--active {
+  background-color: #0950c3 !important;
+  color: #ffffff !important;
+}
+
+/* Why Section ("Tại sao nên tham gia Contest?") */
+:global([data-theme="dark"]) .contest-why {
+  background-color: #0b1120 !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+:global([data-theme="dark"]) .contest-why__section-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contest-why__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .contest-why__card:hover {
+  background-color: #1e293b !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .contest-why__icon {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .contest-why__title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contest-why__desc {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .contest-faq__section-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contest-faq__section-subtitle {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .contest-faq__accordion {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .contest-faq__accordion-summary {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .contest-faq__accordion-details {
+  color: #cbd5e1 !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
 }

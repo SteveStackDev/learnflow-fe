@@ -200,15 +200,20 @@
   box-shadow: 0 8px 30px rgba(9, 80, 195, 0.1);
 }
 
-/* Highlighted Popular Card */
+/* Highlighted Unique Popular Card with Pure White Background & Multi-Color Gradient Ring */
 .price-cards__card--popular {
-  border: 2px solid #0950c3;
-  box-shadow: 0 12px 36px rgba(9, 80, 195, 0.16);
+  position: relative;
+  background: 
+    linear-gradient(#ffffff, #ffffff) padding-box, 
+    linear-gradient(135deg, #0950c3 0%, #38bdf8 40%, #f59e0b 100%) border-box !important;
+  border: 3px solid transparent !important;
+  border-radius: 26px;
+  box-shadow: 0 14px 40px rgba(9, 80, 195, 0.15), 0 0 24px rgba(56, 189, 248, 0.15);
 }
 
 .price-cards__card--popular:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 44px rgba(9, 80, 195, 0.22);
+  box-shadow: 0 22px 52px rgba(9, 80, 195, 0.25), 0 0 36px rgba(56, 189, 248, 0.3);
 }
 
 .price-cards__card-badge-wrap {
@@ -218,17 +223,19 @@
   right: 0;
   display: flex;
   justify-content: center;
+  z-index: 10;
 }
 
 .price-cards__card-badge {
-  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   color: #ffffff;
   font-size: 0.775rem;
-  font-weight: 700;
-  padding: 5px 16px;
+  font-weight: 800;
+  padding: 6px 18px;
   border-radius: 9999px;
-  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
-  letter-spacing: 0.02em;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 16px rgba(245, 159, 10, 0.45);
+  letter-spacing: 0.03em;
 }
 
 .price-cards__card-content {
@@ -582,4 +589,158 @@
   .price-hero__title {
     font-size: 2rem;
   }
+}
+
+/* ==========================================================================
+   Dark Mode Overrides
+   ========================================================================== */
+:global([data-theme="dark"]) .pricingpage {
+  background: #0b1120 !important;
+  color: #f8fafc !important;
+}
+
+:global([data-theme="dark"]) .price-hero__title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .price-hero__desc {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .price-hero__toggle-wrapper {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .price-hero__toggle-label {
+  color: #94a3b8 !important;
+}
+
+:global([data-theme="dark"]) .price-hero__toggle-label--active {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .price-cards__card {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .price-cards__card--popular {
+  background: 
+    linear-gradient(#131c31, #131c31) padding-box, 
+    linear-gradient(135deg, #0950c3 0%, #38bdf8 40%, #f59e0b 100%) border-box !important;
+  border: 3px solid transparent !important;
+}
+
+:global([data-theme="dark"]) .price-cards__card-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .price-cards__card-price {
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .price-cards__card-period {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .price-cards__feature-item {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .price-cards__feature-icon {
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .price-cards__btn--outlined {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+  border-color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .price-cards__btn--dark {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Comparison Table Section */
+:global([data-theme="dark"]) .price-comparison {
+  background-color: #0b1120 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__section-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__section-subtitle {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-wrapper {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-row {
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-row--header {
+  background-color: #1e293b !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-row--section {
+  background-color: #0f172a !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-cell {
+  color: #cbd5e1 !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-cell--header-label,
+:global([data-theme="dark"]) .price-comparison__table-cell--header {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-cell--label {
+  color: #f8fafc !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-cell--section {
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-cell--popular {
+  background-color: rgba(56, 189, 248, 0.06) !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__check {
+  color: #38bdf8 !important;
+}
+
+:global([data-theme="dark"]) .price-comparison__dash {
+  color: #64748b !important;
+}
+
+/* FAQ Section */
+:global([data-theme="dark"]) .price-faq__section-title {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .price-faq__accordion {
+  background-color: #131c31 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .price-faq__accordion-summary {
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .price-faq__accordion-details {
+  color: #cbd5e1 !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
 }

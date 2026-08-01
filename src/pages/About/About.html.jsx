@@ -1,11 +1,50 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // Data
 import { aboutData } from "./data";
 // Import CSS Modules
 import styles from "./About.module.css";
 
-function About() {
+const CAROUSEL_SLIDES = [
+  {
+    id: 1,
+    image: "/src/assets/images/About/about-workspace.webp",
+    badge: "Thực chiến 24/7",
+    title: "Hệ thống luyện code tự động",
+    desc: "Chấm bài tự động và phản hồi ngay lập tức trên trình duyệt."
+  },
+  {
+    id: 2,
+    image: "/src/assets/images/About/about-community.webp",
+    badge: "Cộng đồng 50.000+",
+    title: "Cùng nhau phát triển & Học hỏi",
+    desc: "Trao đổi kinh nghiệm với các chuyên gia và học viên khác."
+  },
+  {
+    id: 3,
+    image: "/src/assets/images/About/about-roadmap.webp",
+    badge: "Lộ trình bài bản",
+    title: "Chinh phục kỹ năng công nghệ",
+    desc: "Định hướng rõ ràng từ cơ bản đến trình độ chuyên nghiệp."
+  }
+];
 
+function About() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % CAROUSEL_SLIDES.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [currentSlide]);
+
+  const handlePrev = () => {
+    setCurrentSlide((prev) => (prev === 0 ? CAROUSEL_SLIDES.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentSlide((prev) => (prev + 1) % CAROUSEL_SLIDES.length);
+  };
 
   // Intersection Observer for scroll animations (Staggered)
   useEffect(() => {
@@ -33,7 +72,6 @@ function About() {
 
     const cards = document.querySelectorAll(".reveal-card");
     cards.forEach((card) => {
-      // Reset any inline delay if re-running
       card.style.transitionDelay = "0ms";
       observer.observe(card);
     });
@@ -44,11 +82,14 @@ function About() {
     };
   }, []);
 
-
   return (
     <>
       <div className={styles.aboutpage}>
-
+        {/* Ambient Background Glow Orbs */}
+        <div className={styles["aboutpage__orb-1"]} />
+        <div className={styles["aboutpage__orb-2"]} />
+        <div className={styles["aboutpage__orb-3"]} />
+        <div className={styles["aboutpage__orb-4"]} />
 
         {/* Hero Section */}
         <section className={styles["about-hero"]}>
@@ -87,11 +128,73 @@ function About() {
             </div>
 
             <div className={styles["about-hero__media"]}>
-              <img
-                className={styles["about-hero__img"]}
-                src="/src/assets/images/Home/hero.webp"
-                alt="Hero Image"
-              />
+              <div className={styles["about-carousel"]}>
+                <div className={styles["about-carousel__slides-container"]}>
+                  {CAROUSEL_SLIDES.map((slide, idx) => (
+                    <div
+                      key={slide.id}
+                      className={`${styles["about-carousel__slide"]} ${
+                        currentSlide === idx ? styles["about-carousel__slide--active"] : ""
+                      }`}
+                    >
+                      <img
+                        src={slide.image}
+                        alt={slide.title}
+                        className={styles["about-carousel__img"]}
+                      />
+                      <div className={styles["about-carousel__overlay"]} />
+                      <div className={styles["about-carousel__content"]}>
+                        <span className={styles["about-carousel__badge"]}>
+                          {slide.badge}
+                        </span>
+                        <h3 className={styles["about-carousel__title"]}>
+                          {slide.title}
+                        </h3>
+                        <p className={styles["about-carousel__desc"]}>
+                          {slide.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Arrow Navigation */}
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  className={`${styles["about-carousel__arrow"]} ${styles["about-carousel__arrow--prev"]}`}
+                  aria-label="Previous slide"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className={`${styles["about-carousel__arrow"]} ${styles["about-carousel__arrow--next"]}`}
+                  aria-label="Next slide"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+
+                {/* Dot Pagination */}
+                <div className={styles["about-carousel__dots"]}>
+                  {CAROUSEL_SLIDES.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setCurrentSlide(idx)}
+                      className={`${styles["about-carousel__dot"]} ${
+                        currentSlide === idx ? styles["about-carousel__dot--active"] : ""
+                      }`}
+                      aria-label={`Go to slide ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -124,7 +227,6 @@ function About() {
 
               <div className={styles["about-features__list"]}>
                 {aboutData.features.map((obj, index) => {
-
                   return (
                     <div key={index} className={`${styles["about-features__item"]} reveal-card`}>
                       <span className={styles["about-features__icon"]}>
@@ -166,161 +268,8 @@ function About() {
               <img
                 className={styles["about-features__img"]}
                 src="/src/assets/images/Home/hero.webp"
-                alt="Feature Illustration"
+                alt="Feature Showcase"
               />
-            </div>
-          </div>
-        </section>
-
-        {/* About Section */}
-        <section className={styles["about-story"]}>
-          <div className={styles["about-story__container"]}>
-            <div className={styles["about-story__content"]}>
-              <h2 className={styles["about-story__title"]}>
-                Hành trình giải quyết nỗi đau của "Người mới"
-              </h2>
-              <p className={styles["about-story__text"]}>
-                Bạn đã bao giờ dành hàng giờ trên YouTube để xem các video hướng
-                dẫn, nhưng khi mở trình soạn thảo mã nguồn lên lại không biết
-                bắt đầu từ đâu? Bạn cảm thấy lạc lối giữa hàng nghìn công nghệ
-                mới ra đời mỗi ngày?
-              </p>
-              <p className={styles["about-story__text"]}>
-                Đó chính là câu chuyện của đội ngũ sáng lập LearnFlow. Chúng tôi
-                nhận ra rằng: **Vấn đề không phải là thiếu tài liệu, mà là thiếu
-                một lộ trình đúng đắn và động lực duy trì.** LearnFlow ra đời để
-                biến việc học code từ một "cơn ác mộng" thành một hành trình
-                khám phá đầy thú vị và có hệ thống.
-              </p>
-              <hr className={styles["about-story__divider"]} />
-            </div>
-          </div>
-        </section>
-
-        {/* Future Section */}
-        <section className={styles["about-future"]}>
-          <div className={styles["about-future__container"]}>
-            <div className={styles["about-future__list"]}>
-              {aboutData.companyValues.map((obj, index) => {
-
-                return (
-                  <div key={index} className={`${styles["about-future__card"]} reveal-card`}>
-                    <span className={styles["about-future__icon"]}>
-                      {index === 0 && (
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="12" cy="12" r="10" />
-                          <circle cx="12" cy="12" r="6" />
-                          <circle cx="12" cy="12" r="2" fill="currentColor" />
-                        </svg>
-                      )}
-                      {index === 1 && (
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                          <circle cx="12" cy="12" r="3" />
-                        </svg>
-                      )}
-                      {index >= 2 && (
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="12" cy="8" r="6" />
-                          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-                        </svg>
-                      )}
-                    </span>
-                    <h3 className={styles["about-future__title"]}>
-                      {obj.title}
-                    </h3>
-
-                    <div className={styles["about-future__desc"]}>
-                      {typeof obj.description === "string" ? (
-                        <p>{obj.description}</p>
-                      ) : (
-                        <ul className={styles["about-future__sublist"]}>
-                          {obj.description.map((item, subIndex) => {
-                            return <li key={subIndex}>{item}</li>;
-                          })}
-                        </ul>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Comparison Section */}
-        <section className={styles["about-comparison"]}>
-          <div className={styles["about-comparison__container"]}>
-            <h2 className={styles["about-comparison__title"]}>
-              Sự khác biệt tại LearnFlow
-            </h2>
-            <p className={styles["about-comparison__subtitle"]}>
-              Chúng tôi không chỉ dạy bạn viết code, chúng tôi dạy bạn cách tư
-              duy của một kỹ sư phần mềm thực thụ.
-            </p>
-
-            <div className={styles["about-comparison__group"]}>
-              <div
-                className={`${styles["about-comparison__box"]} ${styles["about-comparison__box--disagree"]}`}
-              >
-                {aboutData.comparison.cons.map((item, index) => {
-
-                  return (
-                    <p key={index} className={styles["about-comparison__item"]}>
-                      {item}
-                    </p>
-                  );
-                })}
-              </div>
-
-              <div
-                className={`${styles["about-comparison__box"]} ${styles["about-comparison__box--agree"]}`}
-              >
-                {aboutData.comparison.pros.map((item, index) => {
-
-                  return (
-                    <p key={index} className={styles["about-comparison__item"]}>
-                      {item}
-                    </p>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Team Section */}
-        <section className={styles["about-team"]}>
-          <div className={styles["about-team__container"]}>
-            <h2 className={styles["about-team__title"]}>Đội ngũ sáng lập</h2>
-            <p className={styles["about-team__subtitle"]}>
-              Những người đứng sau sứ mệnh nâng tầm lập trình viên Việt
-            </p>
-
-            <div className={styles["about-team__list"]}>
-              {aboutData.team.map((obj, index) => {
-
-                return (
-                  <div key={index} className={`${styles["about-team__card"]} reveal-card`}>
-                    <img
-                      className={styles["about-team__card-media"]}
-                      alt={obj.name}
-                      src={obj.imageUrl}
-                    />
-                    <div className={styles["about-team__card-content"]}>
-                      <h3 className={styles["about-team__card-title"]}>
-                        {obj.title}
-                      </h3>
-                      <h4 className={styles["about-team__card-role"]}>
-                        {obj.role}
-                      </h4>
-                      <p className={styles["about-team__card-desc"]}>
-                        {obj.description}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           </div>
         </section>
