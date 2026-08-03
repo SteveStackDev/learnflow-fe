@@ -378,23 +378,42 @@
   color: #cbd5e1;
 }
 
-:global([data-theme="dark"]) .footer__title {
-  color: #f8fafc;
+:global([data-theme="dark"]) .footer__brand-name {
+  color: #38bdf8;
 }
 
-:global([data-theme="dark"]) .footer__desc {
-  color: #94a3b8;
-}
-
-:global([data-theme="dark"]) .footer__column-title {
-  color: #f8fafc;
-}
-
-:global([data-theme="dark"]) .footer__link {
+:global([data-theme="dark"]) .footer__about {
   color: #cbd5e1;
 }
 
-:global([data-theme="dark"]) .footer__link:hover {
+:global([data-theme="dark"]) .footer__newsletter {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .footer__newsletter-title {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .footer__newsletter-desc {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .footer__newsletter-input {
+  background-color: #0b1120;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .footer__nav-title {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .footer__nav-link {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .footer__nav-link:hover {
   color: #38bdf8;
 }
 
@@ -402,6 +421,19 @@
   border-top-color: rgba(255, 255, 255, 0.1);
 }
 
-:global([data-theme="dark"]) .footer__copyright {
+:global([data-theme="dark"]) .footer__copyright-text,
+:global([data-theme="dark"]) .footer__copyright-heart {
   color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .footer__social-icon {
+  background-color: #131c31;
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .footer__social-icon:hover {
+  background-color: #38bdf8;
+  color: #0b1120;
+  border-color: #38bdf8;
 }

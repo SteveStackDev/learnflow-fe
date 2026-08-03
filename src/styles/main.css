@@ -5,6 +5,12 @@
   padding: 0;
 }
 
+body {
+  font-family: var(--font-family-main, 'Be Vietnam Pro', 'Inter', sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 /* Global Reveal Animation */
 .reveal-card {
   opacity: 0;

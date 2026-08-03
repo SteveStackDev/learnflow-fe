@@ -8,10 +8,29 @@ import { signUpData } from "./data";
 import styles from "./SignUp.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
+import { useToast } from "~/context/ToastContext.jsx";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const { toast } = useToast();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!fullname || !email || !password || !confirmPassword) {
+      toast.error("Vui lòng nhập đầy đủ thông tin đăng ký!", "Đăng ký thất bại");
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Mật khẩu xác nhận không trùng khớp!", "Lỗi xác nhận");
+      return;
+    }
+    toast.success("Tạo tài khoản LearnFlow thành công! Vui lòng đăng nhập.", "Đăng ký thành công");
+  };
 
   return (
     <>
@@ -31,11 +50,7 @@ function SignUp() {
 
               <div className={styles["signup-info__logo-group"]}>
                 <div className={styles["signup-info__logo-box"]}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                    <path d="M2 17l10 5 10-5" />
-                    <path d="M2 12l10 5 10-5" />
-                  </svg>
+                  <Icon name="Layers" size={22} strokeWidth={2.5} />
                 </div>
                 <span className={styles["signup-info__logo-text"]}>
                   LearnFlow
@@ -88,25 +103,29 @@ function SignUp() {
 
               <form
                 className={styles["signup-form__form"]}
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleSubmit}
               >
                 {/* 2-Column Row: Full Name & Username */}
                 <div className={styles["signup-form__form-row"]}>
                   <div className={styles["signup-form__form-group"]}>
-                    <label className={styles["signup-form__label"]}>
+                    <label htmlFor="signup-fullname" className={styles["signup-form__label"]}>
                       HỌ VÀ TÊN
                     </label>
                     <input
+                      id="signup-fullname"
                       type="text"
+                      value={fullname}
+                      onChange={(e) => setFullname(e.target.value)}
                       placeholder="Nguyễn Văn A"
                       className={styles["signup-form__input"]}
                     />
                   </div>
                   <div className={styles["signup-form__form-group"]}>
-                    <label className={styles["signup-form__label"]}>
+                    <label htmlFor="signup-username" className={styles["signup-form__label"]}>
                       TÊN NGƯỜI DÙNG
                     </label>
                     <input
+                      id="signup-username"
                       type="text"
                       placeholder="van_a_99"
                       className={styles["signup-form__input"]}
@@ -116,9 +135,12 @@ function SignUp() {
 
                 {/* Email Field */}
                 <div className={styles["signup-form__form-group"]}>
-                  <label className={styles["signup-form__label"]}>EMAIL</label>
+                  <label htmlFor="signup-email" className={styles["signup-form__label"]}>EMAIL</label>
                   <input
+                    id="signup-email"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="email@vi-du.com"
                     className={styles["signup-form__input"]}
                   />
@@ -126,12 +148,15 @@ function SignUp() {
 
                 {/* Password Field */}
                 <div className={styles["signup-form__form-group"]}>
-                  <label className={styles["signup-form__label"]}>
+                  <label htmlFor="signup-password" className={styles["signup-form__label"]}>
                     MẬT KHẨU
                   </label>
                   <div className={styles["signup-form__input-wrapper"]}>
                     <input
+                      id="signup-password"
                       type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
                       className={styles["signup-form__input"]}
                     />
@@ -151,12 +176,15 @@ function SignUp() {
 
                 {/* Confirm Password Field */}
                 <div className={styles["signup-form__form-group"]}>
-                  <label className={styles["signup-form__label"]}>
+                  <label htmlFor="signup-confirm-password" className={styles["signup-form__label"]}>
                     XÁC NHẬN MẬT KHẨU
                   </label>
                   <div className={styles["signup-form__input-wrapper"]}>
                     <input
+                      id="signup-confirm-password"
                       type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="••••••••"
                       className={styles["signup-form__input"]}
                     />
@@ -176,8 +204,9 @@ function SignUp() {
 
                 {/* Checkbox Agreement */}
                 <div className={styles["signup-form__checkbox-group"]}>
-                  <label className={styles["signup-form__checkbox-label"]}>
+                  <label htmlFor="signup-agree" className={styles["signup-form__checkbox-label"]}>
                     <input
+                      id="signup-agree"
                       type="checkbox"
                       className={styles["signup-form__checkbox"]}
                     />

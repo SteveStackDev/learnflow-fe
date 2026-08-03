@@ -5,6 +5,8 @@ import { aboutData } from "./data";
 import styles from "./About.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
+// Hooks
+import useScrollReveal from "~/hooks/useScrollReveal";
 
 const CAROUSEL_SLIDES = [
   {
@@ -48,41 +50,7 @@ function About() {
     setCurrentSlide((prev) => (prev + 1) % CAROUSEL_SLIDES.length);
   };
 
-  // Intersection Observer for scroll animations (Staggered)
-  useEffect(() => {
-    let delay = 0;
-    let timeoutId;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.transitionDelay = `${delay * 100}ms`;
-            entry.target.classList.add("reveal-card--visible");
-            delay++;
-            observer.unobserve(entry.target);
-          }
-        });
-        
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          delay = 0;
-        }, 150);
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
-    );
-
-    const cards = document.querySelectorAll(".reveal-card");
-    cards.forEach((card) => {
-      card.style.transitionDelay = "0ms";
-      observer.observe(card);
-    });
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(timeoutId);
-    };
-  }, []);
+  useScrollReveal();
 
   return (
     <>
@@ -98,10 +66,7 @@ function About() {
           <div className={styles["about-hero__container"]}>
             <div className={styles["about-hero__content"]}>
               <span className={styles["about-hero__badge"]}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-                </svg>
+                <Icon name="Clock" size={16} />
                 Về chúng tôi
               </span>
               <h1 className={styles["about-hero__title"]}>
@@ -167,9 +132,7 @@ function About() {
                   className={`${styles["about-carousel__arrow"]} ${styles["about-carousel__arrow--prev"]}`}
                   aria-label="Previous slide"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <polyline points="15 18 9 12 15 6" />
-                  </svg>
+                  <Icon name="ChevronLeft" size={16} />
                 </button>
                 <button
                   type="button"
@@ -177,9 +140,7 @@ function About() {
                   className={`${styles["about-carousel__arrow"]} ${styles["about-carousel__arrow--next"]}`}
                   aria-label="Next slide"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <polyline points="9 18 15 12 9 6" />
-                  </svg>
+                  <Icon name="ChevronRight" size={15} />
                 </button>
 
                 {/* Dot Pagination */}

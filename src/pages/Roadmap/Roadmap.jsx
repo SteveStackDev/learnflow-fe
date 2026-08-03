@@ -9,6 +9,10 @@ import heroUrl from "~/assets/images/Home/hero.webp";
 import styles from "./Roadmap.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
+import EmptyState from "~/components/EmptyState/EmptyState";
+import { SkeletonCard } from "~/components/Skeleton/Skeleton.jsx";
+// Hooks
+import useScrollReveal from "~/hooks/useScrollReveal";
 
 const LEVEL_OPTIONS = [
   { id: "all", label: "Tất cả trình độ" },
@@ -19,9 +23,17 @@ const LEVEL_OPTIONS = [
 
 function Roadmap() {
   const [activeTab, setActiveTab] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState(LEVEL_OPTIONS[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dropdownRef = useRef(null);
+
+  useScrollReveal();
+
+  const handleTabChange = (index) => {
+    setActiveTab(index);
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -36,41 +48,7 @@ function Roadmap() {
 
 
   // Intersection Observer for scroll animations (Staggered)
-  useEffect(() => {
-    let delay = 0;
-    let timeoutId;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.transitionDelay = `${delay * 100}ms`;
-            entry.target.classList.add("reveal-card--visible");
-            delay++;
-            observer.unobserve(entry.target);
-          }
-        });
-        
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          delay = 0;
-        }, 150);
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
-    );
-
-    const cards = document.querySelectorAll(".reveal-card");
-    cards.forEach((card) => {
-      // Reset any inline delay if re-running
-      card.style.transitionDelay = "0ms";
-      observer.observe(card);
-    });
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(timeoutId);
-    };
-  }, []);
+  useScrollReveal();
 
 
   return (
@@ -91,10 +69,7 @@ function Roadmap() {
               <div className={styles["roadmap-hero__left"]}>
                 <div className={styles["roadmap-hero__badge-wrap"]}>
                   <span className={styles["roadmap-hero__badge"]}>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10" />
-                      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-                    </svg>
+                    <Icon name="Clock" size={16} />
                     Định hướng tương lai
                   </span>
                 </div>
@@ -115,10 +90,7 @@ function Roadmap() {
                     className={`${styles["roadmap-hero__btn"]} ${styles["roadmap-hero__btn--contained"]}`}
                   >
                     <span>Khám phá ngay</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
+                    <Icon name="ArrowRight" size={18} strokeWidth={2.5} />
                   </button>
                   <button
                     type="button"
@@ -188,17 +160,17 @@ function Roadmap() {
                   <Icon name="Search" size={18} />
                 </span>
                 <input
+                  id="roadmap-search-input"
                   type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Tìm vị trí công nghệ bạn muốn theo đuổi..."
+                  aria-label="Tìm vị trí công nghệ bạn muốn theo đuổi"
                   className={styles["roadmap-filters__search-input"]}
                 />
               </div>
               <span className={styles["roadmap-filters__stats"]}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                  <path d="M2 17l10 5 10-5" />
-                  <path d="M2 12l10 5 10-5" />
-                </svg>
+                <Icon name="Layers" size={22} strokeWidth={2.5} />
                 {roadmapData.totalCountText}
               </span>
             </div>
@@ -272,12 +244,41 @@ function Roadmap() {
           </div>
         </section>
 
-        {/* 3. Cards Section */}
+        {/* 4. Roadmap Cards Grid Section */}
         <section className={styles["roadmap-cards"]}>
           <div className={styles["roadmap-cards__container"]}>
-            <div className={styles["roadmap-cards__list"]}>
-              {roadmapData.items.map((card, index) => (
-                <div key={card.id || card.slug || card.name || card.title || card} className={`${styles["roadmap-cards__card"]} reveal-card`}>
+            {isLoading ? (
+              <div className={styles["roadmap-cards__list"]}>
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+              </div>
+            ) : roadmapData.items.filter((item) => {
+              const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    item.description.toLowerCase().includes(searchQuery.toLowerCase());
+              return matchesSearch;
+            }).length === 0 ? (
+              <EmptyState
+                iconName="Search"
+                title="Không tìm thấy lộ trình phù hợp"
+                description="Không có lộ trình học nào khớp với từ khóa tìm kiếm của bạn."
+                actionLabel="Xóa bộ lọc"
+                onAction={() => {
+                  setSearchQuery("");
+                  setActiveTab(0);
+                }}
+              />
+            ) : (
+              <div className={styles["roadmap-cards__list"]}>
+                {roadmapData.items.filter((item) => {
+                  const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                        item.description.toLowerCase().includes(searchQuery.toLowerCase());
+                  return matchesSearch;
+                }).map((card) => (
+                  <div key={card.id || card.slug || card.name || card.title || card} className={`${styles["roadmap-cards__card"]} reveal-card`}>
                   {card.statusLabel && (
                     <span
                       className={`${styles["roadmap-cards__card-badge"]} ${
@@ -327,6 +328,7 @@ function Roadmap() {
                 </div>
               ))}
             </div>
+            )}
 
             {/* Pagination */}
             <div className={styles["roadmap-cards__pagination-wrapper"]}>

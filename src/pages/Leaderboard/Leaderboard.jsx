@@ -7,6 +7,10 @@ import { leaderboardData } from "./data";
 import styles from "./Leaderboard.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
+import EmptyState from "~/components/EmptyState/EmptyState";
+import { SkeletonTableRow } from "~/components/Skeleton/Skeleton.jsx";
+// Hooks
+import useScrollReveal from "~/hooks/useScrollReveal";
 
 const TIME_OPTIONS = [
   { id: "this-week", label: "Tuần này" },
@@ -16,9 +20,17 @@ const TIME_OPTIONS = [
 
 function Leaderboard() {
   const [activeTab, setActiveTab] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedTime, setSelectedTime] = useState(TIME_OPTIONS[0]);
   const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const timeDropdownRef = useRef(null);
+
+  useScrollReveal();
+
+  const handleTabChange = (index) => {
+    setActiveTab(index);
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -29,44 +41,6 @@ function Leaderboard() {
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-
-  // Intersection Observer for scroll animations (Staggered)
-  useEffect(() => {
-    let delay = 0;
-    let timeoutId;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.transitionDelay = `${delay * 100}ms`;
-            entry.target.classList.add("reveal-card--visible");
-            delay++;
-            observer.unobserve(entry.target);
-          }
-        });
-        
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          delay = 0;
-        }, 150);
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
-    );
-
-    const cards = document.querySelectorAll(".reveal-card");
-    cards.forEach((card) => {
-      // Reset any inline delay if re-running
-      card.style.transitionDelay = "0ms";
-      observer.observe(card);
-    });
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(timeoutId);
-    };
   }, []);
 
 
@@ -87,10 +61,7 @@ function Leaderboard() {
             <div className={styles["board-hero__content"]}>
               <div className={styles["board-hero__badge-wrap"]}>
                 <span className={styles["board-hero__tag"]}>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="8" r="7" />
-                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-                  </svg>
+                  <Icon name="Book" size={16} />
                   Bảng danh vọng
                 </span>
               </div>
@@ -196,9 +167,7 @@ function Leaderboard() {
                     >
                       <span>{selectedTime.label}</span>
                       <span className={styles["board-filters__dropdown-chevron"]}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                          <polyline points="6 9 12 15 18 9" />
-                        </svg>
+                        <Icon name="ChevronDown" size={16} />
                       </span>
                     </button>
 
@@ -231,14 +200,15 @@ function Leaderboard() {
 
                   <div className={styles["board-filters__search-box"]}>
                     <span className={styles["board-filters__search-icon"]}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                      </svg>
+                      <Icon name="Search" size={16} />
                     </span>
                     <input
+                      id="leaderboard-search-input"
                       type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Tìm người dùng..."
+                      aria-label="Tìm người dùng"
                       className={styles["board-filters__search-input"]}
                     />
                   </div>
@@ -280,15 +250,42 @@ function Leaderboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {leaderboardData.rankings.map((obj, index) => (
-                    <tr
-                      key={obj.id || obj.slug || obj.name || obj.title || obj}
-                      className={`${styles["board-ranking__table-row"]} ${
-                        obj.isCurrentUser
-                          ? styles["board-ranking__table-row--current-user"]
-                          : ""
-                      }`}
-                    >
+                  {isLoading ? (
+                    <tr>
+                      <td colSpan={6} style={{ padding: 0 }}>
+                        <SkeletonTableRow />
+                        <SkeletonTableRow />
+                        <SkeletonTableRow />
+                        <SkeletonTableRow />
+                        <SkeletonTableRow />
+                      </td>
+                    </tr>
+                  ) : leaderboardData.rankings.filter((item) =>
+                    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+                  ).length === 0 ? (
+                    <tr>
+                      <td colSpan={6}>
+                        <EmptyState
+                          iconName="Search"
+                          title="Không tìm thấy người dùng"
+                          description="Không có ai trong bảng xếp hạng khớp với từ khóa của bạn."
+                          actionLabel="Xóa tìm kiếm"
+                          onAction={() => setSearchQuery("")}
+                        />
+                      </td>
+                    </tr>
+                  ) : (
+                    leaderboardData.rankings.filter((item) =>
+                      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    ).map((obj) => (
+                      <tr
+                        key={obj.id || obj.slug || obj.name || obj.title || obj}
+                        className={`${styles["board-ranking__table-row"]} ${
+                          obj.isCurrentUser
+                            ? styles["board-ranking__table-row--current-user"]
+                            : ""
+                        }`}
+                      >
                       <td
                         className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--rank"]}`}
                       >
@@ -330,18 +327,12 @@ function Leaderboard() {
                         >
                           {obj.trend === "up" && (
                             <span className={styles["board-ranking__trend-icon--up"]}>
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                                <polyline points="17 6 23 6 23 12" />
-                              </svg>
+                              <Icon name="TrendingUp" size={16} />
                             </span>
                           )}
                           {obj.trend === "down" && (
                             <span className={styles["board-ranking__trend-icon--down"]}>
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
-                                <polyline points="17 18 23 18 23 12" />
-                              </svg>
+                              <Icon name="TrendingDown" size={16} />
                             </span>
                           )}
                           {obj.trend === "same" && (
@@ -352,7 +343,7 @@ function Leaderboard() {
                         </span>
                       </td>
                     </tr>
-                  ))}
+                  )))}
                 </tbody>
               </table>
             </div>

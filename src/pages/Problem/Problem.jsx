@@ -6,6 +6,10 @@ import { problemData } from "./data";
 import styles from "./Problem.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
+import EmptyState from "~/components/EmptyState/EmptyState";
+import { SkeletonCard } from "~/components/Skeleton/Skeleton.jsx";
+// Hooks
+import useScrollReveal from "~/hooks/useScrollReveal";
 
 const SORT_OPTIONS = [
   { id: "popular", label: "Phổ biến" },
@@ -14,9 +18,18 @@ const SORT_OPTIONS = [
 ];
 
 function Problem() {
+  const [activeTab, setActiveTab] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const sortDropdownRef = useRef(null);
+
+  useScrollReveal();
+
+  const handleTabChange = (index) => {
+    setActiveTab(index);
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -27,44 +40,6 @@ function Problem() {
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-
-  // Intersection Observer for scroll animations (Staggered)
-  useEffect(() => {
-    let delay = 0;
-    let timeoutId;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.transitionDelay = `${delay * 100}ms`;
-            entry.target.classList.add("reveal-card--visible");
-            delay++;
-            observer.unobserve(entry.target);
-          }
-        });
-        
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          delay = 0;
-        }, 150);
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
-    );
-
-    const cards = document.querySelectorAll(".reveal-card");
-    cards.forEach((card) => {
-      // Reset any inline delay if re-running
-      card.style.transitionDelay = "0ms";
-      observer.observe(card);
-    });
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(timeoutId);
-    };
   }, []);
 
 
@@ -86,10 +61,7 @@ function Problem() {
               <div className={styles["prob-hero__left"]}>
                 <div className={styles["prob-hero__badge-wrap"]}>
                   <span className={styles["prob-hero__tag"]}>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="16 18 22 12 16 6" />
-                      <polyline points="8 6 2 12 8 18" />
-                    </svg>
+                    <Icon name="Code" size={15} />
                     Thử thách lập trình thực chiến
                   </span>
                 </div>
@@ -107,19 +79,14 @@ function Problem() {
                     type="button"
                     className={`${styles["prob-hero__btn"]} ${styles["prob-hero__btn--contained"]}`}
                   >
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="5 3 19 12 5 21 5 3" />
-                    </svg>
+                    <Icon name="Terminal" size={16} />
                     <span>Bắt đầu ngay</span>
                   </button>
                   <button
                     type="button"
                     className={`${styles["prob-hero__btn"]} ${styles["prob-hero__btn--outlined"]}`}
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10" />
-                      <polygon points="10 8 16 12 10 16 10 8" />
-                    </svg>
+                    <Icon name="Clock" size={16} />
                     <span>Xem hướng dẫn</span>
                   </button>
                 </div>
@@ -229,8 +196,12 @@ function Problem() {
                     <Icon name="Search" size={18} />
                   </span>
                   <input
+                    id="problem-search-input"
                     type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Tìm kiếm bài tập theo tên hoặc chủ đề..."
+                    aria-label="Tìm kiếm bài tập theo tên hoặc chủ đề"
                     className={styles["prob-filter__search-input"]}
                   />
                 </div>
@@ -320,64 +291,88 @@ function Problem() {
               </h2>
             </div>
 
-            <div className={styles["prob-challenges__list"]}>
-              {problemData.items.map((obj, index) => (
-                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["prob-challenges__card"]} reveal-card`}>
-                  <div className={styles["prob-challenges__card-header"]}>
-                    <div className={styles["prob-challenges__card-icon"]}>
-                      <Icon name={obj.iconName} size={22} />
+            {isLoading ? (
+              <div className={styles["prob-challenges__list"]}>
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+              </div>
+            ) : problemData.items.filter((item) => {
+              const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    item.description.toLowerCase().includes(searchQuery.toLowerCase());
+              return matchesSearch;
+            }).length === 0 ? (
+              <EmptyState
+                iconName="Search"
+                title="Không tìm thấy bài tập phù hợp"
+                description="Không có bài tập nào khớp với từ khóa tìm kiếm của bạn."
+                actionLabel="Xóa bộ lọc"
+                onAction={() => setSearchQuery("")}
+              />
+            ) : (
+              <div className={styles["prob-challenges__list"]}>
+                {problemData.items.filter((item) => {
+                  const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                        item.description.toLowerCase().includes(searchQuery.toLowerCase());
+                  return matchesSearch;
+                }).map((obj) => (
+                  <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["prob-challenges__card"]} reveal-card`}>
+                    <div className={styles["prob-challenges__card-header"]}>
+                      <div className={styles["prob-challenges__card-icon"]}>
+                        <Icon name={obj.iconName} size={22} />
+                      </div>
+                      <span
+                        className={`${styles["prob-challenges__level-badge"]} ${
+                          obj.level === "Dễ"
+                            ? styles["prob-challenges__level-badge--easy"]
+                            : obj.level === "Trung bình"
+                            ? styles["prob-challenges__level-badge--medium"]
+                            : styles["prob-challenges__level-badge--hard"]
+                        }`}
+                      >
+                        <span className={styles["prob-challenges__badge-dot"]} />
+                        {obj.level}
+                      </span>
                     </div>
-                    <span
-                      className={`${styles["prob-challenges__level-badge"]} ${
-                        obj.level === "Dễ"
-                          ? styles["prob-challenges__level-badge--easy"]
-                          : obj.level === "Trung bình"
-                          ? styles["prob-challenges__level-badge--medium"]
-                          : styles["prob-challenges__level-badge--hard"]
-                      }`}
-                    >
-                      <span className={styles["prob-challenges__badge-dot"]} />
-                      {obj.level}
-                    </span>
-                  </div>
 
-                  <div className={styles["prob-challenges__card-body"]}>
-                    <h3 className={styles["prob-challenges__card-title"]}>
-                      {obj.title}
-                    </h3>
-                    <p className={styles["prob-challenges__card-desc"]}>
-                      {obj.description}
-                    </p>
-                    <div className={styles["prob-challenges__tag-group"]}>
-                      {obj.tags.map((item, tIdx) => (
-                        <span
-                          key={tIdx}
-                          className={styles["prob-challenges__tag-item"]}
-                        >
-                          {item}
-                        </span>
-                      ))}
+                    <div className={styles["prob-challenges__card-body"]}>
+                      <h3 className={styles["prob-challenges__card-title"]}>
+                        {obj.title}
+                      </h3>
+                      <p className={styles["prob-challenges__card-desc"]}>
+                        {obj.description}
+                      </p>
+                      <div className={styles["prob-challenges__tag-group"]}>
+                        {obj.tags.map((item, tIdx) => (
+                          <span
+                            key={tIdx}
+                            className={styles["prob-challenges__tag-item"]}
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className={styles["prob-challenges__card-actions"]}>
+                      <span className={styles["prob-challenges__rate-text"]}>
+                        <Icon name="Clock" size={15} />
+                        Tỷ lệ: {obj.successRate}
+                      </span>
+                      <button
+                        type="button"
+                        className={styles["prob-challenges__action-btn"]}
+                      >
+                        Giải bài
+                      </button>
                     </div>
                   </div>
-
-                  <div className={styles["prob-challenges__card-actions"]}>
-                    <span className={styles["prob-challenges__rate-text"]}>
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="12" cy="12" r="10" />
-                        <polyline points="12 6 12 12 16 14" />
-                      </svg>
-                      Tỷ lệ: {obj.successRate}
-                    </span>
-                    <button
-                      type="button"
-                      className={styles["prob-challenges__action-btn"]}
-                    >
-                      Giải bài
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
             {/* Pagination */}
             <div className={styles["prob-challenges__pagination-wrapper"]}>

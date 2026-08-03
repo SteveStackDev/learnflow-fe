@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 // Styles
 import styles from "./Home.module.css";
@@ -11,27 +11,29 @@ import { homeData } from "./data";
 // Components
 import Icon from "~/components/Icon/Icon";
 
+// Hooks
+import useScrollReveal from "~/hooks/useScrollReveal";
+import { useToast } from "~/context/ToastContext.jsx";
+
 function Home() {
-  useEffect(() => {
-    const observerCallback = (entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add(styles["reveal-card--visible"]);
-          observer.unobserve(entry.target);
-        }
-      });
-    };
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
+  const { toast } = useToast();
 
-    const observer = new IntersectionObserver(observerCallback, {
-      threshold: 0.1,
-      rootMargin: "0px 0px -30px 0px"
-    });
+  useScrollReveal();
 
-    const elements = document.querySelectorAll(`.${styles["reveal-card"]}`);
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    if (!contactName || !contactEmail) {
+      toast.error("Vui lòng nhập Họ tên và Email!", "Lỗi thông tin");
+      return;
+    }
+    toast.success("Đã nhận thông tin tư vấn! LearnFlow sẽ gửi tài liệu qua Email cho bạn.", "Gửi thành công");
+    setContactName("");
+    setContactEmail("");
+    setContactMessage("");
+  };
   return (
     <>
       <div className={styles.homepage}>
@@ -48,9 +50,7 @@ function Home() {
               <div className={styles["home-hero__left"]}>
                 <div className={styles["home-hero__badge-wrap"]}>
                   <span className={styles["home-hero__badge"]}>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                    </svg>
+                    <Icon name="Star" size={18} />
                     Mới: Thử thách 30 ngày Java Spring Boot
                   </span>
                 </div>
@@ -167,53 +167,32 @@ function Home() {
             </h2>
             <div className={styles["home-marquee__wrap"]}>
               <div className={styles["home-marquee__tech-item"]}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00d8ff" strokeWidth="2">
-                  <ellipse cx="12" cy="12" rx="10" ry="4.5" />
-                  <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)" />
-                  <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(120 12 12)" />
-                  <circle cx="12" cy="12" r="2" fill="#00d8ff" />
-                </svg>
+                <Icon name="ReactTech" size={22} />
                 <span>React</span>
               </div>
 
               <div className={styles["home-marquee__tech-item"]}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3776ab" strokeWidth="2">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-                  <path d="M12 6v6l4 2"/>
-                </svg>
+                <Icon name="PythonTech" size={22} />
                 <span>Python</span>
               </div>
 
               <div className={styles["home-marquee__tech-item"]}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff9900" strokeWidth="2">
-                  <path d="M17.5 19C19.9853 19 22 16.9853 22 14.5C22 12.1558 20.2036 10.2312 17.915 10.0215C17.4475 6.58156 14.4984 3.9 10.9 3.9C6.81309 3.9 3.5 7.21309 3.5 11.3C3.5 11.7588 3.54162 12.2078 3.62141 12.6433C2.08316 13.4116 1 14.9961 1 16.8C1 19.3405 3.05949 21.4 5.6 21.4H17.5" />
-                </svg>
+                <Icon name="AwsTech" size={22} />
                 <span>AWS</span>
               </div>
 
               <div className={styles["home-marquee__tech-item"]}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2496ed" strokeWidth="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
+                <Icon name="DockerTech" size={22} />
                 <span>Docker</span>
               </div>
 
               <div className={styles["home-marquee__tech-item"]}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#68a063" strokeWidth="2">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                  <path d="M2 17l10 5 10-5" />
-                  <path d="M2 12l10 5 10-5" />
-                </svg>
+                <Icon name="NodeTech" size={22} />
                 <span>Node.js</span>
               </div>
 
               <div className={styles["home-marquee__tech-item"]}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#47a248" strokeWidth="2">
-                  <ellipse cx="12" cy="12" rx="9" ry="3" />
-                  <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-                  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-                </svg>
+                <Icon name="MongoTech" size={22} />
                 <span>MongoDB</span>
               </div>
             </div>
@@ -279,7 +258,7 @@ function Home() {
               {homeData.stats.map((obj, index) => (
                 <div
                   key={obj.id || obj.slug || obj.name || obj.title || obj}
-                  className={`${styles["home-stats__card"]} ${styles["reveal-card"]}`}
+                  className={`${styles["home-stats__card"]} reveal-card`}
                   style={{ transitionDelay: `${index * 130}ms` }}
                 >
                   <span className={styles["home-stats__card-number"]}>
@@ -311,7 +290,7 @@ function Home() {
               {homeData.features.map((obj, index) => (
                 <div
                   key={obj.id || obj.slug || obj.name || obj.title || obj}
-                  className={`${styles["home-features__card"]} ${styles["reveal-card"]}`}
+                  className={`${styles["home-features__card"]} reveal-card`}
                   style={{ transitionDelay: `${index * 130}ms` }}
                 >
                   <div className={styles["home-features__card-icon"]}>
@@ -345,7 +324,7 @@ function Home() {
               {homeData.team.map((obj, index) => (
                 <div
                   key={obj.id || obj.slug || obj.name || obj.title || obj}
-                  className={`${styles["home-team__card"]} ${styles["reveal-card"]}`}
+                  className={`${styles["home-team__card"]} reveal-card`}
                   style={{ transitionDelay: `${index * 130}ms` }}
                 >
                   <img
@@ -417,26 +396,35 @@ function Home() {
             </div>
 
             <div className={styles["home-contact__form-wrap"]}>
-              <form className={styles["home-contact__form"]} onSubmit={(e) => e.preventDefault()}>
+              <form className={styles["home-contact__form"]} onSubmit={handleContactSubmit}>
                 <div className={styles["home-contact__form-group"]}>
-                  <label className={styles["home-contact__label"]}>Họ và tên</label>
+                  <label htmlFor="home-contact-name" className={styles["home-contact__label"]}>Họ và tên</label>
                   <input
+                    id="home-contact-name"
                     type="text"
+                    value={contactName}
+                    onChange={(e) => setContactName(e.target.value)}
                     placeholder="Nhập tên của bạn"
                     className={styles["home-contact__form-input"]}
                   />
                 </div>
                 <div className={styles["home-contact__form-group"]}>
-                  <label className={styles["home-contact__label"]}>Email</label>
+                  <label htmlFor="home-contact-email" className={styles["home-contact__label"]}>Email</label>
                   <input
+                    id="home-contact-email"
                     type="email"
+                    value={contactEmail}
+                    onChange={(e) => setContactEmail(e.target.value)}
                     placeholder="example@email.com"
                     className={styles["home-contact__form-input"]}
                   />
                 </div>
                 <div className={styles["home-contact__form-group"]}>
-                  <label className={styles["home-contact__label"]}>Nội dung</label>
+                  <label htmlFor="home-contact-message" className={styles["home-contact__label"]}>Nội dung</label>
                   <textarea
+                    id="home-contact-message"
+                    value={contactMessage}
+                    onChange={(e) => setContactMessage(e.target.value)}
                     placeholder="Tôi muốn tìm hiểu về lộ trình Frontend..."
                     rows={4}
                     className={`${styles["home-contact__form-input"]} ${styles["home-contact__form-input--textarea"]}`}

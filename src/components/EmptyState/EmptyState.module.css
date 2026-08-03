@@ -1,0 +1,97 @@
+/* ==========================================================================
+   LearnFlow - EmptyState Component Styling
+   ========================================================================== */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px dashed rgba(169, 183, 203, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  margin: 32px 0;
+  width: 100%;
+}
+
+.empty-state__icon-wrapper {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #eef4ff 0%, #e0ebff 100%);
+  color: #0950c3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 16px rgba(9, 80, 195, 0.12);
+}
+
+.empty-state__title {
+  font-family: var(--font-family-main, "Be Vietnam Pro", sans-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #191b22;
+  margin-bottom: 8px;
+}
+
+.empty-state__desc {
+  font-size: 0.925rem;
+  color: #737785;
+  max-width: 440px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.empty-state__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 10px;
+  background-color: #0950c3;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.2);
+}
+
+.empty-state__btn:hover {
+  transform: translateY(-2px);
+  background-color: #003a95;
+  box-shadow: 0 6px 18px rgba(9, 80, 195, 0.3);
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .empty-state {
+  background-color: #0f172a;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .empty-state__icon-wrapper {
+  background: linear-gradient(135deg, #131c31 0%, #1e293b 100%);
+  color: #38bdf8;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .empty-state__title {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .empty-state__desc {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .empty-state__btn {
+  background-color: #0284c7;
+}
+
+:global([data-theme="dark"]) .empty-state__btn:hover {
+  background-color: #0369a1;
+}

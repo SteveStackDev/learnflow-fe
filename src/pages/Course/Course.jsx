@@ -9,6 +9,11 @@ import heroUrl from "~/assets/images/Home/hero.webp";
 import styles from "./Course.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
+import EmptyState from "~/components/EmptyState/EmptyState";
+import { SkeletonCard } from "~/components/Skeleton/Skeleton.jsx";
+
+// Hooks
+import useScrollReveal from "~/hooks/useScrollReveal";
 
 const SORT_OPTIONS = [
   { id: "popular", label: "Sắp xếp: Phổ biến nhất" },
@@ -18,9 +23,17 @@ const SORT_OPTIONS = [
 
 function Course() {
   const [activeCategoryTab, setActiveCategoryTab] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const sortDropdownRef = useRef(null);
+
+  useScrollReveal();
+
+  const handleCategoryChange = (index) => {
+    setActiveCategoryTab(index);
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -31,44 +44,6 @@ function Course() {
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-
-  // Intersection Observer for scroll animations (Staggered)
-  useEffect(() => {
-    let delay = 0;
-    let timeoutId;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.transitionDelay = `${delay * 100}ms`;
-            entry.target.classList.add("reveal-card--visible");
-            delay++;
-            observer.unobserve(entry.target);
-          }
-        });
-        
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          delay = 0;
-        }, 150);
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
-    );
-
-    const cards = document.querySelectorAll(".reveal-card");
-    cards.forEach((card) => {
-      // Reset any inline delay if re-running
-      card.style.transitionDelay = "0ms";
-      observer.observe(card);
-    });
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(timeoutId);
-    };
   }, []);
 
 
@@ -90,10 +65,7 @@ function Course() {
               <div className={styles["course-hero__left"]}>
                 <div className={styles["course-hero__badge-wrap"]}>
                   <span className={styles["course-hero__tag"]}>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                      <path d="M6 12v5c3 3 9 3 12 0v-5" />
-                    </svg>
+                    <Icon name="Book" size={16} />
                     Nâng tầm kỹ năng lập trình
                   </span>
                 </div>
@@ -170,8 +142,12 @@ function Course() {
                   <Icon name="Search" size={18} />
                 </span>
                 <input
+                  id="course-search-input"
                   type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Tìm khóa học bạn muốn bắt đầu..."
+                  aria-label="Tìm khóa học bạn muốn bắt đầu"
                   className={styles["course-search-stats__search-input"]}
                 />
               </div>
@@ -255,7 +231,7 @@ function Course() {
                   <button
                     key={item.id || item.slug || item.name || item.title || item}
                     type="button"
-                    onClick={() => setActiveCategoryTab(index)}
+                    onClick={() => handleCategoryChange(index)}
                     className={`${styles["course-filters__tab-btn"]} ${
                       activeCategoryTab === index
                         ? styles["course-filters__tab-btn--active"]
@@ -273,9 +249,42 @@ function Course() {
         {/* 4. Courses Cards Grid Section */}
         <section className={styles["course-grid"]}>
           <div className={styles["course-grid__container"]}>
-            <div className={styles["course-grid__list"]}>
-              {courseData.items.map((obj, index) => (
-                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["course-grid__card"]} reveal-card`}>
+            {isLoading ? (
+              <div className={styles["course-grid__list"]}>
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+              </div>
+            ) : courseData.items.filter((item) => {
+              const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    item.description.toLowerCase().includes(searchQuery.toLowerCase());
+              const selectedCategory = courseData.categories[activeCategoryTab];
+              const matchesCategory = activeCategoryTab === 0 || selectedCategory === "Tất cả" || item.category === selectedCategory || item.level === selectedCategory;
+              return matchesSearch && matchesCategory;
+            }).length === 0 ? (
+              <EmptyState
+                iconName="Search"
+                title="Không tìm thấy khóa học phù hợp"
+                description="Không có khóa học nào khớp với từ khóa tìm kiếm hoặc danh mục của bạn."
+                actionLabel="Xóa bộ lọc"
+                onAction={() => {
+                  setSearchQuery("");
+                  setActiveCategoryTab(0);
+                }}
+              />
+            ) : (
+              <div className={styles["course-grid__list"]}>
+                {courseData.items.filter((item) => {
+                  const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                        item.description.toLowerCase().includes(searchQuery.toLowerCase());
+                  const selectedCategory = courseData.categories[activeCategoryTab];
+                  const matchesCategory = activeCategoryTab === 0 || selectedCategory === "Tất cả" || item.category === selectedCategory || item.level === selectedCategory;
+                  return matchesSearch && matchesCategory;
+                }).map((obj) => (
+                  <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["course-grid__card"]} reveal-card`}>
                   <div className={styles["course-grid__card-media-wrap"]}>
                     <span
                       className={`${styles["course-grid__level-chip"]} ${
@@ -304,17 +313,11 @@ function Course() {
                     </p>
                     <div className={styles["course-grid__card-meta"]}>
                       <span className={styles["course-grid__meta-text"]}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-                        </svg>
+                        <Icon name="Book" size={15} />
                         {obj.lessonsCount}
                       </span>
                       <span className={styles["course-grid__meta-text"]}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                          <circle cx="9" cy="7" r="4" />
-                        </svg>
+                        <Icon name="Users" size={16} />
                         {obj.studentsCount} học viên
                       </span>
                     </div>
@@ -331,6 +334,7 @@ function Course() {
                 </div>
               ))}
             </div>
+            )}
 
             {/* Pagination Controls */}
             <div className={styles["course-grid__pagination-wrapper"]}>

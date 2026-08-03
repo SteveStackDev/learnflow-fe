@@ -1,11 +1,31 @@
+import { useState } from "react";
 // Data
 import { contactData } from "./data";
 // Import CSS Modules
 import styles from "./Contact.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
+import { useToast } from "~/context/ToastContext.jsx";
 
 function Contact() {
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const { toast } = useToast();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!fullname || !email || !message) {
+      toast.error("Vui lòng điền đầy đủ Họ tên, Email và Tin nhắn!", "Gửi thất bại");
+      return;
+    }
+    toast.success("Cảm ơn bạn đã liên hệ! Đội ngũ LearnFlow sẽ phản hồi sớm nhất.", "Gửi thành công");
+    setFullname("");
+    setEmail("");
+    setSubject("");
+    setMessage("");
+  };
   return (
     <>
       <div className={styles.contactpage}>
@@ -20,9 +40,7 @@ function Contact() {
           <div className={styles["contact-hero__container"]}>
             <div className={styles["contact-hero__content"]}>
               <span className={styles["contact-hero__badge"]}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
+                <Icon name="Headphones" size={16} />
                 Hỗ trợ 24/7
               </span>
               <h1 className={styles["contact-hero__title"]}>
@@ -72,15 +90,18 @@ function Contact() {
                 Gửi tin nhắn cho chúng tôi
               </h2>
 
-              <form className={styles["contact-main__form"]}>
+              <form className={styles["contact-main__form"]} onSubmit={handleSubmit}>
                 <div className={styles["contact-main__form-row"]}>
                   <div className={styles["contact-main__form-col"]}>
                     <div className={styles["contact-main__form-group"]}>
-                      <label className={styles["contact-main__form-label"]}>
+                      <label htmlFor="contact-fullname" className={styles["contact-main__form-label"]}>
                         Họ và tên
                       </label>
                       <input
+                        id="contact-fullname"
                         type="text"
+                        value={fullname}
+                        onChange={(e) => setFullname(e.target.value)}
                         placeholder="Nguyễn Văn A"
                         className={styles["contact-main__form-input"]}
                       />
@@ -89,11 +110,14 @@ function Contact() {
 
                   <div className={styles["contact-main__form-col"]}>
                     <div className={styles["contact-main__form-group"]}>
-                      <label className={styles["contact-main__form-label"]}>
+                      <label htmlFor="contact-email" className={styles["contact-main__form-label"]}>
                         Email
                       </label>
                       <input
+                        id="contact-email"
                         type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="example@email.com"
                         className={styles["contact-main__form-input"]}
                       />
@@ -104,11 +128,14 @@ function Contact() {
                 <div className={styles["contact-main__form-row"]}>
                   <div className={styles["contact-main__form-col"]}>
                     <div className={styles["contact-main__form-group"]}>
-                      <label className={styles["contact-main__form-label"]}>
+                      <label htmlFor="contact-subject" className={styles["contact-main__form-label"]}>
                         Chủ đề
                       </label>
                       <input
+                        id="contact-subject"
                         type="text"
+                        value={subject}
+                        onChange={(e) => setSubject(e.target.value)}
                         placeholder="Vấn đề cần hỗ trợ"
                         className={styles["contact-main__form-input"]}
                       />
@@ -117,10 +144,11 @@ function Contact() {
 
                   <div className={styles["contact-main__form-col"]}>
                     <div className={styles["contact-main__form-group"]}>
-                      <label className={styles["contact-main__form-label"]}>
+                      <label htmlFor="contact-type" className={styles["contact-main__form-label"]}>
                         Loại yêu cầu
                       </label>
                       <select
+                        id="contact-type"
                         defaultValue="tech"
                         className={styles["contact-main__form-select"]}
                       >
@@ -135,10 +163,13 @@ function Contact() {
                 <div
                   className={`${styles["contact-main__form-group"]} ${styles["contact-main__form-group--fullwidth"]}`}
                 >
-                  <label className={styles["contact-main__form-label"]}>
+                  <label htmlFor="contact-message" className={styles["contact-main__form-label"]}>
                     Tin nhắn của bạn
                   </label>
                   <textarea
+                    id="contact-message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                     placeholder="Hãy cho chúng tôi biết chi tiết vấn đề của bạn..."
                     rows={4}
                     className={`${styles["contact-main__form-input"]} ${styles["contact-main__form-input--textarea"]}`}
@@ -188,13 +219,9 @@ function Contact() {
                                 title={item}
                               >
                                 {item.toLowerCase().includes("fb") ? (
-                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                                  </svg>
+                                  <Icon name="Facebook" size={18} />
                                 ) : (
-                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                                  </svg>
+                                  <Icon name="MailIcon" size={18} />
                                 )}
                               </span>
                             ))}

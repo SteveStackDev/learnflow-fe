@@ -56,7 +56,7 @@ describe("LearnFlow Page Routes Smoke Tests", () => {
 
   it("renders Badge page without crashing", () => {
     renderWithRouter(<Badge />);
-    expect(screen.getAllByText(/Chiến binh Streak/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Danh Hiệu/i).length).toBeGreaterThan(0);
   });
 
   it("renders Pricing page without crashing", () => {

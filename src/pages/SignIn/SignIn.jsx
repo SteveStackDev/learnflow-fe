@@ -6,6 +6,7 @@ import { signInData } from "./data";
 import styles from "./SignIn.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
+import { useToast } from "~/context/ToastContext.jsx";
 
 const GREETING_PHRASES = [
   "quay trở lại!",
@@ -16,6 +17,18 @@ const GREETING_PHRASES = [
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { toast } = useToast();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      toast.error("Vui lòng điền đầy đủ Email và Mật khẩu!", "Đăng nhập thất bại");
+      return;
+    }
+    toast.success("Đăng nhập thành công! Chào mừng bạn trở lại LearnFlow.", "Đăng nhập thành công");
+  };
   
   // Typewriter effect state
   const [phraseIndex, setPhraseIndex] = useState(0);
@@ -75,10 +88,7 @@ function SignIn() {
 
               <div className={styles["signin-info__logo-group"]}>
                 <div className={styles["signin-info__logo-box"]}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <rect width="24" height="24" rx="6" fill="#0950c3"/>
-                    <path d="M7 17V7l10 5-10 5z" fill="#ffffff"/>
-                  </svg>
+                  <Icon name="PlayLogo" size={24} />
                 </div>
                 <span className={styles["signin-info__logo-text"]}>
                   LearnFlow
@@ -133,10 +143,10 @@ function SignIn() {
 
                 <form
                   className={styles["signin-form__form"]}
-                  onSubmit={(e) => e.preventDefault()}
+                  onSubmit={handleSubmit}
                 >
                   <div className={styles["signin-form__form-group"]}>
-                    <label className={styles["signin-form__label"]}>
+                    <label htmlFor="signin-email" className={styles["signin-form__label"]}>
                       Địa chỉ Email
                     </label>
                     <div className={styles["signin-form__input-wrapper"]}>
@@ -146,7 +156,10 @@ function SignIn() {
                         <Icon name="Mail" size={18} />
                       </span>
                       <input
+                        id="signin-email"
                         type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="example@email.com"
                         className={styles["signin-form__input"]}
                       />
@@ -155,7 +168,7 @@ function SignIn() {
 
                   <div className={styles["signin-form__form-group"]}>
                     <div className={styles["signin-form__label-row"]}>
-                      <label className={styles["signin-form__label"]}>
+                      <label htmlFor="signin-password" className={styles["signin-form__label"]}>
                         Mật khẩu
                       </label>
                       <a href="#" className={styles["signin-form__link"]}>
@@ -169,7 +182,10 @@ function SignIn() {
                         <Icon name="Lock" size={18} />
                       </span>
                       <input
+                        id="signin-password"
                         type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="••••••••"
                         className={styles["signin-form__input"]}
                       />
@@ -189,8 +205,9 @@ function SignIn() {
                   </div>
 
                   <div className={styles["signin-form__checkbox-group"]}>
-                    <label className={styles["signin-form__checkbox-label"]}>
+                    <label htmlFor="signin-remember" className={styles["signin-form__checkbox-label"]}>
                       <input
+                        id="signin-remember"
                         type="checkbox"
                         defaultChecked
                         className={styles["signin-form__checkbox"]}
