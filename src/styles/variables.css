@@ -443,6 +443,46 @@
   --color-text-t70: #fdfefe;
   --color-text-t80: #fefefe;
   --color-text-t90: #ffffff;
+
+  /* SEMANTIC DESIGN TOKENS (LIGHT MODE DEFAULT) */
+  --theme-page-bg: #f9fbff;
+  --theme-card-bg: #ffffff;
+  --theme-subtle-bg: #f8fafc;
+  --theme-input-bg: #ffffff;
+  --theme-border: rgba(169, 183, 203, 0.4);
+  --theme-border-subtle: rgba(0, 0, 0, 0.08);
+  --theme-text-primary: #191b22;
+  --theme-text-secondary: #434653;
+  --theme-text-muted: #64748b;
+  --theme-text-accent: #0950c3;
+  --theme-text-cyan: #0950c3;
+  --theme-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  --theme-dropdown-bg: #ffffff;
+  --theme-dropdown-hover-bg: #f1f5f9;
+  --theme-dropdown-selected-bg: rgba(9, 80, 195, 0.08);
+  --theme-dropdown-text: #191b22;
+  --theme-dropdown-hover-text: #0950c3;
+}
+
+/* SEMANTIC DESIGN TOKENS (DARK MODE) */
+[data-theme="dark"] {
+  --theme-page-bg: #0b1120;
+  --theme-card-bg: #131c31;
+  --theme-subtle-bg: #1e293b;
+  --theme-input-bg: #1e293b;
+  --theme-border: rgba(255, 255, 255, 0.15);
+  --theme-border-subtle: rgba(255, 255, 255, 0.1);
+  --theme-text-primary: #ffffff;
+  --theme-text-secondary: #cbd5e1;
+  --theme-text-muted: #94a3b8;
+  --theme-text-accent: #38bdf8;
+  --theme-text-cyan: #38bdf8;
+  --theme-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  --theme-dropdown-bg: #131c31;
+  --theme-dropdown-hover-bg: #1e293b;
+  --theme-dropdown-selected-bg: rgba(56, 189, 248, 0.12);
+  --theme-dropdown-text: #cbd5e1;
+  --theme-dropdown-hover-text: #38bdf8;
 }
 
 /* ==========================================================================
@@ -468,52 +508,52 @@
 :global([data-theme="dark"]) [class*="__orb-2"],
 :global([data-theme="dark"]) [class*="__orb-3"],
 :global([data-theme="dark"]) [class*="__orb-4"] {
-  pointer-events: none !important;
-  z-index: 1 !important;
-  position: absolute !important;
-  border-radius: 50% !important;
+  pointer-events: none;
+  z-index: 1;
+  position: absolute;
+  border-radius: 50%;
 }
 
 /* 1. Hero Top Left Glow */
 :global([data-theme="dark"]) [class*="__orb-1"] {
-  top: -80px !important;
-  left: -100px !important;
-  width: 620px !important;
-  height: 620px !important;
-  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.32) 0%, rgba(9, 80, 195, 0.18) 45%, transparent 75%) !important;
-  filter: blur(85px) !important;
-  animation: orbGlowPulse 8s ease-in-out infinite alternate !important;
+  top: -80px;
+  left: -100px;
+  width: 620px;
+  height: 620px;
+  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.32) 0%, rgba(9, 80, 195, 0.18) 45%, transparent 75%);
+  filter: blur(85px);
+  animation: orbGlowPulse 8s ease-in-out infinite alternate;
 }
 
 /* 2. Catalog / Upper-Right Glow */
 :global([data-theme="dark"]) [class*="__orb-2"] {
-  top: 650px !important;
-  right: -100px !important;
-  width: 560px !important;
-  height: 560px !important;
-  background: radial-gradient(circle at center, rgba(168, 85, 247, 0.28) 0%, rgba(56, 189, 248, 0.16) 50%, transparent 75%) !important;
-  filter: blur(95px) !important;
-  animation: orbGlowPulse 11s ease-in-out infinite alternate-reverse !important;
+  top: 650px;
+  right: -100px;
+  width: 560px;
+  height: 560px;
+  background: radial-gradient(circle at center, rgba(168, 85, 247, 0.28) 0%, rgba(56, 189, 248, 0.16) 50%, transparent 75%);
+  filter: blur(95px);
+  animation: orbGlowPulse 11s ease-in-out infinite alternate-reverse;
 }
 
 /* 3. Middle-Left Feature / Reason Cards Glow */
 :global([data-theme="dark"]) [class*="__orb-3"] {
-  top: 1500px !important;
-  left: -120px !important;
-  width: 580px !important;
-  height: 580px !important;
-  background: radial-gradient(circle at center, rgba(9, 80, 195, 0.3) 0%, rgba(56, 189, 248, 0.18) 50%, transparent 75%) !important;
-  filter: blur(90px) !important;
-  animation: orbGlowPulse 9s ease-in-out infinite alternate !important;
+  top: 1500px;
+  left: -120px;
+  width: 580px;
+  height: 580px;
+  background: radial-gradient(circle at center, rgba(9, 80, 195, 0.3) 0%, rgba(56, 189, 248, 0.18) 50%, transparent 75%);
+  filter: blur(90px);
+  animation: orbGlowPulse 9s ease-in-out infinite alternate;
 }
 
 /* 4. Bottom FAQ / Footer Glow */
 :global([data-theme="dark"]) [class*="__orb-4"] {
-  top: 2300px !important;
-  right: -100px !important;
-  width: 540px !important;
-  height: 540px !important;
-  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.28) 0%, rgba(56, 189, 248, 0.16) 50%, transparent 75%) !important;
-  filter: blur(90px) !important;
-  animation: orbGlowPulse 13s ease-in-out infinite alternate-reverse !important;
+  top: 2300px;
+  right: -100px;
+  width: 540px;
+  height: 540px;
+  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.28) 0%, rgba(56, 189, 248, 0.16) 50%, transparent 75%);
+  filter: blur(90px);
+  animation: orbGlowPulse 13s ease-in-out infinite alternate-reverse;
 }

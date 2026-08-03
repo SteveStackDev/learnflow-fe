@@ -1,155 +1,410 @@
-// MUI
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import TextField from "@mui/material/TextField";
-import LinearProgress from "@mui/material/LinearProgress";
-import Pagination from "@mui/material/Pagination";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useEffect } from "react";
+import { useState } from "react";
 
 // Data
 import { badgeData } from "./data";
 
+// Import CSS Modules
+import styles from "./Badge.module.css";
+// Components
+import Icon from "~/components/Icon/Icon";
+
 function Badge() {
+  const [activeTab, setActiveTab] = useState(0);
+
+
+  // Intersection Observer for scroll animations (Staggered)
+  useEffect(() => {
+    let delay = 0;
+    let timeoutId;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${delay * 100}ms`;
+            entry.target.classList.add("reveal-card--visible");
+            delay++;
+            observer.unobserve(entry.target);
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          delay = 0;
+        }, 150);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const cards = document.querySelectorAll(".reveal-card");
+    cards.forEach((card) => {
+      // Reset any inline delay if re-running
+      card.style.transitionDelay = "0ms";
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+
   return (
-    <Container disableGutters maxWidth={false}>
-      {/* Hero Section */}
-      <Container disableGutters maxWidth={false}>
-        <Chip label="Gamification Hệ thống" variant="contained" />
-        <Typography>
-          Mỗi danh hiệu là một cột mốc trên hành trình học tập
-        </Typography>
-        <Typography>
-          Khám phá hệ thống danh hiệu độc đáo của LearnFlow. Mỗi badge không chỉ
-          là phần thưởng mà còn là sự ghi nhận nỗ lực bền bỉ, kỹ năng vượt trội
-          và tinh thần cầu tiến của bạn.
-        </Typography>
-        <Button variant="contained">Khám phá nhiệm vụ</Button>
-      </Container>
-      {/* Overview Stats Section */}
-      <Container disableGutters maxWidth={false}>
-        <Grid container spacing={2}>
-          <Grid size={4}>
-            <Card>
-              <CardContent>
-                <Typography>Tổng danh hiệu</Typography>
-                <Typography>64</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid size={4}>
-            <Card>
-              <CardContent>
-                <Typography>Đã đạt được</Typography>
-                <Typography>12</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid size={4}>
-            <Card>
-              <CardContent>
-                <Stack direction="row">
-                  <Typography>Tiến độ tổng quan</Typography>
-                  <Typography>18.7%</Typography>
-                </Stack>
-                <LinearProgress variant="determinate" value={18.7} />
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-      {/* Search & Filter Section */}
-      <Container disableGutters maxWidth={false}>
-        <Stack direction="row" spacing={2}>
-          <TextField placeholder="Tìm badge bạn muốn chinh phục..." />
-          <Stack direction="row" spacing={1}>
-            {badgeData.filterTabs.map((item, index) => (
-              <Button
-                key={index}
-                variant={index === 0 ? "contained" : "outlined"}
-              >
-                {item}
-              </Button>
-            ))}
-          </Stack>
-        </Stack>
-      </Container>
+    <>
+      <div className={styles.badgepage}>
+        {/* Ambient Background Glow Orbs */}
+        <div className={styles["badgepage__orb-1"]} />
+        <div className={styles["badgepage__orb-2"]} />
+        <div className={styles["badgepage__orb-3"]} />
+        <div className={styles["badgepage__orb-4"]} />
 
-      {/* Badges Grid Section */}
-      <Container disableGutters maxWidth={false}>
-        <Grid container spacing={2}>
-          {badgeData.badgeSection.map((obj, index) => (
-            <Grid key={index} size={3}>
-              <Card>
-                <CardContent>
-                  <Chip label={obj.badge} />
-                  <Box>{obj.icon}</Box>
-                  <Typography>{obj.title}</Typography>
-                  <Typography>{obj.description}</Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    variant={
-                      obj.status === "received" ? "contained" : "outlined"
-                    }
-                    disabled={obj.status === "locked"}
+
+
+        {/* 1. Hero Section */}
+        <section className={styles["badge-hero"]}>
+          <div className={styles["badge-hero__container"]}>
+            <div className={styles["badge-hero__grid"]}>
+              {/* Left Content */}
+              <div className={styles["badge-hero__content"]}>
+                <div className={styles["badge-hero__badge-wrap"]}>
+                  <span className={styles["badge-hero__tag"]}>
+                    🏆 Hệ Thống Danh Hiệu & Đổi Thưởng
+                  </span>
+                </div>
+                <h1 className={styles["badge-hero__title"]}>
+                  Chinh Phục Danh Hiệu{" "}
+                  <span className={styles["badge-hero__title--highlight"]}>
+                    Khẳng Định Năng Lực
+                  </span>
+                </h1>
+                <p className={styles["badge-hero__desc"]}>
+                  Thu thập các huy hiệu độc quyền từ bài lab, streak học tập và các cuộc thi coding.
+                  Mở khóa đặc quyền, tích lũy điểm XP và khẳng định tên tuổi trên bảng vàng LearnFlow.
+                </p>
+                <div className={styles["badge-hero__actions"]}>
+                  <button
+                    type="button"
+                    className={`${styles["badge-hero__btn"]} ${styles["badge-hero__btn--contained"]}`}
                   >
-                    {obj.buttonText}
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-        <Stack direction="row">
-          <Pagination count={8} page={1} />
-        </Stack>
-      </Container>
-      {/* Guide Section */}
-      <Container disableGutters maxWidth={false}>
-        <Typography>Làm thế nào để kiếm Badge?</Typography>
-        <Grid container spacing={2}>
-          {badgeData.guideSection.map((obj, index) => (
-            <Grid key={index} size={4}>
-              <Card>
-                <CardContent>
-                  <Box>{obj.icon}</Box>
-                  <Typography>{obj.title}</Typography>
-                  <Typography>{obj.description}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                    <span>Khám phá nhiệm vụ</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles["badge-hero__btn"]} ${styles["badge-hero__btn--outlined"]}`}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1.3.5 2.6 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+                      <path d="M9 18h6" />
+                      <path d="M10 22h4" />
+                    </svg>
+                    <span>Cách kiếm Badge</span>
+                  </button>
+                </div>
+              </div>
 
-      {/* FAQ Section */}
-      <Container disableGutters maxWidth={false}>
-        <Typography>Câu hỏi thường gặp</Typography>
-        <Box>
-          {badgeData.faqSection.map((obj, index) => (
-            <Accordion key={index} defaultExpanded={index === 0}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>{obj.title}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>{obj.description}</Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))}
-        </Box>
-      </Container>
-    </Container>
+              {/* Right Gamification Showcase Card */}
+              <div className={styles["badge-hero__showcase"]}>
+                <div className={`${styles["badge-showcase__card"]} reveal-card`}>
+                  <div className={styles["badge-showcase__badge-header"]}>
+                    <div className={styles["badge-showcase__medal-box"]}>
+                      <span className={styles["badge-showcase__medal-emoji"]}>🥇</span>
+                    </div>
+                    <div className={styles["badge-showcase__badge-meta"]}>
+                      <span className={styles["badge-showcase__rank-badge"]}>LEVEL 12 MASTER</span>
+                      <h3 className={styles["badge-showcase__badge-name"]}>Legend Coder Badge</h3>
+                    </div>
+                  </div>
+
+                  {/* XP Progress */}
+                  <div className={styles["badge-showcase__xp-wrapper"]}>
+                    <div className={styles["badge-showcase__xp-info"]}>
+                      <span className={styles["badge-showcase__xp-label"]}>Tiến độ kinh nghiệm (XP)</span>
+                      <span className={styles["badge-showcase__xp-val"]}>4,850 / 5,000 XP</span>
+                    </div>
+                    <div className={styles["badge-showcase__xp-bar"]}>
+                      <div className={styles["badge-showcase__xp-fill"]} style={{ width: "97%" }} />
+                    </div>
+                  </div>
+
+                  {/* Achievement Chips */}
+                  <div className={styles["badge-showcase__chips"]}>
+                    <div className={`${styles["badge-showcase__chip"]} ${styles["badge-showcase__chip--flame"]}`}>
+                      <span>🔥 7 Ngày Streak</span>
+                    </div>
+                    <div className={`${styles["badge-showcase__chip"]} ${styles["badge-showcase__chip--gold"]}`}>
+                      <span>⚡ Top 1% Coders</span>
+                    </div>
+                    <div className={`${styles["badge-showcase__chip"]} ${styles["badge-showcase__chip--emerald"]}`}>
+                      <span>🎯 50+ Labs Done</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 2. Overview Stats Section */}
+        <section className={styles["badge-stats"]}>
+          <div className={styles["badge-stats__container"]}>
+            <div className={styles["badge-stats__list"]}>
+              <div className={`${styles["badge-stats__card"]} reveal-card`}>
+                <div className={`${styles["badge-stats__icon"]} ${styles["badge-stats__icon--blue"]}`}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="8" r="7" />
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                  </svg>
+                </div>
+                <div className={styles["badge-stats__info"]}>
+                  <span className={styles["badge-stats__label"]}>
+                    Tổng danh hiệu
+                  </span>
+                  <span className={styles["badge-stats__value"]}>64</span>
+                </div>
+              </div>
+
+              <div className={`${styles["badge-stats__card"]} reveal-card`}>
+                <div className={`${styles["badge-stats__icon"]} ${styles["badge-stats__icon--yellow"]}`}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </div>
+                <div className={styles["badge-stats__info"]}>
+                  <span className={styles["badge-stats__label"]}>
+                    Đã đạt được
+                  </span>
+                  <span className={styles["badge-stats__value"]}>12</span>
+                </div>
+              </div>
+
+              <div className={`${styles["badge-stats__card"]} reveal-card`}>
+                <div className={styles["badge-stats__progress-wrapper"]}>
+                  <div className={styles["badge-stats__progress-info"]}>
+                    <span className={styles["badge-stats__label"]}>
+                      Tiến độ tổng quan
+                    </span>
+                    <span className={styles["badge-stats__percent"]}>18.7%</span>
+                  </div>
+                  {/* Custom Linear Progress */}
+                  <div className={styles["badge-stats__progress-bar"]}>
+                    <div
+                      className={styles["badge-stats__progress-fill"]}
+                      style={{ width: "18.7%" }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 3. Search & Filter Section */}
+        <section className={styles["badge-filters"]}>
+          <div className={styles["badge-filters__container"]}>
+            <div className={styles["badge-filters__card-wrapper"]}>
+              <div className={styles["badge-filters__row"]}>
+                <div className={styles["badge-filters__search-box"]}>
+                  <span className={styles["badge-filters__search-icon"]}>
+                    <Icon name="Search" size={18} />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Tìm badge bạn muốn chinh phục..."
+                    className={styles["badge-filters__search-input"]}
+                  />
+                </div>
+
+                <div className={styles["badge-filters__tab-group"]}>
+                  {badgeData.tabs.map((item, index) => (
+                    <button
+                      key={item.id || item.slug || item.name || item.title || item}
+                      type="button"
+                      onClick={() => setActiveTab(index)}
+                      className={`${styles["badge-filters__tab-btn"]} ${
+                        activeTab === index
+                          ? styles["badge-filters__tab-btn--active"]
+                          : ""
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Badges Cards Grid Section */}
+        <section className={styles["badge-grid"]}>
+          <div className={styles["badge-grid__container"]}>
+            <div className={styles["badge-grid__list"]}>
+              {badgeData.items.map((obj, index) => (
+                <div
+                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  className={`${styles["badge-grid__card"]} ${
+                    obj.status === "locked"
+                      ? styles["badge-grid__card--locked"]
+                      : ""
+                  }`}
+                >
+                  <div className={styles["badge-grid__card-header"]}>
+                    <span
+                      className={`${styles["badge-grid__status-chip"]} ${
+                        obj.status === "received"
+                          ? styles["badge-grid__status-chip--received"]
+                          : styles["badge-grid__status-chip--locked"]
+                      }`}
+                    >
+                      {obj.badgeText}
+                    </span>
+                  </div>
+
+                  <div className={styles["badge-grid__card-body"]}>
+                    <div
+                      className={`${styles["badge-grid__card-icon"]} ${
+                        obj.status === "received"
+                          ? styles["badge-grid__card-icon--active"]
+                          : styles["badge-grid__card-icon--disabled"]
+                      }`}
+                    >
+                      <Icon name={obj.iconName} size={24} />
+                    </div>
+                    <h3 className={styles["badge-grid__card-title"]}>
+                      {obj.title}
+                    </h3>
+                    <p className={styles["badge-grid__card-desc"]}>
+                      {obj.description}
+                    </p>
+                  </div>
+
+                  <div className={styles["badge-grid__card-actions"]}>
+                    <button
+                      type="button"
+                      className={`${styles["badge-grid__btn"]} ${
+                        obj.status === "received"
+                          ? styles["badge-grid__btn--contained"]
+                          : styles["badge-grid__btn--disabled"]
+                      }`}
+                      disabled={obj.status === "locked"}
+                    >
+                      {obj.buttonText}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            <div className={styles["badge-grid__pagination-wrapper"]}>
+              <nav className={styles["badge-grid__pagination"]}>
+                <button
+                  type="button"
+                  className={styles["badge-grid__page-btn"]}
+                  disabled
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  className={`${styles["badge-grid__page-btn"]} ${styles["badge-grid__page-btn--active"]}`}
+                >
+                  1
+                </button>
+                <button
+                  type="button"
+                  className={styles["badge-grid__page-btn"]}
+                >
+                  2
+                </button>
+                <button
+                  type="button"
+                  className={styles["badge-grid__page-btn"]}
+                >
+                  3
+                </button>
+                <span className={styles["badge-grid__page-ellipsis"]}>..</span>
+                <button
+                  type="button"
+                  className={styles["badge-grid__page-btn"]}
+                >
+                  8
+                </button>
+                <button
+                  type="button"
+                  className={styles["badge-grid__page-btn"]}
+                >
+                  ›
+                </button>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. Guide Section */}
+        <section className={styles["badge-guide"]}>
+          <div className={styles["badge-guide__container"]}>
+            <div className={styles["badge-guide__header"]}>
+              <h2 className={styles["badge-guide__section-title"]}>
+                Làm thế nào để kiếm Badge?
+              </h2>
+            </div>
+            <div className={styles["badge-guide__list"]}>
+              {badgeData.guides.map((obj, index) => (
+                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["badge-guide__card"]} reveal-card`}>
+                  <div className={styles["badge-guide__icon"]}>
+                    <Icon name={obj.iconName} size={24} />
+                  </div>
+                  <h3 className={styles["badge-guide__title"]}>{obj.title}</h3>
+                  <p className={styles["badge-guide__desc"]}>
+                    {obj.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 6. FAQ Section */}
+        <section className={styles["badge-faq"]}>
+          <div className={styles["badge-faq__container"]}>
+            <div className={styles["badge-faq__header"]}>
+              <h2 className={styles["badge-faq__section-title"]}>
+                Câu hỏi thường gặp
+              </h2>
+            </div>
+            <div className={styles["badge-faq__accordion-group"]}>
+              {badgeData.faqs.map((obj, index) => (
+                <details
+                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  open={index === 0}
+                  className={styles["badge-faq__accordion"]}
+                >
+                  <summary className={styles["badge-faq__accordion-summary"]}>
+                    <span className={styles["badge-faq__accordion-title"]}>
+                      {obj.question}
+                    </span>
+                    <span className={styles["badge-faq__accordion-icon"]}>
+                      <Icon name="ChevronDown" size={18} strokeWidth={2.5} />
+                    </span>
+                  </summary>
+                  <div className={styles["badge-faq__accordion-details"]}>
+                    <p>{obj.answer}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }
 

@@ -1,6 +1,7 @@
 export const pricingData = {
   items: [
     {
+      id: "pricing-1",
       title: "Gói Free",
       price: "0đ",
       period: "/tháng",
@@ -15,6 +16,7 @@ export const pricingData = {
       isPopular: false,
     },
     {
+      id: "pricing-2",
       title: "Gói Plus",
       price: "199.000đ",
       period: "/tháng",
@@ -29,6 +31,7 @@ export const pricingData = {
       isPopular: true,
     },
     {
+      id: "pricing-3",
       title: "Gói Pro",
       price: "399.000đ",
       period: "/tháng",
@@ -94,20 +97,24 @@ export const pricingData = {
 
   faqs: [
     {
+      id: "pricing-4",
       question: "Tôi có thể hủy gói đăng ký bất cứ lúc nào không?",
       answer: "Nội dung câu trả lời mẫu cho việc hủy gói đăng ký thành viên.",
     },
     {
+      id: "pricing-5",
       question: "Sự khác biệt chính giữa gói Plus và Pro là gì?",
       answer:
         "Nội dung câu trả lời mẫu giải thích sự khác biệt giữa hai gói Plus và Pro.",
     },
     {
+      id: "pricing-6",
       question: "Quyền lợi AI trong gói Pro hoạt động như thế nào?",
       answer:
         "Nội dung câu trả lời mẫu về cơ chế hoạt động của các tính năng AI tích hợp.",
     },
     {
+      id: "pricing-7",
       question: "Có ưu đãi đặc biệt cho sinh viên không?",
       answer:
         "Nội dung câu trả lời mẫu về các chương trình ưu đãi dành riêng cho sinh viên.",

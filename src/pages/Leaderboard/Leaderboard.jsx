@@ -1,160 +1,467 @@
-// MUI
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Avatar from "@mui/material/Avatar";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Pagination from "@mui/material/Pagination";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useState, useEffect, useRef } from "react";
 
 // Data
 import { leaderboardData } from "./data";
 
+// Import CSS Modules
+import styles from "./Leaderboard.module.css";
+// Components
+import Icon from "~/components/Icon/Icon";
+
+const TIME_OPTIONS = [
+  { id: "this-week", label: "Tuần này" },
+  { id: "this-month", label: "Tháng này" },
+  { id: "all-time", label: "Tất cả thời gian" },
+];
+
 function Leaderboard() {
+  const [activeTab, setActiveTab] = useState(0);
+  const [selectedTime, setSelectedTime] = useState(TIME_OPTIONS[0]);
+  const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
+  const timeDropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (timeDropdownRef.current && !timeDropdownRef.current.contains(event.target)) {
+        setIsTimeDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+
+  // Intersection Observer for scroll animations (Staggered)
+  useEffect(() => {
+    let delay = 0;
+    let timeoutId;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${delay * 100}ms`;
+            entry.target.classList.add("reveal-card--visible");
+            delay++;
+            observer.unobserve(entry.target);
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          delay = 0;
+        }, 150);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const cards = document.querySelectorAll(".reveal-card");
+    cards.forEach((card) => {
+      // Reset any inline delay if re-running
+      card.style.transitionDelay = "0ms";
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+
   return (
-    <Container disableGutters maxWidth={false}>
-      {/* Hero Section */}
-      <Container disableGutters maxWidth={false}>
-        <Typography>Bảng Xếp Hạng Thành Tích</Typography>
-        <Typography>
-          Tôn vinh nỗ lực học tập không ngừng nghỉ. Nơi những nhà phát triển tài
-          năng hội ngộ, thi đua và chinh phục những đỉnh cao công nghệ mới mỗi
-          ngày.
-        </Typography>
-      </Container>
+    <>
+      <div className={styles.leaderboardpage}>
+        {/* Ambient Background Glow Orbs */}
+        <div className={styles["leaderboardpage__orb-1"]} />
+        <div className={styles["leaderboardpage__orb-2"]} />
+        <div className={styles["leaderboardpage__orb-3"]} />
+        <div className={styles["leaderboardpage__orb-4"]} />
 
-      {/* Podium Section */}
-      <Container disableGutters maxWidth={false}>
-        <Grid container spacing={2}>
-          {leaderboardData.podiumSection.map((obj, index) => (
-            <Grid key={index} size={4}>
-              <Box>
-                <Typography>#{obj.rank}</Typography>
-                <Avatar src={obj.avatar} alt={obj.name} />
-                <Typography>{obj.name}</Typography>
-                <Typography>{obj.points}</Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
 
-      {/* Filter & Search Bar Section */}
-      <Container disableGutters maxWidth={false}>
-        <Stack direction="row" spacing={2}>
-          <Stack direction="row" spacing={1}>
-            {leaderboardData.topTabs.map((item, index) => (
-              <Button
-                key={index}
-                variant={index === 0 ? "contained" : "outlined"}
-              >
-                {item}
-              </Button>
-            ))}
-          </Stack>
-          <Stack direction="row" spacing={2}>
-            <TextField select defaultValue="this-week">
-              <MenuItem value="this-week">Tuần này</MenuItem>
-            </TextField>
-            <TextField placeholder="Tìm người dùng..." />
-          </Stack>
-        </Stack>
-      </Container>
 
-      {/* Ranking Table Section */}
-      <Container disableGutters maxWidth={false}>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>HANG</TableCell>
-                <TableCell>NGƯỜI DÙNG</TableCell>
-                <TableCell>THÀNH TÍCH</TableCell>
-                <TableCell>XU HƯỚNG</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {leaderboardData.rankingTableSection.map((obj, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    <Typography>{obj.rank}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Stack direction="row" spacing={1}>
-                      <Avatar src={obj.avatar} size="small" />
-                      <Typography>{obj.user}</Typography>
-                      {obj.isCurrentUser && (
-                        <Chip label="CURRENT" size="small" />
+        {/* 1. Hero Section */}
+        <section className={styles["board-hero"]}>
+          <div className={styles["board-hero__container"]}>
+            <div className={styles["board-hero__content"]}>
+              <div className={styles["board-hero__badge-wrap"]}>
+                <span className={styles["board-hero__tag"]}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="8" r="7" />
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                  </svg>
+                  Bảng danh vọng
+                </span>
+              </div>
+              <h1 className={styles["board-hero__title"]}>
+                Tôn vinh nỗ lực học tập không ngừng nghỉ. Nơi những nhà phát
+                triển tài năng hội ngộ, thi đua và chinh phục những đỉnh cao
+                công nghệ mới mỗi ngày.
+              </h1>
+            </div>
+          </div>
+        </section>
+
+        {/* 2. Top 3 Podium Section */}
+        <section className={styles["board-podium"]}>
+          <div className={styles["board-podium__container"]}>
+            <div className={styles["board-podium__list"]}>
+              {leaderboardData.podium.map((obj, index) => (
+                <div
+                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  className={`${styles["board-podium__item"]} ${
+                    styles[`board-podium__item--rank-${obj.rank}`]
+                  }`}
+                >
+                  {/* Top Avatar Circle */}
+                  <div className={styles["board-podium__avatar-wrapper"]}>
+                    <img
+                      className={styles["board-podium__avatar"]}
+                      src={obj.avatarUrl}
+                      alt={obj.name}
+                    />
+                    <span className={styles["board-podium__rank-badge"]}>
+                      #{obj.rank}
+                    </span>
+                  </div>
+
+                  {/* User Name & Points */}
+                  <div className={styles["board-podium__name"]}>{obj.name}</div>
+                  <div className={styles["board-podium__points"]}>
+                    {obj.points}
+                  </div>
+
+                  {/* Podium Stand Box with Medal */}
+                  <div className={styles["board-podium__stand"]}>
+                    <div className={styles["board-podium__medal-wrapper"]}>
+                      {obj.rank === 1 && (
+                        <div className={`${styles["board-podium__medal"]} ${styles["board-podium__medal--gold"]}`}>
+                          <span className={styles["board-podium__medal-num"]}>1</span>
+                        </div>
                       )}
-                    </Stack>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{obj.points}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{obj.trend}</Typography>
-                  </TableCell>
-                </TableRow>
+                      {obj.rank === 2 && (
+                        <div className={`${styles["board-podium__medal"]} ${styles["board-podium__medal--silver"]}`}>
+                          <span className={styles["board-podium__medal-num"]}>2</span>
+                        </div>
+                      )}
+                      {obj.rank === 3 && (
+                        <div className={`${styles["board-podium__medal"]} ${styles["board-podium__medal--bronze"]}`}>
+                          <span className={styles["board-podium__medal-num"]}>3</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            </div>
+          </div>
+        </section>
 
-        {/* Pagination */}
-        <Stack direction="row">
-          <Pagination count={15} page={1} />
-        </Stack>
-      </Container>
-      {/* Guide Section */}
-      <Container disableGutters maxWidth={false}>
-        <Typography>Làm thế nào để leo hạng?</Typography>
-        <Grid container spacing={2}>
-          {leaderboardData.guideSection.map((item, index) => (
-            <Grid key={index} size={3}>
-              <Card>
-                <CardContent>
-                  <Box>{item.icon}</Box>
-                  <Typography>{item.title}</Typography>
-                  <Typography>{item.description}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-      {/* 6. FAQ Section */}
-      <Container disableGutters maxWidth={false}>
-        <Typography>Câu hỏi thường gặp</Typography>
-        <Box>
-          {leaderboardData.faqSection.map((obj, index) => (
-            <Accordion key={index} defaultExpanded={index === 0}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography component="span">{obj.title}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>{obj.description}</Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))}
-        </Box>
-      </Container>
-    </Container>
+        {/* 3. Filter & Search Section */}
+        <section className={styles["board-filters"]}>
+          <div className={styles["board-filters__container"]}>
+            <div className={styles["board-filters__card-wrapper"]}>
+              <div className={styles["board-filters__row"]}>
+                {/* Left Category Tabs */}
+                <div className={styles["board-filters__tab-group"]}>
+                  {leaderboardData.tabs.map((item, index) => (
+                    <button
+                      key={item.id || item.slug || item.name || item.title || item}
+                      type="button"
+                      onClick={() => setActiveTab(index)}
+                      className={`${styles["board-filters__tab-btn"]} ${
+                        activeTab === index
+                          ? styles["board-filters__tab-btn--active"]
+                          : ""
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Right Controls: Custom Dropdown & Search Input */}
+                <div className={styles["board-filters__controls"]}>
+                  <div
+                    className={styles["board-filters__select-wrapper"]}
+                    ref={timeDropdownRef}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setIsTimeDropdownOpen(!isTimeDropdownOpen)}
+                      className={`${styles["board-filters__dropdown-btn"]} ${
+                        isTimeDropdownOpen ? styles["board-filters__dropdown-btn--open"] : ""
+                      }`}
+                    >
+                      <span>{selectedTime.label}</span>
+                      <span className={styles["board-filters__dropdown-chevron"]}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </span>
+                    </button>
+
+                    {isTimeDropdownOpen && (
+                      <div className={styles["board-filters__dropdown-menu"]}>
+                        {TIME_OPTIONS.map((option) => (
+                          <div
+                            key={option.id}
+                            onClick={() => {
+                              setSelectedTime(option);
+                              setIsTimeDropdownOpen(false);
+                            }}
+                            className={`${styles["board-filters__dropdown-item"]} ${
+                              selectedTime.id === option.id
+                                ? styles["board-filters__dropdown-item--selected"]
+                                : ""
+                            }`}
+                          >
+                            <span>{option.label}</span>
+                            {selectedTime.id === option.id && (
+                              <span className={styles["board-filters__dropdown-check"]}>
+                                <Icon name="Check" size={14} strokeWidth={3} />
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles["board-filters__search-box"]}>
+                    <span className={styles["board-filters__search-icon"]}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                      </svg>
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Tìm người dùng..."
+                      className={styles["board-filters__search-input"]}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Ranking Table Section */}
+        <section className={styles["board-ranking"]}>
+          <div className={styles["board-ranking__container"]}>
+            <div className={styles["board-ranking__table-wrapper"]}>
+              <table className={styles["board-ranking__table"]}>
+                <thead>
+                  <tr
+                    className={`${styles["board-ranking__table-row"]} ${styles["board-ranking__table-row--header"]}`}
+                  >
+                    <th
+                      className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--header"]}`}
+                    >
+                      HẠNG
+                    </th>
+                    <th
+                      className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--header"]}`}
+                    >
+                      NGƯỜI DÙNG
+                    </th>
+                    <th
+                      className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--header"]}`}
+                    >
+                      THÀNH TÍCH
+                    </th>
+                    <th
+                      className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--header"]}`}
+                    >
+                      XU HƯỚNG
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leaderboardData.rankings.map((obj, index) => (
+                    <tr
+                      key={obj.id || obj.slug || obj.name || obj.title || obj}
+                      className={`${styles["board-ranking__table-row"]} ${
+                        obj.isCurrentUser
+                          ? styles["board-ranking__table-row--current-user"]
+                          : ""
+                      }`}
+                    >
+                      <td
+                        className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--rank"]}`}
+                      >
+                        {obj.rank}
+                      </td>
+                      <td className={styles["board-ranking__table-cell"]}>
+                        <div className={styles["board-ranking__user-info"]}>
+                          {obj.isCurrentUser ? (
+                            <div className={styles["board-ranking__avatar-fallback"]}>
+                              B
+                            </div>
+                          ) : (
+                            <img
+                              className={styles["board-ranking__avatar"]}
+                              src={obj.avatarUrl}
+                              alt={obj.name}
+                            />
+                          )}
+                          <span className={styles["board-ranking__user-name"]}>
+                            {obj.name}
+                          </span>
+                          {obj.isCurrentUser && (
+                            <span className={styles["board-ranking__chip-tag"]}>
+                              CURRENT
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td
+                        className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--points"]}`}
+                      >
+                        {obj.points}
+                      </td>
+                      <td className={styles["board-ranking__table-cell"]}>
+                        <span
+                          className={`${styles["board-ranking__trend-label"]} ${
+                            styles[`board-ranking__trend-label--${obj.trend}`]
+                          }`}
+                        >
+                          {obj.trend === "up" && (
+                            <span className={styles["board-ranking__trend-icon--up"]}>
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                                <polyline points="17 6 23 6 23 12" />
+                              </svg>
+                            </span>
+                          )}
+                          {obj.trend === "down" && (
+                            <span className={styles["board-ranking__trend-icon--down"]}>
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
+                                <polyline points="17 18 23 18 23 12" />
+                              </svg>
+                            </span>
+                          )}
+                          {obj.trend === "same" && (
+                            <span className={styles["board-ranking__trend-icon--same"]}>
+                              —
+                            </span>
+                          )}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination */}
+            <div className={styles["board-ranking__pagination-wrapper"]}>
+              <nav className={styles["board-ranking__pagination"]}>
+                <button
+                  type="button"
+                  className={styles["board-ranking__page-btn"]}
+                  disabled
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  className={`${styles["board-ranking__page-btn"]} ${styles["board-ranking__page-btn--active"]}`}
+                >
+                  1
+                </button>
+                <button
+                  type="button"
+                  className={styles["board-ranking__page-btn"]}
+                >
+                  2
+                </button>
+                <button
+                  type="button"
+                  className={styles["board-ranking__page-btn"]}
+                >
+                  3
+                </button>
+                <span className={styles["board-ranking__page-ellipsis"]}>
+                  ..
+                </span>
+                <button
+                  type="button"
+                  className={styles["board-ranking__page-btn"]}
+                >
+                  15
+                </button>
+                <button
+                  type="button"
+                  className={styles["board-ranking__page-btn"]}
+                >
+                  ›
+                </button>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. Guide Section */}
+        <section className={styles["board-guide"]}>
+          <div className={styles["board-guide__container"]}>
+            <div className={styles["board-guide__header"]}>
+              <h2 className={styles["board-guide__section-title"]}>
+                Làm thế nào để leo hạng?
+              </h2>
+            </div>
+            <div className={styles["board-guide__list"]}>
+              {leaderboardData.guides.map((obj, index) => (
+                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["board-guide__card"]} reveal-card`}>
+                  <div className={styles["board-guide__icon"]}>
+                    <Icon name={obj.iconName} size={22} />
+                  </div>
+                  <h3 className={styles["board-guide__title"]}>{obj.title}</h3>
+                  <p className={styles["board-guide__desc"]}>
+                    {obj.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 6. FAQ Section */}
+        <section className={styles["board-faq"]}>
+          <div className={styles["board-faq__container"]}>
+            <div className={styles["board-faq__header"]}>
+              <h2 className={styles["board-faq__section-title"]}>
+                Câu hỏi thường gặp
+              </h2>
+            </div>
+            <div className={styles["board-faq__accordion-group"]}>
+              {leaderboardData.faqs.map((obj, index) => (
+                <details
+                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  open={index === 0}
+                  className={styles["board-faq__accordion"]}
+                >
+                  <summary className={styles["board-faq__accordion-summary"]}>
+                    <span className={styles["board-faq__accordion-title"]}>
+                      {obj.question}
+                    </span>
+                    <span className={styles["board-faq__accordion-icon"]}>
+                      <Icon name="ChevronDown" size={18} strokeWidth={2.5} />
+                    </span>
+                  </summary>
+                  <div className={styles["board-faq__accordion-details"]}>
+                    <p>{obj.answer}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }
 

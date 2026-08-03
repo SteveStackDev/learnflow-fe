@@ -9,4 +9,9 @@ export default defineConfig({
   resolve: {
     alias: [{ find: "~", replacement: "/src" }],
   },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: ["./src/__tests__/setup.js"],
+  },
 });

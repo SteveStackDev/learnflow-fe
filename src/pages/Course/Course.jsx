@@ -1,166 +1,450 @@
-// MUI
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import CardActions from "@mui/material/CardActions";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Pagination from "@mui/material/Pagination";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
+import { useState, useEffect, useRef } from "react";
 // Data
 import { courseData } from "./data";
 
 // Images
-import heroUrl from "~/assets/images/About/team_1.webp";
+import heroUrl from "~/assets/images/Home/hero.webp";
+
+// Import CSS Modules
+import styles from "./Course.module.css";
+// Components
+import Icon from "~/components/Icon/Icon";
+
+const SORT_OPTIONS = [
+  { id: "popular", label: "Sắp xếp: Phổ biến nhất" },
+  { id: "latest", label: "Sắp xếp: Mới nhất" },
+  { id: "rating", label: "Sắp xếp: Đánh giá cao nhất" },
+];
 
 function Course() {
+  const [activeCategoryTab, setActiveCategoryTab] = useState(0);
+  const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const sortDropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target)) {
+        setIsSortDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+
+  // Intersection Observer for scroll animations (Staggered)
+  useEffect(() => {
+    let delay = 0;
+    let timeoutId;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${delay * 100}ms`;
+            entry.target.classList.add("reveal-card--visible");
+            delay++;
+            observer.unobserve(entry.target);
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          delay = 0;
+        }, 150);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const cards = document.querySelectorAll(".reveal-card");
+    cards.forEach((card) => {
+      // Reset any inline delay if re-running
+      card.style.transitionDelay = "0ms";
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+
   return (
-    <Container disableGutters maxWidth={false}>
-      {/* Hero Section */}
-      <Container disableGutters maxWidth={false}>
-        <Grid container spacing={2}>
-          <Grid size={6}>
-            <Chip label="Nâng tầm kỹ năng lập trình" variant="contained" />
-            <Typography>
-              Khám phá khóa học phù hợp với mục tiêu của bạn
-            </Typography>
-            <Typography>
-              Hệ thống khóa học từ cơ bản đến nâng cao, được thiết kế bởi các
-              chuyên gia để giúp bạn trở thành lập trình viên thực thụ.
-            </Typography>
-            <Stack direction="row" spacing={2}>
-              <Button variant="contained">Bắt đầu học ngay</Button>
-              <Button variant="outlined">Tìm hiểu thêm</Button>
-            </Stack>
-          </Grid>
-          <Grid size={6}>
-            <Box component="img" src={heroUrl} alt="Hero Image" />
-          </Grid>
-        </Grid>
-      </Container>
+    <>
+      <div className={styles.coursepage}>
+        {/* Ambient Background Glow Orbs */}
+        <div className={styles["coursepage__orb-1"]} />
+        <div className={styles["coursepage__orb-2"]} />
+        <div className={styles["coursepage__orb-3"]} />
+        <div className={styles["coursepage__orb-4"]} />
 
-      {/* Search & Stats Section */}
-      <Container disableGutters maxWidth={false}>
-        <Stack direction="row" spacing={2}>
-          <TextField placeholder="Tìm khóa học bạn muốn bắt đầu..." />
-          <TextField select defaultValue="popular">
-            <MenuItem value="popular">Sắp xếp: Phổ biến nhất</MenuItem>
-          </TextField>
-          <Stack direction="row" spacing={2}>
-            <Box>
-              <Typography>120+</Typography>
-              <Typography>Khóa học</Typography>
-            </Box>
-            <Box>
-              <Typography>15</Typography>
-              <Typography>Lĩnh vực</Typography>
-            </Box>
-          </Stack>
-        </Stack>
-      </Container>
 
-      {/* Filter Section */}
-      <Container disableGutters maxWidth={false}>
-        <Typography>Tất cả khóa học</Typography>
-        <Typography>
-          Lựa chọn lộ trình học tập tối ưu cho sự nghiệp của bạn.
-        </Typography>
-        <Stack direction="row" spacing={2}>
-          {courseData.courseCategories.map((item, index) => (
-            <Button
-              key={index}
-              variant={index === 0 ? "contained" : "outlined"}
-            >
-              {item}
-            </Button>
-          ))}
-        </Stack>
-      </Container>
 
-      {/* Courses Section */}
-      <Container disableGutters maxWidth={false}>
-        <Grid container spacing={2}>
-          {courseData.coursesSection.map((obj, index) => (
-            <Grid key={index} size={3}>
-              <Card>
-                <Chip label={obj.level} />
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={obj.imageUrl}
-                  alt={obj.title}
+        {/* 1. Hero Section */}
+        <section className={styles["course-hero"]}>
+          <div className={styles["course-hero__container"]}>
+            <div className={styles["course-hero__content"]}>
+              <div className={styles["course-hero__left"]}>
+                <div className={styles["course-hero__badge-wrap"]}>
+                  <span className={styles["course-hero__tag"]}>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                      <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                    Nâng tầm kỹ năng lập trình
+                  </span>
+                </div>
+                <h1 className={styles["course-hero__title"]}>
+                  Khám phá khóa học phù hợp với mục tiêu của bạn
+                </h1>
+                <p className={styles["course-hero__desc"]}>
+                  Hệ thống khóa học từ cơ bản đến nâng cao, được thiết kế bởi các
+                  chuyên gia để giúp bạn trở thành lập trình viên thực thụ.
+                </p>
+                <div className={styles["course-hero__btn-group"]}>
+                  <button
+                    type="button"
+                    className={`${styles["course-hero__btn"]} ${styles["course-hero__btn--contained"]}`}
+                  >
+                    Bắt đầu học ngay
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles["course-hero__btn"]} ${styles["course-hero__btn--outlined"]}`}
+                  >
+                    Tìm hiểu thêm
+                  </button>
+                </div>
+              </div>
+
+              <div className={styles["course-hero__media"]}>
+                <div className={styles["course-hero__img-frame"]}>
+                  <img
+                    src={heroUrl}
+                    alt="Course Hero Image"
+                    className={styles["course-hero__img"]}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 1.5 Continue Learning Widget */}
+        <section className={styles["course-continue"]}>
+          <div className={styles["course-continue__container"]}>
+            <div className={styles["course-continue__header"]}>
+              <h2 className={styles["course-continue__title"]}>Khóa học đang học</h2>
+            </div>
+            <div className={styles["course-continue__card"]}>
+              <div className={styles["course-continue__info"]}>
+                <h3 className={styles["course-continue__course-title"]}>Lập trình ReactJS Cơ bản đến Nâng cao</h3>
+                <p className={styles["course-continue__lesson"]}>Bài học tiếp theo: Hooks trong React (useState, useEffect)</p>
+              </div>
+              <div className={styles["course-continue__progress-area"]}>
+                <div className={styles["course-continue__progress-text"]}>
+                  <span>Tiến độ</span>
+                  <span className={styles["course-continue__percentage"]}>68%</span>
+                </div>
+                <div className={styles["course-continue__progress-bar-bg"]}>
+                  <div className={styles["course-continue__progress-bar-fill"]} style={{ width: "68%" }}></div>
+                </div>
+              </div>
+              <button type="button" className={styles["course-continue__btn"]}>
+                Tiếp tục học
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* 2. Search & Stats Bar Section */}
+        <section className={styles["course-search-stats"]}>
+          <div className={styles["course-search-stats__container"]}>
+            <div className={styles["course-search-stats__card-wrapper"]}>
+              {/* Search Input */}
+              <div className={styles["course-search-stats__search-box"]}>
+                <span className={styles["course-search-stats__search-icon"]}>
+                  <Icon name="Search" size={18} />
+                </span>
+                <input
+                  type="text"
+                  placeholder="Tìm khóa học bạn muốn bắt đầu..."
+                  className={styles["course-search-stats__search-input"]}
                 />
-                <CardContent>
-                  <Typography>{obj.title}</Typography>
-                  <Typography>{obj.description}</Typography>
-                  <Stack direction="row" spacing={2}>
-                    <Typography>{obj.lessons}</Typography>
-                    <Typography>{obj.students}</Typography>
-                  </Stack>
-                </CardContent>
-                <CardActions>
-                  <Button size="small">Xem chi tiết</Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+              </div>
 
-        <Stack direction="row">
-          <Pagination count={7} page={1} />
-        </Stack>
-      </Container>
+              {/* Custom Sort Dropdown */}
+              <div
+                className={styles["course-search-stats__select-wrapper"]}
+                ref={sortDropdownRef}
+              >
+                <button
+                  type="button"
+                  onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                  className={`${styles["course-search-stats__dropdown-btn"]} ${
+                    isSortDropdownOpen ? styles["course-search-stats__dropdown-btn--open"] : ""
+                  }`}
+                >
+                  <span>{selectedSort.label}</span>
+                  <span className={styles["course-search-stats__dropdown-chevron"]}>
+                    <Icon name="ChevronDown" size={16} strokeWidth={2.5} />
+                  </span>
+                </button>
 
-      {/* Reason Section */}
-      <Container disableGutters maxWidth={false}>
-        <Typography>Tại sao nên học khóa học tại LearnFlow?</Typography>
-        <Typography>
-          Chúng tôi mang đến môi trường học tập trình khác biệt, tập trung vào
-          kết quả và sự phát triển lâu dài.
-        </Typography>
-        <Grid container spacing={2}>
-          {courseData.reasonSection.map((obj, index) => (
-            <Grid key={index} size={4}>
-              <Card>
-                <CardContent>
-                  <Box>{obj.icon}</Box>
-                  <Typography>{obj.title}</Typography>
-                  <Typography>{obj.description}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+                {isSortDropdownOpen && (
+                  <div className={styles["course-search-stats__dropdown-menu"]}>
+                    {SORT_OPTIONS.map((option) => (
+                      <div
+                        key={option.id}
+                        onClick={() => {
+                          setSelectedSort(option);
+                          setIsSortDropdownOpen(false);
+                        }}
+                        className={`${styles["course-search-stats__dropdown-item"]} ${
+                          selectedSort.id === option.id
+                            ? styles["course-search-stats__dropdown-item--selected"]
+                            : ""
+                        }`}
+                      >
+                        <span>{option.label}</span>
+                        {selectedSort.id === option.id && (
+                          <span className={styles["course-search-stats__dropdown-check"]}>
+                            <Icon name="Check" size={15} strokeWidth={3} />
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-      {/* FAQ Section */}
-      <Container disableGutters maxWidth={false}>
-        <Typography>Câu hỏi thường gặp</Typography>
-        <Box>
-          {courseData.faqSection.map((obj, index) => (
-            <Accordion key={index} defaultExpanded={index === 0}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography component="span">{obj.title}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>{obj.description}</Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))}
-        </Box>
-      </Container>
-    </Container>
+              {/* Stats Badge */}
+              <div className={styles["course-search-stats__stats-group"]}>
+                <div className={styles["course-search-stats__stat-item"]}>
+                  <span className={styles["course-search-stats__stat-number"]}>120+</span>
+                  <span className={styles["course-search-stats__stat-label"]}>Khóa học</span>
+                </div>
+                <div className={styles["course-search-stats__divider"]} />
+                <div className={styles["course-search-stats__stat-item"]}>
+                  <span className={styles["course-search-stats__stat-number"]}>15</span>
+                  <span className={styles["course-search-stats__stat-label"]}>Lĩnh vực</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 3. Filter Tabs & Header Section */}
+        <section className={styles["course-filters"]}>
+          <div className={styles["course-filters__container"]}>
+            <div className={styles["course-filters__header-row"]}>
+              <div className={styles["course-filters__title-wrap"]}>
+                <h2 className={styles["course-filters__section-title"]}>
+                  Tất cả khóa học
+                </h2>
+                <p className={styles["course-filters__section-subtitle"]}>
+                  Lựa chọn lộ trình học tập tối ưu cho sự nghiệp của bạn.
+                </p>
+              </div>
+
+              <div className={styles["course-filters__tab-group"]}>
+                {courseData.categories.map((item, index) => (
+                  <button
+                    key={item.id || item.slug || item.name || item.title || item}
+                    type="button"
+                    onClick={() => setActiveCategoryTab(index)}
+                    className={`${styles["course-filters__tab-btn"]} ${
+                      activeCategoryTab === index
+                        ? styles["course-filters__tab-btn--active"]
+                        : ""
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Courses Cards Grid Section */}
+        <section className={styles["course-grid"]}>
+          <div className={styles["course-grid__container"]}>
+            <div className={styles["course-grid__list"]}>
+              {courseData.items.map((obj, index) => (
+                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["course-grid__card"]} reveal-card`}>
+                  <div className={styles["course-grid__card-media-wrap"]}>
+                    <span
+                      className={`${styles["course-grid__level-chip"]} ${
+                        obj.level === "Cơ bản"
+                          ? styles["course-grid__level-chip--basic"]
+                          : obj.level === "Trung cấp"
+                          ? styles["course-grid__level-chip--intermediate"]
+                          : styles["course-grid__level-chip--advanced"]
+                      }`}
+                    >
+                      {obj.level}
+                    </span>
+                    <img
+                      src={heroUrl}
+                      alt={obj.title}
+                      className={styles["course-grid__card-img"]}
+                    />
+                  </div>
+
+                  <div className={styles["course-grid__card-body"]}>
+                    <h3 className={styles["course-grid__card-title"]}>
+                      {obj.title}
+                    </h3>
+                    <p className={styles["course-grid__card-desc"]}>
+                      {obj.description}
+                    </p>
+                    <div className={styles["course-grid__card-meta"]}>
+                      <span className={styles["course-grid__meta-text"]}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                        </svg>
+                        {obj.lessonsCount}
+                      </span>
+                      <span className={styles["course-grid__meta-text"]}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                          <circle cx="9" cy="7" r="4" />
+                        </svg>
+                        {obj.studentsCount} học viên
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={styles["course-grid__card-actions"]}>
+                    <button
+                      type="button"
+                      className={styles["course-grid__action-btn"]}
+                    >
+                      Xem chi tiết
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Pagination Controls */}
+            <div className={styles["course-grid__pagination-wrapper"]}>
+              <nav className={styles["course-grid__pagination"]}>
+                <button
+                  type="button"
+                  className={styles["course-grid__page-btn"]}
+                  disabled
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  className={`${styles["course-grid__page-btn"]} ${styles["course-grid__page-btn--active"]}`}
+                >
+                  1
+                </button>
+                <button
+                  type="button"
+                  className={styles["course-grid__page-btn"]}
+                >
+                  2
+                </button>
+                <button
+                  type="button"
+                  className={styles["course-grid__page-btn"]}
+                >
+                  3
+                </button>
+                <span className={styles["course-grid__page-ellipsis"]}>
+                  ..
+                </span>
+                <button
+                  type="button"
+                  className={styles["course-grid__page-btn"]}
+                >
+                  7
+                </button>
+                <button
+                  type="button"
+                  className={styles["course-grid__page-btn"]}
+                >
+                  ›
+                </button>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. Reasons Section */}
+        <section className={styles["course-reasons"]}>
+          <div className={styles["course-reasons__container"]}>
+            <div className={styles["course-reasons__header"]}>
+              <h2 className={styles["course-reasons__section-title"]}>
+                Tại sao nên học khóa học tại LearnFlow?
+              </h2>
+              <p className={styles["course-reasons__section-subtitle"]}>
+                Chúng tôi mang đến môi trường học tập lập trình khác biệt, tập trung
+                vào kết quả và sự phát triển lâu dài.
+              </p>
+            </div>
+
+            <div className={styles["course-reasons__list"]}>
+              {courseData.benefits.map((obj, index) => (
+                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["course-reasons__card"]} reveal-card`}>
+                  <div className={styles["course-reasons__icon"]}>
+                    <Icon name={obj.iconName} size={24} />
+                  </div>
+                  <h3 className={styles["course-reasons__title"]}>
+                    {obj.title}
+                  </h3>
+                  <p className={styles["course-reasons__desc"]}>
+                    {obj.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 6. FAQ Section */}
+        <section className={styles["course-faq"]}>
+          <div className={styles["course-faq__container"]}>
+            <div className={styles["course-faq__header"]}>
+              <h2 className={styles["course-faq__section-title"]}>
+                Câu hỏi thường gặp
+              </h2>
+            </div>
+
+            <div className={styles["course-faq__accordion-group"]}>
+              {courseData.faqs.map((obj, index) => (
+                <details
+                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  open={index === 0}
+                  className={styles["course-faq__accordion"]}
+                >
+                  <summary className={styles["course-faq__accordion-summary"]}>
+                    <span className={styles["course-faq__accordion-title"]}>
+                      {obj.question}
+                    </span>
+                    <span className={styles["course-faq__accordion-icon"]}>
+                      <Icon name="ChevronDown" size={18} strokeWidth={2.5} />
+                    </span>
+                  </summary>
+                  <div className={styles["course-faq__accordion-details"]}>
+                    <p>{obj.answer}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }
 

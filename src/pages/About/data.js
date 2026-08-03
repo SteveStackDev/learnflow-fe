@@ -1,33 +1,38 @@
 export const aboutData = {
   features: [
     {
+      id: "about-1",
       title: "Đa nền tảng, Một lộ trình",
       description:
         "Kết nối mọi tài liệu, bài tập và dự án thực tế vào một dòng chảy duy nhất không gián đoạn.",
-      iconName: "Icon",
+      iconName: "Layers",
     },
     {
+      id: "about-2",
       title: "Cá nhân hóa theo năng lực",
       description:
         "Hệ thống AI tự động phân tích lỗ hổng kiến thức và gợi ý các bài tập bổ trợ kịp thời.",
-      iconName: "Icon",
+      iconName: "Users",
     },
   ],
 
   companyValues: [
     {
+      id: "about-3",
       title: "Sứ mệnh",
       description:
         "Giúp việc học lập trình trở nên rõ ràng, bền vững và dễ tiếp cận hơn cho mọi người Việt, không phân biệt xuất phát điểm.",
-      iconName: "Icon",
+      iconName: "Target",
     },
     {
+      id: "about-4",
       title: "Tầm nhìn",
       description:
         "Trở thành nền tảng đào tạo công nghệ hàng đầu Đông Nam Á, nơi cung cấp nguồn nhân lực chất lượng cao cho thế giới.",
-      iconName: "Icon",
+      iconName: "Rocket",
     },
     {
+      id: "about-5",
       title: "Giá trị cốt lõi",
       description: [
         "Thực tế & Thực chiến",
@@ -52,6 +57,7 @@ export const aboutData = {
 
   team: [
     {
+      id: "about-6",
       name: "Đào Công Thiện",
       description:
         "Hơn 10 năm kinh nghiệm tại các tập đoàn công nghệ lớn, khao khát xây dựng cộng đồng học thuật bền vững.",
@@ -59,6 +65,7 @@ export const aboutData = {
       imageUrl: "/src/assets/images/Home/hero.webp",
     },
     {
+      id: "about-7",
       name: "Nhật Anh",
       description:
         "Chuyên gia về kiến trúc hệ thống và trải nghiệm người dùng, người kiến tạo nên nền tảng mượt mà của LearnFlow.",
@@ -66,6 +73,7 @@ export const aboutData = {
       imageUrl: "/src/assets/images/Home/hero.webp",
     },
     {
+      id: "about-8",
       name: "Phúc Thịnh",
       description:
         "Bậc thầy về tối ưu hóa cơ sở dữ liệu và bảo mật, đảm bảo LearnFlow luôn vận hành ổn định cho hàng triệu người dùng.",

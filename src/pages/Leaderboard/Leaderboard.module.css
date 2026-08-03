@@ -5,8 +5,8 @@
 .leaderboardpage {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(180deg, #f9fbff 0%, #ffffff 40%, #f9fbff 100%);
-  color: #191b22;
+  background: var(--theme-page-bg);
+  color: var(--theme-text-primary);
   font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   position: relative;
   overflow-x: hidden;
@@ -237,7 +237,7 @@
 .board-podium__name {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #191b22;
+  color: var(--theme-text-primary);
   margin-bottom: 4px;
 }
 
@@ -393,7 +393,7 @@
 .board-filters__tab-btn--active,
 .board-filters__tab-btn--active:hover {
   background: linear-gradient(135deg, var(--primary-color, #0950c3) 0%, var(--primary-dark, #053787) 100%);
-  color: #ffffff !important;
+  color: #ffffff;
   font-weight: 700;
   box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
 }
@@ -417,7 +417,7 @@
   padding: 9px 16px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #191b22;
+  color: var(--theme-text-primary);
   background-color: #f8fafc;
   border: 1px solid rgba(169, 183, 203, 0.4);
   border-radius: 12px;
@@ -504,7 +504,7 @@
 .board-filters__search-input {
   padding: 9px 16px 9px 40px;
   font-size: 0.875rem;
-  color: #191b22;
+  color: var(--theme-text-primary);
   background-color: #f8fafc;
   border: 1px solid rgba(169, 183, 203, 0.4);
   border-radius: 12px;
@@ -561,7 +561,7 @@
 }
 
 .board-ranking__table-row--current-user {
-  background-color: rgba(9, 80, 195, 0.06) !important;
+  background-color: rgba(9, 80, 195, 0.06);
 }
 
 .board-ranking__table-row:hover:not(.board-ranking__table-row--header) {
@@ -571,7 +571,7 @@
 .board-ranking__table-cell {
   padding: 16px 24px;
   font-size: 0.925rem;
-  color: #191b22;
+  color: var(--theme-text-primary);
   vertical-align: middle;
 }
 
@@ -617,7 +617,7 @@
 
 .board-ranking__user-name {
   font-weight: 700;
-  color: #191b22;
+  color: var(--theme-text-primary);
 }
 
 .board-ranking__chip-tag {
@@ -709,7 +709,7 @@
   border-radius: 50%;
   border: none;
   background: transparent;
-  color: #191b22;
+  color: var(--theme-text-primary);
   font-size: 0.875rem;
   font-weight: 700;
   cursor: pointer;
@@ -762,7 +762,7 @@
 .board-guide__section-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #191b22;
+  color: var(--theme-text-primary);
 }
 
 .board-guide__list {
@@ -804,7 +804,7 @@
 .board-guide__title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #191b22;
+  color: var(--theme-text-primary);
   margin-bottom: 8px;
 }
 
@@ -836,7 +836,7 @@
 .board-faq__section-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #191b22;
+  color: var(--theme-text-primary);
 }
 
 .board-faq__accordion-group {
@@ -865,7 +865,7 @@
   padding: 20px 24px;
   font-size: 0.975rem;
   font-weight: 700;
-  color: #191b22;
+  color: var(--theme-text-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -943,242 +943,242 @@
    Dark Mode Overrides
    ========================================================================== */
 :global([data-theme="dark"]) .leaderboardpage {
-  background: #0b1120 !important;
-  color: #f8fafc !important;
+  background: #0b1120;
+  color: #f8fafc;
 }
 
 :global([data-theme="dark"]) .leaderboardpage::before {
   background-image: 
     linear-gradient(to bottom, rgba(56, 189, 248, 0.08) 0 1px, transparent 0 100%),
-    linear-gradient(to right, rgba(56, 189, 248, 0.08) 0 1px, transparent 0 100%) !important;
+    linear-gradient(to right, rgba(56, 189, 248, 0.08) 0 1px, transparent 0 100%);
 }
 
 :global([data-theme="dark"]) .board-tech-pill {
-  background: rgba(19, 28, 49, 0.85) !important;
-  color: #38bdf8 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background: rgba(19, 28, 49, 0.85);
+  color: #38bdf8;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .board-hero__title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .board-hero__desc {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 /* Podium Section */
 :global([data-theme="dark"]) .board-podium__stand {
-  background: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .board-podium__item--rank-1 .board-podium__stand {
-  background: linear-gradient(180deg, #1e293b 0%, #131c31 100%) !important;
+  background: linear-gradient(180deg, #1e293b 0%, #131c31 100%);
 }
 
 :global([data-theme="dark"]) .board-podium__item--rank-2 .board-podium__stand {
-  background: linear-gradient(180deg, #1e293b 0%, #131c31 100%) !important;
+  background: linear-gradient(180deg, #1e293b 0%, #131c31 100%);
 }
 
 :global([data-theme="dark"]) .board-podium__item--rank-3 .board-podium__stand {
-  background: linear-gradient(180deg, #1e293b 0%, #131c31 100%) !important;
+  background: linear-gradient(180deg, #1e293b 0%, #131c31 100%);
 }
 
 :global([data-theme="dark"]) .board-podium__name {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 /* Filter Card Wrapper & Search Input */
 :global([data-theme="dark"]) .board-filters__card-wrapper {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 :global([data-theme="dark"]) .board-filters__search-box {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 :global([data-theme="dark"]) .board-filters__search-icon {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .board-filters__search-input {
-  background-color: #1e293b !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .board-filters__search-input::placeholder {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .board-filters__tab-btn {
-  background-color: #1e293b !important;
-  color: #cbd5e1 !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background-color: #1e293b;
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 :global([data-theme="dark"]) .board-filters__tab-btn--active {
-  background: linear-gradient(135deg, #0950c3 0%, #053787 100%) !important;
-  color: #ffffff !important;
-  border-color: transparent !important;
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+  border-color: transparent;
 }
 
 /* Filter Controls (Dropdown & Search) */
 :global([data-theme="dark"]) .board-filters__dropdown-btn {
-  background-color: #1e293b !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #1e293b;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .board-filters__dropdown-chevron {
-  color: #38bdf8 !important;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .board-filters__dropdown-menu {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
 }
 
 :global([data-theme="dark"]) .board-filters__dropdown-item {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .board-filters__dropdown-item:hover {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+  background-color: #1e293b;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .board-filters__dropdown-item--selected {
-  background-color: rgba(56, 189, 248, 0.1) !important;
-  color: #38bdf8 !important;
+  background-color: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
 }
 
 /* Ranking Table Section */
 :global([data-theme="dark"]) .board-ranking__table-wrapper {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 :global([data-theme="dark"]) .board-ranking__table-row {
-  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 :global([data-theme="dark"]) .board-ranking__table-row--header {
-  background-color: #1e293b !important;
-  border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #1e293b;
+  border-bottom-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .board-ranking__table-row:hover:not(.board-ranking__table-row--header) {
-  background-color: rgba(56, 189, 248, 0.06) !important;
+  background-color: rgba(56, 189, 248, 0.06);
 }
 
 :global([data-theme="dark"]) .board-ranking__table-row--current-user {
-  background-color: rgba(56, 189, 248, 0.14) !important;
+  background-color: rgba(56, 189, 248, 0.14);
 }
 
 :global([data-theme="dark"]) .board-ranking__table-cell {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .board-ranking__table-cell--header {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .board-ranking__table-cell--rank {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .board-ranking__user-name {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 /* Table Pagination Bar */
 :global([data-theme="dark"]) .board-ranking__pagination {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 :global([data-theme="dark"]) .board-ranking__page-btn {
-  background-color: transparent !important;
-  border: none !important;
-  color: #cbd5e1 !important;
+  background-color: transparent;
+  border: none;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .board-ranking__page-btn:hover:not(:disabled) {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+  background-color: #1e293b;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .board-ranking__page-btn--active {
-  background-color: #0950c3 !important;
-  color: #ffffff !important;
+  background-color: #0950c3;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .board-ranking__page-ellipsis {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 /* Guide Section ("Làm thế nào để leo hạng?") */
 :global([data-theme="dark"]) .board-guide {
-  background-color: #0b1120 !important;
-  border-top-color: rgba(255, 255, 255, 0.1) !important;
-  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: #0b1120;
+  border-top-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 :global([data-theme="dark"]) .board-guide__section-title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .board-guide__card {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 :global([data-theme="dark"]) .board-guide__card:hover {
-  background-color: #1e293b !important;
-  border-color: rgba(56, 189, 248, 0.4) !important;
+  background-color: #1e293b;
+  border-color: rgba(56, 189, 248, 0.4);
 }
 
 :global([data-theme="dark"]) .board-guide__icon {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+  background-color: #1e293b;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .board-guide__title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .board-guide__desc {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .board-faq__section-title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .board-faq__section-subtitle {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .board-faq__accordion {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .board-faq__accordion-summary {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .board-faq__accordion-details {
-  color: #cbd5e1 !important;
-  border-top-color: rgba(255, 255, 255, 0.1) !important;
+  color: #cbd5e1;
+  border-top-color: rgba(255, 255, 255, 0.1);
 }

@@ -5,8 +5,8 @@
 .roadmappage {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(180deg, #f9fbff 0%, #ffffff 40%, #f9fbff 100%);
-  color: #191b22;
+  background: var(--theme-page-bg);
+  color: var(--theme-text-primary);
   font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   position: relative;
   overflow-x: hidden;
@@ -142,7 +142,7 @@
 .roadmap-hero__title {
   font-size: 2.75rem;
   font-weight: 800;
-  color: #191b22;
+  color: var(--theme-text-primary);
   line-height: 1.2;
   margin-bottom: 18px;
   letter-spacing: -0.02em;
@@ -263,7 +263,7 @@
 .roadmap-progress__title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #191b22;
+  color: var(--theme-text-primary);
 }
 
 .roadmap-progress__percentage {
@@ -301,17 +301,17 @@
   gap: 8px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #191b22;
+  color: var(--theme-text-primary);
   flex: 1;
   text-align: center;
 }
 
 .roadmap-progress__milestone--completed {
-  color: #191b22;
+  color: var(--theme-text-primary);
 }
 
 .roadmap-progress__milestone--current {
-  color: #191b22;
+  color: var(--theme-text-primary);
   font-weight: 700;
 }
 
@@ -394,7 +394,7 @@
   width: 100%;
   padding: 13px 20px 13px 48px;
   font-size: 0.925rem;
-  color: #191b22;
+  color: var(--theme-text-primary);
   background-color: #ffffff;
   border: 1px solid rgba(169, 183, 203, 0.4);
   border-radius: 12px;
@@ -491,7 +491,7 @@
   padding: 9px 18px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #191b22;
+  color: var(--theme-text-primary);
   background-color: #ffffff;
   border: 1px solid rgba(169, 183, 203, 0.4);
   border-radius: 12px;
@@ -675,7 +675,7 @@
 .roadmap-cards__card-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #191b22;
+  color: var(--theme-text-primary);
   margin-bottom: 8px;
   line-height: 1.35;
 }
@@ -768,7 +768,7 @@
   border-radius: 50%;
   border: 1px solid transparent;
   background: transparent;
-  color: #191b22;
+  color: var(--theme-text-primary);
   font-size: 0.875rem;
   font-weight: 700;
   cursor: pointer;
@@ -787,7 +787,7 @@
 .roadmap-cards__page-btn--active,
 .roadmap-cards__page-btn--active:hover {
   background-color: var(--primary-color, #0950c3);
-  color: #ffffff !important;
+  color: #ffffff;
   font-weight: 700;
 }
 
@@ -837,7 +837,7 @@
 .roadmap-suggestions__section-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #191b22;
+  color: var(--theme-text-primary);
   margin-bottom: 10px;
 }
 
@@ -861,8 +861,8 @@
   padding: 32px 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
   transition: all 0.3s ease;
   box-shadow: 0 4px 16px rgba(9, 80, 195, 0.03);
 }
@@ -874,46 +874,26 @@
 }
 
 .roadmap-suggestions__icon-wrapper {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   background-color: #e0ebff;
-  color: #0950c3;
+  color: #053787;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
 }
 
-.roadmap-suggestions__card:nth-child(1) .roadmap-suggestions__icon-wrapper {
-  background-color: #e0ebff;
-  color: #0950c3;
-}
-
-.roadmap-suggestions__card:nth-child(2) .roadmap-suggestions__icon-wrapper {
-  background-color: #cce0ff;
-  color: #053787;
-}
-
-.roadmap-suggestions__card:nth-child(3) .roadmap-suggestions__icon-wrapper {
-  background-color: var(--primary-light, #e0ebff);
-  color: var(--primary-color, #0950c3);
-}
-
-.roadmap-suggestions__card:nth-child(4) .roadmap-suggestions__icon-wrapper {
-  background-color: var(--primary-light, #e0ebff);
-  color: var(--primary-dark, #053787);
-}
-
 .roadmap-suggestions__title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #191b22;
-  margin-bottom: 10px;
+  color: var(--theme-text-primary);
+  margin-bottom: 8px;
 }
 
 .roadmap-suggestions__desc {
-  font-size: 0.875rem;
+  font-size: 0.925rem;
   color: #434653;
   line-height: 1.6;
 }
@@ -940,7 +920,7 @@
 .roadmap-faq__section-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #191b22;
+  color: var(--theme-text-primary);
   margin-bottom: 10px;
 }
 
@@ -975,7 +955,7 @@
   padding: 20px 24px;
   font-size: 0.975rem;
   font-weight: 700;
-  color: #191b22;
+  color: var(--theme-text-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1043,203 +1023,203 @@
    Dark Mode Overrides
    ========================================================================== */
 :global([data-theme="dark"]) .roadmappage {
-  background: #0b1120 !important;
-  color: #f8fafc !important;
+  background: #0b1120;
+  color: #f8fafc;
 }
 
 :global([data-theme="dark"]) .roadmappage::before {
   background-image: 
     linear-gradient(to bottom, rgba(56, 189, 248, 0.08) 0 1px, transparent 0 100%),
-    linear-gradient(to right, rgba(56, 189, 248, 0.08) 0 1px, transparent 0 100%) !important;
+    linear-gradient(to right, rgba(56, 189, 248, 0.08) 0 1px, transparent 0 100%);
 }
 
 :global([data-theme="dark"]) .roadmap-hero__title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .roadmap-hero__desc,
 :global([data-theme="dark"]) .roadmap-hero__subtitle {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .roadmap-filters__subtitle {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .roadmap-filters__search-wrapper {
-  background: transparent !important;
-  border: none !important;
+  background: transparent;
+  border: none;
 }
 
 :global([data-theme="dark"]) .roadmap-filters__search-icon {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .roadmap-filters__search-input {
-  background-color: #131c31 !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #131c31;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .roadmap-filters__search-input::placeholder {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .roadmap-filters__dropdown-btn {
-  background-color: #1e293b !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #1e293b;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .roadmap-filters__dropdown-chevron {
-  color: #38bdf8 !important;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .roadmap-filters__dropdown-menu {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
 }
 
 :global([data-theme="dark"]) .roadmap-filters__dropdown-item {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .roadmap-filters__dropdown-item:hover {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+  background-color: #1e293b;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .roadmap-filters__dropdown-item--selected {
-  background-color: rgba(56, 189, 248, 0.12) !important;
-  color: #38bdf8 !important;
+  background-color: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .roadmap-filters__tab-btn {
-  background-color: #131c31 !important;
-  color: #cbd5e1 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #131c31;
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .roadmap-cards__card {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 :global([data-theme="dark"]) .roadmap-cards__card-title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .roadmap-cards__card-desc {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .roadmap-cards__tag-chip {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+  background-color: #1e293b;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .roadmap-cards__pagination {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 :global([data-theme="dark"]) .roadmap-cards__page-btn {
-  background-color: transparent !important;
-  border: none !important;
-  color: #cbd5e1 !important;
+  background-color: transparent;
+  border: none;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .roadmap-cards__page-btn:hover:not(:disabled) {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+  background-color: #1e293b;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .roadmap-cards__page-btn--active {
-  background-color: #0950c3 !important;
-  color: #ffffff !important;
+  background-color: #0950c3;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .roadmap-cards__page-ellipsis {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .roadmap-progress__container {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .roadmap-progress__title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .roadmap-progress__milestone {
-  color: #f8fafc !important;
+  color: #f8fafc;
 }
 
 :global([data-theme="dark"]) .roadmap-progress__milestone--completed {
-  color: #f8fafc !important;
+  color: #f8fafc;
 }
 
 /* Suggestions Section ("Không biết bắt đầu từ đâu?") */
 :global([data-theme="dark"]) .roadmap-suggestions {
-  background-color: #0b1120 !important;
-  border-top-color: rgba(255, 255, 255, 0.1) !important;
-  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: #0b1120;
+  border-top-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 :global([data-theme="dark"]) .roadmap-suggestions__section-title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .roadmap-suggestions__section-subtitle {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .roadmap-suggestions__card {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 :global([data-theme="dark"]) .roadmap-suggestions__card:hover {
-  background-color: #1e293b !important;
-  border-color: rgba(56, 189, 248, 0.4) !important;
+  background-color: #1e293b;
+  border-color: rgba(56, 189, 248, 0.4);
 }
 
 :global([data-theme="dark"]) .roadmap-suggestions__icon-wrapper {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+  background-color: #1e293b;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .roadmap-suggestions__title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .roadmap-suggestions__desc {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .roadmap-faq__section-title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .roadmap-faq__section-subtitle {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .roadmap-faq__accordion {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .roadmap-faq__accordion-summary {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .roadmap-faq__accordion-details {
-  color: #cbd5e1 !important;
-  border-top-color: rgba(255, 255, 255, 0.1) !important;
+  color: #cbd5e1;
+  border-top-color: rgba(255, 255, 255, 0.1);
 }

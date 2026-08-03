@@ -355,33 +355,33 @@
 
 /* Mobile Navigation Drawer Dark Mode */
 :global([data-theme="dark"]) .header__toggle {
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
-  background-color: rgba(30, 41, 59, 0.5) !important;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(30, 41, 59, 0.5);
 }
 
 :global([data-theme="dark"]) .header__mobile-dropdown {
-  background: rgba(19, 28, 49, 0.98) !important;
-  border-bottom-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6) !important;
+  background: rgba(19, 28, 49, 0.98);
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
 }
 
 :global([data-theme="dark"]) .header__mobile-link {
-  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  color: #cbd5e1 !important;
+  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .header__mobile-link:hover {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+  background-color: #1e293b;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .header__mobile-link--active {
-  background-color: #0950c3 !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.4) !important;
+  background-color: #0950c3;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.4);
 }
 
 :global([data-theme="dark"]) .header__mobile-actions {
-  border-top-color: rgba(255, 255, 255, 0.15) !important;
+  border-top-color: rgba(255, 255, 255, 0.15);
 }

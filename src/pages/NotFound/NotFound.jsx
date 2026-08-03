@@ -1,67 +1,83 @@
-// MUI
-import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import HomeIcon from "@mui/icons-material/Home";
-import HeadsetMicIcon from "@mui/icons-material/HeadsetMic";
-
+import { Link } from "react-router";
 // Data
 import { notFoundData } from "./data";
+// Import CSS Modules
+import styles from "./NotFound.module.css";
+// Components
+import Icon from "~/components/Icon/Icon";
 
 function NotFound() {
   return (
-    <Container disableGutters maxWidth={false}>
-      {/* Main 404 Content Section */}
-      <Stack direction="column" alignItems="center" spacing={3}>
-        {/* Large 404 Background Text */}
-        <Typography>404</Typography>
+    <>
+      <div className={styles.notfoundpage}>
+        {/* Ambient Glow Orbs */}
+        <div className={styles["notfoundpage__orb-1"]} />
+        <div className={styles["notfoundpage__orb-2"]} />
 
-        <Typography>Oops! Có vẻ bạn vừa đi lạc khỏi LearnFlow</Typography>
+        <div className={styles.notfoundpage__container}>
+          {/* Content Section */}
+          <section className={styles["notfound-content"]}>
+            <h1 className={styles["notfound-content__badge"]}>404</h1>
 
-        <Typography>
-          Trang bạn đang tìm kiếm không tồn tại, đã bị xóa hoặc được chuyển sang
-          một địa chỉ mới. Đừng lo, các kiến thức lập trình vẫn đang chờ bạn ở
-          các trang khác!
-        </Typography>
+            <div className={styles["notfound-content__text-box"]}>
+              <h2 className={styles["notfound-content__title"]}>
+                Oops! Có vẻ bạn vừa đi lạc khỏi LearnFlow
+              </h2>
 
-        {/* Quick Navigation Buttons */}
-        <Stack direction="row" spacing={2} justifyContent="center">
-          {notFoundData.navButtons.map((btn, index) => (
-            <Button
-              key={index}
-              variant={btn.variant}
-              startIcon={btn.icon === "HomeIcon" ? <HomeIcon /> : null}
-            >
-              {btn.text}
-            </Button>
-          ))}
-        </Stack>
-      </Stack>
+              <p className={styles["notfound-content__desc"]}>
+                Trang bạn đang tìm kiếm không tồn tại, đã bị xóa hoặc được chuyển
+                sang một địa chỉ mới. Đừng lo, các kiến thức lập trình vẫn đang chờ
+                bạn ở các trang khác!
+              </p>
+            </div>
 
-      {/* Support / Contact Footer Box */}
-      <Box>
-        <Card variant="outlined">
-          <CardContent>
-            <Stack direction="row" justifyContent="between" alignItems="center">
-              <Box>
-                <Typography>Cần thêm sự hỗ trợ?</Typography>
-                <Typography>
-                  Đội ngũ LearnFlow luôn sẵn sàng giải đáp thắc mắc và hỗ trợ
-                  bạn trong quá trình học tập.
-                </Typography>
-              </Box>
-              <Button variant="contained" startIcon={<HeadsetMicIcon />}>
-                Trang liên hệ
-              </Button>
-            </Stack>
-          </CardContent>
-        </Card>
-      </Box>
-    </Container>
+            {/* Quick Navigation Section */}
+            <div className={styles["notfound-content__btn-group"]}>
+              {notFoundData.actions.map((obj, index) => (
+                <Link
+                  key={obj.id || obj.text || index}
+                  to={obj.path}
+                  className={`${styles["notfound-content__nav-btn"]} ${styles[`notfound-content__nav-btn--${obj.actionVariant}`]}`}
+                >
+                  {obj.iconName && (
+                    <span className={styles["notfound-content__btn-icon"]}>
+                      <Icon name={obj.iconName} size={18} />
+                    </span>
+                  )}
+                  {obj.text}
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          {/* Footer Support Card Section */}
+          <footer className={styles["notfound-footer"]}>
+            <div className={styles["notfound-footer__support-card"]}>
+              <div className={styles["notfound-footer__support-content"]}>
+                <h3 className={styles["notfound-footer__support-title"]}>
+                  Cần thêm sự hỗ trợ?
+                </h3>
+                <p className={styles["notfound-footer__support-desc"]}>
+                  Đội ngũ LearnFlow luôn sẵn sàng giải đáp thắc mắc và hỗ trợ bạn
+                  trong quá trình học tập.
+                </p>
+              </div>
+              <div className={styles["notfound-footer__support-action"]}>
+                <Link
+                  to="/contact"
+                  className={styles["notfound-footer__contact-btn"]}
+                >
+                  <span className={styles["notfound-footer__contact-icon"]}>
+                    <Icon name="Headphones" size={18} />
+                  </span>{" "}
+                  Trang liên hệ
+                </Link>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </>
   );
 }
 

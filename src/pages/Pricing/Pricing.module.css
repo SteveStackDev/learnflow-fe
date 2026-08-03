@@ -6,7 +6,7 @@
   width: 100%;
   min-height: 100vh;
   background-color: #faf8ff;
-  color: #191b22;
+  color: var(--theme-text-primary);
   font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   position: relative;
   overflow-x: hidden;
@@ -205,8 +205,8 @@
   position: relative;
   background: 
     linear-gradient(#ffffff, #ffffff) padding-box, 
-    linear-gradient(135deg, #0950c3 0%, #38bdf8 40%, #f59e0b 100%) border-box !important;
-  border: 3px solid transparent !important;
+    linear-gradient(135deg, #0950c3 0%, #38bdf8 40%, #f59e0b 100%) border-box;
+  border: 3px solid transparent;
   border-radius: 26px;
   box-shadow: 0 14px 40px rgba(9, 80, 195, 0.15), 0 0 24px rgba(56, 189, 248, 0.15);
 }
@@ -247,7 +247,7 @@
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 700;
-  color: #191b22;
+  color: var(--theme-text-primary);
   margin-bottom: 12px;
 }
 
@@ -341,7 +341,7 @@
 }
 
 .price-cards__btn--dark {
-  background-color: #191b22;
+  background-color: var(--theme-text-primary);
   color: #ffffff;
   border: 1.5px solid #191b22;
   box-shadow: 0 4px 14px rgba(25, 27, 34, 0.2);
@@ -429,7 +429,7 @@
   font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  color: #191b22;
+  color: var(--theme-text-primary);
   padding-left: 28px;
   width: 40%;
 }
@@ -445,7 +445,7 @@
 .price-comparison__table-cell--label {
   text-align: left;
   font-weight: 500;
-  color: #191b22;
+  color: var(--theme-text-primary);
   padding-left: 28px;
 }
 
@@ -532,7 +532,7 @@
   padding: 20px 24px;
   font-size: 0.975rem;
   font-weight: 700;
-  color: #191b22;
+  color: var(--theme-text-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -595,152 +595,152 @@
    Dark Mode Overrides
    ========================================================================== */
 :global([data-theme="dark"]) .pricingpage {
-  background: #0b1120 !important;
-  color: #f8fafc !important;
+  background: #0b1120;
+  color: #f8fafc;
 }
 
 :global([data-theme="dark"]) .price-hero__title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .price-hero__desc {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .price-hero__toggle-wrapper {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .price-hero__toggle-label {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 :global([data-theme="dark"]) .price-hero__toggle-label--active {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .price-cards__card {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 :global([data-theme="dark"]) .price-cards__card--popular {
   background: 
     linear-gradient(#131c31, #131c31) padding-box, 
-    linear-gradient(135deg, #0950c3 0%, #38bdf8 40%, #f59e0b 100%) border-box !important;
-  border: 3px solid transparent !important;
+    linear-gradient(135deg, #0950c3 0%, #38bdf8 40%, #f59e0b 100%) border-box;
+  border: 3px solid transparent;
 }
 
 :global([data-theme="dark"]) .price-cards__card-title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .price-cards__card-price {
-  color: #38bdf8 !important;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .price-cards__card-period {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .price-cards__feature-item {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .price-cards__feature-icon {
-  color: #38bdf8 !important;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .price-cards__btn--outlined {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
-  border-color: #38bdf8 !important;
+  background-color: #1e293b;
+  color: #38bdf8;
+  border-color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .price-cards__btn--dark {
-  background-color: #1e293b !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #1e293b;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Comparison Table Section */
 :global([data-theme="dark"]) .price-comparison {
-  background-color: #0b1120 !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: #0b1120;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 :global([data-theme="dark"]) .price-comparison__section-title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .price-comparison__section-subtitle {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .price-comparison__table-wrapper {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 :global([data-theme="dark"]) .price-comparison__table-row {
-  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 :global([data-theme="dark"]) .price-comparison__table-row--header {
-  background-color: #1e293b !important;
+  background-color: #1e293b;
 }
 
 :global([data-theme="dark"]) .price-comparison__table-row--section {
-  background-color: #0f172a !important;
+  background-color: #0f172a;
 }
 
 :global([data-theme="dark"]) .price-comparison__table-cell {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
 :global([data-theme="dark"]) .price-comparison__table-cell--header-label,
 :global([data-theme="dark"]) .price-comparison__table-cell--header {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .price-comparison__table-cell--label {
-  color: #f8fafc !important;
+  color: #f8fafc;
 }
 
 :global([data-theme="dark"]) .price-comparison__table-cell--section {
-  color: #38bdf8 !important;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .price-comparison__table-cell--popular {
-  background-color: rgba(56, 189, 248, 0.06) !important;
+  background-color: rgba(56, 189, 248, 0.06);
 }
 
 :global([data-theme="dark"]) .price-comparison__check {
-  color: #38bdf8 !important;
+  color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .price-comparison__dash {
-  color: #64748b !important;
+  color: #64748b;
 }
 
 /* FAQ Section */
 :global([data-theme="dark"]) .price-faq__section-title {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .price-faq__accordion {
-  background-color: #131c31 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 :global([data-theme="dark"]) .price-faq__accordion-summary {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 :global([data-theme="dark"]) .price-faq__accordion-details {
-  color: #cbd5e1 !important;
-  border-top-color: rgba(255, 255, 255, 0.1) !important;
+  color: #cbd5e1;
+  border-top-color: rgba(255, 255, 255, 0.1);
 }
