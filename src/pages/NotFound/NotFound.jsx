@@ -33,9 +33,9 @@ function NotFound() {
 
             {/* Quick Navigation Section */}
             <div className={styles["notfound-content__btn-group"]}>
-              {notFoundData.actions.map((obj, index) => (
+              {notFoundData.actions.map((obj) => (
                 <Link
-                  key={obj.id || obj.text || index}
+                  key={obj.id || obj.slug || obj.text || obj.path || obj}
                   to={obj.path}
                   className={`${styles["notfound-content__nav-btn"]} ${styles[`notfound-content__nav-btn--${obj.actionVariant}`]}`}
                 >

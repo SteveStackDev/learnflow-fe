@@ -8,8 +8,15 @@ function ThemeToggle() {
   });
 
   useEffect(() => {
+    document.documentElement.classList.add("theme-switching");
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("learnflow_theme", theme);
+
+    const timer = setTimeout(() => {
+      document.documentElement.classList.remove("theme-switching");
+    }, 50);
+
+    return () => clearTimeout(timer);
   }, [theme]);
 
   const toggleTheme = () => {

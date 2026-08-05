@@ -10,7 +10,6 @@ import styles from "./Roadmap.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
-import { SkeletonCard } from "~/components/Skeleton/Skeleton.jsx";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
@@ -26,7 +25,6 @@ function Roadmap() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState(LEVEL_OPTIONS[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const dropdownRef = useRef(null);
 
   useScrollReveal();
@@ -247,16 +245,7 @@ function Roadmap() {
         {/* 4. Roadmap Cards Grid Section */}
         <section className={styles["roadmap-cards"]}>
           <div className={styles["roadmap-cards__container"]}>
-            {isLoading ? (
-              <div className={styles["roadmap-cards__list"]}>
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-              </div>
-            ) : roadmapData.items.filter((item) => {
+            {roadmapData.items.filter((item) => {
               const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                                     item.description.toLowerCase().includes(searchQuery.toLowerCase());
               return matchesSearch;
@@ -306,9 +295,9 @@ function Roadmap() {
                     </p>
 
                     <div className={styles["roadmap-cards__card-tags"]}>
-                      {card.tags.map((item, tagIndex) => (
+                      {card.tags.map((item) => (
                         <span
-                          key={tagIndex}
+                          key={item.id || item.name || item}
                           className={styles["roadmap-cards__tag-chip"]}
                         >
                           {item}

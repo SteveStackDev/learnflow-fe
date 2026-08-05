@@ -23,3 +23,11 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Disable CSS transitions temporarily during Theme Switch to eliminate color wave sweeps */
+.theme-switching,
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}

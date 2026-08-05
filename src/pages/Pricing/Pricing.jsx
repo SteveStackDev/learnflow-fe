@@ -105,9 +105,9 @@ function Pricing() {
                       </div>
 
                       <ul className={styles["price-cards__card-features"]}>
-                        {obj.features.map((item, featIndex) => (
+                        {obj.features.map((item) => (
                           <li
-                            key={featIndex}
+                            key={item.id || item.text || item.title || item}
                             className={styles["price-cards__feature-item"]}
                           >
                             <span className={styles["price-cards__feature-icon"]}>
@@ -201,7 +201,7 @@ function Pricing() {
                     }
                     return (
                       <tr
-                        key={obj.id || obj.name || index}
+                        key={obj.id || obj.slug || obj.name || obj.title || obj}
                         className={styles["price-comparison__table-row"]}
                       >
                         <td

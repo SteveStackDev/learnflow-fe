@@ -8,7 +8,6 @@ import styles from "./Leaderboard.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
-import { SkeletonTableRow } from "~/components/Skeleton/Skeleton.jsx";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
@@ -23,7 +22,6 @@ function Leaderboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTime, setSelectedTime] = useState(TIME_OPTIONS[0]);
   const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const timeDropdownRef = useRef(null);
 
   useScrollReveal();
@@ -250,17 +248,7 @@ function Leaderboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {isLoading ? (
-                    <tr>
-                      <td colSpan={6} style={{ padding: 0 }}>
-                        <SkeletonTableRow />
-                        <SkeletonTableRow />
-                        <SkeletonTableRow />
-                        <SkeletonTableRow />
-                        <SkeletonTableRow />
-                      </td>
-                    </tr>
-                  ) : leaderboardData.rankings.filter((item) =>
+                  {leaderboardData.rankings.filter((item) =>
                     item.name.toLowerCase().includes(searchQuery.toLowerCase())
                   ).length === 0 ? (
                     <tr>

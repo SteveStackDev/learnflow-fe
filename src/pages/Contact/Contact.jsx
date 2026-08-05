@@ -212,9 +212,9 @@ function Contact() {
                           </p>
                         ) : (
                           <div className={styles["contact-main__social-list"]}>
-                            {obj.description.map((item, subIndex) => (
-                              <span
-                                key={subIndex}
+                             {obj.description.map((item) => (
+                               <span
+                                 key={item.id || item.name || item}
                                 className={styles["contact-main__social-item"]}
                                 title={item}
                               >

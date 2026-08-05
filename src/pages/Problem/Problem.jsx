@@ -7,7 +7,6 @@ import styles from "./Problem.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
-import { SkeletonCard } from "~/components/Skeleton/Skeleton.jsx";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
@@ -22,7 +21,6 @@ function Problem() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const sortDropdownRef = useRef(null);
 
   useScrollReveal();
@@ -291,16 +289,7 @@ function Problem() {
               </h2>
             </div>
 
-            {isLoading ? (
-              <div className={styles["prob-challenges__list"]}>
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-              </div>
-            ) : problemData.items.filter((item) => {
+            {problemData.items.filter((item) => {
               const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                                     item.description.toLowerCase().includes(searchQuery.toLowerCase());
               return matchesSearch;

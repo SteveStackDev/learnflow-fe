@@ -9,14 +9,12 @@ import styles from "./Contest.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
-import { SkeletonCard } from "~/components/Skeleton/Skeleton.jsx";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
 function Contest() {
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   useScrollReveal();
 
@@ -149,16 +147,7 @@ function Contest() {
         {/* 4. Contests Cards Grid Section */}
         <section className={styles["contest-grid"]}>
           <div className={styles["contest-grid__container"]}>
-            {isLoading ? (
-              <div className={styles["contest-grid__list"]}>
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-              </div>
-            ) : contestData.items.filter((item) => {
+            {contestData.items.filter((item) => {
               const selectedTab = contestData.tabs[activeTab];
               if (activeTab === 0 || selectedTab === "Tất cả cuộc thi") return true;
               return item.statusLabel.toLowerCase().includes(selectedTab.toLowerCase());

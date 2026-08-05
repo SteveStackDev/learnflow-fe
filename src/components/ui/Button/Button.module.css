@@ -1,0 +1,143 @@
+/* ==========================================================================
+   LearnFlow UI Component - Button Styling
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:disabled,
+.btn--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* SIZES */
+.btn--sm {
+  padding: 6px 14px;
+  font-size: 0.8125rem;
+  border-radius: 8px;
+}
+
+.btn--md {
+  padding: 10px 20px;
+  font-size: 0.9375rem;
+  border-radius: 12px;
+}
+
+.btn--lg {
+  padding: 14px 28px;
+  font-size: 1.0625rem;
+  border-radius: 14px;
+}
+
+/* VARIANTS */
+.btn--contained {
+  background: var(--color-primary, #0950c3);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.35);
+}
+
+.btn--contained:hover {
+  background: var(--color-primary-s10, #0848b0);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.45);
+}
+
+.btn--outlined {
+  background: transparent;
+  border-color: rgba(9, 80, 195, 0.4);
+  color: var(--color-primary, #0950c3);
+}
+
+.btn--outlined:hover {
+  background: rgba(9, 80, 195, 0.08);
+  border-color: var(--color-primary, #0950c3);
+}
+
+.btn--dark {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #334155;
+}
+
+.btn--dark:hover {
+  background: #1e293b;
+  border-color: #475569;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: inherit;
+  border-color: transparent;
+}
+
+.btn--ghost:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.btn--gradient {
+  background: var(--gradient-primary-cyan, linear-gradient(135deg, #0950c3 0%, #0ea5e9 100%));
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.3);
+}
+
+.btn--gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.45);
+}
+
+.btn--danger {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.btn--danger:hover {
+  background: #dc2626;
+}
+
+/* DARK MODE OVERRIDES */
+:global([data-theme="dark"]) .btn--outlined {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .btn--outlined:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+:global([data-theme="dark"]) .btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* SPINNER */
+.btn__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: btnSpinner 0.75s linear infinite;
+}
+
+@keyframes btnSpinner {
+  to {
+    transform: rotate(360deg);
+  }
+}

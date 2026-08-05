@@ -1,0 +1,116 @@
+/* ==========================================================================
+   LearnFlow UI Component - FormField Styling
+   ========================================================================== */
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.formField__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-main, #1e293b);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.formField__required {
+  color: #ef4444;
+}
+
+.formField__control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.formField__input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  color: var(--color-text-main, #1e293b);
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #cbd5e1);
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.formField__input--has-icon-left {
+  padding-left: 44px;
+}
+
+.formField__input--has-icon-right {
+  padding-right: 44px;
+}
+
+.formField__input:focus {
+  border-color: var(--color-primary, #0950c3);
+  box-shadow: 0 0 0 3px rgba(9, 80, 195, 0.15);
+}
+
+.formField__input--error {
+  border-color: #ef4444 !important;
+}
+
+.formField__input--error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.formField__icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.formField__icon--left {
+  left: 14px;
+}
+
+.formField__icon--right {
+  right: 14px;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.formField__error-text {
+  font-size: 0.8125rem;
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.formField__helper-text {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+/* DARK MODE OVERRIDES */
+:global([data-theme="dark"]) .formField__label {
+  color: #f1f5f9;
+}
+
+:global([data-theme="dark"]) .formField__input {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .formField__input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+:global([data-theme="dark"]) .formField__icon {
+  color: #94a3b8;
+}

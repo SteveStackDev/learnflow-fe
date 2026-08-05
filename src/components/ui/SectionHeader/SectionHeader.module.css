@@ -1,0 +1,45 @@
+/* ==========================================================================
+   LearnFlow UI Component - SectionHeader Styling
+   ========================================================================== */
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.sectionHeader--center {
+  align-items: center;
+  text-align: center;
+}
+
+.sectionHeader--left {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.sectionHeader__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-main, #0f172a);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.sectionHeader__subtitle {
+  font-size: 1.0625rem;
+  color: var(--color-text-muted, #64748b);
+  max-width: 680px;
+  line-height: 1.6;
+}
+
+/* DARK MODE OVERRIDES */
+:global([data-theme="dark"]) .sectionHeader__title {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .sectionHeader__subtitle {
+  color: #94a3b8;
+}

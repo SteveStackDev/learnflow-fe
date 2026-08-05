@@ -10,7 +10,6 @@ import styles from "./Course.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
-import { SkeletonCard } from "~/components/Skeleton/Skeleton.jsx";
 
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
@@ -26,7 +25,6 @@ function Course() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const sortDropdownRef = useRef(null);
 
   useScrollReveal();
@@ -249,16 +247,7 @@ function Course() {
         {/* 4. Courses Cards Grid Section */}
         <section className={styles["course-grid"]}>
           <div className={styles["course-grid__container"]}>
-            {isLoading ? (
-              <div className={styles["course-grid__list"]}>
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-              </div>
-            ) : courseData.items.filter((item) => {
+            {courseData.items.filter((item) => {
               const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                                     item.description.toLowerCase().includes(searchQuery.toLowerCase());
               const selectedCategory = courseData.categories[activeCategoryTab];

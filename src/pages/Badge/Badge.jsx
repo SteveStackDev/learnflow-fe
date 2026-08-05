@@ -9,14 +9,12 @@ import styles from "./Badge.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
-import { SkeletonCard } from "~/components/Skeleton/Skeleton.jsx";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
 function Badge() {
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   useScrollReveal();
 
@@ -210,16 +208,7 @@ function Badge() {
         {/* 4. Badges Cards Grid Section */}
         <section className={styles["badge-grid"]}>
           <div className={styles["badge-grid__container"]}>
-            {isLoading ? (
-              <div className={styles["badge-grid__list"]}>
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-              </div>
-            ) : badgeData.items.filter((item) => {
+            {badgeData.items.filter((item) => {
               const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                                     item.description.toLowerCase().includes(searchQuery.toLowerCase());
               const selectedTab = badgeData.tabs[activeTab];
@@ -248,14 +237,15 @@ function Badge() {
                                     (selectedTab === "Đã đạt được" && item.status === "received") ||
                                     (selectedTab === "Chưa đạt được" && item.status === "locked");
                   return matchesSearch && matchesTab;
-                }).map((obj) => (
+                }).map((obj, index) => (
                   <div
                     key={obj.id || obj.slug || obj.name || obj.title || obj}
-                    className={`${styles["badge-grid__card"]} ${
+                    className={`${styles["badge-grid__card"]} reveal-card ${
                       obj.status === "locked"
                         ? styles["badge-grid__card--locked"]
                         : ""
                     }`}
+                    style={{ transitionDelay: `${index * 100}ms` }}
                   >
                   <div className={styles["badge-grid__card-header"]}>
                     <span
