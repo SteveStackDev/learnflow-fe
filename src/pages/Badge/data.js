@@ -1,5 +1,5 @@
 export const badgeData = {
-  tabs: ["Tất cả", "Đã nhận", "Chưa nhận", "Phổ biến", "Mới nhất"],
+  tabs: ["Tất cả huy hiệu", "Đã đạt được", "Chưa đạt được"],
 
   items: [
     {
@@ -74,25 +74,61 @@ export const badgeData = {
       status: "received",
       iconName: "Book",
     },
+    {
+      id: "badge-9",
+      title: "Chiến thần Algorithmic",
+      description: "Giải quyết thành công 100 bài tập thuật toán trong năm.",
+      badgeText: "Đã nhận",
+      buttonText: "Nhận badge",
+      status: "received",
+      iconName: "Terminal",
+    },
+    {
+      id: "badge-10",
+      title: "Chuyên gia Backend",
+      description: "Hoàn thành bài kiểm tra thiết kế hệ thống Microservices.",
+      badgeText: "Chưa nhận",
+      buttonText: "Chưa đạt điều kiện",
+      status: "locked",
+      iconName: "Database",
+    },
+    {
+      id: "badge-11",
+      title: "Thành viên Tích cực",
+      description: "Đăng nhập và học tập liên tục 30 ngày.",
+      badgeText: "Đã nhận",
+      buttonText: "Nhận badge",
+      status: "received",
+      iconName: "Award",
+    },
+    {
+      id: "badge-12",
+      title: "Kính thiên văn AI",
+      description: "Hoàn thành lộ trình Machine Learning & Deep Learning.",
+      badgeText: "Chưa nhận",
+      buttonText: "Chưa đạt điều kiện",
+      status: "locked",
+      iconName: "Compass",
+    },
   ],
 
   guides: [
     {
-      id: "badge-9",
+      id: "badge-guide-1",
       title: "Học tập đều đặn",
       description:
         "Duy trì việc đăng nhập và hoàn thành bài học mỗi ngày để nhận các danh hiệu Streak và Chuyên cần.",
       iconName: "Clock",
     },
     {
-      id: "badge-10",
+      id: "badge-guide-2",
       title: "Thử thách & Contest",
       description:
         "Tham gia các kỳ thi tuần, tháng và vượt qua các bài Lab khó để khẳng định năng lực chuyên môn.",
       iconName: "Target",
     },
     {
-      id: "badge-11",
+      id: "badge-guide-3",
       title: "Xếp hạng & Cộng đồng",
       description:
         "Tích cực hỗ trợ các học viên khác, đóng góp tài liệu và leo hạng trên Leaderboard toàn cầu.",
@@ -102,22 +138,19 @@ export const badgeData = {
 
   faqs: [
     {
-      id: "badge-12",
-      question: "Badge có dùng để đổi quà được không?",
-      answer:
-        "Hệ thống danh hiệu hiện tại dùng để ghi nhận nỗ lực. Trong tương lai, một số badge đặc biệt có thể đổi được các phần quà giới hạn từ ban quản trị.",
+      id: "badge-faq-1",
+      question: "Huy hiệu trên LearnFlow dùng để làm gì?",
+      answer: "Huy hiệu giúp bạn chứng minh năng lực cá nhân, làm đẹp hồ sơ profile và mở khóa những đặc quyền tài khoản.",
     },
     {
-      id: "badge-13",
-      question: "Tôi có thể hiển thị badge lên hồ sơ cá nhân không?",
-      answer:
-        "Có, tất cả badge bạn đã mở khóa thành công sẽ tự động hiển thị công khai trên trang cá nhân của bạn.",
+      id: "badge-faq-2",
+      question: "Sau bao lâu thì hệ thống tự động mở khóa huy hiệu?",
+      answer: "Hệ thống quét tiến độ và tự động cấp mở khóa huy hiệu ngay khi bạn đáp ứng đủ tiêu chuẩn.",
     },
     {
-      id: "badge-14",
-      question: "Danh hiệu có bị mất đi nếu tôi không học không?",
-      answer:
-        "Không, một khi đã đạt được danh hiệu, nó sẽ vĩnh viễn thuộc về tài khoản của bạn.",
+      id: "badge-faq-3",
+      question: "Tôi có thể chia sẻ huy hiệu lên các mạng xã hội không?",
+      answer: "Có, bạn có thể dễ dàng tải xuống chứng nhận và chia sẻ trực tiếp huy hiệu lên LinkedIn, Facebook hoặc CV.",
     },
   ],
 };

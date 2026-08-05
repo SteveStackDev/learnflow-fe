@@ -89,23 +89,29 @@ export const homeData = {
       role: "Backend Developer",
       imageUrl: "/src/assets/images/Home/hero.webp",
     },
+    {
+      id: "home-14",
+      name: "Châu Nam Dương",
+      role: "Frontend Developer",
+      imageUrl: "/src/assets/images/Home/hero.webp",
+    },
   ],
 
   faqs: [
     {
-      id: "home-14",
+      id: "home-15",
       question: "Học tại LearnFlow có tốn phí không?",
       answer:
         "LearnFlow cung cấp cả lộ trình miễn phí cho người mới bắt đầu và các khóa học Premium chuyên sâu với những dự án thực tế độc quyền.",
     },
     {
-      id: "home-15",
+      id: "home-16",
       question: "Lộ trình học kéo dài bao lâu?",
       answer:
         "Tùy thuộc vào thời gian bạn dành cho việc học. Trung bình một học viên có thể hoàn thành lộ trình Fullstack trong vòng 6-9 tháng.",
     },
     {
-      id: "home-16",
+      id: "home-17",
       question: "LearnFlow khác gì so với LeetCode?",
       answer:
         'Chúng tôi tập trung vào trải nghiệm học tập có hệ thống (Structured Learning) hơn là chỉ đơn thuần giải thuật toán. LearnFlow giải thích "tại sao" và "làm thế nào" một cách chi tiết hơn.',

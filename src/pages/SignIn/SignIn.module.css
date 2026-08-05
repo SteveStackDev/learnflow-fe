@@ -469,6 +469,25 @@
   box-shadow: 0 0 0 4px rgba(9, 80, 195, 0.18), 0 2px 12px rgba(9, 80, 195, 0.12);
 }
 
+.signin-form__input--error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.signin-form__input--error:focus {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.18);
+}
+
+.signin-form__error-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #ef4444;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .signin-form__checkbox-group {
   margin-top: 4px;
 }
@@ -508,6 +527,12 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+}
+
+.signin-form__submit-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .signin-form__submit-btn:hover {
@@ -592,26 +617,111 @@
   gap: 6px;
 }
 
+.signin-form__mobile-header {
+  display: none;
+}
+
 /* ==========================================================================
    3. Responsive Breakpoints
    ========================================================================== */
 @media (max-width: 992px) {
+  .signinpage {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 32px 16px;
+  }
+
   .signinpage__container {
     grid-template-columns: 1fr;
+    width: 100%;
   }
 
   .signin-info {
-    padding: 40px 24px;
-    min-height: auto;
+    display: none;
   }
 
   .signin-form {
-    padding: 40px 24px;
+    padding: 0;
     min-height: auto;
+    background: transparent;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
-  .signin-info__code-pattern {
-    display: none;
+  .signin-form__wrapper {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .signin-form__mobile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 24px;
+    width: 100%;
+  }
+
+  .signin-form__mobile-back-btn {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background-color: var(--bg-surface, #ffffff);
+    color: var(--theme-text-primary);
+    font-size: 0.825rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(9, 80, 195, 0.08);
+    transition: all 0.2s ease;
+    margin-bottom: 16px;
+    border: 1px solid rgba(169, 183, 203, 0.3);
+  }
+
+  .signin-form__mobile-back-btn:hover {
+    color: #0950c3;
+    border-color: #0950c3;
+  }
+
+  .signin-form__mobile-logo-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .signin-form__mobile-logo-box {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(9, 80, 195, 0.28);
+  }
+
+  .signin-form__mobile-logo-text {
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .signin-form__mobile-typing-title {
+    font-size: 1.95rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--theme-text-primary);
+    margin-top: 4px;
   }
 }
 

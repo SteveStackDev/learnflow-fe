@@ -341,16 +341,17 @@
 }
 
 .price-cards__btn--dark {
-  background-color: var(--theme-text-primary);
+  background-color: #0f172a;
   color: #ffffff;
-  border: 1.5px solid #191b22;
-  box-shadow: 0 4px 14px rgba(25, 27, 34, 0.2);
+  border: 1.5px solid #0f172a;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
 }
 
 .price-cards__btn--dark:hover {
-  background-color: #003a95;
-  border-color: #003a95;
-  box-shadow: 0 6px 18px rgba(0, 58, 149, 0.3);
+  background-color: #0950c3;
+  border-color: #0950c3;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.35);
 }
 
 /* ==========================================================================

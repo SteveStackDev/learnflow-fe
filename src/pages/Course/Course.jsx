@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 // Data
 import { courseData } from "./data";
 
@@ -20,17 +20,21 @@ const SORT_OPTIONS = [
   { id: "rating", label: "Sắp xếp: Đánh giá cao nhất" },
 ];
 
+const ITEMS_PER_PAGE = 4; // 1 clean row of 4 cards!
+
 function Course() {
   const [activeCategoryTab, setActiveCategoryTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const sortDropdownRef = useRef(null);
 
   useScrollReveal();
 
   const handleCategoryChange = (index) => {
     setActiveCategoryTab(index);
+    setCurrentPage(1);
   };
 
   // Close dropdown when clicking outside
@@ -44,6 +48,45 @@ function Course() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Filter & Sort Logic
+  const filteredAndSortedItems = useMemo(() => {
+    const categories = courseData.categoryTabs || courseData.categories || ["Tất cả"];
+    return (courseData.items || courseData.courses || [])
+      .filter((item) => {
+        const matchesSearch =
+          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchQuery.toLowerCase());
+        const selectedTab = categories[activeCategoryTab] || "Tất cả";
+        const matchesCategory =
+          activeCategoryTab === 0 ||
+          selectedTab === "Tất cả" ||
+          selectedTab === "Tất cả khóa học" ||
+          item.category === selectedTab ||
+          item.level === selectedTab;
+        return matchesSearch && matchesCategory;
+      })
+      .sort((a, b) => {
+        if (selectedSort.id === "latest") {
+          return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+        }
+        if (selectedSort.id === "rating") {
+          return (b.rating || 0) - (a.rating || 0);
+        }
+        return (b.studentsNum || 0) - (a.studentsNum || 0);
+      });
+  }, [searchQuery, activeCategoryTab, selectedSort]);
+
+  // Reset page when search or sort changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedSort]);
+
+  // Pagination calculation
+  const totalPages = Math.max(1, Math.ceil(filteredAndSortedItems.length / ITEMS_PER_PAGE));
+  const displayedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredAndSortedItems.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredAndSortedItems, currentPage]);
 
   return (
     <>
@@ -53,8 +96,6 @@ function Course() {
         <div className={styles["coursepage__orb-2"]} />
         <div className={styles["coursepage__orb-3"]} />
         <div className={styles["coursepage__orb-4"]} />
-
-
 
         {/* 1. Hero Section */}
         <section className={styles["course-hero"]}>
@@ -198,7 +239,9 @@ function Course() {
               {/* Stats Badge */}
               <div className={styles["course-search-stats__stats-group"]}>
                 <div className={styles["course-search-stats__stat-item"]}>
-                  <span className={styles["course-search-stats__stat-number"]}>120+</span>
+                  <span className={styles["course-search-stats__stat-number"]}>
+                    {filteredAndSortedItems.length}
+                  </span>
                   <span className={styles["course-search-stats__stat-label"]}>Khóa học</span>
                 </div>
                 <div className={styles["course-search-stats__divider"]} />
@@ -227,7 +270,7 @@ function Course() {
               <div className={styles["course-filters__tab-group"]}>
                 {courseData.categories.map((item, index) => (
                   <button
-                    key={item.id || item.slug || item.name || item.title || item}
+                    key={item}
                     type="button"
                     onClick={() => handleCategoryChange(index)}
                     className={`${styles["course-filters__tab-btn"]} ${
@@ -247,129 +290,133 @@ function Course() {
         {/* 4. Courses Cards Grid Section */}
         <section className={styles["course-grid"]}>
           <div className={styles["course-grid__container"]}>
-            {courseData.items.filter((item) => {
-              const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                    item.description.toLowerCase().includes(searchQuery.toLowerCase());
-              const selectedCategory = courseData.categories[activeCategoryTab];
-              const matchesCategory = activeCategoryTab === 0 || selectedCategory === "Tất cả" || item.category === selectedCategory || item.level === selectedCategory;
-              return matchesSearch && matchesCategory;
-            }).length === 0 ? (
+            {filteredAndSortedItems.length === 0 ? (
               <EmptyState
                 iconName="Search"
                 title="Không tìm thấy khóa học phù hợp"
                 description="Không có khóa học nào khớp với từ khóa tìm kiếm hoặc danh mục của bạn."
-                actionLabel="Xóa bộ lọc"
+                actionLabel="Xóa tìm kiếm"
                 onAction={() => {
                   setSearchQuery("");
                   setActiveCategoryTab(0);
                 }}
               />
             ) : (
-              <div className={styles["course-grid__list"]}>
-                {courseData.items.filter((item) => {
-                  const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                        item.description.toLowerCase().includes(searchQuery.toLowerCase());
-                  const selectedCategory = courseData.categories[activeCategoryTab];
-                  const matchesCategory = activeCategoryTab === 0 || selectedCategory === "Tất cả" || item.category === selectedCategory || item.level === selectedCategory;
-                  return matchesSearch && matchesCategory;
-                }).map((obj) => (
-                  <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["course-grid__card"]} reveal-card`}>
-                  <div className={styles["course-grid__card-media-wrap"]}>
-                    <span
-                      className={`${styles["course-grid__level-chip"]} ${
-                        obj.level === "Cơ bản"
-                          ? styles["course-grid__level-chip--basic"]
-                          : obj.level === "Trung cấp"
-                          ? styles["course-grid__level-chip--intermediate"]
-                          : styles["course-grid__level-chip--advanced"]
-                      }`}
-                    >
-                      {obj.level}
-                    </span>
-                    <img
-                      src={heroUrl}
-                      alt={obj.title}
-                      className={styles["course-grid__card-img"]}
-                    />
-                  </div>
+              <div className={styles["course-grid__list-wrapper"]}>
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className={`${styles["course-grid__side-nav-btn"]} ${styles["course-grid__side-nav-btn--prev"]}`}
+                  title="Quay lại trang trước"
+                  aria-label="Quay lại trang trước"
+                >
+                  <Icon name="ChevronLeft" size={24} />
+                </button>
 
-                  <div className={styles["course-grid__card-body"]}>
-                    <h3 className={styles["course-grid__card-title"]}>
-                      {obj.title}
-                    </h3>
-                    <p className={styles["course-grid__card-desc"]}>
-                      {obj.description}
-                    </p>
-                    <div className={styles["course-grid__card-meta"]}>
-                      <span className={styles["course-grid__meta-text"]}>
-                        <Icon name="Book" size={15} />
-                        {obj.lessonsCount}
-                      </span>
-                      <span className={styles["course-grid__meta-text"]}>
-                        <Icon name="Users" size={16} />
-                        {obj.studentsCount} học viên
-                      </span>
+                <div className={styles["course-grid__list"]}>
+                  {displayedItems.map((obj) => (
+                    <div key={obj.id} className={`${styles["course-grid__card"]} reveal-card`}>
+                      <div className={styles["course-grid__card-media-wrap"]}>
+                        <span
+                          className={`${styles["course-grid__level-chip"]} ${
+                            obj.level === "Cơ bản"
+                              ? styles["course-grid__level-chip--basic"]
+                              : obj.level === "Trung cấp"
+                              ? styles["course-grid__level-chip--intermediate"]
+                              : styles["course-grid__level-chip--advanced"]
+                          }`}
+                        >
+                          {obj.level}
+                        </span>
+                        <img
+                          src={heroUrl}
+                          alt={obj.title}
+                          className={styles["course-grid__card-img"]}
+                        />
+                      </div>
+
+                      <div className={styles["course-grid__card-body"]}>
+                        <h3 className={styles["course-grid__card-title"]}>
+                          {obj.title}
+                        </h3>
+                        <p className={styles["course-grid__card-desc"]}>
+                          {obj.description}
+                        </p>
+                        <div className={styles["course-grid__card-meta"]}>
+                          <span className={styles["course-grid__meta-text"]}>
+                            <Icon name="Book" size={15} />
+                            {obj.lessonsCount}
+                          </span>
+                          <span className={styles["course-grid__meta-text"]}>
+                            <Icon name="Users" size={16} />
+                            {obj.studentsCount} học viên
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className={styles["course-grid__card-actions"]}>
+                        <button
+                          type="button"
+                          className={styles["course-grid__action-btn"]}
+                        >
+                          Xem chi tiết
+                        </button>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className={styles["course-grid__card-actions"]}>
-                    <button
-                      type="button"
-                      className={styles["course-grid__action-btn"]}
-                    >
-                      Xem chi tiết
-                    </button>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className={`${styles["course-grid__side-nav-btn"]} ${styles["course-grid__side-nav-btn--next"]}`}
+                  title="Tiến tới trang sau"
+                  aria-label="Tiến tới trang sau"
+                >
+                  <Icon name="ChevronRight" size={24} />
+                </button>
+              </div>
             )}
 
-            {/* Pagination Controls */}
-            <div className={styles["course-grid__pagination-wrapper"]}>
-              <nav className={styles["course-grid__pagination"]}>
-                <button
-                  type="button"
-                  className={styles["course-grid__page-btn"]}
-                  disabled
-                >
-                  ‹
-                </button>
-                <button
-                  type="button"
-                  className={`${styles["course-grid__page-btn"]} ${styles["course-grid__page-btn--active"]}`}
-                >
-                  1
-                </button>
-                <button
-                  type="button"
-                  className={styles["course-grid__page-btn"]}
-                >
-                  2
-                </button>
-                <button
-                  type="button"
-                  className={styles["course-grid__page-btn"]}
-                >
-                  3
-                </button>
-                <span className={styles["course-grid__page-ellipsis"]}>
-                  ..
-                </span>
-                <button
-                  type="button"
-                  className={styles["course-grid__page-btn"]}
-                >
-                  7
-                </button>
-                <button
-                  type="button"
-                  className={styles["course-grid__page-btn"]}
-                >
-                  ›
-                </button>
-              </nav>
-            </div>
+            {/* Dynamic Pagination Controls */}
+            {filteredAndSortedItems.length > 0 && (
+              <div className={styles["course-grid__pagination-wrapper"]}>
+                <nav className={styles["course-grid__pagination"]}>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    className={styles["course-grid__page-btn"]}
+                    disabled={currentPage === 1}
+                  >
+                    ‹
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      type="button"
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`${styles["course-grid__page-btn"]} ${
+                        currentPage === pageNum ? styles["course-grid__page-btn--active"] : ""
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    className={styles["course-grid__page-btn"]}
+                    disabled={currentPage === totalPages}
+                  >
+                    ›
+                  </button>
+                </nav>
+              </div>
+            )}
           </div>
         </section>
 
@@ -387,8 +434,8 @@ function Course() {
             </div>
 
             <div className={styles["course-reasons__list"]}>
-              {courseData.benefits.map((obj, index) => (
-                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["course-reasons__card"]} reveal-card`}>
+              {courseData.benefits.map((obj) => (
+                <div key={obj.id} className={`${styles["course-reasons__card"]} reveal-card`}>
                   <div className={styles["course-reasons__icon"]}>
                     <Icon name={obj.iconName} size={24} />
                   </div>
@@ -416,7 +463,7 @@ function Course() {
             <div className={styles["course-faq__accordion-group"]}>
               {courseData.faqs.map((obj, index) => (
                 <details
-                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  key={obj.id}
                   open={index === 0}
                   className={styles["course-faq__accordion"]}
                 >

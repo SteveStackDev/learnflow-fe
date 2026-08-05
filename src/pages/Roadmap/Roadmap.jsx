@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 // Data
 import { roadmapData } from "./data";
 
@@ -20,17 +20,21 @@ const LEVEL_OPTIONS = [
   { id: "advanced", label: "Nâng cao (Advanced)" },
 ];
 
+const ITEMS_PER_PAGE = 4; // 1 clean row of 4 cards!
+
 function Roadmap() {
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState(LEVEL_OPTIONS[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const dropdownRef = useRef(null);
 
   useScrollReveal();
 
   const handleTabChange = (index) => {
     setActiveTab(index);
+    setCurrentPage(1);
   };
 
   // Close dropdown when clicking outside
@@ -44,10 +48,44 @@ function Roadmap() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Filter & Sort Logic
+  const filteredAndSortedItems = useMemo(() => {
+    return (roadmapData.items || roadmapData.cards || [])
+      .filter((item) => {
+        const matchesSearch =
+          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesLevel =
+          selectedLevel.id === "all" || item.level === selectedLevel.id;
+        return matchesSearch && matchesLevel;
+      })
+      .sort((a, b) => {
+        if (activeTab === 1) {
+          // Mới nhất
+          return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+        }
+        if (activeTab === 2) {
+          // Nhiều lượt xem nhất
+          return (b.viewsNum || 0) - (a.viewsNum || 0);
+        }
+        // Phổ biến
+        if (a.statusLabel === "HOT" && b.statusLabel !== "HOT") return -1;
+        if (b.statusLabel === "HOT" && a.statusLabel !== "HOT") return 1;
+        return (b.viewsNum || 0) - (a.viewsNum || 0);
+      });
+  }, [searchQuery, activeTab, selectedLevel]);
 
-  // Intersection Observer for scroll animations (Staggered)
-  useScrollReveal();
+  // Reset page when search or level changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedLevel]);
 
+  // Pagination calculation
+  const totalPages = Math.max(1, Math.ceil(filteredAndSortedItems.length / ITEMS_PER_PAGE));
+  const displayedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredAndSortedItems.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredAndSortedItems, currentPage]);
 
   return (
     <>
@@ -57,8 +95,6 @@ function Roadmap() {
         <div className={styles["roadmappage__orb-2"]} />
         <div className={styles["roadmappage__orb-3"]} />
         <div className={styles["roadmappage__orb-4"]} />
-
-
 
         {/* 1. Hero Section */}
         <section className={styles["roadmap-hero"]}>
@@ -169,7 +205,7 @@ function Roadmap() {
               </div>
               <span className={styles["roadmap-filters__stats"]}>
                 <Icon name="Layers" size={22} strokeWidth={2.5} />
-                {roadmapData.totalCountText}
+                {filteredAndSortedItems.length} lộ trình học
               </span>
             </div>
 
@@ -177,9 +213,9 @@ function Roadmap() {
               <div className={styles["roadmap-filters__tab-group"]}>
                 {roadmapData.tabs.map((item, index) => (
                   <button
-                    key={item.id || item.slug || item.name || item.title || item}
+                    key={item}
                     type="button"
-                    onClick={() => setActiveTab(index)}
+                    onClick={() => handleTabChange(index)}
                     className={`${styles["roadmap-filters__tab-btn"]} ${
                       activeTab === index
                         ? styles["roadmap-filters__tab-btn--active"]
@@ -245,117 +281,134 @@ function Roadmap() {
         {/* 4. Roadmap Cards Grid Section */}
         <section className={styles["roadmap-cards"]}>
           <div className={styles["roadmap-cards__container"]}>
-            {roadmapData.items.filter((item) => {
-              const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                    item.description.toLowerCase().includes(searchQuery.toLowerCase());
-              return matchesSearch;
-            }).length === 0 ? (
+            {filteredAndSortedItems.length === 0 ? (
               <EmptyState
                 iconName="Search"
                 title="Không tìm thấy lộ trình phù hợp"
                 description="Không có lộ trình học nào khớp với từ khóa tìm kiếm của bạn."
-                actionLabel="Xóa bộ lọc"
+                actionLabel="Xóa tìm kiếm"
                 onAction={() => {
                   setSearchQuery("");
                   setActiveTab(0);
+                  setSelectedLevel(LEVEL_OPTIONS[0]);
                 }}
               />
             ) : (
-              <div className={styles["roadmap-cards__list"]}>
-                {roadmapData.items.filter((item) => {
-                  const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                        item.description.toLowerCase().includes(searchQuery.toLowerCase());
-                  return matchesSearch;
-                }).map((card) => (
-                  <div key={card.id || card.slug || card.name || card.title || card} className={`${styles["roadmap-cards__card"]} reveal-card`}>
-                  {card.statusLabel && (
-                    <span
-                      className={`${styles["roadmap-cards__card-badge"]} ${
-                        card.statusLabel === "HOT"
-                          ? styles["roadmap-cards__card-badge--hot"]
-                          : styles["roadmap-cards__card-badge--new"]
-                      }`}
-                    >
-                      {card.statusLabel}
-                    </span>
-                  )}
-                  <div className={styles["roadmap-cards__card-media-wrap"]}>
-                    <img
-                      className={styles["roadmap-cards__card-media"]}
-                      src={heroUrl}
-                      alt={card.title}
-                    />
-                  </div>
-                  <div className={styles["roadmap-cards__card-content"]}>
-                    <h3 className={styles["roadmap-cards__card-title"]}>
-                      {card.title}
-                    </h3>
-                    <p className={styles["roadmap-cards__card-desc"]}>
-                      {card.description}
-                    </p>
+              <div className={styles["roadmap-cards__list-wrapper"]}>
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className={`${styles["roadmap-cards__side-nav-btn"]} ${styles["roadmap-cards__side-nav-btn--prev"]}`}
+                  title="Quay lại trang trước"
+                  aria-label="Quay lại trang trước"
+                >
+                  <Icon name="ChevronLeft" size={24} />
+                </button>
 
-                    <div className={styles["roadmap-cards__card-tags"]}>
-                      {card.tags.map((item) => (
+                <div className={styles["roadmap-cards__list"]}>
+                  {displayedItems.map((card) => (
+                    <div key={card.id} className={`${styles["roadmap-cards__card"]} reveal-card`}>
+                      {card.statusLabel && (
                         <span
-                          key={item.id || item.name || item}
-                          className={styles["roadmap-cards__tag-chip"]}
+                          className={`${styles["roadmap-cards__card-badge"]} ${
+                            card.statusLabel === "HOT"
+                              ? styles["roadmap-cards__card-badge--hot"]
+                              : styles["roadmap-cards__card-badge--new"]
+                          }`}
                         >
-                          {item}
+                          {card.statusLabel}
                         </span>
-                      ))}
+                      )}
+                      <div className={styles["roadmap-cards__card-media-wrap"]}>
+                        <img
+                          className={styles["roadmap-cards__card-media"]}
+                          src={heroUrl}
+                          alt={card.title}
+                        />
+                      </div>
+                      <div className={styles["roadmap-cards__card-content"]}>
+                        <h3 className={styles["roadmap-cards__card-title"]}>
+                          {card.title}
+                        </h3>
+                        <p className={styles["roadmap-cards__card-desc"]}>
+                          {card.description}
+                        </p>
+
+                        <div className={styles["roadmap-cards__card-tags"]}>
+                          {card.tags.map((item) => (
+                            <span
+                              key={item}
+                              className={styles["roadmap-cards__tag-chip"]}
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className={styles["roadmap-cards__card-actions"]}>
+                        <button
+                          type="button"
+                          className={styles["roadmap-cards__card-btn"]}
+                        >
+                          <span>{card.actionText}</span>
+                          <span className={styles["roadmap-cards__card-btn-arrow"]}>→</span>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className={styles["roadmap-cards__card-actions"]}>
-                    <button
-                      type="button"
-                      className={styles["roadmap-cards__card-btn"]}
-                    >
-                      <span>{card.actionText}</span>
-                      <span className={styles["roadmap-cards__card-btn-arrow"]}>→</span>
-                    </button>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className={`${styles["roadmap-cards__side-nav-btn"]} ${styles["roadmap-cards__side-nav-btn--next"]}`}
+                  title="Tiến tới trang sau"
+                  aria-label="Tiến tới trang sau"
+                >
+                  <Icon name="ChevronRight" size={24} />
+                </button>
+              </div>
             )}
 
-            {/* Pagination */}
-            <div className={styles["roadmap-cards__pagination-wrapper"]}>
-              <nav className={styles["roadmap-cards__pagination"]}>
-                <button
-                  type="button"
-                  className={styles["roadmap-cards__page-btn"]}
-                  disabled
-                >
-                  ‹
-                </button>
-                <button
-                  type="button"
-                  className={`${styles["roadmap-cards__page-btn"]} ${styles["roadmap-cards__page-btn--active"]}`}
-                >
-                  1
-                </button>
-                <button
-                  type="button"
-                  className={styles["roadmap-cards__page-btn"]}
-                >
-                  2
-                </button>
-                <button
-                  type="button"
-                  className={styles["roadmap-cards__page-btn"]}
-                >
-                  3
-                </button>
-                <span className={styles["roadmap-cards__page-dots"]}>..</span>
-                <button
-                  type="button"
-                  className={styles["roadmap-cards__page-btn"]}
-                >
-                  ›
-                </button>
-              </nav>
-            </div>
+            {/* Dynamic Pagination Controls */}
+            {filteredAndSortedItems.length > 0 && (
+              <div className={styles["roadmap-cards__pagination-wrapper"]}>
+                <nav className={styles["roadmap-cards__pagination"]}>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    className={styles["roadmap-cards__page-btn"]}
+                    disabled={currentPage === 1}
+                  >
+                    ‹
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      type="button"
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`${styles["roadmap-cards__page-btn"]} ${
+                        currentPage === pageNum ? styles["roadmap-cards__page-btn--active"] : ""
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    className={styles["roadmap-cards__page-btn"]}
+                    disabled={currentPage === totalPages}
+                  >
+                    ›
+                  </button>
+                </nav>
+              </div>
+            )}
           </div>
         </section>
 
@@ -373,9 +426,9 @@ function Roadmap() {
             </div>
 
             <div className={styles["roadmap-suggestions__list"]}>
-              {roadmapData.suggestions.map((obj, index) => (
+              {roadmapData.suggestions.map((obj) => (
                 <div
-                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  key={obj.id}
                   className={`${styles["roadmap-suggestions__card"]} reveal-card`}
                 >
                   <div className={styles["roadmap-suggestions__icon-wrapper"]}>
@@ -408,7 +461,7 @@ function Roadmap() {
             <div className={styles["roadmap-faq__accordion-group"]}>
               {roadmapData.faqs.map((obj, index) => (
                 <details
-                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  key={obj.id}
                   open={index === 0}
                   className={styles["roadmap-faq__accordion"]}
                 >

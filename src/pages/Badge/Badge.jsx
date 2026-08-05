@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 // Data
 import { badgeData } from "./data";
@@ -12,16 +11,62 @@ import EmptyState from "~/components/EmptyState/EmptyState";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
+const ITEMS_PER_PAGE = 8; // 2 clean rows of 4 cards (8 badges per page)!
+
 function Badge() {
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useScrollReveal();
 
   const handleTabChange = (index) => {
     setActiveTab(index);
+    setCurrentPage(1);
   };
 
+  const itemsPerPage = isMobile ? 4 : 8;
+
+  // Filter Logic
+  const filteredAndSortedItems = useMemo(() => {
+    return badgeData.items.filter((item) => {
+      const matchesSearch =
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const selectedTab = badgeData.tabs[activeTab];
+      const matchesTab =
+        activeTab === 0 ||
+        selectedTab === "Tất cả" ||
+        selectedTab === "Tất cả huy hiệu" ||
+        ((selectedTab === "Đã đạt được" || selectedTab === "Đã nhận") && item.status === "received") ||
+        ((selectedTab === "Chưa đạt được" || selectedTab === "Chưa nhận") && item.status === "locked");
+      return matchesSearch && matchesTab;
+    });
+  }, [searchQuery, activeTab]);
+
+  // Reset page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  // Pagination calculation
+  const totalPages = Math.max(1, Math.ceil(filteredAndSortedItems.length / itemsPerPage));
+  const displayedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedItems.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredAndSortedItems, currentPage, itemsPerPage]);
+
+  const receivedCount = badgeData.items.filter((i) => i.status === "received").length;
+  const progressPercent = ((receivedCount / badgeData.items.length) * 100).toFixed(1);
 
   return (
     <>
@@ -31,8 +76,6 @@ function Badge() {
         <div className={styles["badgepage__orb-2"]} />
         <div className={styles["badgepage__orb-3"]} />
         <div className={styles["badgepage__orb-4"]} />
-
-
 
         {/* 1. Hero Section */}
         <section className={styles["badge-hero"]}>
@@ -127,7 +170,7 @@ function Badge() {
                   <span className={styles["badge-stats__label"]}>
                     Tổng danh hiệu
                   </span>
-                  <span className={styles["badge-stats__value"]}>64</span>
+                  <span className={styles["badge-stats__value"]}>{badgeData.items.length}</span>
                 </div>
               </div>
 
@@ -139,7 +182,7 @@ function Badge() {
                   <span className={styles["badge-stats__label"]}>
                     Đã đạt được
                   </span>
-                  <span className={styles["badge-stats__value"]}>12</span>
+                  <span className={styles["badge-stats__value"]}>{receivedCount}</span>
                 </div>
               </div>
 
@@ -149,13 +192,13 @@ function Badge() {
                     <span className={styles["badge-stats__label"]}>
                       Tiến độ tổng quan
                     </span>
-                    <span className={styles["badge-stats__percent"]}>18.7%</span>
+                    <span className={styles["badge-stats__percent"]}>{progressPercent}%</span>
                   </div>
                   {/* Custom Linear Progress */}
                   <div className={styles["badge-stats__progress-bar"]}>
                     <div
                       className={styles["badge-stats__progress-fill"]}
-                      style={{ width: "18.7%" }}
+                      style={{ width: `${progressPercent}%` }}
                     />
                   </div>
                 </div>
@@ -187,9 +230,9 @@ function Badge() {
                 <div className={styles["badge-filters__tab-group"]}>
                   {badgeData.tabs.map((item, index) => (
                     <button
-                      key={item.id || item.slug || item.name || item.title || item}
+                      key={item}
                       type="button"
-                      onClick={() => setActiveTab(index)}
+                      onClick={() => handleTabChange(index)}
                       className={`${styles["badge-filters__tab-btn"]} ${
                         activeTab === index
                           ? styles["badge-filters__tab-btn--active"]
@@ -208,136 +251,138 @@ function Badge() {
         {/* 4. Badges Cards Grid Section */}
         <section className={styles["badge-grid"]}>
           <div className={styles["badge-grid__container"]}>
-            {badgeData.items.filter((item) => {
-              const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                    item.description.toLowerCase().includes(searchQuery.toLowerCase());
-              const selectedTab = badgeData.tabs[activeTab];
-              const matchesTab = activeTab === 0 || selectedTab === "Tất cả huy hiệu" ||
-                                (selectedTab === "Đã đạt được" && item.status === "received") ||
-                                (selectedTab === "Chưa đạt được" && item.status === "locked");
-              return matchesSearch && matchesTab;
-            }).length === 0 ? (
+            {filteredAndSortedItems.length === 0 ? (
               <EmptyState
-                iconName="Award"
+                iconName="Search"
                 title="Không tìm thấy huy hiệu phù hợp"
                 description="Không có huy hiệu nào khớp với từ khóa tìm kiếm hoặc danh mục của bạn."
-                actionLabel="Xóa bộ lọc"
+                actionLabel="Xóa tìm kiếm"
                 onAction={() => {
                   setSearchQuery("");
                   setActiveTab(0);
                 }}
               />
             ) : (
-              <div className={styles["badge-grid__list"]}>
-                {badgeData.items.filter((item) => {
-                  const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                        item.description.toLowerCase().includes(searchQuery.toLowerCase());
-                  const selectedTab = badgeData.tabs[activeTab];
-                  const matchesTab = activeTab === 0 || selectedTab === "Tất cả huy hiệu" ||
-                                    (selectedTab === "Đã đạt được" && item.status === "received") ||
-                                    (selectedTab === "Chưa đạt được" && item.status === "locked");
-                  return matchesSearch && matchesTab;
-                }).map((obj, index) => (
-                  <div
-                    key={obj.id || obj.slug || obj.name || obj.title || obj}
-                    className={`${styles["badge-grid__card"]} reveal-card ${
-                      obj.status === "locked"
-                        ? styles["badge-grid__card--locked"]
-                        : ""
-                    }`}
-                    style={{ transitionDelay: `${index * 100}ms` }}
-                  >
-                  <div className={styles["badge-grid__card-header"]}>
-                    <span
-                      className={`${styles["badge-grid__status-chip"]} ${
-                        obj.status === "received"
-                          ? styles["badge-grid__status-chip--received"]
-                          : styles["badge-grid__status-chip--locked"]
-                      }`}
-                    >
-                      {obj.badgeText}
-                    </span>
-                  </div>
+              <div className={styles["badge-grid__list-wrapper"]}>
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className={`${styles["badge-grid__side-nav-btn"]} ${styles["badge-grid__side-nav-btn--prev"]}`}
+                  title="Quay lại trang trước"
+                  aria-label="Quay lại trang trước"
+                >
+                  <Icon name="ChevronLeft" size={24} />
+                </button>
 
-                  <div className={styles["badge-grid__card-body"]}>
+                <div className={styles["badge-grid__list"]}>
+                  {displayedItems.map((obj, index) => (
                     <div
-                      className={`${styles["badge-grid__card-icon"]} ${
-                        obj.status === "received"
-                          ? styles["badge-grid__card-icon--active"]
-                          : styles["badge-grid__card-icon--disabled"]
+                      key={obj.id}
+                      className={`${styles["badge-grid__card"]} reveal-card ${
+                        obj.status === "locked"
+                          ? styles["badge-grid__card--locked"]
+                          : ""
                       }`}
+                      style={{ transitionDelay: `${index * 100}ms` }}
                     >
-                      <Icon name={obj.iconName} size={24} />
-                    </div>
-                    <h3 className={styles["badge-grid__card-title"]}>
-                      {obj.title}
-                    </h3>
-                    <p className={styles["badge-grid__card-desc"]}>
-                      {obj.description}
-                    </p>
-                  </div>
+                      <div className={styles["badge-grid__card-header"]}>
+                        <span
+                          className={`${styles["badge-grid__status-chip"]} ${
+                            obj.status === "received"
+                              ? styles["badge-grid__status-chip--received"]
+                              : styles["badge-grid__status-chip--locked"]
+                          }`}
+                        >
+                          {obj.badgeText}
+                        </span>
+                      </div>
 
-                  <div className={styles["badge-grid__card-actions"]}>
-                    <button
-                      type="button"
-                      className={`${styles["badge-grid__btn"]} ${
-                        obj.status === "received"
-                          ? styles["badge-grid__btn--contained"]
-                          : styles["badge-grid__btn--disabled"]
-                      }`}
-                      disabled={obj.status === "locked"}
-                    >
-                      {obj.buttonText}
-                    </button>
-                  </div>
+                      <div className={styles["badge-grid__card-body"]}>
+                        <div
+                          className={`${styles["badge-grid__card-icon"]} ${
+                            obj.status === "received"
+                              ? styles["badge-grid__card-icon--active"]
+                              : styles["badge-grid__card-icon--disabled"]
+                          }`}
+                        >
+                          <Icon name={obj.iconName} size={24} />
+                        </div>
+                        <h3 className={styles["badge-grid__card-title"]}>
+                          {obj.title}
+                        </h3>
+                        <p className={styles["badge-grid__card-desc"]}>
+                          {obj.description}
+                        </p>
+                      </div>
+
+                      <div className={styles["badge-grid__card-actions"]}>
+                        <button
+                          type="button"
+                          className={`${styles["badge-grid__btn"]} ${
+                            obj.status === "received"
+                              ? styles["badge-grid__btn--contained"]
+                              : styles["badge-grid__btn--disabled"]
+                          }`}
+                          disabled={obj.status === "locked"}
+                        >
+                          {obj.buttonText}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className={`${styles["badge-grid__side-nav-btn"]} ${styles["badge-grid__side-nav-btn--next"]}`}
+                  title="Tiến tới trang sau"
+                  aria-label="Tiến tới trang sau"
+                >
+                  <Icon name="ChevronRight" size={24} />
+                </button>
+              </div>
             )}
 
-            {/* Pagination */}
-            <div className={styles["badge-grid__pagination-wrapper"]}>
-              <nav className={styles["badge-grid__pagination"]}>
-                <button
-                  type="button"
-                  className={styles["badge-grid__page-btn"]}
-                  disabled
-                >
-                  ‹
-                </button>
-                <button
-                  type="button"
-                  className={`${styles["badge-grid__page-btn"]} ${styles["badge-grid__page-btn--active"]}`}
-                >
-                  1
-                </button>
-                <button
-                  type="button"
-                  className={styles["badge-grid__page-btn"]}
-                >
-                  2
-                </button>
-                <button
-                  type="button"
-                  className={styles["badge-grid__page-btn"]}
-                >
-                  3
-                </button>
-                <span className={styles["badge-grid__page-ellipsis"]}>..</span>
-                <button
-                  type="button"
-                  className={styles["badge-grid__page-btn"]}
-                >
-                  8
-                </button>
-                <button
-                  type="button"
-                  className={styles["badge-grid__page-btn"]}
-                >
-                  ›
-                </button>
-              </nav>
-            </div>
+            {/* Dynamic Pagination Controls */}
+            {filteredAndSortedItems.length > 0 && (
+              <div className={styles["badge-grid__pagination-wrapper"]}>
+                <nav className={styles["badge-grid__pagination"]}>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    className={styles["badge-grid__page-btn"]}
+                    disabled={currentPage === 1}
+                  >
+                    ‹
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      type="button"
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`${styles["badge-grid__page-btn"]} ${
+                        currentPage === pageNum ? styles["badge-grid__page-btn--active"] : ""
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    className={styles["badge-grid__page-btn"]}
+                    disabled={currentPage === totalPages}
+                  >
+                    ›
+                  </button>
+                </nav>
+              </div>
+            )}
           </div>
         </section>
 
@@ -350,8 +395,8 @@ function Badge() {
               </h2>
             </div>
             <div className={styles["badge-guide__list"]}>
-              {badgeData.guides.map((obj, index) => (
-                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["badge-guide__card"]} reveal-card`}>
+              {badgeData.guides.map((obj) => (
+                <div key={obj.id} className={`${styles["badge-guide__card"]} reveal-card`}>
                   <div className={styles["badge-guide__icon"]}>
                     <Icon name={obj.iconName} size={24} />
                   </div>
@@ -376,7 +421,7 @@ function Badge() {
             <div className={styles["badge-faq__accordion-group"]}>
               {badgeData.faqs.map((obj, index) => (
                 <details
-                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  key={obj.id}
                   open={index === 0}
                   className={styles["badge-faq__accordion"]}
                 >

@@ -675,8 +675,8 @@
 
 .home-team__list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 }
 
 .home-team__card {
@@ -904,6 +904,25 @@
 .home-contact__form-input:focus {
   border-color: #0950c3;
   box-shadow: 0 0 0 3px rgba(9, 80, 195, 0.15);
+}
+
+.home-contact__form-input--error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.home-contact__form-input--error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+}
+
+.home-contact__error-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #ef4444;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .home-contact__form-input--textarea {

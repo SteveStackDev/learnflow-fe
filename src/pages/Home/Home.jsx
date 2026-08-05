@@ -19,20 +19,70 @@ function Home() {
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactMessage, setContactMessage] = useState("");
+  const [contactErrors, setContactErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   useScrollReveal();
 
+  const validateContactForm = () => {
+    const newErrors = {};
+    if (!contactName.trim()) {
+      newErrors.name = "Vui lòng nhập họ và tên!";
+    }
+
+    if (!contactEmail.trim()) {
+      newErrors.email = "Vui lòng nhập địa chỉ Email!";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail.trim())) {
+      newErrors.email = "Email không đúng định dạng (ví dụ: name@domain.com)";
+    }
+
+    if (!contactMessage.trim()) {
+      newErrors.message = "Vui lòng nhập nội dung cần tư vấn!";
+    } else if (contactMessage.trim().length < 5) {
+      newErrors.message = "Nội dung tin nhắn phải có ít nhất 5 ký tự!";
+    }
+
+    setContactErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleContactSubmit = (e) => {
     e.preventDefault();
-    if (!contactName || !contactEmail) {
-      toast.error("Vui lòng nhập Họ tên và Email!", "Lỗi thông tin");
+    const newErrors = {};
+    if (!contactName.trim()) {
+      newErrors.name = "Vui lòng nhập họ và tên!";
+    }
+
+    if (!contactEmail.trim()) {
+      newErrors.email = "Vui lòng nhập địa chỉ Email!";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail.trim())) {
+      newErrors.email = "Email không đúng định dạng (ví dụ: name@domain.com)";
+    }
+
+    if (!contactMessage.trim()) {
+      newErrors.message = "Vui lòng nhập nội dung cần tư vấn!";
+    } else if (contactMessage.trim().length < 5) {
+      newErrors.message = "Nội dung tin nhắn phải có ít nhất 5 ký tự!";
+    }
+
+    setContactErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      const firstError = Object.values(newErrors)[0];
+      toast.error(firstError, "Thông tin tư vấn chưa hợp lệ");
       return;
     }
-    toast.success("Đã nhận thông tin tư vấn! LearnFlow sẽ gửi tài liệu qua Email cho bạn.", "Gửi thành công");
-    setContactName("");
-    setContactEmail("");
-    setContactMessage("");
+
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      toast.success("Đã nhận thông tin tư vấn! LearnFlow sẽ gửi tài liệu qua Email cho bạn.", "Gửi thành công");
+      setContactName("");
+      setContactEmail("");
+      setContactMessage("");
+      setContactErrors({});
+    }, 1000);
   };
   return (
     <>
@@ -396,17 +446,28 @@ function Home() {
             </div>
 
             <div className={styles["home-contact__form-wrap"]}>
-              <form className={styles["home-contact__form"]} onSubmit={handleContactSubmit}>
+              <form noValidate className={styles["home-contact__form"]} onSubmit={handleContactSubmit}>
                 <div className={styles["home-contact__form-group"]}>
                   <label htmlFor="home-contact-name" className={styles["home-contact__label"]}>Họ và tên</label>
                   <input
                     id="home-contact-name"
                     type="text"
                     value={contactName}
-                    onChange={(e) => setContactName(e.target.value)}
+                    onChange={(e) => {
+                      setContactName(e.target.value);
+                      if (contactErrors.name) setContactErrors((prev) => ({ ...prev, name: null }));
+                    }}
                     placeholder="Nhập tên của bạn"
-                    className={styles["home-contact__form-input"]}
+                    className={`${styles["home-contact__form-input"]} ${
+                      contactErrors.name ? styles["home-contact__form-input--error"] : ""
+                    }`}
                   />
+                  {contactErrors.name && (
+                    <span className={styles["home-contact__error-text"]}>
+                      <Icon name="AlertCircle" size={13} />
+                      {contactErrors.name}
+                    </span>
+                  )}
                 </div>
                 <div className={styles["home-contact__form-group"]}>
                   <label htmlFor="home-contact-email" className={styles["home-contact__label"]}>Email</label>
@@ -414,29 +475,52 @@ function Home() {
                     id="home-contact-email"
                     type="email"
                     value={contactEmail}
-                    onChange={(e) => setContactEmail(e.target.value)}
+                    onChange={(e) => {
+                      setContactEmail(e.target.value);
+                      if (contactErrors.email) setContactErrors((prev) => ({ ...prev, email: null }));
+                    }}
                     placeholder="example@email.com"
-                    className={styles["home-contact__form-input"]}
+                    className={`${styles["home-contact__form-input"]} ${
+                      contactErrors.email ? styles["home-contact__form-input--error"] : ""
+                    }`}
                   />
+                  {contactErrors.email && (
+                    <span className={styles["home-contact__error-text"]}>
+                      <Icon name="AlertCircle" size={13} />
+                      {contactErrors.email}
+                    </span>
+                  )}
                 </div>
                 <div className={styles["home-contact__form-group"]}>
                   <label htmlFor="home-contact-message" className={styles["home-contact__label"]}>Nội dung</label>
                   <textarea
                     id="home-contact-message"
                     value={contactMessage}
-                    onChange={(e) => setContactMessage(e.target.value)}
+                    onChange={(e) => {
+                      setContactMessage(e.target.value);
+                      if (contactErrors.message) setContactErrors((prev) => ({ ...prev, message: null }));
+                    }}
                     placeholder="Tôi muốn tìm hiểu về lộ trình Frontend..."
                     rows={4}
-                    className={`${styles["home-contact__form-input"]} ${styles["home-contact__form-input--textarea"]}`}
+                    className={`${styles["home-contact__form-input"]} ${styles["home-contact__form-input--textarea"]} ${
+                      contactErrors.message ? styles["home-contact__form-input--error"] : ""
+                    }`}
                   />
+                  {contactErrors.message && (
+                    <span className={styles["home-contact__error-text"]}>
+                      <Icon name="AlertCircle" size={13} />
+                      {contactErrors.message}
+                    </span>
+                  )}
                 </div>
 
                 <div className={styles["home-contact__form-actions"]}>
                   <button
                     type="submit"
+                    disabled={isSubmitting}
                     className={`${styles["home-contact__form-btn"]} ${styles["home-contact__form-btn--contained"]}`}
                   >
-                    Gửi yêu cầu
+                    {isSubmitting ? "Đang gửi yêu cầu..." : "Gửi yêu cầu"}
                   </button>
                   <Link
                     to="/contact"

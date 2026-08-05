@@ -1,3 +1,5 @@
+import heroUrl from "~/assets/images/Home/hero.webp";
+
 export const contestData = {
   stats: [
     { title: "Tổng Contest", value: "248+", iconName: "Trophy" },
@@ -5,7 +7,7 @@ export const contestData = {
     { title: "Tổng thí sinh", value: "45.2K", iconName: "Users" },
   ],
 
-  tabs: ["Phổ biến", "Mới nhất", "Sắp diễn ra", "Nhiều người tham gia"],
+  tabs: ["Tất cả cuộc thi", "Đang diễn ra", "Sắp diễn ra", "Đã kết thúc"],
 
   items: [
     {
@@ -15,9 +17,11 @@ export const contestData = {
       time: "20:00, Thứ Bảy (12/10)",
       duration: "Thời lượng: 90 phút",
       participants: "1,200+ Thí sinh đăng ký",
+      participantsNum: 1200,
+      createdAt: "2026-04-01",
       actionText: "Đăng ký ngay",
       actionVariant: "contained",
-      imageUrl: "/src/assets/images/Home/hero.webp",
+      imageUrl: heroUrl,
     },
     {
       id: "contest-2",
@@ -26,9 +30,11 @@ export const contestData = {
       time: "19:30, Chủ Nhật (15/10)",
       duration: "Thời lượng: 120 phút",
       participants: "850+ Thí sinh đăng ký",
+      participantsNum: 850,
+      createdAt: "2026-04-05",
       actionText: "Xem chi tiết",
       actionVariant: "outlined",
-      imageUrl: "/src/assets/images/Home/hero.webp",
+      imageUrl: heroUrl,
     },
     {
       id: "contest-3",
@@ -37,36 +43,116 @@ export const contestData = {
       time: "21:00, Thứ Sáu (20/10)",
       duration: "Thời lượng: 150 phút",
       participants: "2,100+ Thí sinh đăng ký",
+      participantsNum: 2100,
+      createdAt: "2026-04-10",
       actionText: "Đăng ký ngay",
       actionVariant: "contained",
-      imageUrl: "/src/assets/images/Home/hero.webp",
+      imageUrl: heroUrl,
+    },
+    {
+      id: "contest-4",
+      statusLabel: "SẮP DIỄN RA",
+      title: "Hackathon Web3 & Smart Contract Developer",
+      time: "09:00, Thứ Bảy (25/10)",
+      duration: "Thời lượng: 24 giờ",
+      participants: "3,500+ Thí sinh đăng ký",
+      participantsNum: 3500,
+      createdAt: "2026-04-12",
+      actionText: "Đăng ký ngay",
+      actionVariant: "contained",
+      imageUrl: heroUrl,
+    },
+    {
+      id: "contest-5",
+      statusLabel: "ĐÃ KẾT THÚC",
+      title: "Giải vô địch Algorithm Spring Cup 2026",
+      time: "Diễn ra: 15/03/2026",
+      duration: "Thời lượng: 180 phút",
+      participants: "4,800+ Thí sinh tham gia",
+      participantsNum: 4800,
+      createdAt: "2026-03-15",
+      actionText: "Xem kết quả",
+      actionVariant: "outlined",
+      imageUrl: heroUrl,
+    },
+    {
+      id: "contest-6",
+      statusLabel: "ĐANG MỞ ĐĂNG KÝ",
+      title: "Python Data Science Speed Run #5",
+      time: "20:00, Chủ Nhật (22/10)",
+      duration: "Thời lượng: 60 phút",
+      participants: "1,950+ Thí sinh đăng ký",
+      participantsNum: 1950,
+      createdAt: "2026-04-08",
+      actionText: "Đăng ký ngay",
+      actionVariant: "contained",
+      imageUrl: heroUrl,
+    },
+    {
+      id: "contest-7",
+      statusLabel: "ĐÃ KẾT THÚC",
+      title: "ReactJS UI Component Challenge Season 3",
+      time: "Diễn ra: 28/02/2026",
+      duration: "Thời lượng: 120 phút",
+      participants: "2,600+ Thí sinh tham gia",
+      participantsNum: 2600,
+      createdAt: "2026-02-28",
+      actionText: "Xem bảng xếp hạng",
+      actionVariant: "outlined",
+      imageUrl: heroUrl,
+    },
+    {
+      id: "contest-8",
+      statusLabel: "SẮP DIỄN RA",
+      title: "AI Hackathon: Build with LLM & LangChain",
+      time: "14:00, Thứ Bảy (05/11)",
+      duration: "Thời lượng: 48 giờ",
+      participants: "5,100+ Thí sinh đăng ký",
+      participantsNum: 5100,
+      createdAt: "2026-04-18",
+      actionText: "Đăng ký ngay",
+      actionVariant: "contained",
+      imageUrl: heroUrl,
+    },
+    {
+      id: "contest-9",
+      statusLabel: "ĐÃ KẾT THÚC",
+      title: "Đấu trường SQL Query Speedtest",
+      time: "Diễn ra: 10/01/2026",
+      duration: "Thời lượng: 45 phút",
+      participants: "3,100+ Thí sinh tham gia",
+      participantsNum: 3100,
+      createdAt: "2026-01-10",
+      actionText: "Xem bảng xếp hạng",
+      actionVariant: "outlined",
+      imageUrl: heroUrl,
     },
   ],
 
   benefits: [
     {
-      id: "contest-4",
+      id: "contest-benefit-1",
       title: "Rèn áp lực thời gian",
       description:
         "Nâng cao khả năng giải quyết vấn đề nhanh chóng và chính xác dưới áp lực đồng hồ đếm ngược.",
       iconName: "Clock",
     },
     {
-      id: "contest-5",
+      id: "contest-benefit-2",
       title: "Kiểm tra kiến thức",
       description:
         "Đánh giá khách quan trình độ hiện tại của bạn thông qua các bài toán thực tế và đa dạng.",
       iconName: "Code",
     },
     {
-      id: "contest-6",
+      id: "contest-benefit-3",
       title: "Cạnh tranh & Thứ hạng",
       description:
         "So tài cùng hàng ngàn lập trình viên khác và thăng hạng trên Global Leaderboard của LearnFlow.",
       iconName: "Award",
     },
     {
-      id: "contest-7",
+      id: "contest-benefit-4",
       title: "Nhận danh hiệu",
       description:
         "Sở hữu những Badge và chứng nhận độc quyền chỉ dành cho những người đứng đầu cuộc thi.",
@@ -76,19 +162,19 @@ export const contestData = {
 
   faqs: [
     {
-      id: "contest-8",
+      id: "contest-faq-1",
       question: "Ai có thể tham gia các contest trên LearnFlow?",
       answer:
         "Tất cả các thành viên có tài khoản trên LearnFlow đều có thể tham gia miễn phí các kỳ thi cộng đồng.",
     },
     {
-      id: "contest-9",
+      id: "contest-faq-2",
       question: "Cách tính điểm trong mỗi kỳ thi như thế nào?",
       answer:
         "Điểm số dựa trên số lượng testcase bạn vượt qua và thời gian nộp bài. Nộp bài càng sớm điểm càng tối ưu.",
     },
     {
-      id: "contest-10",
+      id: "contest-faq-3",
       question: "Tôi có thể sử dụng ngôn ngữ lập trình nào?",
       answer:
         "Hệ thống hỗ trợ hầu hết các ngôn ngữ phổ biến hiện nay như JavaScript, Python, C++, Java, và Go.",

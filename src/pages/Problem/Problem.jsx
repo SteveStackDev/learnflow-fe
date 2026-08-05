@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 // Data
 import { problemData } from "./data";
 
@@ -21,13 +21,26 @@ function Problem() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
   const sortDropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useScrollReveal();
 
   const handleTabChange = (index) => {
     setActiveTab(index);
+    setCurrentPage(1);
   };
+
+  const itemsPerPage = isMobile ? 4 : 6;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -40,6 +53,47 @@ function Problem() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Filter & Sort Logic
+  const filteredAndSortedItems = useMemo(() => {
+    const tabs = problemData.tabs || problemData.categories || ["Tất cả"];
+    return (problemData.items || problemData.challenges || [])
+      .filter((item) => {
+        const matchesSearch =
+          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchQuery.toLowerCase());
+        const selectedCategory = tabs[activeTab] || "Tất cả";
+        const matchesCategory =
+          activeTab === 0 ||
+          selectedCategory === "Tất cả" ||
+          selectedCategory === "Tất cả dạng bài" ||
+          item.level === selectedCategory ||
+          (item.tags && item.tags.includes(selectedCategory));
+        return matchesSearch && matchesCategory;
+      })
+      .sort((a, b) => {
+        if (selectedSort.id === "latest") {
+          return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+        }
+        if (selectedSort.id === "rate") {
+          const rateA = parseFloat(a.successRate) || 0;
+          const rateB = parseFloat(b.successRate) || 0;
+          return rateB - rateA;
+        }
+        return (b.studentsNum || 0) - (a.studentsNum || 0);
+      });
+  }, [searchQuery, activeTab, selectedSort]);
+
+  // Reset page when search or sort changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedSort]);
+
+  // Pagination calculation
+  const totalPages = Math.max(1, Math.ceil(filteredAndSortedItems.length / itemsPerPage));
+  const displayedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedItems.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredAndSortedItems, currentPage, itemsPerPage]);
 
   return (
     <>
@@ -49,8 +103,6 @@ function Problem() {
         <div className={styles["problempage__orb-2"]} />
         <div className={styles["problempage__orb-3"]} />
         <div className={styles["problempage__orb-4"]} />
-
-
 
         {/* 1. Hero Section */}
         <section className={styles["prob-hero"]}>
@@ -270,7 +322,7 @@ function Problem() {
                         {obj.title}
                       </span>
                       <span className={styles["prob-filter__stat-value"]}>
-                        {obj.value}
+                        {obj.title === "Tổng số bài tập" ? filteredAndSortedItems.length : obj.value}
                       </span>
                     </div>
                   </div>
@@ -289,125 +341,133 @@ function Problem() {
               </h2>
             </div>
 
-            {problemData.items.filter((item) => {
-              const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                    item.description.toLowerCase().includes(searchQuery.toLowerCase());
-              return matchesSearch;
-            }).length === 0 ? (
+            {filteredAndSortedItems.length === 0 ? (
               <EmptyState
                 iconName="Search"
                 title="Không tìm thấy bài tập phù hợp"
                 description="Không có bài tập nào khớp với từ khóa tìm kiếm của bạn."
-                actionLabel="Xóa bộ lọc"
+                actionLabel="Xóa tìm kiếm"
                 onAction={() => setSearchQuery("")}
               />
             ) : (
-              <div className={styles["prob-challenges__list"]}>
-                {problemData.items.filter((item) => {
-                  const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                        item.description.toLowerCase().includes(searchQuery.toLowerCase());
-                  return matchesSearch;
-                }).map((obj) => (
-                  <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["prob-challenges__card"]} reveal-card`}>
-                    <div className={styles["prob-challenges__card-header"]}>
-                      <div className={styles["prob-challenges__card-icon"]}>
-                        <Icon name={obj.iconName} size={22} />
-                      </div>
-                      <span
-                        className={`${styles["prob-challenges__level-badge"]} ${
-                          obj.level === "Dễ"
-                            ? styles["prob-challenges__level-badge--easy"]
-                            : obj.level === "Trung bình"
-                            ? styles["prob-challenges__level-badge--medium"]
-                            : styles["prob-challenges__level-badge--hard"]
-                        }`}
-                      >
-                        <span className={styles["prob-challenges__badge-dot"]} />
-                        {obj.level}
-                      </span>
-                    </div>
+              <div className={styles["prob-challenges__list-wrapper"]}>
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className={`${styles["prob-challenges__side-nav-btn"]} ${styles["prob-challenges__side-nav-btn--prev"]}`}
+                  title="Quay lại trang trước"
+                  aria-label="Quay lại trang trước"
+                >
+                  <Icon name="ChevronLeft" size={24} />
+                </button>
 
-                    <div className={styles["prob-challenges__card-body"]}>
-                      <h3 className={styles["prob-challenges__card-title"]}>
-                        {obj.title}
-                      </h3>
-                      <p className={styles["prob-challenges__card-desc"]}>
-                        {obj.description}
-                      </p>
-                      <div className={styles["prob-challenges__tag-group"]}>
-                        {obj.tags.map((item, tIdx) => (
-                          <span
-                            key={tIdx}
-                            className={styles["prob-challenges__tag-item"]}
-                          >
-                            {item}
-                          </span>
-                        ))}
+                <div className={styles["prob-challenges__list"]}>
+                  {displayedItems.map((obj) => (
+                    <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["prob-challenges__card"]} reveal-card`}>
+                      <div className={styles["prob-challenges__card-header"]}>
+                        <div className={styles["prob-challenges__card-icon"]}>
+                          <Icon name={obj.iconName} size={22} />
+                        </div>
+                        <span
+                          className={`${styles["prob-challenges__level-badge"]} ${
+                            obj.level === "Dễ"
+                              ? styles["prob-challenges__level-badge--easy"]
+                              : obj.level === "Trung bình"
+                              ? styles["prob-challenges__level-badge--medium"]
+                              : styles["prob-challenges__level-badge--hard"]
+                          }`}
+                        >
+                          <span className={styles["prob-challenges__badge-dot"]} />
+                          {obj.level}
+                        </span>
+                      </div>
+
+                      <div className={styles["prob-challenges__card-body"]}>
+                        <h3 className={styles["prob-challenges__card-title"]}>
+                          {obj.title}
+                        </h3>
+                        <p className={styles["prob-challenges__card-desc"]}>
+                          {obj.description}
+                        </p>
+                        <div className={styles["prob-challenges__tag-group"]}>
+                          {obj.tags.map((item, tIdx) => (
+                            <span
+                              key={tIdx}
+                              className={styles["prob-challenges__tag-item"]}
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className={styles["prob-challenges__card-actions"]}>
+                        <span className={styles["prob-challenges__rate-text"]}>
+                          <Icon name="Clock" size={15} />
+                          Tỷ lệ: {obj.successRate}
+                        </span>
+                        <button
+                          type="button"
+                          className={styles["prob-challenges__action-btn"]}
+                        >
+                          Giải bài
+                        </button>
                       </div>
                     </div>
+                  ))}
+                </div>
 
-                    <div className={styles["prob-challenges__card-actions"]}>
-                      <span className={styles["prob-challenges__rate-text"]}>
-                        <Icon name="Clock" size={15} />
-                        Tỷ lệ: {obj.successRate}
-                      </span>
-                      <button
-                        type="button"
-                        className={styles["prob-challenges__action-btn"]}
-                      >
-                        Giải bài
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className={`${styles["prob-challenges__side-nav-btn"]} ${styles["prob-challenges__side-nav-btn--next"]}`}
+                  title="Tiến tới trang sau"
+                  aria-label="Tiến tới trang sau"
+                >
+                  <Icon name="ChevronRight" size={24} />
+                </button>
               </div>
             )}
 
-            {/* Pagination */}
-            <div className={styles["prob-challenges__pagination-wrapper"]}>
-              <nav className={styles["prob-challenges__pagination"]}>
-                <button
-                  type="button"
-                  className={styles["prob-challenges__page-btn"]}
-                  disabled
-                >
-                  ‹
-                </button>
-                <button
-                  type="button"
-                  className={`${styles["prob-challenges__page-btn"]} ${styles["prob-challenges__page-btn--active"]}`}
-                >
-                  1
-                </button>
-                <button
-                  type="button"
-                  className={styles["prob-challenges__page-btn"]}
-                >
-                  2
-                </button>
-                <button
-                  type="button"
-                  className={styles["prob-challenges__page-btn"]}
-                >
-                  3
-                </button>
-                <span className={styles["prob-challenges__page-ellipsis"]}>
-                  -
-                </span>
-                <button
-                  type="button"
-                  className={styles["prob-challenges__page-btn"]}
-                >
-                  15
-                </button>
-                <button
-                  type="button"
-                  className={styles["prob-challenges__page-btn"]}
-                >
-                  ›
-                </button>
-              </nav>
-            </div>
+            {/* Dynamic Pagination Controls */}
+            {filteredAndSortedItems.length > 0 && (
+              <div className={styles["prob-challenges__pagination-wrapper"]}>
+                <nav className={styles["prob-challenges__pagination"]}>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    className={styles["prob-challenges__page-btn"]}
+                    disabled={currentPage === 1}
+                  >
+                    ‹
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      type="button"
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`${styles["prob-challenges__page-btn"]} ${
+                        currentPage === pageNum ? styles["prob-challenges__page-btn--active"] : ""
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    className={styles["prob-challenges__page-btn"]}
+                    disabled={currentPage === totalPages}
+                  >
+                    ›
+                  </button>
+                </nav>
+              </div>
+            )}
           </div>
         </section>
 
@@ -448,27 +508,42 @@ function Problem() {
                 Câu hỏi thường gặp
               </h2>
             </div>
-
             <div className={styles["prob-faq__accordion-group"]}>
-              {problemData.faqs.map((obj, index) => (
-                <details
-                  key={obj.id || obj.slug || obj.name || obj.title || obj}
-                  open={index === 0}
-                  className={styles["prob-faq__accordion"]}
-                >
+              {problemData.faqs ? (
+                problemData.faqs.map((obj, index) => (
+                  <details
+                    key={obj.id || obj.slug || obj.name || obj.title || obj}
+                    open={index === 0}
+                    className={styles["prob-faq__accordion"]}
+                  >
+                    <summary className={styles["prob-faq__accordion-summary"]}>
+                      <span className={styles["prob-faq__accordion-title"]}>
+                        {obj.question}
+                      </span>
+                      <span className={styles["prob-faq__accordion-icon"]}>
+                        <Icon name="ChevronDown" size={18} strokeWidth={2.5} />
+                      </span>
+                    </summary>
+                    <div className={styles["prob-faq__accordion-details"]}>
+                      <p>{obj.answer}</p>
+                    </div>
+                  </details>
+                ))
+              ) : (
+                <details open className={styles["prob-faq__accordion"]}>
                   <summary className={styles["prob-faq__accordion-summary"]}>
                     <span className={styles["prob-faq__accordion-title"]}>
-                      {obj.question}
+                      Làm sao để nộp bài và kiểm tra kết quả?
                     </span>
                     <span className={styles["prob-faq__accordion-icon"]}>
                       <Icon name="ChevronDown" size={18} strokeWidth={2.5} />
                     </span>
                   </summary>
                   <div className={styles["prob-faq__accordion-details"]}>
-                    <p>{obj.answer}</p>
+                    <p>Nhấn vào nút 'Giải bài', hệ thống sẽ mở trình soạn thảo code để bạn viết và chạy testcase trực tiếp.</p>
                   </div>
                 </details>
-              ))}
+              )}
             </div>
           </div>
         </section>

@@ -39,6 +39,7 @@ export const aboutData = {
         "Liên tục cải tiến",
         "Cộng đồng hỗ trợ",
       ],
+      iconName: "Zap",
     },
   ],
 
@@ -78,6 +79,14 @@ export const aboutData = {
       description:
         "Bậc thầy về tối ưu hóa cơ sở dữ liệu và bảo mật, đảm bảo LearnFlow luôn vận hành ổn định cho hàng triệu người dùng.",
       role: "Backend Developer",
+      imageUrl: "/src/assets/images/Home/hero.webp",
+    },
+    {
+      id: "about-9",
+      name: "Châu Nam Dương",
+      description:
+        "Chuyên gia phát triển giao diện người dùng hiện đại, tinh tế và tối ưu trải nghiệm tương tác mượt mà trên LearnFlow.",
+      role: "Frontend Developer",
       imageUrl: "/src/assets/images/Home/hero.webp",
     },
   ],

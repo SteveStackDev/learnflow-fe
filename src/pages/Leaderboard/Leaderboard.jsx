@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 // Data
 import { leaderboardData } from "./data";
@@ -17,17 +17,21 @@ const TIME_OPTIONS = [
   { id: "all-time", label: "Tất cả thời gian" },
 ];
 
+const ITEMS_PER_PAGE = 5;
+
 function Leaderboard() {
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTime, setSelectedTime] = useState(TIME_OPTIONS[0]);
   const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const timeDropdownRef = useRef(null);
 
   useScrollReveal();
 
   const handleTabChange = (index) => {
     setActiveTab(index);
+    setCurrentPage(1);
   };
 
   // Close dropdown when clicking outside
@@ -41,6 +45,32 @@ function Leaderboard() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Filter & Sort Logic
+  const filteredAndSortedItems = useMemo(() => {
+    return leaderboardData.rankings
+      .filter((item) => {
+        const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const selectedCategory = leaderboardData.tabs[activeTab];
+        const matchesCategory =
+          activeTab === 0 || selectedCategory === "Tổng xếp hạng" || item.category === selectedCategory;
+        const matchesTimeframe =
+          selectedTime.id === "all-time" || item.timeframe === selectedTime.id || !item.timeframe;
+        return matchesSearch && matchesCategory && matchesTimeframe;
+      })
+      .sort((a, b) => (b.exp || 0) - (a.exp || 0));
+  }, [searchQuery, activeTab, selectedTime]);
+
+  // Reset page when search or timeframe changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedTime]);
+
+  // Pagination calculation
+  const totalPages = Math.max(1, Math.ceil(filteredAndSortedItems.length / ITEMS_PER_PAGE));
+  const displayedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredAndSortedItems.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredAndSortedItems, currentPage]);
 
   return (
     <>
@@ -50,8 +80,6 @@ function Leaderboard() {
         <div className={styles["leaderboardpage__orb-2"]} />
         <div className={styles["leaderboardpage__orb-3"]} />
         <div className={styles["leaderboardpage__orb-4"]} />
-
-
 
         {/* 1. Hero Section */}
         <section className={styles["board-hero"]}>
@@ -76,7 +104,7 @@ function Leaderboard() {
         <section className={styles["board-podium"]}>
           <div className={styles["board-podium__container"]}>
             <div className={styles["board-podium__list"]}>
-              {leaderboardData.podium.map((obj, index) => (
+              {leaderboardData.podium.map((obj) => (
                 <div
                   key={obj.id || obj.slug || obj.name || obj.title || obj}
                   className={`${styles["board-podium__item"]} ${
@@ -138,7 +166,7 @@ function Leaderboard() {
                     <button
                       key={item.id || item.slug || item.name || item.title || item}
                       type="button"
-                      onClick={() => setActiveTab(index)}
+                      onClick={() => handleTabChange(index)}
                       className={`${styles["board-filters__tab-btn"]} ${
                         activeTab === index
                           ? styles["board-filters__tab-btn--active"]
@@ -248,9 +276,7 @@ function Leaderboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {leaderboardData.rankings.filter((item) =>
-                    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-                  ).length === 0 ? (
+                  {filteredAndSortedItems.length === 0 ? (
                     <tr>
                       <td colSpan={6}>
                         <EmptyState
@@ -258,14 +284,15 @@ function Leaderboard() {
                           title="Không tìm thấy người dùng"
                           description="Không có ai trong bảng xếp hạng khớp với từ khóa của bạn."
                           actionLabel="Xóa tìm kiếm"
-                          onAction={() => setSearchQuery("")}
+                          onAction={() => {
+                            setSearchQuery("");
+                            setActiveTab(0);
+                          }}
                         />
                       </td>
                     </tr>
                   ) : (
-                    leaderboardData.rankings.filter((item) =>
-                      item.name.toLowerCase().includes(searchQuery.toLowerCase())
-                    ).map((obj) => (
+                    displayedItems.map((obj) => (
                       <tr
                         key={obj.id || obj.slug || obj.name || obj.title || obj}
                         className={`${styles["board-ranking__table-row"]} ${
@@ -274,113 +301,106 @@ function Leaderboard() {
                             : ""
                         }`}
                       >
-                      <td
-                        className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--rank"]}`}
-                      >
-                        {obj.rank}
-                      </td>
-                      <td className={styles["board-ranking__table-cell"]}>
-                        <div className={styles["board-ranking__user-info"]}>
-                          {obj.isCurrentUser ? (
-                            <div className={styles["board-ranking__avatar-fallback"]}>
-                              B
-                            </div>
-                          ) : (
-                            <img
-                              className={styles["board-ranking__avatar"]}
-                              src={obj.avatarUrl}
-                              alt={obj.name}
-                            />
-                          )}
-                          <span className={styles["board-ranking__user-name"]}>
-                            {obj.name}
-                          </span>
-                          {obj.isCurrentUser && (
-                            <span className={styles["board-ranking__chip-tag"]}>
-                              CURRENT
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td
-                        className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--points"]}`}
-                      >
-                        {obj.points}
-                      </td>
-                      <td className={styles["board-ranking__table-cell"]}>
-                        <span
-                          className={`${styles["board-ranking__trend-label"]} ${
-                            styles[`board-ranking__trend-label--${obj.trend}`]
-                          }`}
+                        <td
+                          className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--rank"]}`}
                         >
-                          {obj.trend === "up" && (
-                            <span className={styles["board-ranking__trend-icon--up"]}>
-                              <Icon name="TrendingUp" size={16} />
+                          {obj.rank}
+                        </td>
+                        <td className={styles["board-ranking__table-cell"]}>
+                          <div className={styles["board-ranking__user-info"]}>
+                            {obj.isCurrentUser ? (
+                              <div className={styles["board-ranking__avatar-fallback"]}>
+                                B
+                              </div>
+                            ) : (
+                              <img
+                                className={styles["board-ranking__avatar"]}
+                                src={obj.avatarUrl}
+                                alt={obj.name}
+                              />
+                            )}
+                            <span className={styles["board-ranking__user-name"]}>
+                              {obj.name}
                             </span>
-                          )}
-                          {obj.trend === "down" && (
-                            <span className={styles["board-ranking__trend-icon--down"]}>
-                              <Icon name="TrendingDown" size={16} />
-                            </span>
-                          )}
-                          {obj.trend === "same" && (
-                            <span className={styles["board-ranking__trend-icon--same"]}>
-                              —
-                            </span>
-                          )}
-                        </span>
-                      </td>
-                    </tr>
-                  )))}
+                            {obj.isCurrentUser && (
+                              <span className={styles["board-ranking__chip-tag"]}>
+                                CURRENT
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td
+                          className={`${styles["board-ranking__table-cell"]} ${styles["board-ranking__table-cell--points"]}`}
+                        >
+                          {obj.points}
+                        </td>
+                        <td className={styles["board-ranking__table-cell"]}>
+                          <span
+                            className={`${styles["board-ranking__trend-label"]} ${
+                              styles[`board-ranking__trend-label--${obj.trend}`]
+                            }`}
+                          >
+                            {obj.trend === "up" && (
+                              <span className={styles["board-ranking__trend-icon--up"]}>
+                                <Icon name="TrendingUp" size={16} />
+                              </span>
+                            )}
+                            {obj.trend === "down" && (
+                              <span className={styles["board-ranking__trend-icon--down"]}>
+                                <Icon name="TrendingDown" size={16} />
+                              </span>
+                            )}
+                            {obj.trend === "same" && (
+                              <span className={styles["board-ranking__trend-icon--same"]}>
+                                —
+                              </span>
+                            )}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
 
-            {/* Pagination */}
-            <div className={styles["board-ranking__pagination-wrapper"]}>
-              <nav className={styles["board-ranking__pagination"]}>
-                <button
-                  type="button"
-                  className={styles["board-ranking__page-btn"]}
-                  disabled
-                >
-                  ‹
-                </button>
-                <button
-                  type="button"
-                  className={`${styles["board-ranking__page-btn"]} ${styles["board-ranking__page-btn--active"]}`}
-                >
-                  1
-                </button>
-                <button
-                  type="button"
-                  className={styles["board-ranking__page-btn"]}
-                >
-                  2
-                </button>
-                <button
-                  type="button"
-                  className={styles["board-ranking__page-btn"]}
-                >
-                  3
-                </button>
-                <span className={styles["board-ranking__page-ellipsis"]}>
-                  ..
-                </span>
-                <button
-                  type="button"
-                  className={styles["board-ranking__page-btn"]}
-                >
-                  15
-                </button>
-                <button
-                  type="button"
-                  className={styles["board-ranking__page-btn"]}
-                >
-                  ›
-                </button>
-              </nav>
-            </div>
+            {/* Dynamic Pagination Controls */}
+            {filteredAndSortedItems.length > 0 && (
+              <div className={styles["board-ranking__pagination-wrapper"]}>
+                <nav className={styles["board-ranking__pagination"]}>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    className={styles["board-ranking__page-btn"]}
+                    disabled={currentPage === 1}
+                  >
+                    ‹
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      type="button"
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`${styles["board-ranking__page-btn"]} ${
+                        currentPage === pageNum ? styles["board-ranking__page-btn--active"] : ""
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    className={styles["board-ranking__page-btn"]}
+                    disabled={currentPage === totalPages}
+                  >
+                    ›
+                  </button>
+                </nav>
+              </div>
+            )}
           </div>
         </section>
 
@@ -393,7 +413,7 @@ function Leaderboard() {
               </h2>
             </div>
             <div className={styles["board-guide__list"]}>
-              {leaderboardData.guides.map((obj, index) => (
+              {leaderboardData.guides.map((obj) => (
                 <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["board-guide__card"]} reveal-card`}>
                   <div className={styles["board-guide__icon"]}>
                     <Icon name={obj.iconName} size={22} />

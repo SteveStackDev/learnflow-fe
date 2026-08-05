@@ -12,19 +12,77 @@ function Contact() {
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!fullname.trim()) {
+      newErrors.fullname = "Vui lòng nhập họ và tên!";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Vui lòng nhập địa chỉ Email!";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      newErrors.email = "Email không đúng định dạng (ví dụ: name@domain.com)";
+    }
+
+    if (!subject.trim()) {
+      newErrors.subject = "Vui lòng nhập chủ đề liên hệ!";
+    }
+
+    if (!message.trim()) {
+      newErrors.message = "Vui lòng nhập nội dung tin nhắn!";
+    } else if (message.trim().length < 10) {
+      newErrors.message = "Nội dung tin nhắn phải có ít nhất 10 ký tự!";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!fullname || !email || !message) {
-      toast.error("Vui lòng điền đầy đủ Họ tên, Email và Tin nhắn!", "Gửi thất bại");
+    const newErrors = {};
+    if (!fullname.trim()) {
+      newErrors.fullname = "Vui lòng nhập họ và tên!";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Vui lòng nhập địa chỉ Email!";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      newErrors.email = "Email không đúng định dạng (ví dụ: name@domain.com)";
+    }
+
+    if (!subject.trim()) {
+      newErrors.subject = "Vui lòng nhập chủ đề liên hệ!";
+    }
+
+    if (!message.trim()) {
+      newErrors.message = "Vui lòng nhập nội dung tin nhắn!";
+    } else if (message.trim().length < 10) {
+      newErrors.message = "Nội dung tin nhắn phải có ít nhất 10 ký tự!";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      const firstError = Object.values(newErrors)[0];
+      toast.error(firstError, "Lỗi nhập dữ liệu");
       return;
     }
-    toast.success("Cảm ơn bạn đã liên hệ! Đội ngũ LearnFlow sẽ phản hồi sớm nhất.", "Gửi thành công");
-    setFullname("");
-    setEmail("");
-    setSubject("");
-    setMessage("");
+
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      toast.success("Cảm ơn bạn đã liên hệ! Đội ngũ LearnFlow sẽ phản hồi sớm nhất.", "Gửi thành công");
+      setFullname("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+      setErrors({});
+    }, 1200);
   };
   return (
     <>
@@ -90,7 +148,7 @@ function Contact() {
                 Gửi tin nhắn cho chúng tôi
               </h2>
 
-              <form className={styles["contact-main__form"]} onSubmit={handleSubmit}>
+              <form noValidate className={styles["contact-main__form"]} onSubmit={handleSubmit}>
                 <div className={styles["contact-main__form-row"]}>
                   <div className={styles["contact-main__form-col"]}>
                     <div className={styles["contact-main__form-group"]}>
@@ -101,10 +159,21 @@ function Contact() {
                         id="contact-fullname"
                         type="text"
                         value={fullname}
-                        onChange={(e) => setFullname(e.target.value)}
+                        onChange={(e) => {
+                          setFullname(e.target.value);
+                          if (errors.fullname) setErrors((prev) => ({ ...prev, fullname: null }));
+                        }}
                         placeholder="Nguyễn Văn A"
-                        className={styles["contact-main__form-input"]}
+                        className={`${styles["contact-main__form-input"]} ${
+                          errors.fullname ? styles["contact-main__form-input--error"] : ""
+                        }`}
                       />
+                      {errors.fullname && (
+                        <span className={styles["contact-main__error-text"]}>
+                          <Icon name="AlertCircle" size={13} />
+                          {errors.fullname}
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -117,10 +186,21 @@ function Contact() {
                         id="contact-email"
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          if (errors.email) setErrors((prev) => ({ ...prev, email: null }));
+                        }}
                         placeholder="example@email.com"
-                        className={styles["contact-main__form-input"]}
+                        className={`${styles["contact-main__form-input"]} ${
+                          errors.email ? styles["contact-main__form-input--error"] : ""
+                        }`}
                       />
+                      {errors.email && (
+                        <span className={styles["contact-main__error-text"]}>
+                          <Icon name="AlertCircle" size={13} />
+                          {errors.email}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -135,10 +215,21 @@ function Contact() {
                         id="contact-subject"
                         type="text"
                         value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
+                        onChange={(e) => {
+                          setSubject(e.target.value);
+                          if (errors.subject) setErrors((prev) => ({ ...prev, subject: null }));
+                        }}
                         placeholder="Vấn đề cần hỗ trợ"
-                        className={styles["contact-main__form-input"]}
+                        className={`${styles["contact-main__form-input"]} ${
+                          errors.subject ? styles["contact-main__form-input--error"] : ""
+                        }`}
                       />
+                      {errors.subject && (
+                        <span className={styles["contact-main__error-text"]}>
+                          <Icon name="AlertCircle" size={13} />
+                          {errors.subject}
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -169,18 +260,30 @@ function Contact() {
                   <textarea
                     id="contact-message"
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    onChange={(e) => {
+                      setMessage(e.target.value);
+                      if (errors.message) setErrors((prev) => ({ ...prev, message: null }));
+                    }}
                     placeholder="Hãy cho chúng tôi biết chi tiết vấn đề của bạn..."
                     rows={4}
-                    className={`${styles["contact-main__form-input"]} ${styles["contact-main__form-input--textarea"]}`}
+                    className={`${styles["contact-main__form-input"]} ${styles["contact-main__form-input--textarea"]} ${
+                      errors.message ? styles["contact-main__form-input--error"] : ""
+                    }`}
                   />
+                  {errors.message && (
+                    <span className={styles["contact-main__error-text"]}>
+                      <Icon name="AlertCircle" size={13} />
+                      {errors.message}
+                    </span>
+                  )}
                 </div>
 
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className={`${styles["contact-main__btn"]} ${styles["contact-main__btn--contained"]}`}
                 >
-                  Gửi yêu cầu ngay
+                  {isSubmitting ? "Đang gửi yêu cầu..." : "Gửi yêu cầu ngay"}
                 </button>
               </form>
             </div>

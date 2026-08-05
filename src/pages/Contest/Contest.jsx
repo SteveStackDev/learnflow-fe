@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 // Data
 import { contestData } from "./data";
@@ -12,16 +11,53 @@ import EmptyState from "~/components/EmptyState/EmptyState";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
+const ITEMS_PER_PAGE = 6; // 2 clean rows of 3 cards!
+
 function Contest() {
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useScrollReveal();
 
   const handleTabChange = (index) => {
     setActiveTab(index);
+    setCurrentPage(1);
   };
 
+  // Filter & Sort Logic
+  const filteredAndSortedItems = useMemo(() => {
+    return contestData.items.filter((item) => {
+      const selectedTab = contestData.tabs[activeTab];
+      const matchesSearch =
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.statusLabel.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      if (activeTab === 0 || selectedTab === "Tất cả cuộc thi") return matchesSearch;
+      if (selectedTab === "Đang diễn ra" || selectedTab === "Đang mở") {
+        return matchesSearch && item.statusLabel.includes("ĐANG MỞ");
+      }
+      if (selectedTab === "Sắp diễn ra") {
+        return matchesSearch && item.statusLabel.includes("SẮP DIỄN RA");
+      }
+      if (selectedTab === "Đã kết thúc") {
+        return matchesSearch && item.statusLabel.includes("ĐÃ KẾT THÚC");
+      }
+      return matchesSearch;
+    });
+  }, [searchQuery, activeTab]);
+
+  // Reset page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  // Pagination calculation
+  const totalPages = Math.max(1, Math.ceil(filteredAndSortedItems.length / ITEMS_PER_PAGE));
+  const displayedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredAndSortedItems.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredAndSortedItems, currentPage]);
 
   return (
     <>
@@ -31,8 +67,6 @@ function Contest() {
         <div className={styles["contestpage__orb-2"]} />
         <div className={styles["contestpage__orb-3"]} />
         <div className={styles["contestpage__orb-4"]} />
-
-
 
         {/* 1. Hero Section */}
         <section className={styles["contest-hero"]}>
@@ -96,7 +130,7 @@ function Contest() {
                       {obj.title}
                     </span>
                     <span className={styles["contest-stats__value"]}>
-                      {obj.value}
+                      {obj.title === "Tổng Contest" ? filteredAndSortedItems.length : obj.value}
                     </span>
                   </div>
                 </div>
@@ -117,6 +151,8 @@ function Contest() {
                   <input
                     id="contest-search-input"
                     type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Tìm contest bạn muốn tham gia..."
                     aria-label="Tìm contest bạn muốn tham gia"
                     className={styles["contest-filters__search-input"]}
@@ -128,7 +164,7 @@ function Contest() {
                     <button
                       key={item.id || item.slug || item.name || item.title || item}
                       type="button"
-                      onClick={() => setActiveTab(index)}
+                      onClick={() => handleTabChange(index)}
                       className={`${styles["contest-filters__tab-btn"]} ${
                         activeTab === index
                           ? styles["contest-filters__tab-btn--active"]
@@ -147,126 +183,137 @@ function Contest() {
         {/* 4. Contests Cards Grid Section */}
         <section className={styles["contest-grid"]}>
           <div className={styles["contest-grid__container"]}>
-            {contestData.items.filter((item) => {
-              const selectedTab = contestData.tabs[activeTab];
-              if (activeTab === 0 || selectedTab === "Tất cả cuộc thi") return true;
-              return item.statusLabel.toLowerCase().includes(selectedTab.toLowerCase());
-            }).length === 0 ? (
+            {filteredAndSortedItems.length === 0 ? (
               <EmptyState
-                iconName="Trophy"
-                title="Không có cuộc thi phù hợp"
-                description="Hiện tại không có cuộc thi nào trong danh mục này."
-                actionLabel="Xem tất cả cuộc thi"
-                onAction={() => setActiveTab(0)}
+                iconName="Search"
+                title="Không tìm thấy cuộc thi phù hợp"
+                description="Không có cuộc thi nào khớp với từ khóa tìm kiếm của bạn."
+                actionLabel="Xóa tìm kiếm"
+                onAction={() => {
+                  setSearchQuery("");
+                  setActiveTab(0);
+                }}
               />
             ) : (
-              <div className={styles["contest-grid__list"]}>
-                {contestData.items.filter((item) => {
-                  const selectedTab = contestData.tabs[activeTab];
-                  if (activeTab === 0 || selectedTab === "Tất cả cuộc thi") return true;
-                  return item.statusLabel.toLowerCase().includes(selectedTab.toLowerCase());
-                }).map((obj) => (
-                  <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["contest-grid__card"]} reveal-card`}>
-                    {/* Banner Image with Status Badge */}
-                    <div className={styles["contest-grid__card-media"]}>
-                      <span
-                        className={`${styles["contest-grid__status-badge"]} ${
-                          obj.statusLabel.includes("ĐANG MỞ")
-                            ? styles["contest-grid__status-badge--open"]
-                            : styles["contest-grid__status-badge--upcoming"]
-                        }`}
-                      >
-                        {obj.statusLabel}
-                      </span>
-                      <img
-                        src={obj.imageUrl}
-                        alt={obj.title}
-                        className={styles["contest-grid__card-img"]}
-                      />
-                    </div>
+              <div className={styles["contest-grid__list-wrapper"]}>
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className={`${styles["contest-grid__side-nav-btn"]} ${styles["contest-grid__side-nav-btn--prev"]}`}
+                  title="Quay lại trang trước"
+                  aria-label="Quay lại trang trước"
+                >
+                  <Icon name="ChevronLeft" size={24} />
+                </button>
 
-                    <div className={styles["contest-grid__card-body"]}>
-                      <h3 className={styles["contest-grid__card-title"]}>
-                        {obj.title}
-                      </h3>
-                      <div className={styles["contest-grid__card-meta"]}>
-                        <span className={styles["contest-grid__meta-item"]}>
-                          <Icon name="Calendar" size={16} />
-                          {obj.time}
+                <div className={styles["contest-grid__list"]}>
+                  {displayedItems.map((obj) => (
+                    <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["contest-grid__card"]} reveal-card`}>
+                      {/* Banner Image with Status Badge */}
+                      <div className={styles["contest-grid__card-media"]}>
+                        <span
+                          className={`${styles["contest-grid__status-badge"]} ${
+                            obj.statusLabel.includes("ĐANG MỞ")
+                              ? styles["contest-grid__status-badge--open"]
+                              : styles["contest-grid__status-badge--upcoming"]
+                          }`}
+                        >
+                          {obj.statusLabel}
                         </span>
-                        <span className={styles["contest-grid__meta-item"]}>
-                          <Icon name="Clock" size={15} />
-                          {obj.duration}
-                        </span>
-                        <span className={styles["contest-grid__meta-item"]}>
-                          <Icon name="Users" size={16} />
-                          {obj.participants}
-                        </span>
+                        <img
+                          src={obj.imageUrl}
+                          alt={obj.title}
+                          className={styles["contest-grid__card-img"]}
+                        />
+                      </div>
+
+                      <div className={styles["contest-grid__card-body"]}>
+                        <h3 className={styles["contest-grid__card-title"]}>
+                          {obj.title}
+                        </h3>
+                        <div className={styles["contest-grid__card-meta"]}>
+                          <span className={styles["contest-grid__meta-item"]}>
+                            <Icon name="Calendar" size={16} />
+                            {obj.time}
+                          </span>
+                          <span className={styles["contest-grid__meta-item"]}>
+                            <Icon name="Clock" size={15} />
+                            {obj.duration}
+                          </span>
+                          <span className={styles["contest-grid__meta-item"]}>
+                            <Icon name="Users" size={16} />
+                            {obj.participants}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className={styles["contest-grid__card-actions"]}>
+                        <button
+                          type="button"
+                          className={`${styles["contest-grid__action-btn"]} ${
+                            obj.actionVariant === "contained"
+                              ? styles["contest-grid__action-btn--contained"]
+                              : styles["contest-grid__action-btn--outlined"]
+                          }`}
+                        >
+                          {obj.actionText}
+                        </button>
                       </div>
                     </div>
+                  ))}
+                </div>
 
-                    <div className={styles["contest-grid__card-actions"]}>
-                      <button
-                        type="button"
-                        className={`${styles["contest-grid__action-btn"]} ${
-                          obj.actionVariant === "contained"
-                            ? styles["contest-grid__action-btn--contained"]
-                            : styles["contest-grid__action-btn--outlined"]
-                        }`}
-                      >
-                        {obj.actionText}
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className={`${styles["contest-grid__side-nav-btn"]} ${styles["contest-grid__side-nav-btn--next"]}`}
+                  title="Tiến tới trang sau"
+                  aria-label="Tiến tới trang sau"
+                >
+                  <Icon name="ChevronRight" size={24} />
+                </button>
               </div>
             )}
 
-            {/* Pagination */}
-            <div className={styles["contest-grid__pagination-wrapper"]}>
-              <nav className={styles["contest-grid__pagination"]}>
-                <button
-                  type="button"
-                  className={styles["contest-grid__page-btn"]}
-                  disabled
-                >
-                  ‹
-                </button>
-                <button
-                  type="button"
-                  className={`${styles["contest-grid__page-btn"]} ${styles["contest-grid__page-btn--active"]}`}
-                >
-                  1
-                </button>
-                <button
-                  type="button"
-                  className={styles["contest-grid__page-btn"]}
-                >
-                  2
-                </button>
-                <button
-                  type="button"
-                  className={styles["contest-grid__page-btn"]}
-                >
-                  3
-                </button>
-                <span className={styles["contest-grid__page-ellipsis"]}>
-                  ..
-                </span>
-                <button
-                  type="button"
-                  className={styles["contest-grid__page-btn"]}
-                >
-                  12
-                </button>
-                <button
-                  type="button"
-                  className={styles["contest-grid__page-btn"]}
-                >
-                  ›
-                </button>
-              </nav>
-            </div>
+            {/* Dynamic Pagination Controls */}
+            {filteredAndSortedItems.length > 0 && (
+              <div className={styles["contest-grid__pagination-wrapper"]}>
+                <nav className={styles["contest-grid__pagination"]}>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    className={styles["contest-grid__page-btn"]}
+                    disabled={currentPage === 1}
+                  >
+                    ‹
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      type="button"
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`${styles["contest-grid__page-btn"]} ${
+                        currentPage === pageNum ? styles["contest-grid__page-btn--active"] : ""
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    className={styles["contest-grid__page-btn"]}
+                    disabled={currentPage === totalPages}
+                  >
+                    ›
+                  </button>
+                </nav>
+              </div>
+            )}
           </div>
         </section>
 
@@ -281,7 +328,7 @@ function Contest() {
             </div>
 
             <div className={styles["contest-why__list"]}>
-              {contestData.benefits.map((obj, index) => (
+              {contestData.benefits.map((obj) => (
                 <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["contest-why__card"]} reveal-card`}>
                   <div className={styles["contest-why__icon"]}>
                     <Icon name={obj.iconName} size={24} />

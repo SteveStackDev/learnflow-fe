@@ -80,6 +80,7 @@ function Footer() {
                 LearnFlow.
               </p>
               <form
+                noValidate
                 className={styles["footer__newsletter-form"]}
                 onSubmit={handleNewsletterSubmit}
               >
