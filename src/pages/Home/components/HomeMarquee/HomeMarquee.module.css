@@ -1,0 +1,79 @@
+/* ==========================================================================
+   HomeMarquee Section Styling
+   ========================================================================== */
+
+.home-marquee {
+  padding: 40px 24px;
+  background-color: #f8fafc;
+  border-top: 1px solid rgba(169, 183, 203, 0.25);
+  border-bottom: 1px solid rgba(169, 183, 203, 0.25);
+  position: relative;
+  z-index: 2;
+}
+
+.home-marquee__container {
+  max-width: 1140px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.home-marquee__section-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.home-marquee__wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  flex-wrap: wrap;
+}
+
+.home-marquee__tech-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #475569;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.04);
+  transition: all 0.25s ease;
+}
+
+.home-marquee__tech-item:hover {
+  transform: translateY(-2px);
+  border-color: #0950c3;
+  color: #0950c3;
+  box-shadow: 0 8px 20px rgba(9, 80, 195, 0.1);
+}
+
+/* Dark Mode */
+:global([data-theme="dark"]) .home-marquee {
+  background-color: #0b1120;
+  border-top-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .home-marquee__section-title {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .home-marquee__tech-item {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .home-marquee__tech-item:hover {
+  color: #38bdf8;
+  border-color: #38bdf8;
+}

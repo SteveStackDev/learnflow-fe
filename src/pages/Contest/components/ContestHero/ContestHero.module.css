@@ -1,0 +1,152 @@
+/* ==========================================================================
+   1. Hero Section Styling
+   ========================================================================== */
+
+.contest-hero {
+  padding: 60px 24px 30px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.contest-hero__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.contest-hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contest-hero__badge-wrap {
+  margin-bottom: 20px;
+}
+
+.contest-hero__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #e0ebff 0%, #cce0ff 100%);
+  color: #0950c3;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 8px 20px;
+  border-radius: 9999px;
+  border: 1px solid rgba(9, 80, 195, 0.25);
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.12);
+}
+
+.contest-hero__title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--theme-text-primary);
+  margin-bottom: 18px;
+  letter-spacing: -0.02em;
+}
+
+.contest-hero__title--highlight {
+  background: linear-gradient(135deg, #0950c3 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contest-hero__desc {
+  font-size: 1.05rem;
+  color: #64748b;
+  line-height: 1.65;
+  max-width: 680px;
+  margin-bottom: 32px;
+}
+
+.contest-hero__btn-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.contest-hero__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-size: 0.925rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.contest-hero__btn--contained {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.25);
+}
+
+.contest-hero__btn--contained:hover {
+  background: linear-gradient(135deg, #003a95 0%, #03255c 100%);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.35);
+  transform: translateY(-1px);
+}
+
+.contest-hero__btn--outlined {
+  background-color: #ffffff;
+  color: #0950c3;
+  border: 1px solid rgba(9, 80, 195, 0.3);
+  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.05);
+}
+
+.contest-hero__btn--outlined:hover {
+  background-color: var(--primary-light, #e0ebff);
+  border-color: #0950c3;
+  transform: translateY(-1px);
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .contest-hero__tag {
+  background: #1e293b;
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+:global([data-theme="dark"]) .contest-hero__title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .contest-hero__desc {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .contest-hero__btn--outlined {
+  background-color: #1e293b;
+  color: #38bdf8;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .contest-hero__btn--outlined:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+  border-color: #0950c3;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .contest-hero__title {
+    font-size: 1.85rem;
+  }
+
+  .contest-hero__btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .contest-hero__btn {
+    width: 100%;
+  }
+}

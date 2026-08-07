@@ -9,7 +9,6 @@
   width: 100%;
   background: rgba(232, 238, 252, 0.92);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(169, 183, 203, 0.25);
   box-shadow: 0 4px 20px rgba(9, 80, 195, 0.04);
 }
@@ -222,7 +221,6 @@
   right: 0;
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(169, 183, 203, 0.35);
   box-shadow: 0 16px 40px rgba(9, 80, 195, 0.16);
   padding: 16px 24px 24px;

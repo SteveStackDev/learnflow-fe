@@ -1,0 +1,126 @@
+/* ==========================================================================
+   2. Overview Stats Section Styling
+   ========================================================================== */
+
+.contest-stats {
+  padding: 20px 24px 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.contest-stats__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.contest-stats__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.contest-stats__card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 20px 24px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contest-stats__card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(9, 80, 195, 0.35);
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.08);
+}
+
+.contest-stats__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contest-stats__icon--blue {
+  background-color: var(--primary-light, #e0ebff);
+  color: #0950c3;
+}
+
+.contest-stats__icon--yellow {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.contest-stats__icon--purple {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+}
+
+.contest-stats__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.contest-stats__label {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.contest-stats__value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .contest-stats__card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .contest-stats__value {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .contest-stats__label {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .contest-stats__icon--blue,
+:global([data-theme="dark"]) .contest-stats__icon--yellow,
+:global([data-theme="dark"]) .contest-stats__icon--purple {
+  background-color: #1e293b;
+}
+
+:global([data-theme="dark"]) .contest-stats__icon--blue {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .contest-stats__icon--yellow {
+  color: #fbbf24;
+}
+
+:global([data-theme="dark"]) .contest-stats__icon--purple {
+  color: #c084fc;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .contest-stats__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .contest-stats__list {
+    grid-template-columns: 1fr;
+  }
+}

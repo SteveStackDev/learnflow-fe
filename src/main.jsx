@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 
 // Styles
+import "~/styles/variables.css";
 import "~/styles/main.css";
 
 // Layouts & Loaders

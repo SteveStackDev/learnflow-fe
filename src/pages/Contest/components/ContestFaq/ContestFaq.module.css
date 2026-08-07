@@ -1,0 +1,126 @@
+/* ==========================================================================
+   6. FAQ Section Styling
+   ========================================================================== */
+
+.contest-faq {
+  padding: 60px 24px 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.contest-faq__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.contest-faq__header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.contest-faq__section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.contest-faq__section-subtitle {
+  font-size: 0.975rem;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contest-faq__accordion-group {
+  max-width: 840px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contest-faq__accordion {
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(9, 80, 195, 0.03);
+}
+
+.contest-faq__accordion[open] {
+  border-color: #0950c3;
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.12);
+}
+
+.contest-faq__accordion-summary {
+  padding: 20px 24px;
+  font-size: 0.975rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  user-select: none;
+  list-style: none;
+}
+
+.contest-faq__accordion-summary::-webkit-details-marker {
+  display: none;
+}
+
+.contest-faq__accordion-title {
+  font-family: inherit;
+}
+
+.contest-faq__accordion-icon {
+  color: #0950c3;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.contest-faq__accordion[open] .contest-faq__accordion-icon {
+  transform: rotate(180deg);
+}
+
+.contest-faq__accordion-details {
+  padding: 0 24px 20px 24px;
+  font-size: 0.925rem;
+  color: #434653;
+  line-height: 1.65;
+  border-top: 1px solid rgba(169, 183, 203, 0.15);
+  margin-top: 4px;
+  padding-top: 16px;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .contest-faq__section-title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .contest-faq__section-subtitle {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .contest-faq__accordion {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .contest-faq__accordion-summary {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .contest-faq__accordion-icon {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .contest-faq__accordion-details {
+  color: #cbd5e1;
+  border-top-color: rgba(255, 255, 255, 0.1);
+}

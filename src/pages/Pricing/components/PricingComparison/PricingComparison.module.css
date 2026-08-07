@@ -1,0 +1,190 @@
+/* ==========================================================================
+   3. Detailed Comparison Section Styling
+   ========================================================================== */
+.price-comparison {
+  padding: 60px 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.price-comparison__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.price-comparison__header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.price-comparison__section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.price-comparison__section-subtitle {
+  font-size: 0.975rem;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.price-comparison__table-wrapper {
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 8px 30px rgba(9, 80, 195, 0.05);
+  overflow: hidden;
+}
+
+.price-comparison__table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.price-comparison__table-row {
+  border-bottom: 1px solid rgba(169, 183, 203, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.price-comparison__table-row:last-child {
+  border-bottom: none;
+}
+
+.price-comparison__table-row:hover:not(.price-comparison__table-row--header):not(.price-comparison__table-row--section) {
+  background-color: #f8fafc;
+}
+
+.price-comparison__table-row--header {
+  background-color: #f1f5f9;
+  border-bottom: 2px solid rgba(169, 183, 203, 0.4);
+}
+
+.price-comparison__table-row--section {
+  background-color: var(--primary-light, #e0ebff);
+}
+
+.price-comparison__table-cell {
+  padding: 16px 20px;
+  font-size: 0.925rem;
+  color: #434653;
+  text-align: center;
+}
+
+.price-comparison__table-cell--header-label {
+  text-align: left;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--theme-text-primary);
+  width: 40%;
+}
+
+.price-comparison__table-cell--header {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #003a95;
+  width: 20%;
+}
+
+.price-comparison__table-cell--label {
+  text-align: left;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+}
+
+.price-comparison__table-cell--section {
+  text-align: left;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #0950c3;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 12px 20px;
+}
+
+.price-comparison__table-cell--popular {
+  background-color: rgba(9, 80, 195, 0.03);
+}
+
+.price-comparison__check {
+  color: #10b981;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.price-comparison__dash {
+  color: #cbd5e1;
+  font-weight: 700;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .price-comparison__section-title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .price-comparison__section-subtitle {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-wrapper {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .price-comparison__table-row {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .price-comparison__table-row:hover:not(.price-comparison__table-row--header):not(.price-comparison__table-row--section) {
+  background-color: #1e293b;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-row--header {
+  background-color: #1e293b;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+:global([data-theme="dark"]) .price-comparison__table-row--section {
+  background-color: #1e293b;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-cell {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-cell--header-label,
+:global([data-theme="dark"]) .price-comparison__table-cell--label {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-cell--header {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-cell--section {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .price-comparison__table-cell--popular {
+  background-color: rgba(56, 189, 248, 0.05);
+}
+
+:global([data-theme="dark"]) .price-comparison__dash {
+  color: #475569;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .price-comparison__table-wrapper {
+    overflow-x: auto;
+  }
+
+  .price-comparison__table {
+    min-width: 600px;
+  }
+}

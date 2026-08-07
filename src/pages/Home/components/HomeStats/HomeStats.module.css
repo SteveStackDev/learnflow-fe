@@ -1,0 +1,57 @@
+/* ==========================================================================
+   HomeStats Section Styling
+   ========================================================================== */
+
+.home-stats {
+  padding: 60px 24px;
+  background: linear-gradient(135deg, var(--primary-color, #0950c3) 0%, var(--primary-dark, #053787) 100%);
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 12px 32px rgba(9, 80, 195, 0.25);
+}
+
+.home-stats__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.home-stats__list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+
+.home-stats__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-stats__card-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.home-stats__card-desc {
+  font-size: 0.925rem;
+  color: #cce0ff;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .home-stats__list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px;
+  }
+}
+
+@media (max-width: 576px) {
+  .home-stats__list {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,3 +1,15 @@
+export const ALGORITHM_OPTIONS = [
+  { id: "all", label: "Tất cả thuật toán" },
+  { id: "dp", label: "Quy hoạch động (DP)" },
+  { id: "binary-search", label: "Tìm kiếm nhị phân" },
+  { id: "two-pointers", label: "Hai con trỏ (Two Pointers)" },
+  { id: "graph", label: "Đồ thị & Đường đi" },
+  { id: "hash-table", label: "Bảng băm (Hash Table)" },
+  { id: "tree-recursion", label: "Đệ quy & Cây (Tree)" },
+  { id: "linked-list", label: "Danh sách liên kết" },
+  { id: "math", label: "Toán học & Khác" },
+];
+
 export const problemData = {
   stats: [
     { title: "Tổng số bài tập", value: "320+", iconName: "Code" },
@@ -13,6 +25,8 @@ export const problemData = {
       description:
         "Cho hai số nguyên a và b. Hãy thực hiện tính tổng của chúng và trả về kết quả chuẩn xác.",
       tags: ["Toán học", "Cơ bản"],
+      algorithm: "math",
+      algorithmLabel: "Toán học & Khác",
       successRate: "95%",
       passRateNum: 95,
       submissionsCount: 4500,
@@ -26,6 +40,8 @@ export const problemData = {
       description:
         "Kiểm tra xem một chuỗi ký tự có phải là chuỗi đối xứng (Palindrome) hay không.",
       tags: ["Chuỗi", "Hai con trỏ"],
+      algorithm: "two-pointers",
+      algorithmLabel: "Hai con trỏ (Two Pointers)",
       successRate: "72%",
       passRateNum: 72,
       submissionsCount: 3200,
@@ -39,6 +55,8 @@ export const problemData = {
       description:
         "Cho một đồ thị có trọng số dương, hãy tìm đường đi ngắn nhất giữa hai đỉnh bằng Dijkstra.",
       tags: ["Đồ thị", "Thuật toán"],
+      algorithm: "graph",
+      algorithmLabel: "Đồ thị & Đường đi",
       successRate: "45%",
       passRateNum: 45,
       submissionsCount: 1800,
@@ -52,6 +70,8 @@ export const problemData = {
       description:
         "Viết hàm nhận vào một mảng các số nguyên và trả về giá trị lớn nhất.",
       tags: ["Mảng", "Vòng lặp"],
+      algorithm: "math",
+      algorithmLabel: "Toán học & Khác",
       successRate: "88%",
       passRateNum: 88,
       submissionsCount: 3900,
@@ -65,6 +85,8 @@ export const problemData = {
       description:
         "Cho một cây nhị phân tìm kiếm, hãy thực hiện các phép xoay để biến nó thành cây AVL.",
       tags: ["Cây", "Đệ quy"],
+      algorithm: "tree-recursion",
+      algorithmLabel: "Đệ quy & Cây (Tree)",
       successRate: "31%",
       passRateNum: 31,
       submissionsCount: 950,
@@ -78,6 +100,8 @@ export const problemData = {
       description:
         "Sử dụng Hash Map để đếm số lần xuất hiện của mỗi phần tử trong mảng cho trước.",
       tags: ["Hash Map", "Tối ưu"],
+      algorithm: "hash-table",
+      algorithmLabel: "Bảng băm (Hash Table)",
       successRate: "91%",
       passRateNum: 91,
       submissionsCount: 4100,
@@ -91,6 +115,8 @@ export const problemData = {
       description:
         "Cho con trỏ head của danh sách liên kết đơn, hãy đảo ngược danh sách và trả về con trỏ mới.",
       tags: ["Linked List", "Pointer"],
+      algorithm: "linked-list",
+      algorithmLabel: "Danh sách liên kết",
       successRate: "78%",
       passRateNum: 78,
       submissionsCount: 2900,
@@ -104,6 +130,8 @@ export const problemData = {
       description:
         "Cho các vật phẩm có trọng lượng và giá trị, hãy chọn các vật phẩm sao cho tổng giá trị lớn nhất.",
       tags: ["Dynamic Programming", "Thuật toán"],
+      algorithm: "dp",
+      algorithmLabel: "Quy hoạch động (DP)",
       successRate: "42%",
       passRateNum: 42,
       submissionsCount: 1600,
@@ -117,6 +145,8 @@ export const problemData = {
       description:
         "Cho hai mảng số nguyên đã sắp xếp tăng dần, hợp nhất chúng thành một mảng duy nhất.",
       tags: ["Mảng", "Hai con trỏ"],
+      algorithm: "two-pointers",
+      algorithmLabel: "Hai con trỏ (Two Pointers)",
       successRate: "89%",
       passRateNum: 89,
       submissionsCount: 3700,
@@ -130,6 +160,8 @@ export const problemData = {
       description:
         "Tìm giá trị target trong một mảng đã được xoay tại một điểm chốt bất kỳ.",
       tags: ["Binary Search", "Mảng"],
+      algorithm: "binary-search",
+      algorithmLabel: "Tìm kiếm nhị phân",
       successRate: "65%",
       passRateNum: 65,
       submissionsCount: 2400,
@@ -143,6 +175,8 @@ export const problemData = {
       description:
         "Thiết kế cấu trúc dữ liệu LRU Cache hỗ trợ các thao tác get và put trong thời gian O(1).",
       tags: ["Hash Map", "Doubly Linked List"],
+      algorithm: "hash-table",
+      algorithmLabel: "Bảng băm (Hash Table)",
       successRate: "38%",
       passRateNum: 38,
       submissionsCount: 1200,
@@ -156,6 +190,8 @@ export const problemData = {
       description:
         "Viết hàm kiểm tra một số n có phải là số nguyên tố hay không trong thời gian O(sqrt(n)).",
       tags: ["Toán học", "Cơ bản"],
+      algorithm: "math",
+      algorithmLabel: "Toán học & Khác",
       successRate: "94%",
       passRateNum: 94,
       submissionsCount: 4800,

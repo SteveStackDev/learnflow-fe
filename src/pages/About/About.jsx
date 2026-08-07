@@ -1,31 +1,38 @@
 import { useEffect, useState } from "react";
 // Data
 import { aboutData } from "./data";
-// Import CSS Modules
+// Styles
 import styles from "./About.module.css";
-// Components
-import Icon from "~/components/Icon/Icon";
+// Assets
+import workspaceImg from "~/assets/images/About/about-workspace.webp";
+import communityImg from "~/assets/images/About/about-community.webp";
+import roadmapImg from "~/assets/images/About/about-roadmap.webp";
+// Sub-components
+import AboutHero from "./components/AboutHero/AboutHero";
+import AboutStats from "./components/AboutStats/AboutStats";
+import AboutFeatures from "./components/AboutFeatures/AboutFeatures";
+
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
 const CAROUSEL_SLIDES = [
   {
     id: 1,
-    image: "/src/assets/images/About/about-workspace.webp",
+    image: workspaceImg,
     badge: "Thực chiến 24/7",
     title: "Hệ thống luyện code tự động",
     desc: "Chấm bài tự động và phản hồi ngay lập tức trên trình duyệt."
   },
   {
     id: 2,
-    image: "/src/assets/images/About/about-community.webp",
+    image: communityImg,
     badge: "Cộng đồng 50.000+",
     title: "Cùng nhau phát triển & Học hỏi",
     desc: "Trao đổi kinh nghiệm với các chuyên gia và học viên khác."
   },
   {
     id: 3,
-    image: "/src/assets/images/About/about-roadmap.webp",
+    image: roadmapImg,
     badge: "Lộ trình bài bản",
     title: "Chinh phục kỹ năng công nghệ",
     desc: "Định hướng rõ ràng từ cơ bản đến trình độ chuyên nghiệp."
@@ -53,173 +60,25 @@ function About() {
   useScrollReveal();
 
   return (
-    <>
-      <div className={styles.aboutpage}>
-        {/* Ambient Background Glow Orbs */}
-        <div className={styles["aboutpage__orb-1"]} />
-        <div className={styles["aboutpage__orb-2"]} />
-        <div className={styles["aboutpage__orb-3"]} />
-        <div className={styles["aboutpage__orb-4"]} />
+    <div className={styles.aboutpage}>
+      {/* Ambient Background Glow Orbs */}
+      <div className={styles["aboutpage__orb-1"]} />
+      <div className={styles["aboutpage__orb-2"]} />
+      <div className={styles["aboutpage__orb-3"]} />
+      <div className={styles["aboutpage__orb-4"]} />
 
-        {/* Hero Section */}
-        <section className={styles["about-hero"]}>
-          <div className={styles["about-hero__container"]}>
-            <div className={styles["about-hero__content"]}>
-              <span className={styles["about-hero__badge"]}>
-                <Icon name="Clock" size={16} />
-                Về chúng tôi
-              </span>
-              <h1 className={styles["about-hero__title"]}>
-                Kiến tạo tương lai <br /> cho lập trình viên Việt
-              </h1>
-              <p className={styles["about-hero__desc"]}>
-                LearnFlow không chỉ là một nền tảng học tập, mà là bệ phóng cho
-                sự nghiệp công nghệ của bạn. Chúng tôi mang đến phương pháp học
-                tập cá nhân hóa, giúp bạn vượt qua rào cản và làm chủ mã nguồn
-                một cách tự tin nhất.
-              </p>
-              <div className={styles["about-hero__actions"]}>
-                <button
-                  type="button"
-                  className={`${styles["about-hero__btn"]} ${styles["about-hero__btn--contained"]}`}
-                >
-                  Khám phá lộ trình
-                </button>
-                <button
-                  type="button"
-                  className={`${styles["about-hero__btn"]} ${styles["about-hero__btn--outlined"]}`}
-                >
-                  Xem video
-                </button>
-              </div>
-            </div>
+      <AboutHero
+        CAROUSEL_SLIDES={CAROUSEL_SLIDES}
+        currentSlide={currentSlide}
+        setCurrentSlide={setCurrentSlide}
+        handlePrev={handlePrev}
+        handleNext={handleNext}
+      />
 
-            <div className={styles["about-hero__media"]}>
-              <div className={styles["about-carousel"]}>
-                <div className={styles["about-carousel__slides-container"]}>
-                  {CAROUSEL_SLIDES.map((slide, idx) => (
-                    <div
-                      key={slide.id}
-                      className={`${styles["about-carousel__slide"]} ${
-                        currentSlide === idx ? styles["about-carousel__slide--active"] : ""
-                      }`}
-                    >
-                      <img
-                        src={slide.image}
-                        alt={slide.title}
-                        className={styles["about-carousel__img"]}
-                      />
-                      <div className={styles["about-carousel__overlay"]} />
-                      <div className={styles["about-carousel__content"]}>
-                        <span className={styles["about-carousel__badge"]}>
-                          {slide.badge}
-                        </span>
-                        <h3 className={styles["about-carousel__title"]}>
-                          {slide.title}
-                        </h3>
-                        <p className={styles["about-carousel__desc"]}>
-                          {slide.desc}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+      <AboutStats />
 
-                {/* Arrow Navigation */}
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  className={`${styles["about-carousel__arrow"]} ${styles["about-carousel__arrow--prev"]}`}
-                  aria-label="Previous slide"
-                >
-                  <Icon name="ChevronLeft" size={16} />
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className={`${styles["about-carousel__arrow"]} ${styles["about-carousel__arrow--next"]}`}
-                  aria-label="Next slide"
-                >
-                  <Icon name="ChevronRight" size={15} />
-                </button>
-
-                {/* Dot Pagination */}
-                <div className={styles["about-carousel__dots"]}>
-                  {CAROUSEL_SLIDES.map((_, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setCurrentSlide(idx)}
-                      className={`${styles["about-carousel__dot"]} ${
-                        currentSlide === idx ? styles["about-carousel__dot--active"] : ""
-                      }`}
-                      aria-label={`Go to slide ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 1.5 Stats Widget */}
-        <section className={`${styles["about-hero__stats-widget"]} reveal-card`}>
-          <div className={styles["about-hero__stats-item"]}>
-            <span className={styles["about-hero__stats-value"]}>50K+</span>
-            <span className={styles["about-hero__stats-label"]}>Học viên</span>
-          </div>
-          <div className={styles["about-hero__stats-divider"]}></div>
-          <div className={styles["about-hero__stats-item"]}>
-            <span className={styles["about-hero__stats-value"]}>120+</span>
-            <span className={styles["about-hero__stats-label"]}>Khóa học</span>
-          </div>
-          <div className={styles["about-hero__stats-divider"]}></div>
-          <div className={styles["about-hero__stats-item"]}>
-            <span className={styles["about-hero__stats-value"]}>15+</span>
-            <span className={styles["about-hero__stats-label"]}>Chủ đề lập trình</span>
-          </div>
-        </section>
-
-        {/* Feature Section */}
-        <section className={styles["about-features"]}>
-          <div className={styles["about-features__container"]}>
-            <div className={styles["about-features__content"]}>
-              <h2 className={styles["about-features__title"]}>
-                LearnFlow là gì? <br /> Hệ sinh thái học tập có định hướng
-              </h2>
-
-              <div className={styles["about-features__list"]}>
-                {aboutData.features.map((obj, index) => {
-                  return (
-                    <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["about-features__item"]} reveal-card`}>
-                      <span className={styles["about-features__icon"]}>
-                        <Icon name={obj.iconName} size={22} />
-                      </span>
-                      <div className={styles["about-features__info"]}>
-                        <h3 className={styles["about-features__item-title"]}>
-                          {obj.title}
-                        </h3>
-                        <p className={styles["about-features__desc"]}>
-                          {obj.description}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className={styles["about-features__media"]}>
-              <img
-                className={styles["about-features__img"]}
-                src="/src/assets/images/Home/hero.webp"
-                alt="Feature Showcase"
-              />
-            </div>
-          </div>
-        </section>
-      </div>
-    </>
+      <AboutFeatures features={aboutData.features} />
+    </div>
   );
 }
 

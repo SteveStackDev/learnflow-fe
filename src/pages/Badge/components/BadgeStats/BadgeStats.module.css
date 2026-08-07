@@ -1,0 +1,147 @@
+/* ==========================================================================
+   2. Overview Stats Widgets Styling
+   ========================================================================== */
+
+.badge-stats {
+  padding: 10px 24px 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.badge-stats__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.badge-stats__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.badge-stats__card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 20px 24px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.badge-stats__card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(9, 80, 195, 0.4);
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.08);
+}
+
+.badge-stats__icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.badge-stats__icon--blue {
+  background-color: var(--primary-light, #e0ebff);
+  color: var(--primary-dark, #053787);
+}
+
+.badge-stats__icon--yellow {
+  background-color: #fef9c3;
+  color: #a16207;
+}
+
+.badge-stats__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.badge-stats__label {
+  font-size: 0.85rem;
+  color: #737785;
+  font-weight: 600;
+}
+
+.badge-stats__value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+}
+
+.badge-stats__progress-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.badge-stats__progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge-stats__percent {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0950c3;
+}
+
+.badge-stats__progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.badge-stats__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0950c3 0%, #38bdf8 100%);
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .badge-stats__card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .badge-stats__value {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .badge-stats__label {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .badge-stats__icon--blue,
+:global([data-theme="dark"]) .badge-stats__icon--yellow {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .badge-stats__progress-bar {
+  background-color: #1e293b;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .badge-stats__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .badge-stats__list {
+    grid-template-columns: 1fr;
+  }
+}

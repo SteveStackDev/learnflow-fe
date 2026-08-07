@@ -1,0 +1,99 @@
+/* ==========================================================================
+   5. Guide Section Styling
+   ========================================================================== */
+.board-guide {
+  padding: 50px 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.board-guide__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.board-guide__header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.board-guide__section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.board-guide__list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.board-guide__card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 28px 24px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 6px 24px rgba(9, 80, 195, 0.05);
+  transition: all 0.3s ease;
+}
+
+.board-guide__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(9, 80, 195, 0.12);
+  border-color: rgba(9, 80, 195, 0.4);
+}
+
+.board-guide__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background-color: var(--primary-light, #e0ebff);
+  color: #0950c3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.board-guide__title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  margin-bottom: 8px;
+}
+
+.board-guide__desc {
+  font-size: 0.925rem;
+  color: #434653;
+  line-height: 1.6;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .board-guide__section-title,
+:global([data-theme="dark"]) .board-guide__title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .board-guide__card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .board-guide__icon {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .board-guide__desc {
+  color: #cbd5e1;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .board-guide__list {
+    grid-template-columns: 1fr;
+  }
+}

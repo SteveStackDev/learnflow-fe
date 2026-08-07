@@ -1,0 +1,140 @@
+/* ==========================================================================
+   3. Search & Filter Bar Section Styling
+   ========================================================================== */
+
+.contest-filters {
+  padding: 10px 24px 30px;
+  position: relative;
+  z-index: 20;
+}
+
+.contest-filters__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.contest-filters__card-wrapper {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 16px 20px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.05);
+}
+
+.contest-filters__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.contest-filters__search-box {
+  position: relative;
+  flex: 1;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+}
+
+.contest-filters__search-icon {
+  position: absolute;
+  left: 14px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.contest-filters__search-input {
+  width: 100%;
+  padding: 10px 16px 10px 42px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  border-radius: 12px;
+  border: 1px solid rgba(169, 183, 203, 0.4);
+  background-color: #f8fafc;
+  color: var(--theme-text-primary);
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.contest-filters__search-input:focus {
+  border-color: #0950c3;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(9, 80, 195, 0.1);
+}
+
+.contest-filters__tab-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.contest-filters__tab-btn {
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+  background-color: #f1f5f9;
+  color: #475569;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.contest-filters__tab-btn:hover {
+  background-color: #e2e8f0;
+  color: #0950c3;
+}
+
+.contest-filters__tab-btn--active {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.25);
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .contest-filters__card-wrapper {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .contest-filters__search-input {
+  background-color: #1e293b;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .contest-filters__search-input::placeholder {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .contest-filters__tab-btn {
+  background-color: #1e293b;
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .contest-filters__tab-btn--active {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .contest-filters__row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .contest-filters__search-box {
+    max-width: 100%;
+  }
+}

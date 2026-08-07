@@ -1,0 +1,257 @@
+/* ==========================================================================
+   4. Ranking Table Section Styling
+   ========================================================================== */
+.board-ranking {
+  padding: 10px 24px 50px;
+  position: relative;
+  z-index: 2;
+}
+
+.board-ranking__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.board-ranking__table-wrapper {
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 8px 30px rgba(9, 80, 195, 0.05);
+  overflow: hidden;
+}
+
+.board-ranking__table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.board-ranking__table-row {
+  border-bottom: 1px solid rgba(169, 183, 203, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.board-ranking__table-row:last-child {
+  border-bottom: none;
+}
+
+.board-ranking__table-row:hover:not(.board-ranking__table-row--header) {
+  background-color: #f8fafc;
+}
+
+.board-ranking__table-row--header {
+  background-color: #f1f5f9;
+  border-bottom: 2px solid rgba(169, 183, 203, 0.4);
+}
+
+.board-ranking__table-row--current-user {
+  background-color: var(--primary-light, #e0ebff) !important;
+}
+
+.board-ranking__table-cell {
+  padding: 16px 20px;
+  font-size: 0.925rem;
+  color: #434653;
+}
+
+.board-ranking__table-cell--header {
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: #0950c3;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.board-ranking__table-cell--rank {
+  font-weight: 800;
+  font-size: 1rem;
+  color: #0950c3;
+  width: 80px;
+
+  text-align: center;
+}
+
+.board-ranking__table-cell--points {
+  font-weight: 800;
+  color: #0950c3;
+}
+
+.board-ranking__user-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.board-ranking__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.12);
+}
+
+.board-ranking__avatar-fallback {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.25);
+}
+
+.board-ranking__user-name {
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  font-size: 0.95rem;
+}
+
+.board-ranking__chip-tag {
+  background-color: #0950c3;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  letter-spacing: 0.04em;
+}
+
+/* Trend Badges */
+.board-ranking__trend-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.board-ranking__trend-icon--up {
+  color: #10b981;
+}
+
+.board-ranking__trend-icon--down {
+  color: #ef4444;
+}
+
+.board-ranking__trend-icon--same {
+  color: #94a3b8;
+}
+
+/* Pagination Controls */
+.board-ranking__pagination-wrapper {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+}
+
+.board-ranking__pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.05);
+}
+
+.board-ranking__page-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #434653;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.board-ranking__page-btn:hover:not(:disabled):not(.board-ranking__page-btn--active) {
+  background-color: var(--primary-light, #e0ebff);
+  color: #0950c3;
+}
+
+.board-ranking__page-btn--active {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.25);
+}
+
+.board-ranking__page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .board-ranking__table-wrapper {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .board-ranking__table-row {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .board-ranking__table-row:hover:not(.board-ranking__table-row--header) {
+  background-color: #1e293b;
+}
+
+:global([data-theme="dark"]) .board-ranking__table-row--header {
+  background-color: #1e293b;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+:global([data-theme="dark"]) .board-ranking__table-row--current-user {
+  background-color: rgba(56, 189, 248, 0.15) !important;
+}
+
+:global([data-theme="dark"]) .board-ranking__table-cell {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .board-ranking__table-cell--header,
+:global([data-theme="dark"]) .board-ranking__table-cell--rank,
+:global([data-theme="dark"]) .board-ranking__table-cell--points {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .board-ranking__user-name {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .board-ranking__pagination {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .board-ranking__page-btn {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .board-ranking__page-btn--active {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .board-ranking__table-wrapper {
+    overflow-x: auto;
+  }
+
+  .board-ranking__table {
+    min-width: 540px;
+  }
+}

@@ -1,0 +1,173 @@
+/* ==========================================================================
+   ProblemDaily Section Styling
+   ========================================================================== */
+
+.prob-daily {
+  padding: 0 24px 40px;
+  position: relative;
+  z-index: 20;
+}
+
+.prob-daily__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.prob-daily__card {
+  background: linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%);
+  border: 1.5px solid rgba(9, 80, 195, 0.22);
+  border-radius: 20px;
+  padding: 24px 32px;
+  box-shadow: 0 8px 28px rgba(9, 80, 195, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.prob-daily__info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 280px;
+}
+
+.prob-daily__badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #0950c3;
+  background-color: #e0ebff;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  width: fit-content;
+}
+
+.prob-daily__title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #003a95;
+}
+
+.prob-daily__desc {
+  font-size: 0.9rem;
+  color: #434653;
+  line-height: 1.5;
+}
+
+.prob-daily__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.prob-daily__reward {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: #d97706;
+  background-color: #fef3c7;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.prob-challenges__level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
+}
+
+.prob-challenges__badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.prob-challenges__level-badge--hard {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.prob-daily__action {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.prob-daily__timer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.prob-daily__timer-label {
+  font-size: 0.75rem;
+  color: #737785;
+  font-weight: 600;
+}
+
+.prob-daily__countdown {
+  font-family: "Geist Mono", monospace;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #dc2626;
+}
+
+.prob-daily__btn {
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.prob-daily__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.35);
+}
+
+/* Dark Mode */
+:global([data-theme="dark"]) .prob-daily__card {
+  background: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .prob-daily__title {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .prob-daily__desc {
+  color: #cbd5e1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .prob-daily__card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .prob-daily__action {
+    justify-content: space-between;
+  }
+
+  .prob-daily__btn {
+    flex: 1;
+  }
+}

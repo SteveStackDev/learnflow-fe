@@ -1,0 +1,201 @@
+/* ==========================================================================
+   1. Left Side: Brand Info & Value Props Panel Styling
+   ========================================================================== */
+.signup-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signup-info__wrapper {
+  max-width: 480px;
+  width: 100%;
+}
+
+.signup-info__back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0950c3;
+  text-decoration: none;
+  margin-bottom: 28px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(9, 80, 195, 0.25);
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.06);
+}
+
+.signup-info__back-btn:hover {
+  background-color: #ffffff;
+  border-color: #0950c3;
+  transform: translateX(-4px);
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.15);
+}
+
+.signup-info__back-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.signup-info__logo-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.signup-info__logo-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.3);
+}
+
+.signup-info__logo-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #003a95;
+  letter-spacing: -0.02em;
+}
+
+.signup-info__title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #191b22;
+  line-height: 1.25;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.signup-info__title--highlight {
+  background: linear-gradient(135deg, #0950c3 0%, #0284c7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.signup-info__desc {
+  font-size: 1rem;
+  color: #434653;
+  line-height: 1.65;
+  margin-bottom: 32px;
+}
+
+/* Benefit Cards Stack */
+.signup-info__benefits-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.signup-info__benefit-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.05);
+  transition: all 0.25s ease;
+}
+
+.signup-info__benefit-card:hover {
+  background-color: #ffffff;
+  border-color: rgba(9, 80, 195, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.12);
+}
+
+.signup-info__benefit-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: #e0ebff;
+  color: #0950c3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.signup-info__benefit-content {
+  flex: 1;
+}
+
+.signup-info__benefit-title {
+  font-size: 0.975rem;
+  font-weight: 700;
+  color: #191b22;
+  margin-bottom: 4px;
+}
+
+.signup-info__benefit-desc {
+  font-size: 0.85rem;
+  color: #737785;
+  line-height: 1.5;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .signup-info__logo-text {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .signup-info__title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .signup-info__desc {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .signup-info__benefit-card {
+  background-color: rgba(19, 28, 49, 0.8);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .signup-info__benefit-card:hover {
+  background-color: #19233c;
+  border-color: #0950c3;
+}
+
+:global([data-theme="dark"]) .signup-info__benefit-title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .signup-info__benefit-desc {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .signup-info__benefit-icon {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .signup-info__back-btn {
+  background-color: #1e293b;
+  color: #38bdf8;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .signup-info__back-btn:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .signup-info {
+    display: none;
+  }
+}

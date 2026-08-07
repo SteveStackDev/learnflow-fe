@@ -504,10 +504,10 @@
   }
 }
 
-:global([data-theme="dark"]) [class*="__orb-1"],
-:global([data-theme="dark"]) [class*="__orb-2"],
-:global([data-theme="dark"]) [class*="__orb-3"],
-:global([data-theme="dark"]) [class*="__orb-4"] {
+[data-theme="dark"] [class*="__orb-1"],
+[data-theme="dark"] [class*="__orb-2"],
+[data-theme="dark"] [class*="__orb-3"],
+[data-theme="dark"] [class*="__orb-4"] {
   pointer-events: none;
   z-index: 1;
   position: absolute;
@@ -515,7 +515,7 @@
 }
 
 /* 1. Hero Top Left Glow */
-:global([data-theme="dark"]) [class*="__orb-1"] {
+[data-theme="dark"] [class*="__orb-1"] {
   top: -80px;
   left: -100px;
   width: 620px;
@@ -526,7 +526,7 @@
 }
 
 /* 2. Catalog / Upper-Right Glow */
-:global([data-theme="dark"]) [class*="__orb-2"] {
+[data-theme="dark"] [class*="__orb-2"] {
   top: 650px;
   right: -100px;
   width: 560px;
@@ -537,7 +537,7 @@
 }
 
 /* 3. Middle-Left Feature / Reason Cards Glow */
-:global([data-theme="dark"]) [class*="__orb-3"] {
+[data-theme="dark"] [class*="__orb-3"] {
   top: 1500px;
   left: -120px;
   width: 580px;
@@ -548,7 +548,7 @@
 }
 
 /* 4. Bottom FAQ / Footer Glow */
-:global([data-theme="dark"]) [class*="__orb-4"] {
+[data-theme="dark"] [class*="__orb-4"] {
   top: 2300px;
   right: -100px;
   width: 540px;

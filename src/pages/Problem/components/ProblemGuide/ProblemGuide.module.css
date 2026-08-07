@@ -1,0 +1,137 @@
+/* ==========================================================================
+   ProblemGuide Section Styling
+   ========================================================================== */
+
+.prob-guide {
+  padding: 60px 24px 80px;
+  background-color: #f8fafc;
+  border-top: 1px solid rgba(169, 183, 203, 0.25);
+  border-bottom: 1px solid rgba(169, 183, 203, 0.25);
+  position: relative;
+  z-index: 2;
+}
+
+.prob-guide__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.prob-guide__header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.prob-guide__section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.prob-guide__section-subtitle {
+  font-size: 1rem;
+  color: #737785;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.prob-guide__list {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.prob-guide__card {
+  flex: 1 1 240px;
+  max-width: 270px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 28px 24px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.prob-guide__card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(9, 80, 195, 0.4);
+  box-shadow: 0 16px 36px rgba(9, 80, 195, 0.12);
+}
+
+.prob-guide__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--primary-light, #e0ebff);
+  color: var(--primary-color, #0950c3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.prob-guide__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  margin-bottom: 10px;
+  line-height: 1.35;
+}
+
+.prob-guide__desc {
+  font-size: 0.875rem;
+  color: #737785;
+  line-height: 1.6;
+}
+
+/* Dark Mode */
+:global([data-theme="dark"]) .prob-guide {
+  background-color: #0b1120;
+  border-top-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .prob-guide__section-title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .prob-guide__section-subtitle {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .prob-guide__card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .prob-guide__icon {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .prob-guide__title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .prob-guide__desc {
+  color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .prob-guide__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .prob-guide__list {
+    grid-template-columns: 1fr;
+  }
+}

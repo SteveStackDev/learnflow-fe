@@ -39,7 +39,7 @@ export const roadmapData = {
       tags: ["FIGMA", "USER RESEARCH", "PROTOTYPE"],
       actionText: "Khám phá lộ trình",
       viewsNum: 8900,
-      createdAt: "2026-03-25",
+      createdAt: "2026-04-12",
       imageUrl: heroUrl,
     },
     {
@@ -75,7 +75,7 @@ export const roadmapData = {
       tags: ["KUBERNETES", "AWS", "TERRAFORM"],
       actionText: "Khám phá lộ trình",
       viewsNum: 9400,
-      createdAt: "2026-04-10",
+      createdAt: "2026-04-15",
       imageUrl: heroUrl,
     },
     {
@@ -123,7 +123,7 @@ export const roadmapData = {
       tags: ["LANGCHAIN", "OPENAI", "VECTOR DB"],
       actionText: "Khám phá lộ trình",
       viewsNum: 16200,
-      createdAt: "2026-04-15",
+      createdAt: "2026-03-20",
       imageUrl: heroUrl,
     },
     {
@@ -135,7 +135,7 @@ export const roadmapData = {
       tags: ["PLAYWRIGHT", "JEST", "CI/CD"],
       actionText: "Khám phá lộ trình",
       viewsNum: 5200,
-      createdAt: "2026-04-05",
+      createdAt: "2026-04-14",
       imageUrl: heroUrl,
     },
     {

@@ -1,0 +1,118 @@
+/* ==========================================================================
+   CourseFaq Section Styling
+   ========================================================================== */
+
+.course-faq {
+  padding: 60px 24px 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.course-faq__container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.course-faq__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.course-faq__section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.course-faq__section-subtitle {
+  font-size: 1rem;
+  color: #737785;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.course-faq__accordion-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.course-faq__accordion {
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.04);
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.course-faq__accordion[open] {
+  border-color: rgba(9, 80, 195, 0.4);
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.1);
+}
+
+.course-faq__accordion-summary {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  font-size: 1.05rem;
+  list-style: none;
+}
+
+.course-faq__accordion-summary::-webkit-details-marker {
+  display: none;
+}
+
+.course-faq__accordion-icon {
+  color: #0950c3;
+  display: flex;
+  align-items: center;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.course-faq__accordion[open] .course-faq__accordion-icon {
+  transform: rotate(180deg);
+}
+
+.course-faq__accordion-details {
+  padding: 0 24px 20px;
+  color: #434653;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  border-top: 1px solid #f1f5f9;
+  margin-top: -4px;
+  padding-top: 16px;
+}
+
+/* Dark Mode */
+:global([data-theme="dark"]) .course-faq__section-title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .course-faq__section-subtitle {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .course-faq__accordion {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .course-faq__accordion-summary {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .course-faq__accordion-details {
+  color: #cbd5e1;
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
