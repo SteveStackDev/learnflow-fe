@@ -29,9 +29,7 @@ function BadgeFilter({ searchQuery, setSearchQuery, tabs, activeTab, onTabChange
                   type="button"
                   onClick={() => onTabChange(index)}
                   className={`${styles["badge-filters__tab-btn"]} ${
-                    activeTab === index
-                      ? styles["badge-filters__tab-btn--active"]
-                      : ""
+                    activeTab === index ? styles["badge-filters__tab-btn--active"] : ""
                   }`}
                 >
                   {item}

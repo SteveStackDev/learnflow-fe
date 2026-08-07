@@ -9,19 +9,17 @@ function BadgeHero() {
           {/* Left Content */}
           <div className={styles["badge-hero__content"]}>
             <div className={styles["badge-hero__badge-wrap"]}>
-              <span className={styles["badge-hero__tag"]}>
-                🏆 Hệ Thống Danh Hiệu & Đổi Thưởng
-              </span>
+              <span className={styles["badge-hero__tag"]}>🏆 Hệ Thống Danh Hiệu & Đổi Thưởng</span>
             </div>
             <h1 className={styles["badge-hero__title"]}>
               Chinh Phục Danh Hiệu{" "}
               <span className={styles["badge-hero__title--highlight"]}>
-                Khẳng Định Năng Lực
+                Khẳng&nbsp;Định&nbsp;Năng&nbsp;Lực
               </span>
             </h1>
             <p className={styles["badge-hero__desc"]}>
-              Thu thập các huy hiệu độc quyền từ bài lab, streak học tập và các cuộc thi coding.
-              Mở khóa đặc quyền, tích lũy điểm XP và khẳng định tên tuổi trên bảng vàng LearnFlow.
+              Thu thập các huy hiệu độc quyền từ bài lab, streak học tập và các cuộc thi coding. Mở
+              khóa đặc quyền, tích lũy điểm XP và khẳng định tên tuổi trên bảng vàng LearnFlow.
             </p>
             <div className={styles["badge-hero__actions"]}>
               <button
@@ -57,7 +55,9 @@ function BadgeHero() {
               {/* XP Progress */}
               <div className={styles["badge-showcase__xp-wrapper"]}>
                 <div className={styles["badge-showcase__xp-info"]}>
-                  <span className={styles["badge-showcase__xp-label"]}>Tiến độ kinh nghiệm (XP)</span>
+                  <span className={styles["badge-showcase__xp-label"]}>
+                    Tiến độ kinh nghiệm (XP)
+                  </span>
                   <span className={styles["badge-showcase__xp-val"]}>4,850 / 5,000 XP</span>
                 </div>
                 <div className={styles["badge-showcase__xp-bar"]}>
@@ -67,13 +67,19 @@ function BadgeHero() {
 
               {/* Achievement Chips */}
               <div className={styles["badge-showcase__chips"]}>
-                <div className={`${styles["badge-showcase__chip"]} ${styles["badge-showcase__chip--flame"]}`}>
+                <div
+                  className={`${styles["badge-showcase__chip"]} ${styles["badge-showcase__chip--flame"]}`}
+                >
                   <span>🔥 7 Ngày Streak</span>
                 </div>
-                <div className={`${styles["badge-showcase__chip"]} ${styles["badge-showcase__chip--gold"]}`}>
+                <div
+                  className={`${styles["badge-showcase__chip"]} ${styles["badge-showcase__chip--gold"]}`}
+                >
                   <span>⚡ Top 1% Coders</span>
                 </div>
-                <div className={`${styles["badge-showcase__chip"]} ${styles["badge-showcase__chip--emerald"]}`}>
+                <div
+                  className={`${styles["badge-showcase__chip"]} ${styles["badge-showcase__chip--emerald"]}`}
+                >
                   <span>🎯 50+ Labs Done</span>
                 </div>
               </div>

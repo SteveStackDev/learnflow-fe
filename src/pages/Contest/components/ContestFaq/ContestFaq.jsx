@@ -6,9 +6,7 @@ function ContestFaq({ faqs }) {
     <section className={styles["contest-faq"]}>
       <div className={styles["contest-faq__container"]}>
         <div className={styles["contest-faq__header"]}>
-          <h2 className={styles["contest-faq__section-title"]}>
-            Câu hỏi thường gặp
-          </h2>
+          <h2 className={styles["contest-faq__section-title"]}>Câu hỏi thường gặp</h2>
           <p className={styles["contest-faq__section-subtitle"]}>
             Giải đáp những thắc mắc phổ biến về thể lệ và quy định thi đấu.
           </p>
@@ -21,9 +19,7 @@ function ContestFaq({ faqs }) {
               className={styles["contest-faq__accordion"]}
             >
               <summary className={styles["contest-faq__accordion-summary"]}>
-                <span className={styles["contest-faq__accordion-title"]}>
-                  {obj.question}
-                </span>
+                <span className={styles["contest-faq__accordion-title"]}>{obj.question}</span>
                 <span className={styles["contest-faq__accordion-icon"]}>
                   <Icon name="ChevronDown" size={18} strokeWidth={2.5} />
                 </span>

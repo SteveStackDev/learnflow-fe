@@ -29,10 +29,7 @@ export function Alert({
   const iconName = ICON_MAP[type] || ICON_MAP.info;
 
   return (
-    <div
-      className={`${styles.alert} ${styles[`alert--${type}`]} ${className}`}
-      role="alert"
-    >
+    <div className={`${styles.alert} ${styles[`alert--${type}`]} ${className}`} role="alert">
       <div className={styles["alert__icon-box"]}>
         <Icon name={iconName} size={20} />
       </div>

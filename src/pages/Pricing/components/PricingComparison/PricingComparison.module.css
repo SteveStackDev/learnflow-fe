@@ -55,7 +55,9 @@
   border-bottom: none;
 }
 
-.price-comparison__table-row:hover:not(.price-comparison__table-row--header):not(.price-comparison__table-row--section) {
+.price-comparison__table-row:hover:not(.price-comparison__table-row--header):not(
+    .price-comparison__table-row--section
+  ) {
   background-color: #f8fafc;
 }
 
@@ -140,7 +142,10 @@
   border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
-:global([data-theme="dark"]) .price-comparison__table-row:hover:not(.price-comparison__table-row--header):not(.price-comparison__table-row--section) {
+:global([data-theme="dark"])
+  .price-comparison__table-row:hover:not(.price-comparison__table-row--header):not(
+    .price-comparison__table-row--section
+  ) {
   background-color: #1e293b;
 }
 

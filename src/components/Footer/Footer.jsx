@@ -8,29 +8,37 @@ function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const { toast } = useToast();
 
+  const handleComingSoon = (featureName) => {
+    toast.info(
+      `Trang "${featureName}" đang được phát triển và sẽ sớm ra mắt! (UI hoàn thành – chờ kết nối API/backend)`,
+      "Tính năng sắp ra mắt",
+    );
+  };
+
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     if (!newsletterEmail || !newsletterEmail.includes("@")) {
       toast.error("Vui lòng nhập địa chỉ email hợp lệ!", "Đăng ký thất bại");
       return;
     }
-    toast.success("Cảm ơn bạn đã đăng ký nhận bản tin LearnFlow!", "Đăng ký thành công");
+    // UI hoàn thành – chờ kết nối API/backend.
+    toast.success(
+      "Đăng ký nhận bản tin thành công! (UI hoàn thành – chờ kết nối API/backend)",
+      "Đăng ký nhận tin (Mock)",
+    );
     setNewsletterEmail("");
   };
   return (
     <footer className={styles.footer}>
       {/* Floating CTA Banner */}
-      <div
-        className={`${styles.footer__container} ${styles["footer__container--cta"]}`}
-      >
+      <div className={`${styles.footer__container} ${styles["footer__container--cta"]}`}>
         <div className={styles.footer__cta}>
           <div className={styles["footer__cta-content"]}>
             <h3 className={styles["footer__cta-title"]}>
               Sẵn sàng bắt đầu hành trình học lập trình cùng LearnFlow?
             </h3>
             <p className={styles["footer__cta-description"]}>
-              Hàng nghìn bài tập, lộ trình học rõ ràng và cộng đồng luôn đồng
-              hành cùng bạn.
+              Hàng nghìn bài tập, lộ trình học rõ ràng và cộng đồng luôn đồng hành cùng bạn.
             </p>
           </div>
           <div className={styles["footer__cta-actions"]}>
@@ -51,14 +59,10 @@ function Footer() {
       </div>
 
       {/* Main Footer Links */}
-      <div
-        className={`${styles.footer__container} ${styles["footer__container--main"]}`}
-      >
+      <div className={`${styles.footer__container} ${styles["footer__container--main"]}`}>
         <div className={styles.footer__grid}>
           {/* Column 1: Brand & Newsletter */}
-          <div
-            className={`${styles.footer__col} ${styles["footer__col--brand"]}`}
-          >
+          <div className={`${styles.footer__col} ${styles["footer__col--brand"]}`}>
             <Link to="/" className={styles.footer__brand}>
               <div className={styles["footer__brand-logo"]}>
                 <Icon name="LogoCap" size={22} style={{ color: "#ffffff" }} />
@@ -66,18 +70,20 @@ function Footer() {
               <span className={styles["footer__brand-name"]}>LearnFlow</span>
             </Link>
             <p className={styles.footer__about}>
-              LearnFlow là nền tảng học lập trình giúp bạn xây dựng lộ trình học
-              rõ ràng, luyện tập thông qua bài tập thực tế và phát triển kỹ năng
-              để sẵn sàng cho sự nghiệp trong ngành công nghệ thông tin.
+              LearnFlow là nền tảng học lập trình giúp bạn xây dựng lộ trình học rõ ràng, luyện tập
+              thông qua bài tập thực tế và phát triển kỹ năng để sẵn sàng cho sự nghiệp trong ngành
+              công nghệ thông tin.
             </p>
 
             <div className={styles.footer__newsletter}>
-              <label htmlFor="footer-newsletter-email" className={styles["footer__newsletter-title"]}>
+              <label
+                htmlFor="footer-newsletter-email"
+                className={styles["footer__newsletter-title"]}
+              >
                 Nhận thông tin mới nhất
               </label>
               <p className={styles["footer__newsletter-desc"]}>
-                Đăng ký để nhận thông báo về khóa học mới và cập nhật từ
-                LearnFlow.
+                Đăng ký để nhận thông báo về khóa học mới và cập nhật từ LearnFlow.
               </p>
               <form
                 noValidate
@@ -104,9 +110,7 @@ function Footer() {
           </div>
 
           {/* Column 2: Navigation Groups */}
-          <div
-            className={`${styles.footer__col} ${styles["footer__col--links"]}`}
-          >
+          <div className={`${styles.footer__col} ${styles["footer__col--links"]}`}>
             <div className={styles.footer__nav}>
               {/* KHÁM PHÁ */}
               <div className={styles["footer__nav-group"]}>
@@ -165,10 +169,7 @@ function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      to="/leaderboard"
-                      className={styles["footer__nav-link"]}
-                    >
+                    <Link to="/leaderboard" className={styles["footer__nav-link"]}>
                       Bảng xếp hạng
                     </Link>
                   </li>
@@ -190,14 +191,22 @@ function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/profile" className={styles["footer__nav-link"]}>
-                      Hồ sơ cá nhân
-                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => handleComingSoon("Hồ sơ cá nhân")}
+                      className={styles["footer__nav-link-btn"]}
+                    >
+                      Hồ sơ cá nhân <span className={styles["footer__badge-upcoming"]}>Sắp có</span>
+                    </button>
                   </li>
                   <li>
-                    <Link to="/settings" className={styles["footer__nav-link"]}>
-                      Cài đặt
-                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => handleComingSoon("Cài đặt")}
+                      className={styles["footer__nav-link-btn"]}
+                    >
+                      Cài đặt <span className={styles["footer__badge-upcoming"]}>Sắp có</span>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -207,24 +216,44 @@ function Footer() {
                 <h4 className={styles["footer__nav-title"]}>HỖ TRỢ</h4>
                 <ul className={styles["footer__nav-list"]}>
                   <li>
-                    <Link to="/help" className={styles["footer__nav-link"]}>
-                      Trung tâm trợ giúp
-                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => handleComingSoon("Trung tâm trợ giúp")}
+                      className={styles["footer__nav-link-btn"]}
+                    >
+                      Trung tâm trợ giúp{" "}
+                      <span className={styles["footer__badge-upcoming"]}>Sắp có</span>
+                    </button>
                   </li>
                   <li>
-                    <Link to="/faq" className={styles["footer__nav-link"]}>
-                      Câu hỏi thường gặp
-                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => handleComingSoon("Câu hỏi thường gặp")}
+                      className={styles["footer__nav-link-btn"]}
+                    >
+                      Câu hỏi thường gặp{" "}
+                      <span className={styles["footer__badge-upcoming"]}>Sắp có</span>
+                    </button>
                   </li>
                   <li>
-                    <Link to="/privacy" className={styles["footer__nav-link"]}>
-                      Chính sách bảo mật
-                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => handleComingSoon("Chính sách bảo mật")}
+                      className={styles["footer__nav-link-btn"]}
+                    >
+                      Chính sách bảo mật{" "}
+                      <span className={styles["footer__badge-upcoming"]}>Sắp có</span>
+                    </button>
                   </li>
                   <li>
-                    <Link to="/terms" className={styles["footer__nav-link"]}>
-                      Điều khoản sử dụng
-                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => handleComingSoon("Điều khoản sử dụng")}
+                      className={styles["footer__nav-link-btn"]}
+                    >
+                      Điều khoản sử dụng{" "}
+                      <span className={styles["footer__badge-upcoming"]}>Sắp có</span>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -236,9 +265,7 @@ function Footer() {
       <hr className={styles.footer__divider} />
 
       {/* Bottom Bar */}
-      <div
-        className={`${styles.footer__container} ${styles["footer__container--bottom"]}`}
-      >
+      <div className={`${styles.footer__container} ${styles["footer__container--bottom"]}`}>
         <div className={styles.footer__bottom}>
           <div className={styles.footer__copyright}>
             <span className={styles["footer__copyright-text"]}>

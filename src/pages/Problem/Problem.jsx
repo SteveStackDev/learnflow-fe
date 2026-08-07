@@ -29,7 +29,9 @@ function Problem() {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(ALGORITHM_OPTIONS[0]);
   const [isAlgoDropdownOpen, setIsAlgoDropdownOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth <= 768,
+  );
   const sortDropdownRef = useRef(null);
   const algoDropdownRef = useRef(null);
 
@@ -66,7 +68,8 @@ function Problem() {
 
   // Filter & Sort Logic
   const filteredAndSortedItems = useMemo(() => {
-    const tabs = problemData.tabs || problemData.categories || ["Tất cả", "Dễ", "Trung bình", "Khó"];
+    const tabs = problemData.tabs ||
+      problemData.categories || ["Tất cả", "Dễ", "Trung bình", "Khó"];
     return (problemData.items || problemData.challenges || [])
       .filter((item) => {
         const matchesSearch =
@@ -97,7 +100,9 @@ function Problem() {
           const rateB = parseFloat(b.successRate) || 0;
           return rateB - rateA;
         }
-        return (b.submissionsCount || b.studentsNum || 0) - (a.submissionsCount || a.studentsNum || 0);
+        return (
+          (b.submissionsCount || b.studentsNum || 0) - (a.submissionsCount || a.studentsNum || 0)
+        );
       });
   }, [searchQuery, activeTab, selectedSort, selectedAlgorithm]);
 
@@ -113,7 +118,8 @@ function Problem() {
     return filteredAndSortedItems.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredAndSortedItems, currentPage, itemsPerPage]);
 
-  const categories = problemData.tabs || problemData.categories || ["Tất cả", "Dễ", "Trung bình", "Khó"];
+  const categories = problemData.tabs ||
+    problemData.categories || ["Tất cả", "Dễ", "Trung bình", "Khó"];
 
   return (
     <div className={styles.problempage}>

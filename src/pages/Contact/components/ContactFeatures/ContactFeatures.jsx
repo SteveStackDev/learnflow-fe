@@ -10,16 +10,15 @@ function ContactFeatures({ topics }) {
         </h2>
         <div className={styles["contact-features__list"]}>
           {topics.map((obj) => (
-            <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["contact-features__card"]} reveal-card`}>
+            <div
+              key={obj.id || obj.slug || obj.name || obj.title || obj}
+              className={`${styles["contact-features__card"]} reveal-card`}
+            >
               <span className={styles["contact-features__icon"]}>
                 <Icon name={obj.iconName} size={22} />
               </span>
-              <h3 className={styles["contact-features__title"]}>
-                {obj.title}
-              </h3>
-              <p className={styles["contact-features__desc"]}>
-                {obj.description}
-              </p>
+              <h3 className={styles["contact-features__title"]}>{obj.title}</h3>
+              <p className={styles["contact-features__desc"]}>{obj.description}</p>
             </div>
           ))}
         </div>

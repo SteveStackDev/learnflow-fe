@@ -85,8 +85,12 @@
 }
 
 /* Dark Mode */
-:global([data-theme="dark"]) .home-features__section-title { color: #ffffff; }
-:global([data-theme="dark"]) .home-features__section-subtitle { color: #94a3b8; }
+:global([data-theme="dark"]) .home-features__section-title {
+  color: #ffffff;
+}
+:global([data-theme="dark"]) .home-features__section-subtitle {
+  color: #94a3b8;
+}
 :global([data-theme="dark"]) .home-features__card {
   background-color: #131c31;
   border-color: rgba(255, 255, 255, 0.15);
@@ -95,8 +99,12 @@
   background-color: #1e293b;
   color: #38bdf8;
 }
-:global([data-theme="dark"]) .home-features__card-title { color: #ffffff; }
-:global([data-theme="dark"]) .home-features__card-desc { color: #94a3b8; }
+:global([data-theme="dark"]) .home-features__card-title {
+  color: #ffffff;
+}
+:global([data-theme="dark"]) .home-features__card-desc {
+  color: #94a3b8;
+}
 
 /* Responsive */
 @media (max-width: 992px) {

@@ -1,3 +1,4 @@
+import AnimatedCounter from "~/components/AnimatedCounter/AnimatedCounter";
 import styles from "./HomeStats.module.css";
 
 function HomeStats({ stats }) {
@@ -12,11 +13,9 @@ function HomeStats({ stats }) {
               style={{ transitionDelay: `${index * 130}ms` }}
             >
               <span className={styles["home-stats__card-number"]}>
-                {obj.value}
+                <AnimatedCounter value={obj.value} />
               </span>
-              <p className={styles["home-stats__card-desc"]}>
-                {obj.label}
-              </p>
+              <p className={styles["home-stats__card-desc"]}>{obj.label}</p>
             </div>
           ))}
         </div>

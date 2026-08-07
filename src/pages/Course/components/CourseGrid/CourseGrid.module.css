@@ -187,17 +187,19 @@
   font-size: 0.875rem;
   font-weight: 700;
   color: #0950c3;
-  background-color: var(--primary-light, #e0ebff);
-  border: 1px solid rgba(9, 80, 195, 0.2);
+  background-color: #ffffff;
+  border: 1px solid rgba(9, 80, 195, 0.3);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.25s ease;
   font-family: inherit;
+  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.05);
 }
 
 .course-grid__action-btn:hover {
-  background-color: #0950c3;
-  color: #ffffff;
+  background-color: var(--primary-light, #e0ebff);
+  color: #0950c3;
+  border-color: #0950c3;
 }
 
 /* Pagination */
@@ -234,14 +236,20 @@
   font-family: inherit;
 }
 
-.course-grid__page-btn:hover:not(:disabled) {
-  background-color: #f1f5f9;
-  color: #0950c3;
+.course-grid__page-btn:hover:not(:disabled):not(.course-grid__page-btn--active) {
+  background-color: #fff7ed;
+  color: #d97706;
 }
 
 .course-grid__page-btn--active {
-  background-color: #0950c3;
-  color: #ffffff;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+}
+
+.course-grid__page-btn--active:hover {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: #ffffff !important;
 }
 
 .course-grid__page-btn:disabled {
@@ -271,6 +279,19 @@
   color: #94a3b8;
 }
 
+:global([data-theme="dark"]) .course-grid__action-btn {
+  background-color: #1e293b;
+  color: #38bdf8;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: none;
+}
+
+:global([data-theme="dark"]) .course-grid__action-btn:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+  border-color: #0950c3;
+}
+
 :global([data-theme="dark"]) .course-grid__pagination {
   background-color: #131c31;
   border-color: rgba(255, 255, 255, 0.15);
@@ -280,14 +301,16 @@
   color: #cbd5e1;
 }
 
-:global([data-theme="dark"]) .course-grid__page-btn:hover:not(:disabled) {
+:global([data-theme="dark"])
+  .course-grid__page-btn:hover:not(:disabled):not(.course-grid__page-btn--active) {
   background-color: #1e293b;
   color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .course-grid__page-btn--active {
-  background-color: #0950c3;
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.35);
 }
 
 :global([data-theme="dark"]) .course-grid__side-nav-btn {

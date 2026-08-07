@@ -1,7 +1,18 @@
 import Icon from "~/components/Icon/Icon";
+import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./PricingCards.module.css";
 
 function PricingCards({ items, isYearly }) {
+  const { toast } = useToast();
+
+  const handleSelectPackage = (title) => {
+    // UI hoàn thành – chờ kết nối API/backend.
+    toast.info(
+      `Đã chọn gói "${title}"! (UI hoàn thành – chờ kết nối API/backend)`,
+      "Đăng ký gói cước",
+    );
+  };
+
   return (
     <section className={styles["price-cards"]}>
       <div className={styles["price-cards__container"]}>
@@ -19,29 +30,19 @@ function PricingCards({ items, isYearly }) {
                 key={obj.id || obj.slug || obj.name || obj.title || obj}
                 className={`${styles["price-cards__card"]} ${
                   obj.isPopular ? styles["price-cards__card--popular"] : ""
-                } ${
-                  index === 2 ? styles["price-cards__card--pro"] : ""
-                }`}
+                } ${index === 2 ? styles["price-cards__card--pro"] : ""}`}
               >
                 {obj.isPopular && (
                   <div className={styles["price-cards__card-badge-wrap"]}>
-                    <span className={styles["price-cards__card-badge"]}>
-                      Phổ biến nhất
-                    </span>
+                    <span className={styles["price-cards__card-badge"]}>Phổ biến nhất</span>
                   </div>
                 )}
 
                 <div className={styles["price-cards__card-content"]}>
-                  <h3 className={styles["price-cards__card-title"]}>
-                    {obj.title}
-                  </h3>
+                  <h3 className={styles["price-cards__card-title"]}>{obj.title}</h3>
                   <div className={styles["price-cards__card-price-box"]}>
-                    <span className={styles["price-cards__card-price"]}>
-                      {displayPrice}
-                    </span>
-                    <span className={styles["price-cards__card-period"]}>
-                      {obj.period}
-                    </span>
+                    <span className={styles["price-cards__card-price"]}>{displayPrice}</span>
+                    <span className={styles["price-cards__card-period"]}>{obj.period}</span>
                   </div>
 
                   <ul className={styles["price-cards__card-features"]}>
@@ -53,9 +54,7 @@ function PricingCards({ items, isYearly }) {
                         <span className={styles["price-cards__feature-icon"]}>
                           <Icon name="Check" size={16} />
                         </span>
-                        <span className={styles["price-cards__feature-text"]}>
-                          {item}
-                        </span>
+                        <span className={styles["price-cards__feature-text"]}>{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -64,12 +63,13 @@ function PricingCards({ items, isYearly }) {
                 <div className={styles["price-cards__card-actions"]}>
                   <button
                     type="button"
+                    onClick={() => handleSelectPackage(obj.title)}
                     className={`${styles["price-cards__btn"]} ${
                       obj.isPopular
                         ? styles["price-cards__btn--contained"]
                         : index === 2
-                        ? styles["price-cards__btn--dark"]
-                        : styles["price-cards__btn--outlined"]
+                          ? styles["price-cards__btn--dark"]
+                          : styles["price-cards__btn--outlined"]
                     }`}
                   >
                     {obj.buttonText}

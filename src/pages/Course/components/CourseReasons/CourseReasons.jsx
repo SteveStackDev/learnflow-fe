@@ -10,8 +10,8 @@ function CourseReasons({ benefits }) {
             Tại sao nên học khóa học tại LearnFlow?
           </h2>
           <p className={styles["course-reasons__section-subtitle"]}>
-            Chúng tôi mang đến môi trường học tập lập trình khác biệt, tập trung
-            vào kết quả và sự phát triển lâu dài.
+            Chúng tôi mang đến môi trường học tập lập trình khác biệt, tập trung vào kết quả và sự
+            phát triển lâu dài.
           </p>
         </div>
 
@@ -21,12 +21,8 @@ function CourseReasons({ benefits }) {
               <div className={styles["course-reasons__icon"]}>
                 <Icon name={obj.iconName} size={24} />
               </div>
-              <h3 className={styles["course-reasons__title"]}>
-                {obj.title}
-              </h3>
-              <p className={styles["course-reasons__desc"]}>
-                {obj.description}
-              </p>
+              <h3 className={styles["course-reasons__title"]}>{obj.title}</h3>
+              <p className={styles["course-reasons__desc"]}>{obj.description}</p>
             </div>
           ))}
         </div>

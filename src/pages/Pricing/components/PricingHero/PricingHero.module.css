@@ -20,13 +20,30 @@
 }
 
 .price-hero__title {
-  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Be Vietnam Pro",
+    "Inter",
+    "Noto Sans",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   font-size: 2.75rem;
   font-weight: 800;
   color: #003a95;
   line-height: 1.2;
   margin-bottom: 16px;
   letter-spacing: -0.02em;
+}
+
+.price-hero__title--highlight {
+  background: linear-gradient(135deg, #0950c3 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .price-hero__desc {

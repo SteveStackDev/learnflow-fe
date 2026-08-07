@@ -1,4 +1,5 @@
-:root {
+:root,
+[data-theme="light"] {
   /* COLOR SYSTEM: LIGHT MODE */
 
   /* PRIMARY */
@@ -291,9 +292,11 @@
   /* TYPOGRAPHY SYSTEM */
 
   /* FONT FAMILIES */
-  --font-family-main: 'Be Vietnam Pro', 'Inter', 'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-  --font-family-code: 'JetBrains Mono', 'Fira Code', 'Courier New', Courier, monospace;
-  --font-family-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-family-main:
+    "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-family-code: "JetBrains Mono", "Fira Code", "Courier New", Courier, monospace;
+  --font-family-display: "Playfair Display", Georgia, "Times New Roman", serif;
 
   /* FONT SIZES */
   --font-size-xs: 0.75rem;
@@ -462,6 +465,18 @@
   --theme-dropdown-selected-bg: rgba(9, 80, 195, 0.08);
   --theme-dropdown-text: #191b22;
   --theme-dropdown-hover-text: #0950c3;
+
+  /* UI COMPONENT ALIASES (LIGHT MODE) */
+  --primary-color: #0950c3;
+  --primary-light: #e0ebff;
+  --primary-dark: #053787;
+  --bg-page: #f9fbff;
+  --text-main: #191b22;
+  --font-body: var(--font-family-main);
+  --color-surface: #ffffff;
+  --color-border: rgba(169, 183, 203, 0.4);
+  --color-text-main: #191b22;
+  --color-text-muted: #64748b;
 }
 
 /* SEMANTIC DESIGN TOKENS (DARK MODE) */
@@ -483,6 +498,18 @@
   --theme-dropdown-selected-bg: rgba(56, 189, 248, 0.12);
   --theme-dropdown-text: #cbd5e1;
   --theme-dropdown-hover-text: #38bdf8;
+
+  /* UI COMPONENT ALIASES (DARK MODE) */
+  --primary-color: #38bdf8;
+  --primary-light: #1e293b;
+  --primary-dark: #0950c3;
+  --bg-page: #0b1120;
+  --text-main: #ffffff;
+  --font-body: var(--font-family-main);
+  --color-surface: #131c31;
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-text-main: #ffffff;
+  --color-text-muted: #94a3b8;
 }
 
 /* ==========================================================================
@@ -520,7 +547,12 @@
   left: -100px;
   width: 620px;
   height: 620px;
-  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.32) 0%, rgba(9, 80, 195, 0.18) 45%, transparent 75%);
+  background: radial-gradient(
+    circle at center,
+    rgba(56, 189, 248, 0.32) 0%,
+    rgba(9, 80, 195, 0.18) 45%,
+    transparent 75%
+  );
   filter: blur(85px);
   animation: orbGlowPulse 8s ease-in-out infinite alternate;
 }
@@ -531,7 +563,12 @@
   right: -100px;
   width: 560px;
   height: 560px;
-  background: radial-gradient(circle at center, rgba(168, 85, 247, 0.28) 0%, rgba(56, 189, 248, 0.16) 50%, transparent 75%);
+  background: radial-gradient(
+    circle at center,
+    rgba(168, 85, 247, 0.28) 0%,
+    rgba(56, 189, 248, 0.16) 50%,
+    transparent 75%
+  );
   filter: blur(95px);
   animation: orbGlowPulse 11s ease-in-out infinite alternate-reverse;
 }
@@ -542,7 +579,12 @@
   left: -120px;
   width: 580px;
   height: 580px;
-  background: radial-gradient(circle at center, rgba(9, 80, 195, 0.3) 0%, rgba(56, 189, 248, 0.18) 50%, transparent 75%);
+  background: radial-gradient(
+    circle at center,
+    rgba(9, 80, 195, 0.3) 0%,
+    rgba(56, 189, 248, 0.18) 50%,
+    transparent 75%
+  );
   filter: blur(90px);
   animation: orbGlowPulse 9s ease-in-out infinite alternate;
 }
@@ -553,7 +595,12 @@
   right: -100px;
   width: 540px;
   height: 540px;
-  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.28) 0%, rgba(56, 189, 248, 0.16) 50%, transparent 75%);
+  background: radial-gradient(
+    circle at center,
+    rgba(139, 92, 246, 0.28) 0%,
+    rgba(56, 189, 248, 0.16) 50%,
+    transparent 75%
+  );
   filter: blur(90px);
   animation: orbGlowPulse 13s ease-in-out infinite alternate-reverse;
 }

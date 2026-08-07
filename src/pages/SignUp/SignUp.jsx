@@ -66,9 +66,13 @@ function SignUp() {
     }
 
     setIsSubmitting(true);
+    // UI hoàn thành – chờ kết nối API/backend.
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("Tạo tài khoản LearnFlow thành công! Vui lòng đăng nhập.", "Đăng ký thành công");
+      toast.success(
+        "Tạo tài khoản LearnFlow thành công! (UI hoàn thành – chờ kết nối API/backend)",
+        "Đăng ký giả lập",
+      );
     }, 1000);
   };
 

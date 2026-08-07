@@ -21,7 +21,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(9, 80, 195, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(9, 80, 195, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
@@ -44,10 +44,6 @@
   z-index: 1;
 }
 
-
-
-
-
 /* Dark Mode Overrides */
 :global([data-theme="dark"]) .contactpage {
   background-color: #0b1120;
@@ -55,7 +51,7 @@
 }
 
 :global([data-theme="dark"]) .contactpage::before {
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }

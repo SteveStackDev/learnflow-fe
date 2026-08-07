@@ -16,14 +16,11 @@ function HomeHero() {
             </div>
             <h1 className={styles["home-hero__title"]}>
               Dòng chảy học tập, kiến tạo tương lai{" "}
-              <span className={styles["home-hero__title--highlight"]}>
-                lập trình viên
-              </span>
+              <span className={styles["home-hero__title--highlight"]}>lập trình viên</span>
             </h1>
             <p className={styles["home-hero__desc"]}>
-              Học lập trình theo lộ trình bài bản, luyện tập coding challenge
-              mỗi ngày và theo dõi tiến độ của riêng bạn trên nền tảng hiện
-              đại nhất.
+              Học lập trình theo lộ trình bài bản, luyện tập coding challenge mỗi ngày và theo dõi
+              tiến độ của riêng bạn trên nền tảng hiện đại nhất.
             </p>
             <div className={styles["home-hero__actions"]}>
               <Link
@@ -46,13 +43,17 @@ function HomeHero() {
             <div className={styles["home-hero__terminal-card"]}>
               <div className={styles["home-hero__terminal-header"]}>
                 <div className={styles["home-hero__terminal-dots"]}>
-                  <span className={`${styles["home-hero__dot"]} ${styles["home-hero__dot--red"]}`} />
-                  <span className={`${styles["home-hero__dot"]} ${styles["home-hero__dot--yellow"]}`} />
-                  <span className={`${styles["home-hero__dot"]} ${styles["home-hero__dot--green"]}`} />
+                  <span
+                    className={`${styles["home-hero__dot"]} ${styles["home-hero__dot--red"]}`}
+                  />
+                  <span
+                    className={`${styles["home-hero__dot"]} ${styles["home-hero__dot--yellow"]}`}
+                  />
+                  <span
+                    className={`${styles["home-hero__dot"]} ${styles["home-hero__dot--green"]}`}
+                  />
                 </div>
-                <span className={styles["home-hero__terminal-url"]}>
-                  learnflow.dev/dashboard
-                </span>
+                <span className={styles["home-hero__terminal-url"]}>learnflow.dev/dashboard</span>
               </div>
 
               <div className={styles["home-hero__terminal-body"]}>
@@ -80,19 +81,26 @@ function HomeHero() {
                   <div className={styles["home-hero__code-line"]}>
                     <span className={styles["home-hero__line-num"]}>1</span>
                     <code>
-                      <span className={styles["home-hero__code-keyword"]}>const</span> <span className={styles["home-hero__code-var"]}>student</span> = <span className={styles["home-hero__code-func"]}>new</span> <span className={styles["home-hero__code-class"]}>LearnFlow</span>();
+                      <span className={styles["home-hero__code-keyword"]}>const</span>{" "}
+                      <span className={styles["home-hero__code-var"]}>student</span> ={" "}
+                      <span className={styles["home-hero__code-func"]}>new</span>{" "}
+                      <span className={styles["home-hero__code-class"]}>LearnFlow</span>();
                     </code>
                   </div>
                   <div className={styles["home-hero__code-line"]}>
                     <span className={styles["home-hero__line-num"]}>2</span>
                     <code>
-                      <span className={styles["home-hero__code-var"]}>student</span>.<span className={styles["home-hero__code-prop"]}>target</span> = <span className={styles["home-hero__code-num"]}>100</span>;
+                      <span className={styles["home-hero__code-var"]}>student</span>.
+                      <span className={styles["home-hero__code-prop"]}>target</span> ={" "}
+                      <span className={styles["home-hero__code-num"]}>100</span>;
                     </code>
                   </div>
                   <div className={styles["home-hero__code-line"]}>
                     <span className={styles["home-hero__line-num"]}>3</span>
                     <code>
-                      <span className={styles["home-hero__code-keyword"]}>return</span> <span className={styles["home-hero__code-var"]}>target</span> - <span className={styles["home-hero__code-var"]}>progress</span>;
+                      <span className={styles["home-hero__code-keyword"]}>return</span>{" "}
+                      <span className={styles["home-hero__code-var"]}>target</span> -{" "}
+                      <span className={styles["home-hero__code-var"]}>progress</span>;
                     </code>
                   </div>
                   <div className={styles["home-hero__code-line"]}>
@@ -104,7 +112,9 @@ function HomeHero() {
                   <div className={styles["home-hero__code-line"]}>
                     <span className={styles["home-hero__line-num"]}>5</span>
                     <code>
-                      <span className={styles["home-hero__code-string"]}>🔥 Bắt đầu buổi học ngay...</span>
+                      <span className={styles["home-hero__code-string"]}>
+                        🔥 Bắt đầu buổi học ngay...
+                      </span>
                     </code>
                   </div>
 

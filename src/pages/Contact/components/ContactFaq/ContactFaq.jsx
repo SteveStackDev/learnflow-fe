@@ -6,9 +6,7 @@ function ContactFaq({ faqs }) {
     <section className={styles["contact-faq"]}>
       <div className={styles["contact-faq__container"]}>
         <div className={styles["contact-faq__header"]}>
-          <h2 className={styles["contact-faq__section-title"]}>
-            Câu hỏi thường gặp
-          </h2>
+          <h2 className={styles["contact-faq__section-title"]}>Câu hỏi thường gặp</h2>
           <p className={styles["contact-faq__section-subtitle"]}>
             Giải đáp nhanh các thắc mắc về hỗ trợ kỹ thuật và tư vấn dịch vụ.
           </p>
@@ -21,9 +19,7 @@ function ContactFaq({ faqs }) {
               className={styles["contact-faq__accordion"]}
             >
               <summary className={styles["contact-faq__accordion-summary"]}>
-                <span className={styles["contact-faq__accordion-title"]}>
-                  {obj.question}
-                </span>
+                <span className={styles["contact-faq__accordion-title"]}>{obj.question}</span>
                 <span className={styles["contact-faq__accordion-icon"]}>
                   <Icon name="ChevronDown" size={18} strokeWidth={2.5} />
                 </span>

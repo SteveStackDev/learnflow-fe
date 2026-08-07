@@ -1,6 +1,7 @@
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import heroUrl from "~/assets/images/Home/hero.webp";
+import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./CourseGrid.module.css";
 
 function CourseGrid({
@@ -12,6 +13,7 @@ function CourseGrid({
   setSearchQuery,
   setActiveCategoryTab,
 }) {
+  const { toast } = useToast();
   return (
     <section className={styles["course-grid"]}>
       <div className={styles["course-grid__container"]}>
@@ -48,8 +50,8 @@ function CourseGrid({
                         obj.level === "Cơ bản"
                           ? styles["course-grid__level-chip--basic"]
                           : obj.level === "Trung cấp"
-                          ? styles["course-grid__level-chip--intermediate"]
-                          : styles["course-grid__level-chip--advanced"]
+                            ? styles["course-grid__level-chip--intermediate"]
+                            : styles["course-grid__level-chip--advanced"]
                       }`}
                     >
                       {obj.level}
@@ -64,12 +66,8 @@ function CourseGrid({
                   </div>
 
                   <div className={styles["course-grid__card-body"]}>
-                    <h3 className={styles["course-grid__card-title"]}>
-                      {obj.title}
-                    </h3>
-                    <p className={styles["course-grid__card-desc"]}>
-                      {obj.description}
-                    </p>
+                    <h3 className={styles["course-grid__card-title"]}>{obj.title}</h3>
+                    <p className={styles["course-grid__card-desc"]}>{obj.description}</p>
                     <div className={styles["course-grid__card-meta"]}>
                       <span className={styles["course-grid__meta-text"]}>
                         <Icon name="Book" size={15} />
@@ -85,6 +83,12 @@ function CourseGrid({
                   <div className={styles["course-grid__card-actions"]}>
                     <button
                       type="button"
+                      onClick={() =>
+                        toast.info(
+                          `Đã chọn xem chi tiết khóa học "${obj.title}"! (UI hoàn thành – chờ kết nối API/backend)`,
+                          "Khóa học lập trình",
+                        )
+                      }
                       className={styles["course-grid__action-btn"]}
                     >
                       Xem chi tiết

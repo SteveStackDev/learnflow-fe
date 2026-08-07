@@ -94,14 +94,22 @@
   border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
-:global([data-theme="dark"]) .home-team__section-title { color: #ffffff; }
-:global([data-theme="dark"]) .home-team__section-subtitle { color: #94a3b8; }
+:global([data-theme="dark"]) .home-team__section-title {
+  color: #ffffff;
+}
+:global([data-theme="dark"]) .home-team__section-subtitle {
+  color: #94a3b8;
+}
 :global([data-theme="dark"]) .home-team__card {
   background-color: #131c31;
   border-color: rgba(255, 255, 255, 0.15);
 }
-:global([data-theme="dark"]) .home-team__card-name { color: #ffffff; }
-:global([data-theme="dark"]) .home-team__card-role { color: #38bdf8; }
+:global([data-theme="dark"]) .home-team__card-name {
+  color: #ffffff;
+}
+:global([data-theme="dark"]) .home-team__card-role {
+  color: #38bdf8;
+}
 
 /* Responsive */
 @media (max-width: 992px) {

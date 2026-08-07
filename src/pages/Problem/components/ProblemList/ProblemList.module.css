@@ -87,11 +87,12 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--primary-light, #e0ebff) 0%, #cce0ff 100%);
+  background: linear-gradient(135deg, #e0ebff 0%, #cce0ff 100%);
   color: #0950c3;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(9, 80, 195, 0.25);
 }
 
 .prob-challenges__level-badge {
@@ -191,9 +192,9 @@
   padding: 8px 18px;
   font-size: 0.85rem;
   font-weight: 700;
-  color: #0950c3;
-  background-color: var(--primary-light, #e0ebff);
-  border: 1px solid rgba(9, 80, 195, 0.2);
+  color: #047857;
+  background-color: #d1fae5;
+  border: 1px solid rgba(16, 185, 129, 0.35);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -201,8 +202,10 @@
 }
 
 .prob-challenges__action-btn:hover {
-  background-color: #0950c3;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #ffffff;
+  border-color: #10b981;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
 }
 
 /* Pagination */
@@ -239,14 +242,20 @@
   font-family: inherit;
 }
 
-.prob-challenges__page-btn:hover:not(:disabled) {
-  background-color: #f1f5f9;
-  color: #0950c3;
+.prob-challenges__page-btn:hover:not(:disabled):not(.prob-challenges__page-btn--active) {
+  background-color: #fff7ed;
+  color: #d97706;
 }
 
 .prob-challenges__page-btn--active {
-  background-color: #0950c3;
-  color: #ffffff;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+}
+
+.prob-challenges__page-btn--active:hover {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: #ffffff !important;
 }
 
 .prob-challenges__page-btn:disabled {
@@ -264,6 +273,12 @@
   color: #ffffff;
 }
 
+:global([data-theme="dark"]) .prob-challenges__card-icon {
+  background: #1e293b;
+  color: #38bdf8;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 :global([data-theme="dark"]) .prob-challenges__card-desc {
   color: #cbd5e1;
 }
@@ -277,6 +292,21 @@
   border-top-color: rgba(255, 255, 255, 0.1);
 }
 
+:global([data-theme="dark"]) .prob-challenges__action-btn {
+  background: #1e293b;
+  background-image: none;
+  color: #38bdf8;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: none;
+}
+
+:global([data-theme="dark"]) .prob-challenges__action-btn:hover {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+  border-color: #0950c3;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.35);
+}
+
 :global([data-theme="dark"]) .prob-challenges__pagination {
   background-color: #131c31;
   border-color: rgba(255, 255, 255, 0.15);
@@ -286,14 +316,16 @@
   color: #cbd5e1;
 }
 
-:global([data-theme="dark"]) .prob-challenges__page-btn:hover:not(:disabled) {
+:global([data-theme="dark"])
+  .prob-challenges__page-btn:hover:not(:disabled):not(.prob-challenges__page-btn--active) {
   background-color: #1e293b;
   color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .prob-challenges__page-btn--active {
-  background-color: #0950c3;
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.35);
 }
 
 :global([data-theme="dark"]) .prob-challenges__side-nav-btn {

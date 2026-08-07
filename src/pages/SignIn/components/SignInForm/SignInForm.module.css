@@ -88,14 +88,16 @@
 }
 
 .signin-form__title-prefix {
-  display: inline;
+  display: block;
+  margin-bottom: 4px;
 }
 
 .signin-form__title--highlight {
-  background: linear-gradient(135deg, #0950c3 0%, #0284c7 100%);
+  background: linear-gradient(135deg, #0950c3 0%, #38bdf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  display: inline-block;
+  display: block;
+  min-height: 1.3em;
 }
 
 .signin-form__cursor {
@@ -108,8 +110,13 @@
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 /* Sign In Card */
@@ -441,6 +448,27 @@
 
 :global([data-theme="dark"]) .signin-form__splitter-text {
   color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .signin-form__mobile-back-btn {
+  background-color: #1e293b;
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+:global([data-theme="dark"]) .signin-form__mobile-back-btn:hover {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #7dd3fc;
+  border-color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .signin-form__mobile-logo-text {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .signin-form__mobile-typing-title,
+:global([data-theme="dark"]) .signin-form__title-prefix {
+  color: #ffffff;
 }
 
 /* Responsive */

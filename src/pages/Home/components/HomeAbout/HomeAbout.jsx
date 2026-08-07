@@ -20,29 +20,25 @@ function HomeAbout({ highlights }) {
         </div>
 
         <div className={styles["home-about__content"]}>
-          <h2 className={styles["home-about__section-title"]}>
-            Tại sao chọn LearnFlow?
-          </h2>
+          <h2 className={styles["home-about__section-title"]}>Tại sao chọn LearnFlow?</h2>
           <p className={styles["home-about__text"]}>
-            Khác với các nền tảng giải đố thuần túy như LeetCode có thể gây
-            ngợp cho người mới, LearnFlow được thiết kế như một{" "}
-            <strong>người dẫn đường</strong>. Chúng tôi không chỉ đưa bài
-            tập, chúng tôi xây dựng tư duy lập trình từ những viên gạch đầu tiên.
+            Khác với các nền tảng giải đố thuần túy như LeetCode có thể gây ngợp cho người mới,
+            LearnFlow được thiết kế như một <strong>người dẫn đường</strong>. Chúng tôi không chỉ
+            đưa bài tập, chúng tôi xây dựng tư duy lập trình từ những viên gạch đầu tiên.
           </p>
 
           <div className={styles["home-about__list"]}>
             {highlights.map((obj) => (
-              <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={styles["home-about__item"]}>
+              <div
+                key={obj.id || obj.slug || obj.name || obj.title || obj}
+                className={styles["home-about__item"]}
+              >
                 <div className={styles["home-about__item-icon"]}>
                   <Icon name={obj.iconName} size={22} />
                 </div>
                 <div className={styles["home-about__item-info"]}>
-                  <h3 className={styles["home-about__item-title"]}>
-                    {obj.title}
-                  </h3>
-                  <p className={styles["home-about__item-desc"]}>
-                    {obj.description}
-                  </p>
+                  <h3 className={styles["home-about__item-title"]}>{obj.title}</h3>
+                  <p className={styles["home-about__item-desc"]}>{obj.description}</p>
                 </div>
               </div>
             ))}

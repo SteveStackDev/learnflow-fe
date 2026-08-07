@@ -6,12 +6,14 @@ function PricingHero({ isYearly, setIsYearly }) {
       <div className={styles["price-hero__container"]}>
         <div className={styles["price-hero__content"]}>
           <h1 className={styles["price-hero__title"]}>
-            Chọn lộ trình phát triển phù hợp với bạn
+            Gói Đăng Ký Học Tập{" "}
+            <span className={styles["price-hero__title--highlight"]}>
+              Lựa&nbsp;Chọn&nbsp;Linh&nbsp;Hoạt
+            </span>
           </h1>
           <p className={styles["price-hero__desc"]}>
-            Từ những bước đầu tiên làm quen với mã nguồn đến việc trở thành
-            chuyên gia lập trình với sự hỗ trợ của AI. LearnFlow đồng hành
-            cùng mọi giai đoạn sự nghiệp của bạn.
+            Từ những bước đầu tiên làm quen với mã nguồn đến việc trở thành chuyên gia lập trình với
+            sự hỗ trợ của AI. LearnFlow đồng hành cùng mọi giai đoạn sự nghiệp của bạn.
           </p>
 
           {/* Billing Toggle Switch */}

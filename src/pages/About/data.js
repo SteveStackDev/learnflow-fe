@@ -34,11 +34,7 @@ export const aboutData = {
     {
       id: "about-5",
       title: "Giá trị cốt lõi",
-      description: [
-        "Thực tế & Thực chiến",
-        "Liên tục cải tiến",
-        "Cộng đồng hỗ trợ",
-      ],
+      description: ["Thực tế & Thực chiến", "Liên tục cải tiến", "Cộng đồng hỗ trợ"],
       iconName: "Zap",
     },
   ],

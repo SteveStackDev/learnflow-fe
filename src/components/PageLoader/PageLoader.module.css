@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   z-index: 99999;
-  font-family: var(--font-family-main, 'Be Vietnam Pro', 'Inter', sans-serif);
+  font-family: var(--font-family-main, "Be Vietnam Pro", "Inter", sans-serif);
 }
 
 .pageloader__content {

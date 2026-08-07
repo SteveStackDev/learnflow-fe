@@ -1,5 +1,6 @@
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
+import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ContestGrid.module.css";
 
 function ContestGrid({
@@ -11,6 +12,7 @@ function ContestGrid({
   setSearchQuery,
   setActiveTab,
 }) {
+  const { toast } = useToast();
   return (
     <section className={styles["contest-grid"]}>
       <div className={styles["contest-grid__container"]}>
@@ -40,7 +42,10 @@ function ContestGrid({
 
             <div className={styles["contest-grid__list"]}>
               {displayedItems.map((obj) => (
-                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["contest-grid__card"]} reveal-card`}>
+                <div
+                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  className={`${styles["contest-grid__card"]} reveal-card`}
+                >
                   {/* Banner Image with Status Badge */}
                   <div className={styles["contest-grid__card-media"]}>
                     <span
@@ -62,9 +67,7 @@ function ContestGrid({
                   </div>
 
                   <div className={styles["contest-grid__card-body"]}>
-                    <h3 className={styles["contest-grid__card-title"]}>
-                      {obj.title}
-                    </h3>
+                    <h3 className={styles["contest-grid__card-title"]}>{obj.title}</h3>
                     <div className={styles["contest-grid__card-meta"]}>
                       <span className={styles["contest-grid__meta-item"]}>
                         <Icon name="Calendar" size={16} />
@@ -84,6 +87,12 @@ function ContestGrid({
                   <div className={styles["contest-grid__card-actions"]}>
                     <button
                       type="button"
+                      onClick={() =>
+                        toast.info(
+                          `Đã chọn "${obj.actionText}" cho cuộc thi "${obj.title}"! (UI hoàn thành – chờ kết nối API/backend)`,
+                          "Cuộc thi lập trình",
+                        )
+                      }
                       className={`${styles["contest-grid__action-btn"]} ${
                         obj.actionVariant === "contained"
                           ? styles["contest-grid__action-btn--contained"]

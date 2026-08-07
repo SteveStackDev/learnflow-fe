@@ -37,8 +37,7 @@ export const problemData = {
       id: "problem-2",
       level: "Trung bình",
       title: "Kiểm tra chuỗi đối xứng",
-      description:
-        "Kiểm tra xem một chuỗi ký tự có phải là chuỗi đối xứng (Palindrome) hay không.",
+      description: "Kiểm tra xem một chuỗi ký tự có phải là chuỗi đối xứng (Palindrome) hay không.",
       tags: ["Chuỗi", "Hai con trỏ"],
       algorithm: "two-pointers",
       algorithmLabel: "Hai con trỏ (Two Pointers)",
@@ -67,8 +66,7 @@ export const problemData = {
       id: "problem-4",
       level: "Trung bình",
       title: "Tìm số lớn nhất trong mảng",
-      description:
-        "Viết hàm nhận vào một mảng các số nguyên và trả về giá trị lớn nhất.",
+      description: "Viết hàm nhận vào một mảng các số nguyên và trả về giá trị lớn nhất.",
       tags: ["Mảng", "Vòng lặp"],
       algorithm: "math",
       algorithmLabel: "Toán học & Khác",
@@ -97,8 +95,7 @@ export const problemData = {
       id: "problem-6",
       level: "Dễ",
       title: "Hash Map đếm số lần xuất hiện",
-      description:
-        "Sử dụng Hash Map để đếm số lần xuất hiện của mỗi phần tử trong mảng cho trước.",
+      description: "Sử dụng Hash Map để đếm số lần xuất hiện của mỗi phần tử trong mảng cho trước.",
       tags: ["Hash Map", "Tối ưu"],
       algorithm: "hash-table",
       algorithmLabel: "Bảng băm (Hash Table)",
@@ -157,8 +154,7 @@ export const problemData = {
       id: "problem-10",
       level: "Trung bình",
       title: "Tìm kiếm nhị phân trên mảng xoay",
-      description:
-        "Tìm giá trị target trong một mảng đã được xoay tại một điểm chốt bất kỳ.",
+      description: "Tìm giá trị target trong một mảng đã được xoay tại một điểm chốt bất kỳ.",
       tags: ["Binary Search", "Mảng"],
       algorithm: "binary-search",
       algorithmLabel: "Tìm kiếm nhị phân",
@@ -204,29 +200,25 @@ export const problemData = {
     {
       id: "guide-1",
       title: "Bắt đầu từ bài dễ",
-      description:
-        "Xây dựng sự tự tin từ những bài tập cơ bản trước khi chinh phục thử thách khó.",
+      description: "Xây dựng sự tự tin từ những bài tập cơ bản trước khi chinh phục thử thách khó.",
       iconName: "Star",
     },
     {
       id: "guide-2",
       title: "Kết hợp lý thuyết",
-      description:
-        "Đừng chỉ code, hãy hiểu rõ nguyên lý đứng sau mỗi thuật toán bạn sử dụng.",
+      description: "Đừng chỉ code, hãy hiểu rõ nguyên lý đứng sau mỗi thuật toán bạn sử dụng.",
       iconName: "Book",
     },
     {
       id: "guide-3",
       title: "Luyện theo chủ đề",
-      description:
-        "Tập trung vào một dạng bài để thành thục kỹ năng tư duy cho chủ đề đó.",
+      description: "Tập trung vào một dạng bài để thành thục kỹ năng tư duy cho chủ đề đó.",
       iconName: "Grid",
     },
     {
       id: "guide-4",
       title: "Theo dõi tiến độ",
-      description:
-        "Ghi nhận từng thành tựu nhỏ để duy trì động lực học tập mỗi ngày.",
+      description: "Ghi nhận từng thành tựu nhỏ để duy trì động lực học tập mỗi ngày.",
       iconName: "Zap",
     },
   ],

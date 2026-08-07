@@ -14,11 +14,14 @@ function ProblemHero() {
               </span>
             </div>
             <h1 className={styles["prob-hero__title"]}>
-              Thử thách kho bài tập phong phú, chuẩn phỏng vấn
+              Kho Bài Tập Luyện Code{" "}
+              <span className={styles["prob-hero__title--highlight"]}>
+                Chuẩn&nbsp;Phỏng&nbsp;Vấn
+              </span>
             </h1>
             <p className={styles["prob-hero__desc"]}>
-              Hơn 300+ bài tập lập trình được phân loại theo cấu trúc dữ liệu và
-              thuật toán, kèm lời giải chi tiết và cộng đồng thảo luận sôi nổi.
+              Hơn 300+ bài tập lập trình được phân loại theo cấu trúc dữ liệu và thuật toán, kèm lời
+              giải chi tiết và cộng đồng thảo luận sôi nổi.
             </p>
             <div className={styles["prob-hero__btn-group"]}>
               <button
@@ -59,27 +62,34 @@ function ProblemHero() {
                 </div>
                 <div className={styles["prob-hero__code-line"]}>
                   <code>
-                    &nbsp;&nbsp;<span className={styles["prob-hero__code-type"]}>priority_queue</span>&lt;pair&lt;int,int&gt;&gt; pq;
+                    &nbsp;&nbsp;
+                    <span className={styles["prob-hero__code-type"]}>priority_queue</span>
+                    &lt;pair&lt;int,int&gt;&gt; pq;
                   </code>
                 </div>
                 <div className={styles["prob-hero__code-line"]}>
                   <code>
-                    &nbsp;&nbsp;pq.<span className={styles["prob-hero__code-method"]}>push</span>(&#123;<span className={styles["prob-hero__code-num"]}>0</span>, src&#125;);
+                    &nbsp;&nbsp;pq.<span className={styles["prob-hero__code-method"]}>push</span>
+                    (&#123;<span className={styles["prob-hero__code-num"]}>0</span>, src&#125;);
                   </code>
                 </div>
                 <div className={styles["prob-hero__code-line"]}>
                   <code>
-                    &nbsp;&nbsp;<span className={styles["prob-hero__code-var"]}>dist</span>[src] = <span className={styles["prob-hero__code-num"]}>0</span>;
+                    &nbsp;&nbsp;<span className={styles["prob-hero__code-var"]}>dist</span>[src] ={" "}
+                    <span className={styles["prob-hero__code-num"]}>0</span>;
                   </code>
                 </div>
                 <div className={styles["prob-hero__code-line"]}>
                   <code>
-                    &nbsp;&nbsp;<span className={styles["prob-hero__code-keyword"]}>while</span>(!pq.<span className={styles["prob-hero__code-method"]}>empty</span>()) &#123; <span className={styles["prob-hero__code-comment"]}>// ...</span> &#125;
+                    &nbsp;&nbsp;<span className={styles["prob-hero__code-keyword"]}>while</span>
+                    (!pq.<span className={styles["prob-hero__code-method"]}>empty</span>()) &#123;{" "}
+                    <span className={styles["prob-hero__code-comment"]}>// ...</span> &#125;
                   </code>
                 </div>
                 <div className={styles["prob-hero__code-line"]}>
                   <code>
-                    &nbsp;&nbsp;<span className={styles["prob-hero__code-keyword"]}>return</span> <span className={styles["prob-hero__code-var"]}>dist</span>[target];
+                    &nbsp;&nbsp;<span className={styles["prob-hero__code-keyword"]}>return</span>{" "}
+                    <span className={styles["prob-hero__code-var"]}>dist</span>[target];
                   </code>
                 </div>
                 <div className={styles["prob-hero__code-line"]}>

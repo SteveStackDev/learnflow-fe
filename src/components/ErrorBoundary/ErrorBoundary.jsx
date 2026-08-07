@@ -29,16 +29,13 @@ class ErrorBoundary extends React.Component {
             <div className={styles["error-boundary__icon-box"]}>
               <Icon name="Shield" size={32} />
             </div>
-            <h2 className={styles["error-boundary__title"]}>
-              Đã xảy ra lỗi không mong muốn
-            </h2>
+            <h2 className={styles["error-boundary__title"]}>Đã xảy ra lỗi không mong muốn</h2>
             <p className={styles["error-boundary__desc"]}>
-              Hệ thống đã ghi nhận sự cố runtime. Vui lòng thử tải lại trang hoặc quay về trang chủ để tiếp tục trải nghiệm.
+              Hệ thống đã ghi nhận sự cố runtime. Vui lòng thử tải lại trang hoặc quay về trang chủ
+              để tiếp tục trải nghiệm.
             </p>
             {this.state.error && (
-              <div className={styles["error-boundary__details"]}>
-                {this.state.error.toString()}
-              </div>
+              <div className={styles["error-boundary__details"]}>{this.state.error.toString()}</div>
             )}
             <div className={styles["error-boundary__actions"]}>
               <button

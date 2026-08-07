@@ -6,9 +6,7 @@ function BadgeGuide({ guides }) {
     <section className={styles["badge-guide"]}>
       <div className={styles["badge-guide__container"]}>
         <div className={styles["badge-guide__header"]}>
-          <h2 className={styles["badge-guide__section-title"]}>
-            Làm thế nào để kiếm Badge?
-          </h2>
+          <h2 className={styles["badge-guide__section-title"]}>Làm thế nào để kiếm Badge?</h2>
         </div>
         <div className={styles["badge-guide__list"]}>
           {guides.map((obj) => (
@@ -17,9 +15,7 @@ function BadgeGuide({ guides }) {
                 <Icon name={obj.iconName} size={24} />
               </div>
               <h3 className={styles["badge-guide__title"]}>{obj.title}</h3>
-              <p className={styles["badge-guide__desc"]}>
-                {obj.description}
-              </p>
+              <p className={styles["badge-guide__desc"]}>{obj.description}</p>
             </div>
           ))}
         </div>

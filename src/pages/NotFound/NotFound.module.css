@@ -67,7 +67,16 @@
 }
 
 .notfound-content__badge {
-  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Be Vietnam Pro",
+    "Inter",
+    "Noto Sans",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   font-size: 17rem;
   font-weight: 900;
   color: rgba(169, 183, 203, 0.42);
@@ -88,7 +97,16 @@
 }
 
 .notfound-content__title {
-  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Be Vietnam Pro",
+    "Inter",
+    "Noto Sans",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   font-size: 1.35rem;
   font-weight: 700;
   color: #191b22;
@@ -186,7 +204,16 @@
 }
 
 .notfound-footer__support-title {
-  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Be Vietnam Pro",
+    "Inter",
+    "Noto Sans",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   font-size: 1.05rem;
   font-weight: 700;
   color: #0950c3;

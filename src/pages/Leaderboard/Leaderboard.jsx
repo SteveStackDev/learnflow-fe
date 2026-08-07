@@ -58,7 +58,9 @@ function Leaderboard() {
         const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
         const selectedCategory = leaderboardData.tabs[activeTab];
         const matchesCategory =
-          activeTab === 0 || selectedCategory === "Tổng xếp hạng" || item.category === selectedCategory;
+          activeTab === 0 ||
+          selectedCategory === "Tổng xếp hạng" ||
+          item.category === selectedCategory;
         const matchesTimeframe =
           selectedTime.id === "all-time" || item.timeframe === selectedTime.id || !item.timeframe;
         return matchesSearch && matchesCategory && matchesTimeframe;

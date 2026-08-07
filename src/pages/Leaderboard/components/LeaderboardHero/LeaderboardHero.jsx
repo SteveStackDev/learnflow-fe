@@ -13,10 +13,15 @@ function LeaderboardHero() {
             </span>
           </div>
           <h1 className={styles["board-hero__title"]}>
-            Tôn vinh nỗ lực học tập không ngừng nghỉ. Nơi những nhà phát
-            triển tài năng hội ngộ, thi đua và chinh phục những đỉnh cao
-            công nghệ mới mỗi ngày.
+            Bảng Xếp Hạng{" "}
+            <span className={styles["board-hero__title--highlight"]}>
+              Vinh&nbsp;Danh&nbsp;Tài&nbsp;Năng
+            </span>
           </h1>
+          <p className={styles["board-hero__desc"]}>
+            Nơi tôn vinh nỗ lực học tập không ngừng nghỉ của những nhà phát triển xuất sắc nhất trên
+            LearnFlow.
+          </p>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
+import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ProblemList.module.css";
 
 function ProblemList({
@@ -15,6 +16,7 @@ function ProblemList({
   ALGORITHM_OPTIONS,
   SORT_OPTIONS,
 }) {
+  const { toast } = useToast();
   return (
     <section className={styles["prob-challenges"]}>
       <div className={styles["prob-challenges__container"]}>
@@ -46,7 +48,10 @@ function ProblemList({
 
             <div className={styles["prob-challenges__list"]}>
               {displayedItems.map((obj) => (
-                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["prob-challenges__card"]} reveal-card`}>
+                <div
+                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  className={`${styles["prob-challenges__card"]} reveal-card`}
+                >
                   <div className={styles["prob-challenges__card-header"]}>
                     <div className={styles["prob-challenges__card-icon"]}>
                       <Icon name={obj.iconName} size={22} />
@@ -56,8 +61,8 @@ function ProblemList({
                         obj.level === "Dễ"
                           ? styles["prob-challenges__level-badge--easy"]
                           : obj.level === "Trung bình"
-                          ? styles["prob-challenges__level-badge--medium"]
-                          : styles["prob-challenges__level-badge--hard"]
+                            ? styles["prob-challenges__level-badge--medium"]
+                            : styles["prob-challenges__level-badge--hard"]
                       }`}
                     >
                       <span className={styles["prob-challenges__badge-dot"]} />
@@ -66,18 +71,11 @@ function ProblemList({
                   </div>
 
                   <div className={styles["prob-challenges__card-body"]}>
-                    <h3 className={styles["prob-challenges__card-title"]}>
-                      {obj.title}
-                    </h3>
-                    <p className={styles["prob-challenges__card-desc"]}>
-                      {obj.description}
-                    </p>
+                    <h3 className={styles["prob-challenges__card-title"]}>{obj.title}</h3>
+                    <p className={styles["prob-challenges__card-desc"]}>{obj.description}</p>
                     <div className={styles["prob-challenges__tag-group"]}>
                       {obj.tags.map((item, tIdx) => (
-                        <span
-                          key={tIdx}
-                          className={styles["prob-challenges__tag-item"]}
-                        >
+                        <span key={tIdx} className={styles["prob-challenges__tag-item"]}>
                           {item}
                         </span>
                       ))}
@@ -91,6 +89,12 @@ function ProblemList({
                     </span>
                     <button
                       type="button"
+                      onClick={() =>
+                        toast.info(
+                          `Mở bài tập "${obj.title}"! (UI hoàn thành – chờ kết nối API/backend)`,
+                          "Bài tập thuật toán",
+                        )
+                      }
                       className={styles["prob-challenges__action-btn"]}
                     >
                       Giải bài

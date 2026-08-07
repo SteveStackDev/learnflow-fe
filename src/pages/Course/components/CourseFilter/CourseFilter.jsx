@@ -1,4 +1,5 @@
 import Icon from "~/components/Icon/Icon";
+import useDropdownKeyboard from "~/hooks/useDropdownKeyboard";
 import styles from "./CourseFilter.module.css";
 
 function CourseFilter({
@@ -15,6 +16,14 @@ function CourseFilter({
   handleCategoryChange,
   categories,
 }) {
+  const sortKeyboard = useDropdownKeyboard({
+    isOpen: isSortDropdownOpen,
+    setIsOpen: setIsSortDropdownOpen,
+    options: SORT_OPTIONS,
+    selectedOption: selectedSort,
+    onSelect: setSelectedSort,
+  });
+
   return (
     <>
       {/* 2. Search & Stats Bar Section */}
@@ -38,13 +47,14 @@ function CourseFilter({
             </div>
 
             {/* Custom Sort Dropdown */}
-            <div
-              className={styles["course-search-stats__select-wrapper"]}
-              ref={sortDropdownRef}
-            >
+            <div className={styles["course-search-stats__select-wrapper"]} ref={sortDropdownRef}>
               <button
                 type="button"
                 onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                onKeyDown={sortKeyboard.handleKeyDown}
+                aria-haspopup="listbox"
+                aria-expanded={isSortDropdownOpen}
+                aria-label="Sắp xếp khóa học"
                 className={`${styles["course-search-stats__dropdown-btn"]} ${
                   isSortDropdownOpen ? styles["course-search-stats__dropdown-btn--open"] : ""
                 }`}
@@ -56,17 +66,24 @@ function CourseFilter({
               </button>
 
               {isSortDropdownOpen && (
-                <div className={styles["course-search-stats__dropdown-menu"]}>
-                  {SORT_OPTIONS.map((option) => (
+                <div className={styles["course-search-stats__dropdown-menu"]} role="listbox">
+                  {SORT_OPTIONS.map((option, index) => (
                     <div
                       key={option.id}
+                      role="option"
+                      aria-selected={selectedSort.id === option.id}
                       onClick={() => {
                         setSelectedSort(option);
                         setIsSortDropdownOpen(false);
                       }}
+                      onMouseEnter={() => sortKeyboard.setFocusedIndex(index)}
                       className={`${styles["course-search-stats__dropdown-item"]} ${
                         selectedSort.id === option.id
                           ? styles["course-search-stats__dropdown-item--selected"]
+                          : ""
+                      } ${
+                        sortKeyboard.focusedIndex === index
+                          ? styles["course-search-stats__dropdown-item--focused"]
                           : ""
                       }`}
                     >
@@ -85,9 +102,7 @@ function CourseFilter({
             {/* Stats Badge */}
             <div className={styles["course-search-stats__stats-group"]}>
               <div className={styles["course-search-stats__stat-item"]}>
-                <span className={styles["course-search-stats__stat-number"]}>
-                  {filteredCount}
-                </span>
+                <span className={styles["course-search-stats__stat-number"]}>{filteredCount}</span>
                 <span className={styles["course-search-stats__stat-label"]}>Khóa học</span>
               </div>
               <div className={styles["course-search-stats__divider"]} />
@@ -105,9 +120,7 @@ function CourseFilter({
         <div className={styles["course-filters__container"]}>
           <div className={styles["course-filters__header-row"]}>
             <div className={styles["course-filters__title-wrap"]}>
-              <h2 className={styles["course-filters__section-title"]}>
-                Tất cả khóa học
-              </h2>
+              <h2 className={styles["course-filters__section-title"]}>Tất cả khóa học</h2>
               <p className={styles["course-filters__section-subtitle"]}>
                 Lựa chọn lộ trình học tập tối ưu cho sự nghiệp của bạn.
               </p>
@@ -120,9 +133,7 @@ function CourseFilter({
                   type="button"
                   onClick={() => handleCategoryChange(index)}
                   className={`${styles["course-filters__tab-btn"]} ${
-                    activeCategoryTab === index
-                      ? styles["course-filters__tab-btn--active"]
-                      : ""
+                    activeCategoryTab === index ? styles["course-filters__tab-btn--active"] : ""
                   }`}
                 >
                   {item}

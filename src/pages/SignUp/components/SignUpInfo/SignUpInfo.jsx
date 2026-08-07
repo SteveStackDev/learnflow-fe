@@ -15,21 +15,16 @@ function SignUpInfo({ signUpData }) {
           <div className={styles["signup-info__logo-box"]}>
             <Icon name="Layers" size={22} strokeWidth={2.5} />
           </div>
-          <span className={styles["signup-info__logo-text"]}>
-            LearnFlow
-          </span>
+          <span className={styles["signup-info__logo-text"]}>LearnFlow</span>
         </div>
 
         <h1 className={styles["signup-info__title"]}>
           Bắt đầu hành trình{" "}
-          <span className={styles["signup-info__title--highlight"]}>
-            học lập trình
-          </span>{" "}
-          cùng LearnFlow
+          <span className={styles["signup-info__title--highlight"]}>học tập</span> cùng LearnFlow
         </h1>
         <p className={styles["signup-info__desc"]}>
-          Tham gia cùng hàng ngàn học viên khác để xây dựng kỹ năng lập
-          trình bền vững qua các lộ trình học bài bản và dự án thực tế.
+          Tham gia cùng hàng ngàn học viên khác để xây dựng kỹ năng lập trình bền vững qua các lộ
+          trình học bài bản và dự án thực tế.
         </p>
 
         <div className={styles["signup-info__benefits-stack"]}>
@@ -42,12 +37,8 @@ function SignUpInfo({ signUpData }) {
                 <Icon name={obj.iconName} size={20} />
               </div>
               <div className={styles["signup-info__benefit-content"]}>
-                <h3 className={styles["signup-info__benefit-title"]}>
-                  {obj.title}
-                </h3>
-                <p className={styles["signup-info__benefit-desc"]}>
-                  {obj.description}
-                </p>
+                <h3 className={styles["signup-info__benefit-title"]}>{obj.title}</h3>
+                <p className={styles["signup-info__benefit-desc"]}>{obj.description}</p>
               </div>
             </div>
           ))}

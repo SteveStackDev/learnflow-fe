@@ -12,11 +12,7 @@ export function SectionHeader({
   children,
   ...rest
 }) {
-  const headerClasses = [
-    styles.sectionHeader,
-    styles[`sectionHeader--${align}`],
-    className,
-  ]
+  const headerClasses = [styles.sectionHeader, styles[`sectionHeader--${align}`], className]
     .filter(Boolean)
     .join(" ");
 

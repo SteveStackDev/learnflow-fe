@@ -205,7 +205,12 @@
 }
 
 :global([data-theme="dark"]) .board-podium__item--rank-1 .board-podium__stand {
-  background: linear-gradient(180deg, rgba(251, 191, 36, 0.3) 0%, rgba(245, 158, 11, 0.08) 50%, #131c31 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(251, 191, 36, 0.3) 0%,
+    rgba(245, 158, 11, 0.08) 50%,
+    #131c31 100%
+  );
   border-top: 4px solid #fbbf24;
   box-shadow: 0 -4px 20px rgba(251, 191, 36, 0.25);
 }

@@ -13,15 +13,14 @@ function ContestHero() {
             </span>
           </div>
           <h1 className={styles["contest-hero__title"]}>
-            Đấu trường lập trình{" "}
+            Đấu Trường Lập Trình{" "}
             <span className={styles["contest-hero__title--highlight"]}>
-              LearnFlow
+              Chinh&nbsp;Phục&nbsp;Đỉnh&nbsp;Cao
             </span>
           </h1>
           <p className={styles["contest-hero__desc"]}>
-            Nơi hội tụ những tài năng lập trình xuất sắc nhất. Thử thách bản
-            thân qua các kỳ thi thuật toán đỉnh cao, bứt phá giới hạn kỹ
-            năng và khẳng định vị thế trên bảng xếp hạng.
+            Nơi hội tụ những tài năng lập trình xuất sắc nhất. Thử thách bản thân qua các kỳ thi
+            thuật toán đỉnh cao, bứt phá giới hạn kỹ năng và khẳng định vị thế trên bảng xếp hạng.
           </p>
           <div className={styles["contest-hero__btn-group"]}>
             <button

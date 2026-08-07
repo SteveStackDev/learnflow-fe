@@ -9,17 +9,17 @@
   --primary-light: #eef4ff;
   --on-primary: #ffffff;
   --accent: #f59f0a;
-  
+
   --bg-page: #faf8ff;
   --bg-surface: #ffffff;
   --bg-container: #f3f3fd;
-  
+
   --text-main: #191b22;
   --text-muted: #434653;
   --text-light: #737785;
 
   --border-color: rgba(169, 183, 203, 0.35);
-  
+
   --shadow-sm: 0 2px 8px rgba(9, 80, 195, 0.04);
   --shadow-md: 0 4px 20px rgba(9, 80, 195, 0.06);
   --shadow-lg: 0 12px 36px rgba(25, 27, 34, 0.08);

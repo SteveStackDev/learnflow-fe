@@ -11,6 +11,8 @@ import roadmapImg from "~/assets/images/About/about-roadmap.webp";
 import AboutHero from "./components/AboutHero/AboutHero";
 import AboutStats from "./components/AboutStats/AboutStats";
 import AboutFeatures from "./components/AboutFeatures/AboutFeatures";
+import AboutValues from "./components/AboutValues/AboutValues";
+import AboutTeam from "./components/AboutTeam/AboutTeam";
 
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
@@ -21,22 +23,22 @@ const CAROUSEL_SLIDES = [
     image: workspaceImg,
     badge: "Thực chiến 24/7",
     title: "Hệ thống luyện code tự động",
-    desc: "Chấm bài tự động và phản hồi ngay lập tức trên trình duyệt."
+    desc: "Chấm bài tự động và phản hồi ngay lập tức trên trình duyệt.",
   },
   {
     id: 2,
     image: communityImg,
     badge: "Cộng đồng 50.000+",
     title: "Cùng nhau phát triển & Học hỏi",
-    desc: "Trao đổi kinh nghiệm với các chuyên gia và học viên khác."
+    desc: "Trao đổi kinh nghiệm với các chuyên gia và học viên khác.",
   },
   {
     id: 3,
     image: roadmapImg,
     badge: "Lộ trình bài bản",
     title: "Chinh phục kỹ năng công nghệ",
-    desc: "Định hướng rõ ràng từ cơ bản đến trình độ chuyên nghiệp."
-  }
+    desc: "Định hướng rõ ràng từ cơ bản đến trình độ chuyên nghiệp.",
+  },
 ];
 
 function About() {
@@ -78,6 +80,10 @@ function About() {
       <AboutStats />
 
       <AboutFeatures features={aboutData.features} />
+
+      <AboutValues values={aboutData.companyValues} />
+
+      <AboutTeam team={aboutData.team} />
     </div>
   );
 }

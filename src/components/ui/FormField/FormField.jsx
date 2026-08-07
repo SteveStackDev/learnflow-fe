@@ -68,7 +68,9 @@ export function FormField({
       </div>
 
       {errorText && <span className={styles["formField__error-text"]}>{errorText}</span>}
-      {helperText && !errorText && <span className={styles["formField__helper-text"]}>{helperText}</span>}
+      {helperText && !errorText && (
+        <span className={styles["formField__helper-text"]}>{helperText}</span>
+      )}
     </div>
   );
 }

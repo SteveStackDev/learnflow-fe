@@ -1,4 +1,5 @@
 import Icon from "~/components/Icon/Icon";
+import useDropdownKeyboard from "~/hooks/useDropdownKeyboard";
 import styles from "./ProblemFilter.module.css";
 
 function ProblemFilter({
@@ -21,6 +22,22 @@ function ProblemFilter({
   activeTab,
   handleTabChange,
 }) {
+  const algoKeyboard = useDropdownKeyboard({
+    isOpen: isAlgoDropdownOpen,
+    setIsOpen: setIsAlgoDropdownOpen,
+    options: ALGORITHM_OPTIONS,
+    selectedOption: selectedAlgorithm,
+    onSelect: setSelectedAlgorithm,
+  });
+
+  const sortKeyboard = useDropdownKeyboard({
+    isOpen: isSortDropdownOpen,
+    setIsOpen: setIsSortDropdownOpen,
+    options: SORT_OPTIONS,
+    selectedOption: selectedSort,
+    onSelect: setSelectedSort,
+  });
+
   return (
     <>
       {/* 2. Search, Filter & Stats Section */}
@@ -51,31 +68,46 @@ function ProblemFilter({
                 <button
                   type="button"
                   onClick={() => setIsAlgoDropdownOpen(!isAlgoDropdownOpen)}
+                  onKeyDown={algoKeyboard.handleKeyDown}
+                  aria-haspopup="listbox"
+                  aria-expanded={isAlgoDropdownOpen}
+                  aria-label="Lọc theo thuật toán"
                   className={`${styles["prob-filter__dropdown-btn"]} ${
-                    selectedAlgorithm.id !== "all" ? styles["prob-filter__dropdown-btn--active"] : ""
+                    selectedAlgorithm.id !== "all"
+                      ? styles["prob-filter__dropdown-btn--active"]
+                      : ""
                   } ${isAlgoDropdownOpen ? styles["prob-filter__dropdown-btn--open"] : ""}`}
                 >
                   <span className={styles["prob-filter__dropdown-icon"]}>
                     <Icon name="Cpu" size={15} />
                   </span>
-                  <span className={styles["prob-filter__dropdown-text"]}>{selectedAlgorithm.label}</span>
+                  <span className={styles["prob-filter__dropdown-text"]}>
+                    {selectedAlgorithm.label}
+                  </span>
                   <span className={styles["prob-filter__dropdown-chevron"]}>
                     <Icon name="ChevronDown" size={16} strokeWidth={2.5} />
                   </span>
                 </button>
 
                 {isAlgoDropdownOpen && (
-                  <div className={styles["prob-filter__dropdown-menu"]}>
-                    {ALGORITHM_OPTIONS.map((option) => (
+                  <div className={styles["prob-filter__dropdown-menu"]} role="listbox">
+                    {ALGORITHM_OPTIONS.map((option, index) => (
                       <div
                         key={option.id}
+                        role="option"
+                        aria-selected={selectedAlgorithm.id === option.id}
                         onClick={() => {
                           setSelectedAlgorithm(option);
                           setIsAlgoDropdownOpen(false);
                         }}
+                        onMouseEnter={() => algoKeyboard.setFocusedIndex(index)}
                         className={`${styles["prob-filter__dropdown-item"]} ${
                           selectedAlgorithm.id === option.id
                             ? styles["prob-filter__dropdown-item--selected"]
+                            : ""
+                        } ${
+                          algoKeyboard.focusedIndex === index
+                            ? styles["prob-filter__dropdown-item--focused"]
                             : ""
                         }`}
                       >
@@ -99,6 +131,10 @@ function ProblemFilter({
                 <button
                   type="button"
                   onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                  onKeyDown={sortKeyboard.handleKeyDown}
+                  aria-haspopup="listbox"
+                  aria-expanded={isSortDropdownOpen}
+                  aria-label="Sắp xếp bài tập"
                   className={`${styles["prob-filter__dropdown-btn"]} ${
                     isSortDropdownOpen ? styles["prob-filter__dropdown-btn--open"] : ""
                   }`}
@@ -110,17 +146,24 @@ function ProblemFilter({
                 </button>
 
                 {isSortDropdownOpen && (
-                  <div className={styles["prob-filter__dropdown-menu"]}>
-                    {SORT_OPTIONS.map((option) => (
+                  <div className={styles["prob-filter__dropdown-menu"]} role="listbox">
+                    {SORT_OPTIONS.map((option, index) => (
                       <div
                         key={option.id}
+                        role="option"
+                        aria-selected={selectedSort.id === option.id}
                         onClick={() => {
                           setSelectedSort(option);
                           setIsSortDropdownOpen(false);
                         }}
+                        onMouseEnter={() => sortKeyboard.setFocusedIndex(index)}
                         className={`${styles["prob-filter__dropdown-item"]} ${
                           selectedSort.id === option.id
                             ? styles["prob-filter__dropdown-item--selected"]
+                            : ""
+                        } ${
+                          sortKeyboard.focusedIndex === index
+                            ? styles["prob-filter__dropdown-item--focused"]
                             : ""
                         }`}
                       >
@@ -140,25 +183,24 @@ function ProblemFilter({
             {/* 3 Metric Stat Cards */}
             <div className={styles["prob-filter__stat-list"]}>
               {stats.map((obj, index) => (
-                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={styles["prob-filter__stat-card"]}>
+                <div
+                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  className={styles["prob-filter__stat-card"]}
+                >
                   <div
                     className={`${styles["prob-filter__stat-icon"]} ${
                       index === 0
                         ? styles["prob-filter__stat-icon--blue"]
                         : index === 1
-                        ? styles["prob-filter__stat-icon--yellow"]
-                        : styles["prob-filter__stat-icon--dark"]
+                          ? styles["prob-filter__stat-icon--yellow"]
+                          : styles["prob-filter__stat-icon--dark"]
                     }`}
                   >
                     <Icon name={obj.iconName} size={20} />
                   </div>
                   <div className={styles["prob-filter__stat-info"]}>
-                    <span className={styles["prob-filter__stat-value"]}>
-                      {obj.value}
-                    </span>
-                    <span className={styles["prob-filter__stat-label"]}>
-                      {obj.title}
-                    </span>
+                    <span className={styles["prob-filter__stat-value"]}>{obj.value}</span>
+                    <span className={styles["prob-filter__stat-label"]}>{obj.title}</span>
                   </div>
                 </div>
               ))}
@@ -172,9 +214,7 @@ function ProblemFilter({
         <div className={styles["prob-tabs__container"]}>
           <div className={styles["prob-tabs__header-row"]}>
             <div className={styles["prob-tabs__title-wrap"]}>
-              <h2 className={styles["prob-tabs__section-title"]}>
-                Danh sách bài tập
-              </h2>
+              <h2 className={styles["prob-tabs__section-title"]}>Danh sách bài tập</h2>
               <p className={styles["prob-tabs__section-subtitle"]}>
                 Lựa chọn mức độ thử thách phù hợp với kỹ năng hiện tại của bạn.
               </p>

@@ -28,7 +28,7 @@ export function useScrollReveal(selector = ".reveal-card, [class*='reveal-card']
           delay = 0;
         }, 150);
       },
-      { threshold: 0.05, rootMargin: "0px 0px -20px 0px" }
+      { threshold: 0.05, rootMargin: "0px 0px -20px 0px" },
     );
 
     const observeAll = () => {

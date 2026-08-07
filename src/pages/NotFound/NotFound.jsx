@@ -25,9 +25,8 @@ function NotFound() {
               </h2>
 
               <p className={styles["notfound-content__desc"]}>
-                Trang bạn đang tìm kiếm không tồn tại, đã bị xóa hoặc được chuyển
-                sang một địa chỉ mới. Đừng lo, các kiến thức lập trình vẫn đang chờ
-                bạn ở các trang khác!
+                Trang bạn đang tìm kiếm không tồn tại, đã bị xóa hoặc được chuyển sang một địa chỉ
+                mới. Đừng lo, các kiến thức lập trình vẫn đang chờ bạn ở các trang khác!
               </p>
             </div>
 
@@ -54,19 +53,14 @@ function NotFound() {
           <footer className={styles["notfound-footer"]}>
             <div className={styles["notfound-footer__support-card"]}>
               <div className={styles["notfound-footer__support-content"]}>
-                <h3 className={styles["notfound-footer__support-title"]}>
-                  Cần thêm sự hỗ trợ?
-                </h3>
+                <h3 className={styles["notfound-footer__support-title"]}>Cần thêm sự hỗ trợ?</h3>
                 <p className={styles["notfound-footer__support-desc"]}>
-                  Đội ngũ LearnFlow luôn sẵn sàng giải đáp thắc mắc và hỗ trợ bạn
-                  trong quá trình học tập.
+                  Đội ngũ LearnFlow luôn sẵn sàng giải đáp thắc mắc và hỗ trợ bạn trong quá trình
+                  học tập.
                 </p>
               </div>
               <div className={styles["notfound-footer__support-action"]}>
-                <Link
-                  to="/contact"
-                  className={styles["notfound-footer__contact-btn"]}
-                >
+                <Link to="/contact" className={styles["notfound-footer__contact-btn"]}>
                   <span className={styles["notfound-footer__contact-icon"]}>
                     <Icon name="Headphones" size={18} />
                   </span>{" "}

@@ -17,11 +17,7 @@ export function EmptyState({
       <h3 className={styles["empty-state__title"]}>{title}</h3>
       <p className={styles["empty-state__desc"]}>{description}</p>
       {onAction && (
-        <button
-          type="button"
-          onClick={onAction}
-          className={styles["empty-state__btn"]}
-        >
+        <button type="button" onClick={onAction} className={styles["empty-state__btn"]}>
           <Icon name="RotateCcw" size={16} />
           <span>{actionLabel}</span>
         </button>

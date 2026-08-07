@@ -6,9 +6,7 @@ function PricingFaq({ faqs }) {
     <section className={styles["price-faq"]}>
       <div className={styles["price-faq__container"]}>
         <div className={styles["price-faq__header"]}>
-          <h2 className={styles["price-faq__section-title"]}>
-            Câu hỏi thường gặp
-          </h2>
+          <h2 className={styles["price-faq__section-title"]}>Câu hỏi thường gặp</h2>
           <p className={styles["price-faq__section-subtitle"]}>
             Mọi điều bạn cần biết về các gói dịch vụ, quyền lợi và thanh toán.
           </p>
@@ -22,9 +20,7 @@ function PricingFaq({ faqs }) {
               className={styles["price-faq__accordion"]}
             >
               <summary className={styles["price-faq__accordion-summary"]}>
-                <span className={styles["price-faq__accordion-title"]}>
-                  {obj.question}
-                </span>
+                <span className={styles["price-faq__accordion-title"]}>{obj.question}</span>
                 <span className={styles["price-faq__accordion-icon"]}>
                   <Icon name="ChevronDown" size={18} strokeWidth={2.5} />
                 </span>

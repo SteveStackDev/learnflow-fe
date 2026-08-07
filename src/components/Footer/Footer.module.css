@@ -42,7 +42,16 @@
 }
 
 .footer__cta-title {
-  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Be Vietnam Pro",
+    "Inter",
+    "Noto Sans",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   font-size: 1.35rem;
   font-weight: 700;
   color: #191b22;
@@ -115,8 +124,8 @@
 
 .footer__grid {
   display: grid;
-  grid-template-columns: 1.3fr 2.7fr;
-  gap: 56px;
+  grid-template-columns: 1.1fr 2.9fr;
+  gap: 44px;
 }
 
 .footer__col--brand {
@@ -145,7 +154,16 @@
 }
 
 .footer__brand-name {
-  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Be Vietnam Pro",
+    "Inter",
+    "Noto Sans",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   font-size: 1.35rem;
   font-weight: 800;
   color: #003a95;
@@ -169,7 +187,16 @@
 }
 
 .footer__newsletter-title {
-  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Be Vietnam Pro",
+    "Inter",
+    "Noto Sans",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   color: #191b22;
@@ -197,7 +224,9 @@
   border-radius: 10px;
   background: #ffffff;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .footer__newsletter-input:focus {
@@ -246,6 +275,51 @@
 .footer__nav-link:hover {
   color: #0950c3;
   font-weight: 600;
+}
+
+.footer__nav-link-btn {
+  font-size: 0.875rem;
+  color: #434653;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  text-align: left;
+  line-height: 1.4;
+  width: 100%;
+}
+
+.footer__nav-link-btn:hover {
+  color: #0950c3;
+}
+
+.footer__badge-upcoming {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(9, 80, 195, 0.08) 0%, rgba(56, 189, 248, 0.15) 100%);
+  color: #0950c3;
+  border: 1px solid rgba(9, 80, 195, 0.2);
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(9, 80, 195, 0.06);
+  transition: all 0.25s ease;
+}
+
+.footer__nav-link-btn:hover .footer__badge-upcoming {
+  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+  color: #ffffff;
+  border-color: #0950c3;
+  box-shadow: 0 3px 10px rgba(9, 80, 195, 0.25);
+  transform: translateY(-1px);
 }
 
 /* 3. Bottom Bar */
@@ -415,6 +489,28 @@
 
 :global([data-theme="dark"]) .footer__nav-link:hover {
   color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .footer__nav-link-btn {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .footer__nav-link-btn:hover {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .footer__badge-upcoming {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+:global([data-theme="dark"]) .footer__nav-link-btn:hover .footer__badge-upcoming {
+  background: #38bdf8;
+  color: #0b1120;
+  border-color: #38bdf8;
+  box-shadow: 0 3px 12px rgba(56, 189, 248, 0.35);
 }
 
 :global([data-theme="dark"]) .footer__bottom {

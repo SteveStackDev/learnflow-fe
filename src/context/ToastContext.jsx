@@ -9,20 +9,23 @@ export function ToastProvider({ children }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const showToast = useCallback(({ type = "info", title, message, duration = 4000 }) => {
-    const id = Date.now() + Math.random().toString(36).substring(2, 5);
-    const newToast = { id, type, title, message };
+  const showToast = useCallback(
+    ({ type = "info", title, message, duration = 4000 }) => {
+      const id = Date.now() + Math.random().toString(36).substring(2, 5);
+      const newToast = { id, type, title, message };
 
-    setToasts((prev) => [...prev, newToast]);
+      setToasts((prev) => [...prev, newToast]);
 
-    if (duration > 0) {
-      setTimeout(() => {
-        removeToast(id);
-      }, duration);
-    }
+      if (duration > 0) {
+        setTimeout(() => {
+          removeToast(id);
+        }, duration);
+      }
 
-    return id;
-  }, [removeToast]);
+      return id;
+    },
+    [removeToast],
+  );
 
   const toast = {
     show: showToast,

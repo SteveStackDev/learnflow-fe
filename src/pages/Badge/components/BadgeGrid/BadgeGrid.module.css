@@ -224,19 +224,20 @@
   font-family: inherit;
 }
 
-.badge-grid__page-btn:hover:not(:disabled) {
-  background-color: #f1f5f9;
-  color: #0950c3;
+.badge-grid__page-btn:hover:not(:disabled):not(.badge-grid__page-btn--active) {
+  background-color: #fff7ed;
+  color: #d97706;
 }
 
 .badge-grid__page-btn--active {
-  background-color: #0950c3;
-  color: #ffffff;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
 }
 
 .badge-grid__page-btn--active:hover {
-  background-color: #053787;
-  color: #ffffff;
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: #ffffff !important;
 }
 
 .badge-grid__page-btn:disabled {
@@ -266,17 +267,17 @@
 }
 
 :global([data-theme="dark"]) .badge-grid__btn--contained {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
   color: #ffffff;
-  border-color: #059669;
-  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+  border-color: #0950c3;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.35);
 }
 
 :global([data-theme="dark"]) .badge-grid__btn--contained:hover {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #003a95 0%, #03255c 100%);
   color: #ffffff;
-  border-color: #10b981;
-  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+  border-color: #38bdf8;
+  box-shadow: 0 6px 18px rgba(9, 80, 195, 0.45);
 }
 
 :global([data-theme="dark"]) .badge-grid__side-nav-btn {
@@ -305,14 +306,16 @@
   color: #cbd5e1;
 }
 
-:global([data-theme="dark"]) .badge-grid__page-btn:hover:not(:disabled) {
+:global([data-theme="dark"])
+  .badge-grid__page-btn:hover:not(:disabled):not(.badge-grid__page-btn--active) {
   background-color: #1e293b;
   color: #38bdf8;
 }
 
 :global([data-theme="dark"]) .badge-grid__page-btn--active {
-  background-color: #0950c3;
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.35);
 }
 
 /* Responsive */

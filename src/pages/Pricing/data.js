@@ -104,20 +104,17 @@ export const pricingData = {
     {
       id: "pricing-5",
       question: "Sự khác biệt chính giữa gói Plus và Pro là gì?",
-      answer:
-        "Nội dung câu trả lời mẫu giải thích sự khác biệt giữa hai gói Plus và Pro.",
+      answer: "Nội dung câu trả lời mẫu giải thích sự khác biệt giữa hai gói Plus và Pro.",
     },
     {
       id: "pricing-6",
       question: "Quyền lợi AI trong gói Pro hoạt động như thế nào?",
-      answer:
-        "Nội dung câu trả lời mẫu về cơ chế hoạt động của các tính năng AI tích hợp.",
+      answer: "Nội dung câu trả lời mẫu về cơ chế hoạt động của các tính năng AI tích hợp.",
     },
     {
       id: "pricing-7",
       question: "Có ưu đãi đặc biệt cho sinh viên không?",
-      answer:
-        "Nội dung câu trả lời mẫu về các chương trình ưu đãi dành riêng cho sinh viên.",
+      answer: "Nội dung câu trả lời mẫu về các chương trình ưu đãi dành riêng cho sinh viên.",
     },
   ],
 };

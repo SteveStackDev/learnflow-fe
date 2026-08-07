@@ -63,9 +63,7 @@ function LeaderboardTable({
                   <tr
                     key={obj.id || obj.slug || obj.name || obj.title || obj}
                     className={`${styles["board-ranking__table-row"]} ${
-                      obj.isCurrentUser
-                        ? styles["board-ranking__table-row--current-user"]
-                        : ""
+                      obj.isCurrentUser ? styles["board-ranking__table-row--current-user"] : ""
                     }`}
                   >
                     <td
@@ -76,9 +74,7 @@ function LeaderboardTable({
                     <td className={styles["board-ranking__table-cell"]}>
                       <div className={styles["board-ranking__user-info"]}>
                         {obj.isCurrentUser ? (
-                          <div className={styles["board-ranking__avatar-fallback"]}>
-                            B
-                          </div>
+                          <div className={styles["board-ranking__avatar-fallback"]}>B</div>
                         ) : (
                           <img
                             className={styles["board-ranking__avatar"]}
@@ -88,13 +84,9 @@ function LeaderboardTable({
                             decoding="async"
                           />
                         )}
-                        <span className={styles["board-ranking__user-name"]}>
-                          {obj.name}
-                        </span>
+                        <span className={styles["board-ranking__user-name"]}>{obj.name}</span>
                         {obj.isCurrentUser && (
-                          <span className={styles["board-ranking__chip-tag"]}>
-                            CURRENT
-                          </span>
+                          <span className={styles["board-ranking__chip-tag"]}>CURRENT</span>
                         )}
                       </div>
                     </td>
@@ -120,9 +112,7 @@ function LeaderboardTable({
                           </span>
                         )}
                         {obj.trend === "same" && (
-                          <span className={styles["board-ranking__trend-icon--same"]}>
-                            —
-                          </span>
+                          <span className={styles["board-ranking__trend-icon--same"]}>—</span>
                         )}
                       </span>
                     </td>

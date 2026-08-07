@@ -5,9 +5,7 @@ function HomeMarquee() {
   return (
     <section className={styles["home-marquee"]}>
       <div className={styles["home-marquee__container"]}>
-        <h2 className={styles["home-marquee__section-title"]}>
-          CÔNG NGHỆ ĐÀO TẠO CỐT LÕI
-        </h2>
+        <h2 className={styles["home-marquee__section-title"]}>CÔNG NGHỆ ĐÀO TẠO CỐT LÕI</h2>
         <div className={styles["home-marquee__wrap"]}>
           <div className={styles["home-marquee__tech-item"]}>
             <Icon name="ReactTech" size={22} />

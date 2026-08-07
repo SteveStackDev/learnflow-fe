@@ -17,11 +17,14 @@ function CourseHero() {
                 </span>
               </div>
               <h1 className={styles["course-hero__title"]}>
-                Khám phá khóa học phù hợp với mục tiêu của bạn
+                Hệ Thống Khóa Học{" "}
+                <span className={styles["course-hero__title--highlight"]}>
+                  Lập&nbsp;Trình&nbsp;Thực&nbsp;Chiến
+                </span>
               </h1>
               <p className={styles["course-hero__desc"]}>
-                Hệ thống khóa học từ cơ bản đến nâng cao, được thiết kế bởi các
-                chuyên gia để giúp bạn trở thành lập trình viên thực thụ.
+                Hệ thống khóa học từ cơ bản đến nâng cao, được thiết kế bởi các chuyên gia để giúp
+                bạn trở thành lập trình viên thực thụ.
               </p>
               <div className={styles["course-hero__btn-group"]}>
                 <button
@@ -62,8 +65,12 @@ function CourseHero() {
           </div>
           <div className={styles["course-continue__card"]}>
             <div className={styles["course-continue__info"]}>
-              <h3 className={styles["course-continue__course-title"]}>Lập trình ReactJS Cơ bản đến Nâng cao</h3>
-              <p className={styles["course-continue__lesson"]}>Bài học tiếp theo: Hooks trong React (useState, useEffect)</p>
+              <h3 className={styles["course-continue__course-title"]}>
+                Lập trình ReactJS Cơ bản đến Nâng cao
+              </h3>
+              <p className={styles["course-continue__lesson"]}>
+                Bài học tiếp theo: Hooks trong React (useState, useEffect)
+              </p>
             </div>
             <div className={styles["course-continue__progress-area"]}>
               <div className={styles["course-continue__progress-text"]}>
@@ -71,7 +78,10 @@ function CourseHero() {
                 <span className={styles["course-continue__percentage"]}>68%</span>
               </div>
               <div className={styles["course-continue__progress-bar-bg"]}>
-                <div className={styles["course-continue__progress-bar-fill"]} style={{ width: "68%" }}></div>
+                <div
+                  className={styles["course-continue__progress-bar-fill"]}
+                  style={{ width: "68%" }}
+                ></div>
               </div>
             </div>
             <button type="button" className={styles["course-continue__btn"]}>

@@ -1,5 +1,6 @@
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
+import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./BadgeGrid.module.css";
 
 function BadgeGrid({
@@ -8,8 +9,9 @@ function BadgeGrid({
   currentPage,
   totalPages,
   setCurrentPage,
-  onResetSearch
+  onResetSearch,
 }) {
+  const { toast } = useToast();
   return (
     <section className={styles["badge-grid"]}>
       <div className={styles["badge-grid__container"]}>
@@ -39,9 +41,7 @@ function BadgeGrid({
                 <div
                   key={obj.id}
                   className={`${styles["badge-grid__card"]} reveal-card ${
-                    obj.status === "locked"
-                      ? styles["badge-grid__card--locked"]
-                      : ""
+                    obj.status === "locked" ? styles["badge-grid__card--locked"] : ""
                   }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
@@ -67,17 +67,19 @@ function BadgeGrid({
                     >
                       <Icon name={obj.iconName} size={24} />
                     </div>
-                    <h3 className={styles["badge-grid__card-title"]}>
-                      {obj.title}
-                    </h3>
-                    <p className={styles["badge-grid__card-desc"]}>
-                      {obj.description}
-                    </p>
+                    <h3 className={styles["badge-grid__card-title"]}>{obj.title}</h3>
+                    <p className={styles["badge-grid__card-desc"]}>{obj.description}</p>
                   </div>
 
                   <div className={styles["badge-grid__card-actions"]}>
                     <button
                       type="button"
+                      onClick={() =>
+                        toast.info(
+                          `Thao tác "${obj.buttonText}" với danh hiệu "${obj.title}"! (UI hoàn thành – chờ kết nối API/backend)`,
+                          "Danh hiệu thành tựu",
+                        )
+                      }
                       className={`${styles["badge-grid__btn"]} ${
                         obj.status === "received"
                           ? styles["badge-grid__btn--contained"]

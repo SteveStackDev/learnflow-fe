@@ -140,7 +140,11 @@
 }
 
 .home-contact__form-btn--contained {
-  background: linear-gradient(135deg, var(--primary-color, #0950c3) 0%, var(--primary-dark, #053787) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color, #0950c3) 0%,
+    var(--primary-dark, #053787) 100%
+  );
   color: #ffffff;
   border-color: var(--primary-color, #0950c3);
   box-shadow: 0 4px 16px rgba(9, 80, 195, 0.3);
@@ -175,8 +179,12 @@
   border-top-color: rgba(255, 255, 255, 0.1);
 }
 
-:global([data-theme="dark"]) .home-contact__title { color: #ffffff; }
-:global([data-theme="dark"]) .home-contact__desc { color: #94a3b8; }
+:global([data-theme="dark"]) .home-contact__title {
+  color: #ffffff;
+}
+:global([data-theme="dark"]) .home-contact__desc {
+  color: #94a3b8;
+}
 :global([data-theme="dark"]) .home-contact__tip {
   background-color: #0c4a6e;
   color: #7dd3fc;
@@ -186,7 +194,9 @@
   background-color: #131c31;
   border-color: rgba(255, 255, 255, 0.15);
 }
-:global([data-theme="dark"]) .home-contact__label { color: #ffffff; }
+:global([data-theme="dark"]) .home-contact__label {
+  color: #ffffff;
+}
 :global([data-theme="dark"]) .home-contact__form-input {
   background-color: #1e293b;
   color: #ffffff;

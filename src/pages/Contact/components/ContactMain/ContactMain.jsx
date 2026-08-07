@@ -44,9 +44,13 @@ function ContactMain({ info }) {
     }
 
     setIsSubmitting(true);
+    // UI hoàn thành – chờ kết nối API/backend.
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("Cảm ơn bạn đã liên hệ! Đội ngũ LearnFlow sẽ phản hồi sớm nhất.", "Gửi thành công");
+      toast.success(
+        "Cảm ơn bạn đã liên hệ! (UI hoàn thành – chờ kết nối API/backend)",
+        "Gửi thành công (Mock)",
+      );
       setFullname("");
       setEmail("");
       setSubject("");
@@ -60,9 +64,7 @@ function ContactMain({ info }) {
       <div className={styles["contact-main__container"]}>
         {/* Left Side: Form */}
         <div className={styles["contact-main__content"]}>
-          <h2 className={styles["contact-main__section-title"]}>
-            Gửi tin nhắn cho chúng tôi
-          </h2>
+          <h2 className={styles["contact-main__section-title"]}>Gửi tin nhắn cho chúng tôi</h2>
 
           <form noValidate className={styles["contact-main__form"]} onSubmit={handleSubmit}>
             <div className={styles["contact-main__form-row"]}>
@@ -206,9 +208,7 @@ function ContactMain({ info }) {
 
         {/* Right Side: Info */}
         <div className={styles["contact-main__info"]}>
-          <h2 className={styles["contact-main__section-title"]}>
-            Thông tin hỗ trợ
-          </h2>
+          <h2 className={styles["contact-main__section-title"]}>Thông tin hỗ trợ</h2>
 
           <div className={styles["contact-main__info-list"]}>
             {info.map((obj) => (
@@ -220,14 +220,10 @@ function ContactMain({ info }) {
                   <Icon name={obj.iconName} size={20} />
                 </span>
                 <div className={styles["contact-main__info-body"]}>
-                  <h3 className={styles["contact-main__info-title"]}>
-                    {obj.title}
-                  </h3>
+                  <h3 className={styles["contact-main__info-title"]}>{obj.title}</h3>
 
                   {typeof obj.description === "string" ? (
-                    <p className={styles["contact-main__info-desc"]}>
-                      {obj.description}
-                    </p>
+                    <p className={styles["contact-main__info-desc"]}>{obj.description}</p>
                   ) : (
                     <div className={styles["contact-main__social-list"]}>
                       {obj.description.map((item) => (

@@ -149,7 +149,8 @@
   transition: all 0.15s ease;
 }
 
-.board-filters__dropdown-item:hover {
+.board-filters__dropdown-item:hover,
+.board-filters__dropdown-item--focused {
   background-color: var(--primary-light, #e0ebff);
   color: #0950c3;
 }
@@ -227,7 +228,8 @@
   color: #cbd5e1;
 }
 
-:global([data-theme="dark"]) .board-filters__dropdown-item:hover {
+:global([data-theme="dark"]) .board-filters__dropdown-item:hover,
+:global([data-theme="dark"]) .board-filters__dropdown-item--focused {
   background-color: #1e293b;
   color: #38bdf8;
 }

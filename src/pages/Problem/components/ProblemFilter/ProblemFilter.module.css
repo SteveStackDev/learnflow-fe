@@ -186,7 +186,8 @@
   user-select: none;
 }
 
-.prob-filter__dropdown-item:hover {
+.prob-filter__dropdown-item:hover,
+.prob-filter__dropdown-item--focused {
   background-color: var(--primary-light, #e0ebff);
   color: var(--primary-dark, #053787);
   font-weight: 600;
@@ -377,7 +378,8 @@
   color: #cbd5e1;
 }
 
-:global([data-theme="dark"]) .prob-filter__dropdown-item:hover {
+:global([data-theme="dark"]) .prob-filter__dropdown-item:hover,
+:global([data-theme="dark"]) .prob-filter__dropdown-item--focused {
   background-color: #1e293b;
   color: #38bdf8;
 }

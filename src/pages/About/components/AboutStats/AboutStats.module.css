@@ -60,3 +60,35 @@
 :global([data-theme="dark"]) .about-hero__stats-label {
   color: #94a3b8;
 }
+
+/* Responsive */
+@media (max-width: 992px) {
+  .about-hero__stats-widget {
+    margin-top: 10px;
+    margin-bottom: 24px;
+    padding: 20px 16px;
+  }
+
+  .about-hero__stats-value {
+    font-size: 2rem;
+  }
+
+  .about-hero__stats-label {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .about-hero__stats-widget {
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    padding: 24px 20px;
+  }
+
+  .about-hero__stats-divider {
+    width: 80%;
+    height: 1px;
+  }
+}

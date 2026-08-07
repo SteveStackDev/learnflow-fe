@@ -1,4 +1,5 @@
 import Icon from "~/components/Icon/Icon";
+import useDropdownKeyboard from "~/hooks/useDropdownKeyboard";
 import styles from "./RoadmapFilter.module.css";
 
 function RoadmapFilter({
@@ -15,6 +16,14 @@ function RoadmapFilter({
   setIsDropdownOpen,
   dropdownRef,
 }) {
+  const levelKeyboard = useDropdownKeyboard({
+    isOpen: isDropdownOpen,
+    setIsOpen: setIsDropdownOpen,
+    options: LEVEL_OPTIONS,
+    selectedOption: selectedLevel,
+    onSelect: setSelectedLevel,
+  });
+
   return (
     <section className={styles["roadmap-filters"]}>
       <div className={styles["roadmap-filters__container"]}>
@@ -54,9 +63,7 @@ function RoadmapFilter({
                 type="button"
                 onClick={() => handleTabChange(index)}
                 className={`${styles["roadmap-filters__tab-btn"]} ${
-                  activeTab === index
-                    ? styles["roadmap-filters__tab-btn--active"]
-                    : ""
+                  activeTab === index ? styles["roadmap-filters__tab-btn--active"] : ""
                 }`}
               >
                 {item}
@@ -66,14 +73,16 @@ function RoadmapFilter({
 
           {/* Custom Modern Dropdown Component */}
           <div className={styles["roadmap-filters__select-wrapper"]} ref={dropdownRef}>
-            <span className={styles["roadmap-filters__select-label"]}>
-              Hiển thị theo:
-            </span>
-            
+            <span className={styles["roadmap-filters__select-label"]}>Hiển thị theo:</span>
+
             <div className={styles["roadmap-filters__dropdown-container"]}>
               <button
                 type="button"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                onKeyDown={levelKeyboard.handleKeyDown}
+                aria-haspopup="listbox"
+                aria-expanded={isDropdownOpen}
+                aria-label="Lọc theo trình độ"
                 className={`${styles["roadmap-filters__dropdown-btn"]} ${
                   isDropdownOpen ? styles["roadmap-filters__dropdown-btn--open"] : ""
                 }`}
@@ -85,17 +94,24 @@ function RoadmapFilter({
               </button>
 
               {isDropdownOpen && (
-                <div className={styles["roadmap-filters__dropdown-menu"]}>
-                  {LEVEL_OPTIONS.map((option) => (
+                <div className={styles["roadmap-filters__dropdown-menu"]} role="listbox">
+                  {LEVEL_OPTIONS.map((option, index) => (
                     <div
                       key={option.id}
+                      role="option"
+                      aria-selected={selectedLevel.id === option.id}
                       onClick={() => {
                         setSelectedLevel(option);
                         setIsDropdownOpen(false);
                       }}
+                      onMouseEnter={() => levelKeyboard.setFocusedIndex(index)}
                       className={`${styles["roadmap-filters__dropdown-item"]} ${
                         selectedLevel.id === option.id
                           ? styles["roadmap-filters__dropdown-item--selected"]
+                          : ""
+                      } ${
+                        levelKeyboard.focusedIndex === index
+                          ? styles["roadmap-filters__dropdown-item--focused"]
                           : ""
                       }`}
                     >

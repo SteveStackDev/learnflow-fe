@@ -147,7 +147,8 @@
   user-select: none;
 }
 
-.course-search-stats__dropdown-item:hover {
+.course-search-stats__dropdown-item:hover,
+.course-search-stats__dropdown-item--focused {
   background-color: var(--primary-light, #e0ebff);
   color: var(--primary-dark, #053787);
   font-weight: 600;
@@ -301,7 +302,8 @@
   color: #cbd5e1;
 }
 
-:global([data-theme="dark"]) .course-search-stats__dropdown-item:hover {
+:global([data-theme="dark"]) .course-search-stats__dropdown-item:hover,
+:global([data-theme="dark"]) .course-search-stats__dropdown-item--focused {
   background-color: #1e293b;
   color: #38bdf8;
 }

@@ -117,10 +117,20 @@
   .contest-stats__list {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .contest-stats__card:last-child {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 576px) {
   .contest-stats__list {
     grid-template-columns: 1fr;
+  }
+
+  .contest-stats__card:last-child {
+    grid-column: auto;
+    justify-content: flex-start;
   }
 }

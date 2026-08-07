@@ -1,4 +1,5 @@
 import Icon from "~/components/Icon/Icon";
+import AnimatedCounter from "~/components/AnimatedCounter/AnimatedCounter";
 import styles from "./BadgeStats.module.css";
 
 function BadgeStats({ totalCount, receivedCount, progressPercent }) {
@@ -11,32 +12,34 @@ function BadgeStats({ totalCount, receivedCount, progressPercent }) {
               <Icon name="Award" size={20} />
             </div>
             <div className={styles["badge-stats__info"]}>
-              <span className={styles["badge-stats__label"]}>
-                Tổng danh hiệu
+              <span className={styles["badge-stats__label"]}>Tổng danh hiệu</span>
+              <span className={styles["badge-stats__value"]}>
+                <AnimatedCounter value={totalCount} />
               </span>
-              <span className={styles["badge-stats__value"]}>{totalCount}</span>
             </div>
           </div>
 
           <div className={`${styles["badge-stats__card"]} reveal-card`}>
-            <div className={`${styles["badge-stats__icon"]} ${styles["badge-stats__icon--yellow"]}`}>
+            <div
+              className={`${styles["badge-stats__icon"]} ${styles["badge-stats__icon--yellow"]}`}
+            >
               <Icon name="Trophy" size={20} />
             </div>
             <div className={styles["badge-stats__info"]}>
-              <span className={styles["badge-stats__label"]}>
-                Đã đạt được
+              <span className={styles["badge-stats__label"]}>Đã đạt được</span>
+              <span className={styles["badge-stats__value"]}>
+                <AnimatedCounter value={receivedCount} />
               </span>
-              <span className={styles["badge-stats__value"]}>{receivedCount}</span>
             </div>
           </div>
 
           <div className={`${styles["badge-stats__card"]} reveal-card`}>
             <div className={styles["badge-stats__progress-wrapper"]}>
               <div className={styles["badge-stats__progress-info"]}>
-                <span className={styles["badge-stats__label"]}>
-                  Tiến độ tổng quan
+                <span className={styles["badge-stats__label"]}>Tiến độ tổng quan</span>
+                <span className={styles["badge-stats__percent"]}>
+                  <AnimatedCounter value={`${progressPercent}%`} />
                 </span>
-                <span className={styles["badge-stats__percent"]}>{progressPercent}%</span>
               </div>
               {/* Custom Linear Progress */}
               <div className={styles["badge-stats__progress-bar"]}>

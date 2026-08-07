@@ -35,31 +35,23 @@ function SignUpForm({
             <div className={styles["signup-form__mobile-logo-box"]}>
               <Icon name="Layers" size={26} strokeWidth={2.5} />
             </div>
-            <span className={styles["signup-form__mobile-logo-text"]}>
-              LearnFlow
-            </span>
+            <span className={styles["signup-form__mobile-logo-text"]}>LearnFlow</span>
           </div>
 
           <h1 className={styles["signup-form__mobile-title"]}>
             Bắt đầu hành trình{" "}
-            <span className={styles["signup-info__title--highlight"]}>
-              học lập trình
-            </span>{" "}
+            <span className={styles["signup-form__title--highlight"]}>học&nbsp;lập&nbsp;trình</span>{" "}
             cùng LearnFlow
           </h1>
         </div>
 
         <h2 className={styles["signup-form__title"]}>Tạo tài khoản</h2>
         <p className={styles["signup-form__desc"]}>
-          Tạo tài khoản để bắt đầu học theo roadmap, luyện bài tập, tham
-          gia contest và theo dõi tiến độ trên LearnFlow.
+          Tạo tài khoản để bắt đầu học theo roadmap, luyện bài tập, tham gia contest và theo dõi
+          tiến độ trên LearnFlow.
         </p>
 
-        <form
-          noValidate
-          className={styles["signup-form__form"]}
-          onSubmit={handleSubmit}
-        >
+        <form noValidate className={styles["signup-form__form"]} onSubmit={handleSubmit}>
           {/* 2-Column Row: Full Name & Username */}
           <div className={styles["signup-form__form-row"]}>
             <div className={styles["signup-form__form-group"]}>
@@ -101,7 +93,9 @@ function SignUpForm({
 
           {/* Email Field */}
           <div className={styles["signup-form__form-group"]}>
-            <label htmlFor="signup-email" className={styles["signup-form__label"]}>EMAIL</label>
+            <label htmlFor="signup-email" className={styles["signup-form__label"]}>
+              EMAIL
+            </label>
             <input
               id="signup-email"
               type="email"
@@ -147,11 +141,7 @@ function SignUpForm({
                 onClick={() => setShowPassword(!showPassword)}
                 className={`${styles["signup-form__input-adornment"]} ${styles["signup-form__input-adornment--end"]}`}
               >
-                {showPassword ? (
-                  <Icon name="EyeOff" size={18} />
-                ) : (
-                  <Icon name="Eye" size={18} />
-                )}
+                {showPassword ? <Icon name="EyeOff" size={18} /> : <Icon name="Eye" size={18} />}
               </button>
             </div>
             {errors.password && (
@@ -174,7 +164,8 @@ function SignUpForm({
                 value={confirmPassword}
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
-                  if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: null }));
+                  if (errors.confirmPassword)
+                    setErrors((prev) => ({ ...prev, confirmPassword: null }));
                 }}
                 placeholder="••••••••"
                 className={`${styles["signup-form__input"]} ${
@@ -247,27 +238,19 @@ function SignUpForm({
 
         {/* Social Login Splitter */}
         <div className={styles["signup-form__splitter"]}>
-          <span className={styles["signup-form__splitter-text"]}>
-            HOẶC TIẾP TỤC VỚI
-          </span>
+          <span className={styles["signup-form__splitter-text"]}>HOẶC TIẾP TỤC VỚI</span>
         </div>
 
         {/* Social Buttons Row */}
         <div className={styles["signup-form__social-list"]}>
-          <button
-            type="button"
-            className={styles["signup-form__social-btn"]}
-          >
+          <button type="button" className={styles["signup-form__social-btn"]}>
             <span className={styles["signup-form__social-icon"]}>
               <Icon name="Google" size={18} />
             </span>
             Google
           </button>
 
-          <button
-            type="button"
-            className={styles["signup-form__social-btn"]}
-          >
+          <button type="button" className={styles["signup-form__social-btn"]}>
             <span className={styles["signup-form__social-icon"]}>
               <Icon name="Github" size={18} />
             </span>
@@ -277,9 +260,7 @@ function SignUpForm({
 
         {/* Redirect Link */}
         <div className={styles["signup-form__redirect-group"]}>
-          <span className={styles["signup-form__redirect-text"]}>
-            Đã có tài khoản?
-          </span>
+          <span className={styles["signup-form__redirect-text"]}>Đã có tài khoản?</span>
           <Link to="/signin" className={styles["signup-form__link-bold"]}>
             Đăng nhập ngay
           </Link>

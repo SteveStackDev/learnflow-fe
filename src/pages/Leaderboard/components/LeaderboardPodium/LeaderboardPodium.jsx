@@ -21,32 +21,34 @@ function LeaderboardPodium({ podium }) {
                   loading="lazy"
                   decoding="async"
                 />
-                <span className={styles["board-podium__rank-badge"]}>
-                  #{obj.rank}
-                </span>
+                <span className={styles["board-podium__rank-badge"]}>#{obj.rank}</span>
               </div>
 
               {/* User Name & Points */}
               <div className={styles["board-podium__name"]}>{obj.name}</div>
-              <div className={styles["board-podium__points"]}>
-                {obj.points}
-              </div>
+              <div className={styles["board-podium__points"]}>{obj.points}</div>
 
               {/* Podium Stand Box with Medal */}
               <div className={styles["board-podium__stand"]}>
                 <div className={styles["board-podium__medal-wrapper"]}>
                   {obj.rank === 1 && (
-                    <div className={`${styles["board-podium__medal"]} ${styles["board-podium__medal--gold"]}`}>
+                    <div
+                      className={`${styles["board-podium__medal"]} ${styles["board-podium__medal--gold"]}`}
+                    >
                       <span className={styles["board-podium__medal-num"]}>1</span>
                     </div>
                   )}
                   {obj.rank === 2 && (
-                    <div className={`${styles["board-podium__medal"]} ${styles["board-podium__medal--silver"]}`}>
+                    <div
+                      className={`${styles["board-podium__medal"]} ${styles["board-podium__medal--silver"]}`}
+                    >
                       <span className={styles["board-podium__medal-num"]}>2</span>
                     </div>
                   )}
                   {obj.rank === 3 && (
-                    <div className={`${styles["board-podium__medal"]} ${styles["board-podium__medal--bronze"]}`}>
+                    <div
+                      className={`${styles["board-podium__medal"]} ${styles["board-podium__medal--bronze"]}`}
+                    >
                       <span className={styles["board-podium__medal-num"]}>3</span>
                     </div>
                   )}

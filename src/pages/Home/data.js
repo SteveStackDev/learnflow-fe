@@ -10,8 +10,7 @@ export const homeData = {
     {
       id: "home-2",
       title: "Hỗ trợ 24/7",
-      description:
-        'Cộng đồng và mentor luôn sẵn sàng giúp bạn tháo gỡ những "bug" khó nhất.',
+      description: 'Cộng đồng và mentor luôn sẵn sàng giúp bạn tháo gỡ những "bug" khó nhất.',
       iconName: "Zap",
     },
   ],
@@ -43,8 +42,7 @@ export const homeData = {
     {
       id: "home-7",
       title: "Lộ trình bài bản",
-      description:
-        "Học từ cơ bản đến chuyên sâu với giáo trình được biên soạn bởi chuyên gia.",
+      description: "Học từ cơ bản đến chuyên sâu với giáo trình được biên soạn bởi chuyên gia.",
       iconName: "Book",
     },
     {
@@ -57,15 +55,13 @@ export const homeData = {
     {
       id: "home-9",
       title: "Dashboard thông minh",
-      description:
-        "Theo dõi trực quan mọi chỉ số kỹ năng thông qua biểu đồ phân tích năng lực.",
+      description: "Theo dõi trực quan mọi chỉ số kỹ năng thông qua biểu đồ phân tích năng lực.",
       iconName: "Grid",
     },
     {
       id: "home-10",
       title: "Luyện phỏng vấn",
-      description:
-        "Bộ câu hỏi thực tế từ các tập đoàn công nghệ lớn: Google, Meta, TikTok.",
+      description: "Bộ câu hỏi thực tế từ các tập đoàn công nghệ lớn: Google, Meta, TikTok.",
       iconName: "Users",
     },
   ],

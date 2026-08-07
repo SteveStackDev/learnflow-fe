@@ -14,17 +14,16 @@ function AboutFeatures({ features }) {
           <div className={styles["about-features__list"]}>
             {features.map((obj) => {
               return (
-                <div key={obj.id || obj.slug || obj.name || obj.title || obj} className={`${styles["about-features__item"]} reveal-card`}>
+                <div
+                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  className={`${styles["about-features__item"]} reveal-card`}
+                >
                   <span className={styles["about-features__icon"]}>
                     <Icon name={obj.iconName} size={22} />
                   </span>
                   <div className={styles["about-features__info"]}>
-                    <h3 className={styles["about-features__item-title"]}>
-                      {obj.title}
-                    </h3>
-                    <p className={styles["about-features__desc"]}>
-                      {obj.description}
-                    </p>
+                    <h3 className={styles["about-features__item-title"]}>{obj.title}</h3>
+                    <p className={styles["about-features__desc"]}>{obj.description}</p>
                   </div>
                 </div>
               );

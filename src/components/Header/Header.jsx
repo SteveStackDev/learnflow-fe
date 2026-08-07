@@ -17,9 +17,7 @@ function Header() {
 
   return (
     <header className={styles.header}>
-      <div
-        className={`${styles.header__container} ${styles["header__container--fluid"]}`}
-      >
+      <div className={`${styles.header__container} ${styles["header__container--fluid"]}`}>
         <div className={styles.header__row}>
           {/* Logo & Brand Title */}
           <Link to="/" className={styles.header__brand} onClick={closeMenu}>

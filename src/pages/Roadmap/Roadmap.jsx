@@ -57,8 +57,7 @@ function Roadmap() {
       const matchesSearch =
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesLevel =
-        selectedLevel.id === "all" || item.level === selectedLevel.id;
+      const matchesLevel = selectedLevel.id === "all" || item.level === selectedLevel.id;
       return matchesSearch && matchesLevel;
     });
 

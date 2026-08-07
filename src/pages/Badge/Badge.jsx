@@ -21,7 +21,9 @@ function Badge() {
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth <= 768,
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -51,8 +53,10 @@ function Badge() {
         activeTab === 0 ||
         selectedTab === "Tất cả" ||
         selectedTab === "Tất cả huy hiệu" ||
-        ((selectedTab === "Đã đạt được" || selectedTab === "Đã nhận") && item.status === "received") ||
-        ((selectedTab === "Chưa đạt được" || selectedTab === "Chưa nhận") && item.status === "locked");
+        ((selectedTab === "Đã đạt được" || selectedTab === "Đã nhận") &&
+          item.status === "received") ||
+        ((selectedTab === "Chưa đạt được" || selectedTab === "Chưa nhận") &&
+          item.status === "locked");
       return matchesSearch && matchesTab;
     });
   }, [searchQuery, activeTab]);

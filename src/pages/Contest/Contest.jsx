@@ -38,7 +38,7 @@ function Contest() {
       const matchesSearch =
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.statusLabel.toLowerCase().includes(searchQuery.toLowerCase());
-      
+
       if (activeTab === 0 || selectedTab === "Tất cả cuộc thi") return matchesSearch;
       if (selectedTab === "Đang diễn ra" || selectedTab === "Đang mở") {
         return matchesSearch && item.statusLabel.includes("ĐANG MỞ");
@@ -77,10 +77,7 @@ function Contest() {
       <ContestHero />
 
       {/* 2. Overview Stats Section */}
-      <ContestStats
-        stats={contestData.stats}
-        totalContests={filteredAndSortedItems.length}
-      />
+      <ContestStats stats={contestData.stats} totalContests={filteredAndSortedItems.length} />
 
       {/* 3. Search & Filter Bar Section */}
       <ContestFilter

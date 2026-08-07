@@ -1,192 +1,161 @@
 ---
 name: LearnFlow Design System
 colors:
-  surface: '#faf8ff'
-  surface-dim: '#d9d9e3'
-  surface-bright: '#faf8ff'
-  surface-container-lowest: '#ffffff'
-  surface-container-low: '#f3f3fd'
-  surface-container: '#ededf7'
-  surface-container-high: '#e7e7f1'
-  surface-container-highest: '#e2e2ec'
-  on-surface: '#191b22'
-  on-surface-variant: '#434653'
-  inverse-surface: '#2e3038'
-  inverse-on-surface: '#f0f0fa'
-  outline: '#737785'
-  outline-variant: '#c3c6d6'
-  surface-tint: '#1957ca'
-  primary: '#003a95'
-  on-primary: '#ffffff'
-  primary-container: '#0950c3'
-  on-primary-container: '#becdff'
-  inverse-primary: '#b2c5ff'
-  secondary: '#525f71'
-  on-secondary: '#ffffff'
-  secondary-container: '#d5e4f9'
-  on-secondary-container: '#586577'
-  tertiary: '#5d3900'
-  on-tertiary: '#ffffff'
-  tertiary-container: '#7c4e00'
-  on-tertiary-container: '#ffc47a'
-  error: '#ba1a1a'
-  on-error: '#ffffff'
-  error-container: '#ffdad6'
-  on-error-container: '#93000a'
-  primary-fixed: '#dae2ff'
-  primary-fixed-dim: '#b2c5ff'
-  on-primary-fixed: '#001848'
-  on-primary-fixed-variant: '#0040a2'
-  secondary-fixed: '#d5e4f9'
-  secondary-fixed-dim: '#bac8dc'
-  on-secondary-fixed: '#0e1c2b'
-  on-secondary-fixed-variant: '#3a4859'
-  tertiary-fixed: '#ffddb7'
-  tertiary-fixed-dim: '#ffb95d'
-  on-tertiary-fixed: '#2a1700'
-  on-tertiary-fixed-variant: '#653e00'
-  background: '#faf8ff'
-  on-background: '#191b22'
-  surface-variant: '#e2e2ec'
+  light:
+    primary: "#0950c3"
+    secondary: "#a9b7cb"
+    accent: "#f59f0a"
+    background: "#d6def0"
+    surface-page: "#f9fbff"
+    surface-card: "#ffffff"
+    surface-subtle: "#f8fafc"
+    text-primary: "#191b22"
+    text-secondary: "#434653"
+    text-muted: "#64748b"
+    border: "rgba(169, 183, 203, 0.4)"
+  dark:
+    primary: "#3c83f6"
+    secondary: "#344256"
+    accent: "#f59f0a"
+    accent-cyan: "#38bdf8"
+    background: "#0f1729"
+    surface-page: "#0b1120"
+    surface-card: "#131c31"
+    surface-subtle: "#1e293b"
+    text-primary: "#ffffff"
+    text-secondary: "#cbd5e1"
+    text-muted: "#94a3b8"
+    border: "rgba(255, 255, 255, 0.15)"
+  gradients:
+    primary: "linear-gradient(135deg, #0950c3 0%, #003a95 100%)"
+    primary-cyan: "linear-gradient(135deg, #0950c3 0%, #0ea5e9 100%)"
+    amber-gold: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
+    emerald-green: "linear-gradient(135deg, #22c55e 0%, #15803d 100%)"
+    purple-violet: "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)"
+    rose-coral: "linear-gradient(135deg, #f43f5e 0%, #be123c 100%)"
 typography:
-  headline-xl:
-    fontFamily: Hanken Grotesk
-    fontSize: 48px
-    fontWeight: '700'
-    lineHeight: 56px
-    letterSpacing: -0.02em
-  headline-lg:
-    fontFamily: Hanken Grotesk
-    fontSize: 32px
-    fontWeight: '700'
-    lineHeight: 40px
-    letterSpacing: -0.01em
-  headline-lg-mobile:
-    fontFamily: Hanken Grotesk
-    fontSize: 24px
-    fontWeight: '700'
-    lineHeight: 32px
-  title-md:
-    fontFamily: Hanken Grotesk
-    fontSize: 20px
-    fontWeight: '600'
-    lineHeight: 28px
-  body-lg:
-    fontFamily: Inter
-    fontSize: 18px
-    fontWeight: '400'
-    lineHeight: 28px
-  body-md:
-    fontFamily: Inter
-    fontSize: 16px
-    fontWeight: '400'
-    lineHeight: 24px
-  label-md:
-    fontFamily: Geist
-    fontSize: 14px
-    fontWeight: '500'
-    lineHeight: 20px
-    letterSpacing: 0.02em
-  code-sm:
-    fontFamily: Geist
-    fontSize: 14px
-    fontWeight: '400'
-    lineHeight: 20px
-rounded:
-  sm: 0.25rem
-  DEFAULT: 0.5rem
-  md: 0.75rem
-  lg: 1rem
-  xl: 1.5rem
-  full: 9999px
+  fontFamily:
+    main: "Be Vietnam Pro, Inter, Noto Sans, sans-serif"
+    code: "JetBrains Mono, Fira Code, monospace"
+    display: "Playfair Display, serif"
+  fontSize:
+    xs: 0.75rem
+    sm: 0.875rem
+    base: 1rem
+    lg: 1.125rem
+    xl: 1.25rem
+    2xl: 1.5rem
+    3xl: 1.875rem
+    4xl: 2.25rem
+    5xl: 3rem
 spacing:
-  unit: 4px
-  container-max: 1280px
-  gutter: 24px
-  margin-mobile: 16px
-  margin-desktop: 40px
-  stack-sm: 8px
-  stack-md: 16px
-  stack-lg: 32px
+  scale: 8pt grid (0.25rem - 6rem)
+motion:
+  easing: cubic-bezier(0.4, 0, 0.2, 1)
+  durations: 0.1s - 0.4s
 ---
 
-## Thương hiệu & Phong cách
-Hệ thống thiết kế hướng tới việc tạo ra một môi trường học tập lập trình tập trung, tinh tế và đầy cảm hứng. Phong cách chủ đạo là **Corporate Modern** kết hợp với **Minimalism**, nhấn mạnh vào sự rõ ràng của cấu trúc mã nguồn và luồng tư duy logic.
+## 🎨 Thương hiệu & Phong cách (Brand Identity & Style)
 
-Mục tiêu cảm xúc:
-- **Tin cậy:** Sự ổn định thông qua hệ thống lưới chặt chẽ.
-- **Tiến bộ:** Cảm giác hiện đại, công nghệ thông qua các mảng màu và bo góc mượt mà.
-- **Thân thiện:** Giảm bớt sự khô khan của code bằng các hiệu ứng đổ bóng mềm và màu sắc bổ trợ ấm áp.
+Hệ thống thiết kế LearnFlow kết hợp hài hòa hai phong cách kiến trúc giao diện hiện đại: **Corporate Modern (Light Mode)** và **Cyberpunk Dark Navy / Neon Glow (Dark Mode)**.
 
-Ngôn ngữ thị giác sử dụng các lớp layer chồng gọn gàng, khoảng trắng rộng rãi để giảm tải nhận thức cho học viên trong quá trình tiếp thu kiến thức phức tạp.
+Mục tiêu cảm xúc & định hướng trải nghiệm:
 
-## Màu sắc
-Bảng màu được tính toán để tối ưu hóa sự tập trung và phân cấp thông tin rõ rệt:
+- 🛡️ **Tin cậy & Chuyên nghiệp:** Cấu trúc bố cục dựa trên hệ lưới 8pt grid chuẩn xác, hiển thị sắc nét thông tin khóa học và lộ trình.
+- ⚡ **Hiện đại & Động lực:** Màu Neon Blue (`#3c83f6`), Cyan (`#38bdf8`) và Amber (`#f59f0a`) mang lại năng lượng công nghệ, thúc đẩy chuỗi streak và thành tựu học tập.
+- 🧘 **Tập trung & Thoải mái:** Khoảng trắng thoáng đãng, hiệu ứng kính mờ Glassmorphic kết hợp các dải ánh sáng Orb Ambient Glow nhẹ nhàng ở chế độ tối giúp học viên không bị mỏi mắt khi học lâu.
 
-- **Primary (#0950c3):** Xanh dương đậm biểu trưng cho sự chuyên nghiệp và trí tuệ. Sử dụng cho các hành động chính (Primary Buttons), trạng thái active và các điểm điều hướng then chốt.
-- **Tertiary/Accent (#f59f0a):** Cam hổ phách tạo sự tương phản mạnh với tone xanh chủ đạo. Dùng để thúc đẩy động lực: streak học tập, badge thành tựu, và các chỉ số cần sự chú ý tức thì.
-- **Background (#faf8ff):** Tone nền sáng sạch sẽ làm nền tảng cho toàn bộ ứng dụng, giúp nội dung hiển thị tách bạch và chuyên nghiệp.
-- **Secondary (#a9b7cb):** Màu trung tính hỗ trợ cho các đường kẻ (borders), icon phụ và các vùng chứa nội dung ít quan trọng hơn.
-- **Text (#191b22):** Màu trung tính đậm đảm bảo độ tương phản tối đa cho nội dung bài học và giao diện người dùng.
+---
 
-## Hệ thống chữ (Typography)
-Hệ thống sử dụng sự kết hợp giữa 3 phông chữ để phân tách rõ rệt các vai trò nội dung:
+## 🌓 Hệ thống Chủ đề Dual Theme (Light & Dark Mode)
 
-- **Hanken Grotesk (Tiêu đề):** Hiện đại và sắc sảo, tạo dấu ấn thương hiệu mạnh mẽ ở các tiêu đề khóa học.
-- **Inter (Nội dung chính):** Sự lựa chọn tối ưu cho việc đọc văn bản dài, giúp học viên không bị mỏi mắt khi nghiên cứu lý thuyết.
-- **Geist (Nhãn & Code):** Phông chữ kỹ thuật với độ chính xác cao, cực kỳ phù hợp cho các đoạn mã (code snippets) và các nhãn chức năng trong giao diện lập trình.
+LearnFlow sử dụng cơ chế **Semantic HSL & Hex Design Tokens** tự động điều chỉnh theo thuộc tính `data-theme="light"` hoặc `data-theme="dark"` tại thẻ root `<html>`.
 
-**Nguyên tắc sử dụng:**
-- Luôn giữ khoảng cách dòng (line-height) rộng rãi cho các khối văn bản bài học.
-- Sử dụng thuộc tính `letter-spacing` hẹp cho tiêu đề lớn để tạo cảm giác cao cấp.
+### 1. Bảng màu Light Mode (Light Elegance)
 
-## Bố cục & Khoảng cách
-Hệ thống sử dụng **Fluid Grid** dựa trên đơn vị cơ bản là 4px (8pt grid system).
+- **Background (`--theme-page-bg`):** `#f9fbff` - Nền xám xanh sáng thanh lịch, dịu mắt.
+- **Card/Container (`--theme-card-bg`):** `#ffffff` - Nền trắng tinh khiết tạo phân cấp nổi bật.
+- **Primary Accent (`--color-primary`):** `#0950c3` - Xanh dương đậm chuẩn doanh nghiệp.
+- **Text Primary (`--theme-text-primary`):** `#191b22` - Tương phản cao cho nội dung bài đọc.
+- **Text Secondary (`--theme-text-secondary`):** `#434653` - Phụ đề & nhãn thông tin.
 
-- **Desktop (1280px+):** Hệ lưới 12 cột, gutter 24px. Lề ngoài tối thiểu 40px.
-- **Tablet (768px - 1024px):** Hệ lưới 8 cột, gutter 20px.
-- **Mobile (<768px):** Hệ lưới 4 cột, gutter 16px. Các thành phần như Card sẽ chuyển sang dạng full-width.
+### 2. Bảng màu Dark Mode (Cyberpunk Dark Navy)
 
-Khoảng cách giữa các phần tử trong một Card (padding) nên được duy trì ở mức 24px để tạo cảm giác thoáng đãng, sang trọng.
+- **Background (`--theme-page-bg`):** `#0b1120` - Xanh Navy đậm chiều sâu vũ trụ.
+- **Card/Container (`--theme-card-bg`):** `#131c31` - Thẻ viền mờ với ánh kim loại phẳng.
+- **Primary Electric (`--color-primary`):** `#3c83f6` - Xanh Neon rực rỡ.
+- **Cyan Highlight (`--theme-text-cyan`):** `#38bdf8` - Điểm nhấn kỹ thuật số.
+- **Accent Amber (`--color-accent`):** `#f59f0a` - Ngọn lửa streak & điểm số.
+- **Border (`--theme-border`):** `rgba(255, 255, 255, 0.15)` - Đường nét mỏng tinh tế.
 
-## Chiều sâu & Lớp (Elevation)
-Sử dụng phương pháp **Tonal Layers** kết hợp với **Ambient Shadows** để phân cấp bề mặt:
+### 3. Hệ thống dải màu Chuyển sắc (Curated Gradients)
 
-- **Level 0 (Nền):** Màu `#faf8ff`, không đổ bóng.
-- **Level 1 (Card/Syllabus):** Màu trắng tinh khiết hoặc surface containers. Đổ bóng mờ: `0 4px 20px rgba(9, 80, 195, 0.05)`.
-- **Level 2 (Popovers/Dropdowns):** Đổ bóng rõ rệt hơn để tách biệt khỏi nội dung: `0 12px 32px rgba(25, 27, 34, 0.1)`.
+- `--gradient-primary`: `linear-gradient(135deg, #0950c3 0%, #003a95 100%)`
+- `--gradient-primary-cyan`: `linear-gradient(135deg, #0950c3 0%, #0ea5e9 100%)`
+- `--gradient-amber-gold`: `linear-gradient(135deg, #f59e0b 0%, #d97706 100%)`
+- `--gradient-emerald-green`: `linear-gradient(135deg, #22c55e 0%, #15803d 100%)`
+- `--gradient-purple-violet`: `linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)`
+- `--gradient-rose-coral`: `linear-gradient(135deg, #f43f5e 0%, #be123c 100%)`
 
-Các đường viền (borders) sử dụng màu Secondary với độ mờ thấp (opacity 20-40%) thay vì màu đặc để giữ cho giao diện luôn thanh thoát.
+---
 
-## Hình khối (Shapes)
-Sử dụng ngôn ngữ hình khối **Rounded** để tạo sự thân thiện nhưng vẫn giữ được cấu trúc của một nền tảng chuyên nghiệp.
+## 🌌 Hiệu ứng Ánh sáng Ambient Glow (Multi-Orb Glow Distribution)
 
-- **Mặc định (Buttons, Inputs):** Bo góc 8px (dựa trên roundedness 2).
-- **Card lớn & Container:** Bo góc 16px (`rounded-lg`).
-- **Badges & Tags:** Bo góc 30px (Pill-shaped) để phân biệt với các thành phần tương tác chính.
+Trong chế độ tối (`data-theme="dark"`), ứng dụng kích hoạt hệ thống dải sáng mềm đa vị trí (Multi-Orb Ambient Lighting) chạy animation `orbGlowPulse` tuần hoàn:
 
-Sự nhất quán trong bo góc là yếu tố then chốt để tạo ra cảm giác "Premium" cho sản phẩm.
+1. **Top-Left Hero Orb (`__orb-1`):** `radial-gradient(circle at center, rgba(56, 189, 248, 0.32), transparent 75%)` với `blur(85px)`.
+2. **Catalog Upper-Right Orb (`__orb-2`):** Tone tím violet `rgba(168, 85, 247, 0.28)` kết hợp Cyan `blur(95px)`.
+3. **Middle-Left Orb (`__orb-3`):** Tone xanh dương deep navy `rgba(9, 80, 195, 0.3)`.
+4. **Bottom FAQ / Footer Orb (`__orb-4`):** Tone tím huyền ảo `rgba(139, 92, 246, 0.28)`.
 
-## Thành phần (Components)
+---
 
-### 1. Nút bấm (Buttons)
-- **Primary:** Nền `#0950c3`, chữ trắng. Hiệu ứng hover: làm đậm màu 10%.
-- **Secondary:** Viền `#0950c3` (1.5px), chữ `#0950c3`, nền trong suốt.
-- **Ghost:** Không nền, không viền, chữ `#0950c3`. Dùng cho các hành động phụ hoặc điều hướng nhẹ nhàng.
+## 🔤 Hệ thống Phông chữ (Typography System)
 
-### 2. Thẻ (Cards)
-- Nền surface container, bo góc 16px.
-- Viền mỏng 1px màu `#a9b7cb` với độ mờ 30%.
-- Shadow nhẹ phía dưới để tạo cảm giác nổi khối nhẹ trên nền ứng dụng.
+Sử dụng 3 họ phông chữ chuyên biệt truy xuất qua CSS Variables:
 
-### 3. Trường nhập liệu (Input Fields)
-- Bo góc 8px-12px, nền surface cao.
-- Khi focus: Viền chuyển sang màu Primary với hiệu ứng "ring" (đổ bóng mờ bao quanh viền) màu Primary 20%.
+- **Main UI & Text (`--font-family-main`):** `Be Vietnam Pro`, `Inter`, `Noto Sans`. Tối ưu đọc tiếng Việt & tiếng Anh trên màn hình kỹ thuật số.
+- **Code & Monospace (`--font-family-code`):** `JetBrains Mono`, `Fira Code`. Dành cho mã nguồn, bài tập lập trình & terminal.
+- **Display & Heading (`--font-family-display`):** `Playfair Display`. Dùng cho tiêu đề trang nhã hoặc điểm nhấn nổi bật.
 
-### 4. Chỉ số & Badge (Streaks/Progress)
-- Sử dụng màu Tertiary/Accent (`#f59f0a`) cho các icon streak (ngọn lửa) và tiến độ hoàn thành.
-- Các thanh Progress bar sử dụng nền `Secondary` nhạt và phần tiến độ màu `Primary`.
+### Thang kích thước chữ (Font Scale)
 
-### 5. Code Block
-- Nền tối (`#191b22`) hoặc xám cực đậm để tách biệt hoàn toàn với phần học lý thuyết.
-- Sử dụng phông chữ `Geist` cho độ hiển thị mã nguồn tối ưu.
+- `xs` (12px) | `sm` (14px) | `base` (16px) | `lg` (18px) | `xl` (20px) | `2xl` (24px) | `3xl` (30px) | `4xl` (36px) | `5xl` (48px)
+
+---
+
+## 📐 Bố cục & Hệ lưới Spacing (8pt Grid System)
+
+- Sử dụng các token khoảng cách từ `--spacing-0` (0px) đến `--spacing-24` (96px).
+- **Responsive Layout:**
+  - **Desktop (>=1024px):** Container tối đa `1280px`, padding lề `32px` - `40px`.
+  - **Tablet (768px - 1023px):** Padding lề `24px`, tự động chuyển grid 2-3 cột.
+  - **Mobile (<768px):** Padding lề `16px`, chuyển toàn bộ layout về dạng 1 cột stacked linh hoạt.
+
+---
+
+## ✨ Chuyển động & Tương tác (Motion & Scroll Reveal)
+
+- **Transition System:** `--transition-base` (`all 0.2s cubic-bezier(0.4, 0, 0.2, 1)`), `--transition-bounce` (`all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)`).
+- **Scroll Reveal Hook (`useScrollReveal`):** Tự động áp dụng hiệu ứng xuất hiện cuộn mượt (Fade In Up / Scale In) khi phần tử đi vào viewport.
+- **Micro-Interactions:** Hover hiệu ứng lift-up card (`transform: translateY(-4px)`), glow shadow viền khi hover button & input field focus state.
+
+---
+
+## 🧩 Thư viện Component Cốt lõi (Core Component Architecture)
+
+### 1. Reusable UI Components (`src/components/ui/`)
+
+- **Button:** Các biến thể `primary`, `secondary`, `outline`, `ghost` tích hợp ripple & glow effect.
+- **Card:** Nền `--theme-card-bg`, viền mờ `--theme-border`, shadow `--theme-shadow` tương thích dual theme.
+- **Badge:** Thiết kế pill-shaped phân loại cấp độ (Cơ bản, Pro, Hot, Streak) và danh hiệu.
+- **FormField:** Wrapper nhập liệu có hỗ trợ icon, label, error hint và focus ring.
+- **SectionHeader:** Tiêu đề mục tiêu chuẩn có badge nhỏ, tiêu đề chính & mô tả.
+
+### 2. Feedback & Global State Components
+
+- **Toast System (`ToastProvider` & `ToastContainer`):** Hiển thị thông báo Toast góc màn hình (Success, Error, Warning, Info) qua hook `useToast()`.
+- **ThemeToggle:** Nút công tắc chuyển đổi Light / Dark Mode mượt mà với icon Mặt Trời / Mặt Trăng.
+- **PageLoader:** Màn hình chờ tải trang Suspense hiệu ứng spinner neon.
+- **ErrorBoundary:** Màn hình khôi phục lỗi ứng dụng thân thiện người dùng.
+- **Icon Registry (`src/components/Icon/Icon.jsx`):** Thành phần render SVG Icon tập trung theo tên (`name`), đảm bảo tính nhất quán của bộ biểu tượng toàn hệ thống.

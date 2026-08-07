@@ -16,14 +16,11 @@ function RoadmapHero() {
             </div>
             <h1 className={styles["roadmap-hero__title"]}>
               Lộ Trình Nghề Nghiệp{" "}
-              <span className={styles["roadmap-hero__title--highlight"]}>
-                Công Nghệ
-              </span>
+              <span className={styles["roadmap-hero__title--highlight"]}>Công&nbsp;Nghệ</span>
             </h1>
             <p className={styles["roadmap-hero__desc"]}>
-              Không còn lạc lối giữa hàng nghìn công nghệ. Chúng tôi cung
-              cấp bản đồ học tập chi tiết từ con số 0 đến khi bạn sẵn sàng
-              cho công việc mơ ước.
+              Không còn lạc lối giữa hàng nghìn công nghệ. Chúng tôi cung cấp bản đồ học tập chi
+              tiết từ con số 0 đến khi bạn sẵn sàng cho công việc mơ ước.
             </p>
             <div className={styles["roadmap-hero__btn-group"]}>
               <button

@@ -12,7 +12,7 @@ body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-  font-family: var(--font-family-main, 'Be Vietnam Pro', 'Inter', sans-serif);
+  font-family: var(--font-family-main, "Be Vietnam Pro", "Inter", sans-serif);
   background-color: var(--theme-page-bg, #f9fbff);
   color: var(--theme-text-primary, #191b22);
   -webkit-font-smoothing: antialiased;
@@ -23,7 +23,9 @@ body {
 .reveal-card {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 

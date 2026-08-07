@@ -1,13 +1,7 @@
 import Icon from "~/components/Icon/Icon";
 import styles from "./AboutHero.module.css";
 
-function AboutHero({
-  CAROUSEL_SLIDES,
-  currentSlide,
-  setCurrentSlide,
-  handlePrev,
-  handleNext,
-}) {
+function AboutHero({ CAROUSEL_SLIDES, currentSlide, setCurrentSlide, handlePrev, handleNext }) {
   return (
     <section className={styles["about-hero"]}>
       <div className={styles["about-hero__container"]}>
@@ -20,10 +14,9 @@ function AboutHero({
             Kiến tạo tương lai <br /> cho lập trình viên Việt
           </h1>
           <p className={styles["about-hero__desc"]}>
-            LearnFlow không chỉ là một nền tảng học tập, mà là bệ phóng cho
-            sự nghiệp công nghệ của bạn. Chúng tôi mang đến phương pháp học
-            tập cá nhân hóa, giúp bạn vượt qua rào cản và làm chủ mã nguồn
-            một cách tự tin nhất.
+            LearnFlow không chỉ là một nền tảng học tập, mà là bệ phóng cho sự nghiệp công nghệ của
+            bạn. Chúng tôi mang đến phương pháp học tập cá nhân hóa, giúp bạn vượt qua rào cản và
+            làm chủ mã nguồn một cách tự tin nhất.
           </p>
           <div className={styles["about-hero__actions"]}>
             <button
@@ -60,15 +53,9 @@ function AboutHero({
                   />
                   <div className={styles["about-carousel__overlay"]} />
                   <div className={styles["about-carousel__content"]}>
-                    <span className={styles["about-carousel__badge"]}>
-                      {slide.badge}
-                    </span>
-                    <h3 className={styles["about-carousel__title"]}>
-                      {slide.title}
-                    </h3>
-                    <p className={styles["about-carousel__desc"]}>
-                      {slide.desc}
-                    </p>
+                    <span className={styles["about-carousel__badge"]}>{slide.badge}</span>
+                    <h3 className={styles["about-carousel__title"]}>{slide.title}</h3>
+                    <p className={styles["about-carousel__desc"]}>{slide.desc}</p>
                   </div>
                 </div>
               ))}

@@ -29,9 +29,7 @@ function ContestFilter({ searchQuery, setSearchQuery, tabs, activeTab, handleTab
                   type="button"
                   onClick={() => handleTabChange(index)}
                   className={`${styles["contest-filters__tab-btn"]} ${
-                    activeTab === index
-                      ? styles["contest-filters__tab-btn--active"]
-                      : ""
+                    activeTab === index ? styles["contest-filters__tab-btn--active"] : ""
                   }`}
                 >
                   {item}

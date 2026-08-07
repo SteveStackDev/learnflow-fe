@@ -18,12 +18,10 @@ function HomeContact({
     <section className={styles["home-contact"]}>
       <div className={styles["home-contact__container"]}>
         <div className={styles["home-contact__content"]}>
-          <h2 className={styles["home-contact__title"]}>
-            Bạn cần tư vấn lộ trình?
-          </h2>
+          <h2 className={styles["home-contact__title"]}>Bạn cần tư vấn lộ trình?</h2>
           <p className={styles["home-contact__desc"]}>
-            Để lại thông tin, đội ngũ chuyên gia của LearnFlow sẽ liên hệ và
-            tư vấn lộ trình học tập phù hợp nhất với mục tiêu nghề nghiệp của bạn.
+            Để lại thông tin, đội ngũ chuyên gia của LearnFlow sẽ liên hệ và tư vấn lộ trình học tập
+            phù hợp nhất với mục tiêu nghề nghiệp của bạn.
           </p>
           <div className={styles["home-contact__tip"]}>
             <span>💡 Nhận tài liệu tư vấn nghề nghiệp miễn phí qua Email sau khi gửi form.</span>
@@ -33,7 +31,9 @@ function HomeContact({
         <div className={styles["home-contact__form-wrap"]}>
           <form noValidate className={styles["home-contact__form"]} onSubmit={handleContactSubmit}>
             <div className={styles["home-contact__form-group"]}>
-              <label htmlFor="home-contact-name" className={styles["home-contact__label"]}>Họ và tên</label>
+              <label htmlFor="home-contact-name" className={styles["home-contact__label"]}>
+                Họ và tên
+              </label>
               <input
                 id="home-contact-name"
                 type="text"
@@ -55,7 +55,9 @@ function HomeContact({
               )}
             </div>
             <div className={styles["home-contact__form-group"]}>
-              <label htmlFor="home-contact-email" className={styles["home-contact__label"]}>Email</label>
+              <label htmlFor="home-contact-email" className={styles["home-contact__label"]}>
+                Email
+              </label>
               <input
                 id="home-contact-email"
                 type="email"
@@ -77,13 +79,16 @@ function HomeContact({
               )}
             </div>
             <div className={styles["home-contact__form-group"]}>
-              <label htmlFor="home-contact-message" className={styles["home-contact__label"]}>Nội dung</label>
+              <label htmlFor="home-contact-message" className={styles["home-contact__label"]}>
+                Nội dung
+              </label>
               <textarea
                 id="home-contact-message"
                 value={contactMessage}
                 onChange={(e) => {
                   setContactMessage(e.target.value);
-                  if (contactErrors.message) setContactErrors((prev) => ({ ...prev, message: null }));
+                  if (contactErrors.message)
+                    setContactErrors((prev) => ({ ...prev, message: null }));
                 }}
                 placeholder="Tôi muốn tìm hiểu về lộ trình Frontend..."
                 rows={4}

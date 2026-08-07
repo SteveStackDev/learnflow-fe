@@ -67,34 +67,24 @@ function RoadmapGrid({
                   </div>
                   <div className={styles["roadmap-cards__card-content"]}>
                     <div className={styles["roadmap-cards__card-header"]}>
-                      <h3 className={styles["roadmap-cards__card-title"]}>
-                        {card.title}
-                      </h3>
+                      <h3 className={styles["roadmap-cards__card-title"]}>{card.title}</h3>
                       <span className={styles["roadmap-cards__views-count"]}>
                         <Icon name="Eye" size={14} />
                         {card.viewsNum ? card.viewsNum.toLocaleString("vi-VN") : "0"} lượt xem
                       </span>
                     </div>
-                    <p className={styles["roadmap-cards__card-desc"]}>
-                      {card.description}
-                    </p>
+                    <p className={styles["roadmap-cards__card-desc"]}>{card.description}</p>
 
                     <div className={styles["roadmap-cards__card-tags"]}>
                       {card.tags.map((item) => (
-                        <span
-                          key={item}
-                          className={styles["roadmap-cards__tag-chip"]}
-                        >
+                        <span key={item} className={styles["roadmap-cards__tag-chip"]}>
                           {item}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div className={styles["roadmap-cards__card-actions"]}>
-                    <button
-                      type="button"
-                      className={styles["roadmap-cards__card-btn"]}
-                    >
+                    <button type="button" className={styles["roadmap-cards__card-btn"]}>
                       <span>{card.actionText}</span>
                       <span className={styles["roadmap-cards__card-btn-arrow"]}>→</span>
                     </button>

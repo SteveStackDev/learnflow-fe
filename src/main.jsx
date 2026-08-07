@@ -2,6 +2,10 @@ import { StrictMode, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 
+// Context & Toast
+import { ToastProvider } from "~/context/ToastContext.jsx";
+import ToastContainer from "~/components/Toast/ToastContainer.jsx";
+
 // Styles
 import "~/styles/variables.css";
 import "~/styles/main.css";
@@ -27,26 +31,29 @@ const NotFound = lazy(() => import("~/pages/NotFound/NotFound"));
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/roadmap" element={<Roadmap />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/badge" element={<Badge />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/course" element={<Course />} />
-            <Route path="/problem" element={<Problem />} />
-            <Route path="/contest" element={<Contest />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <ToastProvider>
+      <BrowserRouter>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/roadmap" element={<Roadmap />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/badge" element={<Badge />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/course" element={<Course />} />
+              <Route path="/problem" element={<Problem />} />
+              <Route path="/contest" element={<Contest />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+      <ToastContainer />
+    </ToastProvider>
   </StrictMode>,
 );

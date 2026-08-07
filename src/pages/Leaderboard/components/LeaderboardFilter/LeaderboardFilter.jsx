@@ -1,4 +1,5 @@
 import Icon from "~/components/Icon/Icon";
+import useDropdownKeyboard from "~/hooks/useDropdownKeyboard";
 import styles from "./LeaderboardFilter.module.css";
 
 function LeaderboardFilter({
@@ -14,6 +15,14 @@ function LeaderboardFilter({
   searchQuery,
   setSearchQuery,
 }) {
+  const timeKeyboard = useDropdownKeyboard({
+    isOpen: isTimeDropdownOpen,
+    setIsOpen: setIsTimeDropdownOpen,
+    options: timeOptions,
+    selectedOption: selectedTime,
+    onSelect: setSelectedTime,
+  });
+
   return (
     <section className={styles["board-filters"]}>
       <div className={styles["board-filters__container"]}>
@@ -27,9 +36,7 @@ function LeaderboardFilter({
                   type="button"
                   onClick={() => handleTabChange(index)}
                   className={`${styles["board-filters__tab-btn"]} ${
-                    activeTab === index
-                      ? styles["board-filters__tab-btn--active"]
-                      : ""
+                    activeTab === index ? styles["board-filters__tab-btn--active"] : ""
                   }`}
                 >
                   {item}
@@ -39,13 +46,14 @@ function LeaderboardFilter({
 
             {/* Right Controls: Custom Dropdown & Search Input */}
             <div className={styles["board-filters__controls"]}>
-              <div
-                className={styles["board-filters__select-wrapper"]}
-                ref={timeDropdownRef}
-              >
+              <div className={styles["board-filters__select-wrapper"]} ref={timeDropdownRef}>
                 <button
                   type="button"
                   onClick={() => setIsTimeDropdownOpen(!isTimeDropdownOpen)}
+                  onKeyDown={timeKeyboard.handleKeyDown}
+                  aria-haspopup="listbox"
+                  aria-expanded={isTimeDropdownOpen}
+                  aria-label="Lọc theo thời gian"
                   className={`${styles["board-filters__dropdown-btn"]} ${
                     isTimeDropdownOpen ? styles["board-filters__dropdown-btn--open"] : ""
                   }`}
@@ -57,17 +65,24 @@ function LeaderboardFilter({
                 </button>
 
                 {isTimeDropdownOpen && (
-                  <div className={styles["board-filters__dropdown-menu"]}>
-                    {timeOptions.map((option) => (
+                  <div className={styles["board-filters__dropdown-menu"]} role="listbox">
+                    {timeOptions.map((option, index) => (
                       <div
                         key={option.id}
+                        role="option"
+                        aria-selected={selectedTime.id === option.id}
                         onClick={() => {
                           setSelectedTime(option);
                           setIsTimeDropdownOpen(false);
                         }}
+                        onMouseEnter={() => timeKeyboard.setFocusedIndex(index)}
                         className={`${styles["board-filters__dropdown-item"]} ${
                           selectedTime.id === option.id
                             ? styles["board-filters__dropdown-item--selected"]
+                            : ""
+                        } ${
+                          timeKeyboard.focusedIndex === index
+                            ? styles["board-filters__dropdown-item--focused"]
                             : ""
                         }`}
                       >

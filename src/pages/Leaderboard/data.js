@@ -181,29 +181,25 @@ export const leaderboardData = {
     {
       id: "leaderboard-guide-1",
       title: "Giải challenge",
-      description:
-        "Hoàn thành các thử thách lập trình hàng ngày để nhận điểm thưởng lớn.",
+      description: "Hoàn thành các thử thách lập trình hàng ngày để nhận điểm thưởng lớn.",
       iconName: "Star",
     },
     {
       id: "leaderboard-guide-2",
       title: "Thi đấu contest",
-      description:
-        "Tham gia các giải đấu hàng tuần và đánh bại đối thủ để bứt phá thứ hạng.",
+      description: "Tham gia các giải đấu hàng tuần và đánh bại đối thủ để bứt phá thứ hạng.",
       iconName: "Trophy",
     },
     {
       id: "leaderboard-guide-3",
       title: "Giữ streak",
-      description:
-        "Duy trì học tập mỗi ngày để nhận số nhân điểm thưởng (Multiplier).",
+      description: "Duy trì học tập mỗi ngày để nhận số nhân điểm thưởng (Multiplier).",
       iconName: "Flame",
     },
     {
       id: "leaderboard-guide-4",
       title: "Hoàn thành roadmap",
-      description:
-        "Tích lũy khối lượng điểm khổng lồ khi kết thúc một mốc lộ trình.",
+      description: "Tích lũy khối lượng điểm khổng lồ khi kết thúc một mốc lộ trình.",
       iconName: "Compass",
     },
   ],
@@ -212,17 +208,20 @@ export const leaderboardData = {
     {
       id: "leaderboard-faq-1",
       question: "Bảng xếp hạng được cập nhật bao lâu một lần?",
-      answer: "Bảng xếp hạng được tính toán và cập nhật thời gian thực ngay sau mỗi lượt nộp bài hoặc hoàn thành bài học.",
+      answer:
+        "Bảng xếp hạng được tính toán và cập nhật thời gian thực ngay sau mỗi lượt nộp bài hoặc hoàn thành bài học.",
     },
     {
       id: "leaderboard-faq-2",
       question: "Làm thế nào để tăng điểm EXP trên bảng xếp hạng?",
-      answer: "Bạn có thể tích lũy điểm EXP bằng cách giải các bài tập Challenge, thi đấu Contest và duy trì chuỗi học tập Streak.",
+      answer:
+        "Bạn có thể tích lũy điểm EXP bằng cách giải các bài tập Challenge, thi đấu Contest và duy trì chuỗi học tập Streak.",
     },
     {
       id: "leaderboard-faq-3",
       question: "Top 3 người đứng đầu sẽ nhận được phần thưởng gì?",
-      answer: "Top 3 hàng tháng sẽ nhận được huy hiệu danh dự đặc biệt và tài khoản LearnFlow Plus miễn phí.",
+      answer:
+        "Top 3 hàng tháng sẽ nhận được huy hiệu danh dự đặc biệt và tài khoản LearnFlow Plus miễn phí.",
     },
   ],
 };

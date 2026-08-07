@@ -138,10 +138,18 @@
   .badge-stats__list {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .badge-stats__card:last-child {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 600px) {
   .badge-stats__list {
     grid-template-columns: 1fr;
+  }
+
+  .badge-stats__card:last-child {
+    grid-column: auto;
   }
 }

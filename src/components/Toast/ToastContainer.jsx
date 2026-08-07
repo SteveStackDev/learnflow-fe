@@ -11,12 +11,7 @@ export function ToastContainer() {
     <div className={styles["toast-container"]}>
       {toasts.map((t) => (
         <div key={t.id} className={styles["toast-item"]}>
-          <Alert
-            type={t.type}
-            title={t.title}
-            onClose={() => removeToast(t.id)}
-            dismissable={true}
-          >
+          <Alert type={t.type} title={t.title} onClose={() => removeToast(t.id)} dismissable={true}>
             {t.message}
           </Alert>
         </div>

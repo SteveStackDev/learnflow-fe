@@ -227,7 +227,8 @@
   transition: all 0.15s ease;
 }
 
-.roadmap-filters__dropdown-item:hover {
+.roadmap-filters__dropdown-item:hover,
+.roadmap-filters__dropdown-item--focused {
   background-color: var(--primary-light, #e0ebff);
   color: #0950c3;
 }
@@ -301,6 +302,7 @@
 }
 
 :global([data-theme="dark"]) .roadmap-filters__dropdown-item:hover,
+:global([data-theme="dark"]) .roadmap-filters__dropdown-item--focused,
 :global([data-theme="dark"]) .roadmap-filters__dropdown-item--selected {
   background-color: #1e293b;
   color: #38bdf8;

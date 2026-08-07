@@ -9,7 +9,8 @@ export const courseData = {
       category: "Frontend",
       level: "Cơ bản",
       title: "JavaScript nền tảng cho người mới",
-      description: "Làm quen với ngôn ngữ lập trình phổ biến nhất thế giới và xây dựng dự án đầu tay.",
+      description:
+        "Làm quen với ngôn ngữ lập trình phổ biến nhất thế giới và xây dựng dự án đầu tay.",
       lessonsCount: "12 bài",
       studentsCount: "2.5k",
       studentsNum: 2500,

@@ -18,7 +18,7 @@ const GREETING_PHRASES = [
   "quay trở lại!",
   "gia nhập LearnFlow!",
   "bắt đầu buổi học mới!",
-  "chinh phục thử thách!"
+  "chinh phục thử thách!",
 ];
 
 function SignIn() {
@@ -53,12 +53,16 @@ function SignIn() {
     }
 
     setIsSubmitting(true);
+    // UI hoàn thành – chờ kết nối API/backend.
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("Đăng nhập thành công! Chào mừng bạn trở lại LearnFlow.", "Đăng nhập thành công");
+      toast.success(
+        "Đăng nhập thành công! (UI hoàn thành ! chờ kết nối API/backend)",
+        "Đăng nhập giả lập",
+      );
     }, 1000);
   };
-  
+
   // Typewriter effect state
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);

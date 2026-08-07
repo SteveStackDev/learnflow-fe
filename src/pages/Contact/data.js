@@ -3,8 +3,7 @@ export const contactData = {
     {
       id: "contact-1",
       title: "Hỗ trợ tài khoản",
-      description:
-        "Giải quyết các vấn đề đăng nhập, bảo mật và quyền lợi gói thành viên của bạn.",
+      description: "Giải quyết các vấn đề đăng nhập, bảo mật và quyền lợi gói thành viên của bạn.",
       iconName: "Lock",
     },
     {
@@ -55,24 +54,21 @@ export const contactData = {
     {
       id: "contact-8",
       title: "Hỗ trợ học viên",
-      description:
-        "Các thắc mắc liên quan đến lộ trình, khóa học và video bài giảng.",
+      description: "Các thắc mắc liên quan đến lộ trình, khóa học và video bài giảng.",
       email: "learning@learnflow.edu.vn",
       iconName: "Users",
     },
     {
       id: "contact-9",
       title: "Truyền thông & PR",
-      description:
-        "Dành cho báo chí, phỏng vấn và các hoạt động truyền thông xã hội.",
+      description: "Dành cho báo chí, phỏng vấn và các hoạt động truyền thông xã hội.",
       email: "press@learnflow.edu.vn",
       iconName: "Zap",
     },
     {
       id: "contact-10",
       title: "Hợp tác doanh nghiệp",
-      description:
-        "Đào tạo nhân sự nội bộ hoặc tích hợp nền tảng vào doanh nghiệp.",
+      description: "Đào tạo nhân sự nội bộ hoặc tích hợp nền tảng vào doanh nghiệp.",
       email: "business@learnflow.edu.vn",
       iconName: "Shield",
     },

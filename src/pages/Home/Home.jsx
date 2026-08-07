@@ -57,9 +57,13 @@ function Home() {
     }
 
     setIsSubmitting(true);
+    // UI hoàn thành – chờ kết nối API/backend.
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("Đã nhận thông tin tư vấn! LearnFlow sẽ gửi tài liệu qua Email cho bạn.", "Gửi thành công");
+      toast.success(
+        "Đã nhận thông tin tư vấn! (UI hoàn thành – chờ kết nối API/backend)",
+        "Tư vấn giả lập",
+      );
       setContactName("");
       setContactEmail("");
       setContactMessage("");

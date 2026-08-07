@@ -23,7 +23,8 @@ export const roadmapData = {
       statusLabel: "",
       level: "intermediate",
       title: "Backend Engineer",
-      description: "Làm chủ server, cơ sở dữ liệu và API. Xây dựng hệ thống Microservices hiện đại.",
+      description:
+        "Làm chủ server, cơ sở dữ liệu và API. Xây dựng hệ thống Microservices hiện đại.",
       tags: ["NODEJS", "POSTGRESQL", "DOCKER"],
       actionText: "Khám phá lộ trình",
       viewsNum: 12300,
@@ -35,7 +36,8 @@ export const roadmapData = {
       statusLabel: "MỚI",
       level: "beginner",
       title: "UI/UX Product Designer",
-      description: "Thiết kế trải nghiệm người dùng tuyệt vời với Figma và phương pháp User Research.",
+      description:
+        "Thiết kế trải nghiệm người dùng tuyệt vời với Figma và phương pháp User Research.",
       tags: ["FIGMA", "USER RESEARCH", "PROTOTYPE"],
       actionText: "Khám phá lộ trình",
       viewsNum: 8900,
@@ -59,7 +61,8 @@ export const roadmapData = {
       statusLabel: "HOT",
       level: "intermediate",
       title: "Fullstack Web Developer",
-      description: "Làm chủ trọn bộ kỹ năng phát triển ứng dụng Web từ Frontend đến Backend & DevOps.",
+      description:
+        "Làm chủ trọn bộ kỹ năng phát triển ứng dụng Web từ Frontend đến Backend & DevOps.",
       tags: ["NEXTJS", "NESTJS", "PRISMA"],
       actionText: "Khám phá lộ trình",
       viewsNum: 19800,
@@ -83,7 +86,8 @@ export const roadmapData = {
       statusLabel: "",
       level: "beginner",
       title: "Mobile App Developer (Flutter)",
-      description: "Xây dựng ứng dụng di động đa nền tảng iOS & Android chỉ với 1 codebase duy nhất.",
+      description:
+        "Xây dựng ứng dụng di động đa nền tảng iOS & Android chỉ với 1 codebase duy nhất.",
       tags: ["FLUTTER", "DART", "FIREBASE"],
       actionText: "Khám phá lộ trình",
       viewsNum: 7800,
@@ -95,7 +99,8 @@ export const roadmapData = {
       statusLabel: "",
       level: "intermediate",
       title: "Cyber Security Specialist",
-      description: "Bảo vệ hệ thống thông tin, phân tích lỗ hổng bảo mật và phòng chống tấn công mạng.",
+      description:
+        "Bảo vệ hệ thống thông tin, phân tích lỗ hổng bảo mật và phòng chống tấn công mạng.",
       tags: ["NETWORK", "PENTEST", "LINUX"],
       actionText: "Khám phá lộ trình",
       viewsNum: 6500,
@@ -143,7 +148,8 @@ export const roadmapData = {
       statusLabel: "",
       level: "intermediate",
       title: "Embedded Systems & IoT Engineer",
-      description: "Lập trình vi điều khiển C/C++, cảm biến và xây dựng ứng dụng Internet of Things.",
+      description:
+        "Lập trình vi điều khiển C/C++, cảm biến và xây dựng ứng dụng Internet of Things.",
       tags: ["C/C++", "ESP32", "MQTT"],
       actionText: "Khám phá lộ trình",
       viewsNum: 4800,
@@ -156,8 +162,7 @@ export const roadmapData = {
     {
       id: "roadmap-sugg-1",
       title: "Giao diện & Trải nghiệm",
-      description:
-        "Yêu thích cái đẹp, sự tỉ mỉ và mong muốn tạo ra sản phẩm chạm đến người dùng.",
+      description: "Yêu thích cái đẹp, sự tỉ mỉ và mong muốn tạo ra sản phẩm chạm đến người dùng.",
       iconName: "Eye",
     },
     {
@@ -170,15 +175,13 @@ export const roadmapData = {
     {
       id: "roadmap-sugg-3",
       title: "Dữ liệu",
-      description:
-        "Tìm kiếm những sự thật ẩn giấu trong các con số và dự đoán tương lai bằng AI.",
+      description: "Tìm kiếm những sự thật ẩn giấu trong các con số và dự đoán tương lai bằng AI.",
       iconName: "Database",
     },
     {
       id: "roadmap-sugg-4",
       title: "Toàn diện",
-      description:
-        "Mong muốn làm chủ cả Frontend lẫn Backend để tự tay xây dựng sản phẩm từ A-Z.",
+      description: "Mong muốn làm chủ cả Frontend lẫn Backend để tự tay xây dựng sản phẩm từ A-Z.",
       iconName: "Layers",
     },
   ],
@@ -187,17 +190,20 @@ export const roadmapData = {
     {
       id: "roadmap-faq-1",
       question: "Làm thế nào để biết tôi hợp với Frontend hay Backend?",
-      answer: "Hãy thử sức với dự án nhỏ ở cả 2 mảng. Nếu thích thiết kế và phản hồi thị giác ngay, hãy chọn Frontend; nếu thích logic xử lý ngầm và cơ sở dữ liệu, hãy chọn Backend.",
+      answer:
+        "Hãy thử sức với dự án nhỏ ở cả 2 mảng. Nếu thích thiết kế và phản hồi thị giác ngay, hãy chọn Frontend; nếu thích logic xử lý ngầm và cơ sở dữ liệu, hãy chọn Backend.",
     },
     {
       id: "roadmap-faq-2",
       question: "Một lộ trình mất bao lâu để hoàn thành?",
-      answer: "Thời gian trung bình từ 3 đến 6 tháng tùy thuộc vào thời gian bạn dành ra học tập mỗi ngày.",
+      answer:
+        "Thời gian trung bình từ 3 đến 6 tháng tùy thuộc vào thời gian bạn dành ra học tập mỗi ngày.",
     },
     {
       id: "roadmap-faq-3",
       question: "Lộ trình có bao gồm dự án thực tế không?",
-      answer: "Tất cả các lộ trình tại LearnFlow đều đi kèm dự án thực chiến tốt nghiệp để làm đẹp portfolio của bạn.",
+      answer:
+        "Tất cả các lộ trình tại LearnFlow đều đi kèm dự án thực chiến tốt nghiệp để làm đẹp portfolio của bạn.",
     },
   ],
 };

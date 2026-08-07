@@ -33,15 +33,11 @@ function SignInForm({
             <div className={styles["signin-form__mobile-logo-box"]}>
               <Icon name="PlayLogo" size={28} />
             </div>
-            <span className={styles["signin-form__mobile-logo-text"]}>
-              LearnFlow
-            </span>
+            <span className={styles["signin-form__mobile-logo-text"]}>LearnFlow</span>
           </div>
 
           <h1 className={styles["signin-form__mobile-typing-title"]}>
-            <span className={styles["signin-form__title-prefix"]}>
-              Chào mừng bạn{" "}
-            </span>
+            <span className={styles["signin-form__title-prefix"]}>Chào mừng bạn </span>
             <span className={styles["signin-form__title--highlight"]}>
               {greetingPhrases[phraseIndex].substring(0, charIndex)}
               <span className={styles["signin-form__cursor"]}>|</span>
@@ -55,11 +51,7 @@ function SignInForm({
             Chào mừng bạn trở lại với cộng đồng LearnFlow.
           </p>
 
-          <form
-            noValidate
-            className={styles["signin-form__form"]}
-            onSubmit={handleSubmit}
-          >
+          <form noValidate className={styles["signin-form__form"]} onSubmit={handleSubmit}>
             <div className={styles["signin-form__form-group"]}>
               <label htmlFor="signin-email" className={styles["signin-form__label"]}>
                 Địa chỉ Email
@@ -126,11 +118,7 @@ function SignInForm({
                   className={`${styles["signin-form__input-adornment"]} ${styles["signin-form__input-adornment--end"]} ${styles["signin-form__eye-btn"]}`}
                   title={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
                 >
-                  {showPassword ? (
-                    <Icon name="EyeOff" size={18} />
-                  ) : (
-                    <Icon name="Eye" size={18} />
-                  )}
+                  {showPassword ? <Icon name="EyeOff" size={18} /> : <Icon name="Eye" size={18} />}
                 </button>
               </div>
               {errors.password && (
@@ -149,9 +137,7 @@ function SignInForm({
                   defaultChecked
                   className={styles["signin-form__checkbox"]}
                 />
-                <span className={styles["signin-form__checkbox-text"]}>
-                  Ghi nhớ đăng nhập
-                </span>
+                <span className={styles["signin-form__checkbox-text"]}>Ghi nhớ đăng nhập</span>
               </label>
             </div>
 
@@ -166,25 +152,17 @@ function SignInForm({
           </form>
 
           <div className={styles["signin-form__splitter"]}>
-            <span className={styles["signin-form__splitter-text"]}>
-              Hoặc tiếp tục với
-            </span>
+            <span className={styles["signin-form__splitter-text"]}>Hoặc tiếp tục với</span>
           </div>
 
           <div className={styles["signin-form__social-list"]}>
-            <button
-              type="button"
-              className={styles["signin-form__social-btn"]}
-            >
+            <button type="button" className={styles["signin-form__social-btn"]}>
               <span className={styles["signin-form__social-icon"]}>
                 <Icon name="Google" size={18} />
               </span>
               Google
             </button>
-            <button
-              type="button"
-              className={styles["signin-form__social-btn"]}
-            >
+            <button type="button" className={styles["signin-form__social-btn"]}>
               <span className={styles["signin-form__social-icon"]}>
                 <Icon name="Github" size={18} />
               </span>
@@ -193,9 +171,7 @@ function SignInForm({
           </div>
 
           <div className={styles["signin-form__redirect-group"]}>
-            <span className={styles["signin-form__redirect-text"]}>
-              Chưa có tài khoản?
-            </span>
+            <span className={styles["signin-form__redirect-text"]}>Chưa có tài khoản?</span>
             <Link to="/signup" className={styles["signin-form__link"]}>
               Đăng ký ngay
             </Link>

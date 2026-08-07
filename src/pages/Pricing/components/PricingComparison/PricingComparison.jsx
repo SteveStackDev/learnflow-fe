@@ -5,9 +5,7 @@ function PricingComparison({ comparisons }) {
     <section className={styles["price-comparison"]}>
       <div className={styles["price-comparison__container"]}>
         <div className={styles["price-comparison__header"]}>
-          <h2 className={styles["price-comparison__section-title"]}>
-            So sánh chi tiết các gói
-          </h2>
+          <h2 className={styles["price-comparison__section-title"]}>So sánh chi tiết các gói</h2>
           <p className={styles["price-comparison__section-subtitle"]}>
             Tìm hiểu kỹ hơn về sự khác biệt giữa các cấp độ thành viên.
           </p>

@@ -9,7 +9,6 @@ export function Card({
   onClick,
   ...rest
 }) {
-
   const cardClasses = [
     styles.card,
     variant !== "default" ? styles[`card--${variant}`] : "",

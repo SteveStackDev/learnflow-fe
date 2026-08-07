@@ -6,9 +6,7 @@ function HomeTeam({ team }) {
     <section className={styles["home-team"]}>
       <div className={styles["home-team__container"]}>
         <div className={styles["home-team__header"]}>
-          <h2 className={styles["home-team__section-title"]}>
-            Đội ngũ phát triển
-          </h2>
+          <h2 className={styles["home-team__section-title"]}>Đội ngũ phát triển</h2>
           <p className={styles["home-team__section-subtitle"]}>
             Những người đứng sau sự thành công của các lập trình viên chất lượng cao.
           </p>
@@ -29,12 +27,8 @@ function HomeTeam({ team }) {
                 decoding="async"
               />
               <div className={styles["home-team__card-content"]}>
-                <h3 className={styles["home-team__card-name"]}>
-                  {obj.name}
-                </h3>
-                <p className={styles["home-team__card-role"]}>
-                  {obj.role}
-                </p>
+                <h3 className={styles["home-team__card-name"]}>{obj.name}</h3>
+                <p className={styles["home-team__card-role"]}>{obj.role}</p>
               </div>
             </div>
           ))}

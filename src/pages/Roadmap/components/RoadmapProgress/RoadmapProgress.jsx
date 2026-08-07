@@ -12,11 +12,15 @@ function RoadmapProgress() {
           <div className={styles["roadmap-progress__bar-fill"]} style={{ width: "45%" }}></div>
         </div>
         <div className={styles["roadmap-progress__milestones"]}>
-          <div className={`${styles["roadmap-progress__milestone"]} ${styles["roadmap-progress__milestone--completed"]}`}>
+          <div
+            className={`${styles["roadmap-progress__milestone"]} ${styles["roadmap-progress__milestone--completed"]}`}
+          >
             <div className={styles["roadmap-progress__dot"]}>✓</div>
             <span>Tân binh</span>
           </div>
-          <div className={`${styles["roadmap-progress__milestone"]} ${styles["roadmap-progress__milestone--current"]}`}>
+          <div
+            className={`${styles["roadmap-progress__milestone"]} ${styles["roadmap-progress__milestone--current"]}`}
+          >
             <div className={styles["roadmap-progress__dot"]}></div>
             <span>Thực tập sinh</span>
           </div>

@@ -6,9 +6,7 @@ function LeaderboardFaq({ faqs }) {
     <section className={styles["board-faq"]}>
       <div className={styles["board-faq__container"]}>
         <div className={styles["board-faq__header"]}>
-          <h2 className={styles["board-faq__section-title"]}>
-            Câu hỏi thường gặp
-          </h2>
+          <h2 className={styles["board-faq__section-title"]}>Câu hỏi thường gặp</h2>
           <p className={styles["board-faq__section-subtitle"]}>
             Giải đáp các thắc mắc về cơ chế tính điểm và thứ hạng vinh danh.
           </p>
@@ -21,9 +19,7 @@ function LeaderboardFaq({ faqs }) {
               className={styles["board-faq__accordion"]}
             >
               <summary className={styles["board-faq__accordion-summary"]}>
-                <span className={styles["board-faq__accordion-title"]}>
-                  {obj.question}
-                </span>
+                <span className={styles["board-faq__accordion-title"]}>{obj.question}</span>
                 <span className={styles["board-faq__accordion-icon"]}>
                   <Icon name="ChevronDown" size={18} strokeWidth={2.5} />
                 </span>

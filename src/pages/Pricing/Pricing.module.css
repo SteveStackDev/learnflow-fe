@@ -7,7 +7,16 @@
   min-height: 100vh;
   background: var(--theme-page-bg, #f9fbff);
   color: var(--theme-text-primary, #191b22);
-  font-family: "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Be Vietnam Pro",
+    "Inter",
+    "Noto Sans",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   position: relative;
   overflow: clip;
 }
