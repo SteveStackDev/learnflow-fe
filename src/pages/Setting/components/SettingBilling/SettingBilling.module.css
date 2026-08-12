@@ -1,0 +1,433 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section_title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.plan_card {
+  background: linear-gradient(135deg, #003a95 0%, #0950c3 100%);
+  border-radius: 16px;
+  padding: 22px;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.2);
+}
+
+.plan_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.plan_badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 3px 10px;
+  border-radius: 9999px;
+  margin-bottom: 8px;
+}
+
+.plan_title {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.plan_price_text {
+  font-size: 1.1rem;
+  margin-top: 4px;
+}
+
+.plan_price_text strong {
+  font-size: 1.4rem;
+}
+
+.plan_meta {
+  font-size: 0.85rem;
+  opacity: 0.88;
+  margin-top: 6px;
+}
+
+.plan_actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.change_plan_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0950c3;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.change_plan_btn:hover {
+  background-color: #f8fafc;
+  transform: translateY(-1px);
+}
+
+.cancel_plan_btn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  text-decoration: underline;
+}
+
+.cancel_plan_btn:hover {
+  color: #ffffff;
+}
+
+.card {
+  background-color: #f8fafc;
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid rgba(169, 183, 203, 0.25);
+}
+
+.card_header_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.card_title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.add_payment_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0950c3;
+  background-color: #ffffff;
+  border: 1px solid rgba(9, 80, 195, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add_payment_btn:hover {
+  background-color: #e0ebff;
+}
+
+.payment_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+}
+
+.payment_info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.card_brand_box {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0ebff;
+  color: #0950c3;
+  border-radius: 10px;
+}
+
+.card_title_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card_number {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.default_badge {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: #0950c3;
+  background-color: rgba(9, 80, 195, 0.1);
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.card_exp {
+  display: block;
+  font-size: 0.775rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.link_btn {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0950c3;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.link_btn:hover {
+  text-decoration: underline;
+}
+
+.table_wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.table th {
+  padding: 10px 14px;
+  color: #64748b;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.3);
+  font-size: 0.8rem;
+}
+
+.table td {
+  padding: 12px 14px;
+  color: #1e293b;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.font_medium {
+  font-weight: 600;
+}
+
+.font_bold {
+  font-weight: 700;
+}
+
+.paid_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #15803d;
+  background-color: #dcfce7;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+.text_right {
+  text-align: right;
+}
+
+.download_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.775rem;
+  font-weight: 700;
+  color: #475569;
+  background-color: #f1f5f9;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.download_btn:hover {
+  background-color: #e2e8f0;
+  color: #0950c3;
+}
+
+.danger_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 14px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+}
+
+.danger_title {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.danger_desc {
+  display: block;
+  font-size: 0.775rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.action_btn {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0950c3;
+  background-color: #e0ebff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.action_btn:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+}
+
+.cancel_danger_btn {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #dc2626;
+  background-color: #fef2f2;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.cancel_danger_btn:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid rgba(169, 183, 203, 0.2);
+  margin: 2px 0;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .section_title,
+:global([data-theme="dark"]) .card_title,
+:global([data-theme="dark"]) .card_number,
+:global([data-theme="dark"]) .table td,
+:global([data-theme="dark"]) .danger_title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .card,
+:global([data-theme="dark"]) .payment_row,
+:global([data-theme="dark"]) .danger_item {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .card_brand_box {
+  background-color: #0f172a;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .default_badge {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .add_payment_btn {
+  background-color: #0f172a;
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+:global([data-theme="dark"]) .add_payment_btn:hover {
+  background-color: #1e293b;
+}
+
+:global([data-theme="dark"]) .link_btn {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .download_btn {
+  background-color: #0f172a;
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .download_btn:hover {
+  background-color: #334155;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .action_btn {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .action_btn:hover {
+  background-color: #38bdf8;
+  color: #0f172a;
+}
+
+:global([data-theme="dark"]) .cancel_danger_btn {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+:global([data-theme="dark"]) .cancel_danger_btn:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .table th,
+:global([data-theme="dark"]) .card_exp,
+:global([data-theme="dark"]) .danger_desc {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .table td {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme="dark"]) .divider {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}

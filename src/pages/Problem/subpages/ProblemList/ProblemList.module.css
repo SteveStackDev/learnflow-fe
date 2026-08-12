@@ -1,0 +1,17 @@
+/* ==========================================================================
+   ProblemList Subpage Main Container Styling (/problem/list)
+   ========================================================================== */
+
+.problem_subpage {
+  padding: 32px 24px 80px;
+  max-width: 1280px;
+  margin: 0 auto;
+  min-height: 80vh;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .problem_subpage {
+    padding: 20px 16px 60px;
+  }
+}

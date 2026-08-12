@@ -96,9 +96,9 @@ export const homeData = {
   faqs: [
     {
       id: "home-15",
-      question: "Học tại LearnFlow có tốn phí không?",
+      question: "Học tại FySet có tốn phí không?",
       answer:
-        "LearnFlow cung cấp cả lộ trình miễn phí cho người mới bắt đầu và các khóa học Premium chuyên sâu với những dự án thực tế độc quyền.",
+        "FySet cung cấp cả lộ trình miễn phí cho người mới bắt đầu và các khóa học Premium chuyên sâu với những dự án thực tế độc quyền.",
     },
     {
       id: "home-16",
@@ -108,9 +108,9 @@ export const homeData = {
     },
     {
       id: "home-17",
-      question: "LearnFlow khác gì so với LeetCode?",
+      question: "FySet khác gì so với LeetCode?",
       answer:
-        'Chúng tôi tập trung vào trải nghiệm học tập có hệ thống (Structured Learning) hơn là chỉ đơn thuần giải thuật toán. LearnFlow giải thích "tại sao" và "làm thế nào" một cách chi tiết hơn.',
+        'Chúng tôi tập trung vào trải nghiệm học tập có hệ thống (Structured Learning) hơn là chỉ đơn thuần giải thuật toán. FySet giải thích "tại sao" và "làm thế nào" một cách chi tiết hơn.',
     },
   ],
 };

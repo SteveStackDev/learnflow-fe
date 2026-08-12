@@ -10,7 +10,7 @@ function AboutTeam({ team }) {
           <span className={styles["about-team__tag"]}>Team</span>
           <h2 className={styles["about-team__title"]}>Đội ngũ sáng lập & phát triển</h2>
           <p className={styles["about-team__subtitle"]}>
-            Những con người tâm huyết đứng sau sự phát triển không ngừng của LearnFlow.
+            Những con người tâm huyết đứng sau sự phát triển không ngừng của FySet.
           </p>
         </div>
 

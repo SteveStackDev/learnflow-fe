@@ -148,7 +148,7 @@ export const contestData = {
       id: "contest-benefit-3",
       title: "Cạnh tranh & Thứ hạng",
       description:
-        "So tài cùng hàng ngàn lập trình viên khác và thăng hạng trên Global Leaderboard của LearnFlow.",
+        "So tài cùng hàng ngàn lập trình viên khác và thăng hạng trên Global Leaderboard của FySet.",
       iconName: "Award",
     },
     {
@@ -163,9 +163,9 @@ export const contestData = {
   faqs: [
     {
       id: "contest-faq-1",
-      question: "Ai có thể tham gia các contest trên LearnFlow?",
+      question: "Ai có thể tham gia các contest trên FySet?",
       answer:
-        "Tất cả các thành viên có tài khoản trên LearnFlow đều có thể tham gia miễn phí các kỳ thi cộng đồng.",
+        "Tất cả các thành viên có tài khoản trên FySet đều có thể tham gia miễn phí các kỳ thi cộng đồng.",
     },
     {
       id: "contest-faq-2",

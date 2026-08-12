@@ -7,7 +7,7 @@ function ProblemGuide({ guides }) {
       <div className={styles["prob-guide__container"]}>
         <div className={styles["prob-guide__header"]}>
           <h2 className={styles["prob-guide__section-title"]}>
-            Cách luyện tập hiệu quả trên LearnFlow
+            Cách luyện tập hiệu quả trên FySet
           </h2>
           <p className={styles["prob-guide__section-subtitle"]}>
             Phương pháp tiếp cận khoa học giúp bạn nắm vững kiến thức nhanh hơn.

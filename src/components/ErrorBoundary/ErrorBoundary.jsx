@@ -13,7 +13,7 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("LearnFlow ErrorBoundary caught an unhandled runtime error:", error, errorInfo);
+    console.error("FySet ErrorBoundary caught an unhandled runtime error:", error, errorInfo);
   }
 
   handleReset = () => {

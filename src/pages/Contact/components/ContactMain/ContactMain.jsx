@@ -252,7 +252,7 @@ function ContactMain({ info }) {
               </p>
               <div className={styles["contact-main__map-wrapper"]}>
                 <iframe
-                  title="Văn phòng LearnFlow - Quận 1, TP. Hồ Chí Minh"
+                  title="Văn phòng FySet - Quận 1, TP. Hồ Chí Minh"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4946681007846!2d106.69976397573617!3d10.773374259251845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f40a3b49e59%3A0xa1aa3e28c61680d2!2sDistrict%201%2C%20Ho%20Chi%20Minh%20City%2C%20Vietnam!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
                   width="100%"
                   height="200"

@@ -1,13 +1,24 @@
+import { useNavigate } from "react-router";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ProblemDaily.module.css";
 
 function ProblemDaily() {
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleStartDaily = () => {
+    toast.info("Bắt đầu thử thách hàng ngày Merge k Sorted Lists!", "Thử thách hàng ngày");
+    navigate("/problem/1");
+  };
 
   return (
     <section className={styles["prob-daily"]}>
       <div className={styles["prob-daily__container"]}>
-        <div className={`${styles["prob-daily__card"]} reveal-card`}>
+        <div
+          className={`${styles["prob-daily__card"]} reveal-card`}
+          onClick={handleStartDaily}
+          style={{ cursor: "pointer" }}
+        >
           <div className={styles["prob-daily__info"]}>
             <div className={styles["prob-daily__badge"]}>Thử thách hằng ngày</div>
             <h3 className={styles["prob-daily__title"]}>Merge k Sorted Lists</h3>
@@ -34,12 +45,10 @@ function ProblemDaily() {
             </div>
             <button
               type="button"
-              onClick={() =>
-                toast.info(
-                  "Bắt đầu thử thách hàng ngày Merge k Sorted Lists! (UI hoàn thành – chờ kết nối API/backend)",
-                  "Thử thách hàng ngày",
-                )
-              }
+              onClick={(e) => {
+                e.stopPropagation();
+                handleStartDaily();
+              }}
               className={styles["prob-daily__btn"]}
             >
               Giải ngay

@@ -8,7 +8,7 @@ function AboutFeatures({ features }) {
       <div className={styles["about-features__container"]}>
         <div className={styles["about-features__content"]}>
           <h2 className={styles["about-features__title"]}>
-            LearnFlow là gì? <br /> Hệ sinh thái học tập có định hướng
+            FySet là gì? <br /> Hệ sinh thái học tập có định hướng
           </h2>
 
           <div className={styles["about-features__list"]}>

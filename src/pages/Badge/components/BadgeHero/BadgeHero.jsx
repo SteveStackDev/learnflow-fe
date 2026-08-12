@@ -19,7 +19,7 @@ function BadgeHero() {
             </h1>
             <p className={styles["badge-hero__desc"]}>
               Thu thập các huy hiệu độc quyền từ bài lab, streak học tập và các cuộc thi coding. Mở
-              khóa đặc quyền, tích lũy điểm XP và khẳng định tên tuổi trên bảng vàng LearnFlow.
+              khóa đặc quyền, tích lũy điểm XP và khẳng định tên tuổi trên bảng vàng FySet.
             </p>
             <div className={styles["badge-hero__actions"]}>
               <button

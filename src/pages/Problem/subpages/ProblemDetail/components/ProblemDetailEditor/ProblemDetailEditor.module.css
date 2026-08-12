@@ -1,0 +1,381 @@
+/* ==========================================================================
+   ProblemDetailEditor Component Styling (Single Scroll Container Architecture)
+   ========================================================================== */
+
+/* Light Mode Default Styling */
+.editor_panel {
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.45);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(9, 80, 195, 0.06);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Header Toolbar */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background-color: #f1f5f9;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.4);
+  flex-shrink: 0;
+}
+
+.toolbar_left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.select_wrapper {
+  position: relative;
+}
+
+.select_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.45);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  transition: var(--transition-base);
+  font-family: inherit;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.select_btn:hover {
+  background-color: #e0ebff;
+  color: #0950c3;
+  border-color: #0950c3;
+}
+
+.dropdown_menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 140px;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.45);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(9, 80, 195, 0.12);
+  padding: 4px;
+  z-index: 100;
+}
+
+.dropdown_item {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown_item:hover {
+  background-color: #f1f5f9;
+  color: #0950c3;
+}
+
+.dropdown_item--selected {
+  background-color: rgba(9, 80, 195, 0.08);
+  color: #0950c3;
+}
+
+.tool_icon_btn {
+  background: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.4);
+  color: #475569;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-base);
+}
+
+.tool_icon_btn:hover {
+  background-color: #e0ebff;
+  color: #0950c3;
+  border-color: rgba(9, 80, 195, 0.3);
+}
+
+.toolbar_right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Code Workspace Area */
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  background-color: #ffffff;
+  overflow: hidden;
+  font-family: var(--font-family-code);
+  font-size: 14px;
+  line-height: 24px;
+  cursor: text;
+}
+
+/* Fixed Width Centered Line Numbers Column */
+.line_numbers {
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  flex-shrink: 0;
+  padding: 16px 0;
+  user-select: none;
+  background-color: #f1f5f9;
+  border-right: 1px solid rgba(169, 183, 203, 0.4);
+  font-family: var(--font-family-code);
+  font-size: 14px;
+  line-height: 24px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.line_number_item {
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Single Scrollable Container for Code Layer & Textarea */
+.code_scroll_container {
+  flex: 1;
+  position: relative;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(169, 183, 203, 0.4) transparent;
+}
+
+.code_scroll_container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code_scroll_container::-webkit-scrollbar-thumb {
+  background-color: rgba(169, 183, 203, 0.4);
+  border-radius: 9999px;
+}
+
+.code_inner_wrap {
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+}
+
+.code_highlight_layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 16px;
+  font-family: var(--font-family-code);
+  font-size: 14px;
+  line-height: 24px;
+  tab-size: 4;
+  box-sizing: border-box;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  color: #0f172a;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.code_textarea {
+  position: relative;
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  display: block;
+  margin: 0;
+  padding: 16px;
+  font-family: var(--font-family-code);
+  font-size: 14px;
+  line-height: 24px;
+  tab-size: 4;
+  box-sizing: border-box;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  background: transparent;
+  border: none;
+  color: transparent;
+  caret-color: #0950c3;
+  resize: none;
+  outline: none;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.code_textarea::selection {
+  background-color: rgba(9, 80, 195, 0.15);
+}
+
+/* Light Mode Syntax Highlighting Tokens */
+:global(.syn_comment) {
+  color: #64748b;
+  font-style: italic;
+}
+
+:global(.syn_string) {
+  color: #16a34a;
+  font-weight: 500;
+}
+
+:global(.syn_keyword) {
+  color: #c026d3;
+  font-weight: 700;
+}
+
+:global(.syn_type) {
+  color: #d97706;
+  font-weight: 600;
+}
+
+:global(.syn_number) {
+  color: #ea580c;
+}
+
+:global(.syn_function) {
+  color: #0950c3;
+  font-weight: 600;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .editor_panel {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+:global([data-theme="dark"]) .toolbar {
+  background-color: #1e293b;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .select_btn {
+  background-color: #313244;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #cdd6f4;
+  box-shadow: none;
+}
+
+:global([data-theme="dark"]) .select_btn:hover {
+  background-color: #45475a;
+  color: #ffffff;
+  border-color: #89b4fa;
+}
+
+:global([data-theme="dark"]) .dropdown_menu {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .dropdown_item {
+  color: #cdd6f4;
+}
+
+:global([data-theme="dark"]) .dropdown_item:hover {
+  background-color: #334155;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .dropdown_item--selected {
+  background-color: #334155;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .tool_icon_btn {
+  background: transparent;
+  border-color: transparent;
+  color: #a6adc8;
+}
+
+:global([data-theme="dark"]) .tool_icon_btn:hover {
+  background-color: #313244;
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .workspace {
+  background-color: #1e1e2e;
+}
+
+:global([data-theme="dark"]) .line_numbers {
+  background-color: #181825;
+  color: #6c7086;
+  border-right-color: rgba(255, 255, 255, 0.05);
+}
+
+:global([data-theme="dark"]) .code_scroll_container {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+:global([data-theme="dark"]) .code_scroll_container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+:global([data-theme="dark"]) .code_highlight_layer {
+  color: #cdd6f4;
+}
+
+:global([data-theme="dark"]) .code_textarea {
+  caret-color: #89b4fa;
+}
+
+:global([data-theme="dark"]) .code_textarea::selection {
+  background-color: rgba(137, 180, 250, 0.3);
+}
+
+:global([data-theme="dark"]) :global(.syn_comment) {
+  color: #6c7086;
+  font-style: italic;
+}
+
+:global([data-theme="dark"]) :global(.syn_string) {
+  color: #a6e3a1;
+  font-weight: 500;
+}
+
+:global([data-theme="dark"]) :global(.syn_keyword) {
+  color: #f38ba8;
+  font-weight: 700;
+}
+
+:global([data-theme="dark"]) :global(.syn_type) {
+  color: #f9e2af;
+  font-weight: 600;
+}
+
+:global([data-theme="dark"]) :global(.syn_number) {
+  color: #fab387;
+}
+
+:global([data-theme="dark"]) :global(.syn_function) {
+  color: #89b4fa;
+  font-weight: 600;
+}

@@ -1,3 +1,4 @@
+import { Link, useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { useToast } from "~/context/ToastContext.jsx";
@@ -17,6 +18,12 @@ function ProblemList({
   SORT_OPTIONS,
 }) {
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleCardClick = (id) => {
+    navigate(`/problem/${id || "two-sum"}`);
+  };
+
   return (
     <section className={styles["prob-challenges"]}>
       <div className={styles["prob-challenges__container"]}>
@@ -51,6 +58,7 @@ function ProblemList({
                 <div
                   key={obj.id || obj.slug || obj.name || obj.title || obj}
                   className={`${styles["prob-challenges__card"]} reveal-card`}
+                  onClick={() => handleCardClick(obj.id)}
                 >
                   <div className={styles["prob-challenges__card-header"]}>
                     <div className={styles["prob-challenges__card-icon"]}>
@@ -87,18 +95,13 @@ function ProblemList({
                       <Icon name="Clock" size={15} />
                       Tỷ lệ: {obj.successRate}
                     </span>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toast.info(
-                          `Mở bài tập "${obj.title}"! (UI hoàn thành – chờ kết nối API/backend)`,
-                          "Bài tập thuật toán",
-                        )
-                      }
+                    <Link
+                      to={`/problem/${obj.id || "two-sum"}`}
                       className={styles["prob-challenges__action-btn"]}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       Giải bài
-                    </button>
+                    </Link>
                   </div>
                 </div>
               ))}

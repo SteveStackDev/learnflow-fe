@@ -1,0 +1,57 @@
+/* ==========================================================================
+   ProblemResult Subpage Layout Styling
+   ========================================================================== */
+
+.result_page {
+  padding: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.top_bar {
+  display: flex;
+  align-items: center;
+}
+
+.back_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.45);
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-decoration: none;
+  transition: var(--transition-base);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.back_btn:hover {
+  background-color: #e0ebff;
+  color: #0950c3;
+  border-color: #0950c3;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .back_btn {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #cdd6f4;
+}
+
+:global([data-theme="dark"]) .back_btn:hover {
+  background-color: #313244;
+  color: #38bdf8;
+}

@@ -15,12 +15,12 @@ function SignUpInfo({ signUpData }) {
           <div className={styles["signup-info__logo-box"]}>
             <Icon name="Layers" size={22} strokeWidth={2.5} />
           </div>
-          <span className={styles["signup-info__logo-text"]}>LearnFlow</span>
+          <span className={styles["signup-info__logo-text"]}>FySet</span>
         </div>
 
         <h1 className={styles["signup-info__title"]}>
           Bắt đầu hành trình{" "}
-          <span className={styles["signup-info__title--highlight"]}>học tập</span> cùng LearnFlow
+          <span className={styles["signup-info__title--highlight"]}>học tập</span> cùng FySet
         </h1>
         <p className={styles["signup-info__desc"]}>
           Tham gia cùng hàng ngàn học viên khác để xây dựng kỹ năng lập trình bền vững qua các lộ

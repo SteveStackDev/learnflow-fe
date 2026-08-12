@@ -65,7 +65,7 @@ export const aboutData = {
       id: "about-7",
       name: "Nhật Anh",
       description:
-        "Chuyên gia về kiến trúc hệ thống và trải nghiệm người dùng, người kiến tạo nên nền tảng mượt mà của LearnFlow.",
+        "Chuyên gia về kiến trúc hệ thống và trải nghiệm người dùng, người kiến tạo nên nền tảng mượt mà của FySet.",
       role: "Fullstack Developer",
       imageUrl: "/src/assets/images/Home/hero.webp",
     },
@@ -73,7 +73,7 @@ export const aboutData = {
       id: "about-8",
       name: "Phúc Thịnh",
       description:
-        "Bậc thầy về tối ưu hóa cơ sở dữ liệu và bảo mật, đảm bảo LearnFlow luôn vận hành ổn định cho hàng triệu người dùng.",
+        "Bậc thầy về tối ưu hóa cơ sở dữ liệu và bảo mật, đảm bảo FySet luôn vận hành ổn định cho hàng triệu người dùng.",
       role: "Backend Developer",
       imageUrl: "/src/assets/images/Home/hero.webp",
     },
@@ -81,7 +81,7 @@ export const aboutData = {
       id: "about-9",
       name: "Châu Nam Dương",
       description:
-        "Chuyên gia phát triển giao diện người dùng hiện đại, tinh tế và tối ưu trải nghiệm tương tác mượt mà trên LearnFlow.",
+        "Chuyên gia phát triển giao diện người dùng hiện đại, tinh tế và tối ưu trải nghiệm tương tác mượt mà trên FySet.",
       role: "Frontend Developer",
       imageUrl: "/src/assets/images/Home/hero.webp",
     },

@@ -11,7 +11,7 @@ function AboutValues({ values }) {
           <span className={styles["about-values__tag"]}>Values</span>
           <h2 className={styles["about-values__title"]}>Giá trị cốt lõi & Kim chỉ nam</h2>
           <p className={styles["about-values__subtitle"]}>
-            Những định hướng giúp LearnFlow không ngừng phát triển và đồng hành cùng lập trình viên
+            Những định hướng giúp FySet không ngừng phát triển và đồng hành cùng lập trình viên
             Việt.
           </p>
         </div>

@@ -14,9 +14,9 @@ function AboutHero({ CAROUSEL_SLIDES, currentSlide, setCurrentSlide, handlePrev,
             Kiến tạo tương lai <br /> cho lập trình viên Việt
           </h1>
           <p className={styles["about-hero__desc"]}>
-            LearnFlow không chỉ là một nền tảng học tập, mà là bệ phóng cho sự nghiệp công nghệ của
-            bạn. Chúng tôi mang đến phương pháp học tập cá nhân hóa, giúp bạn vượt qua rào cản và
-            làm chủ mã nguồn một cách tự tin nhất.
+            FySet không chỉ là một nền tảng học tập, mà là bệ phóng cho sự nghiệp công nghệ của bạn.
+            Chúng tôi mang đến phương pháp học tập cá nhân hóa, giúp bạn vượt qua rào cản và làm chủ
+            mã nguồn một cách tự tin nhất.
           </p>
           <div className={styles["about-hero__actions"]}>
             <button

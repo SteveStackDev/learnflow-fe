@@ -20,7 +20,7 @@ function LeaderboardHero() {
           </h1>
           <p className={styles["board-hero__desc"]}>
             Nơi tôn vinh nỗ lực học tập không ngừng nghỉ của những nhà phát triển xuất sắc nhất trên
-            LearnFlow.
+            FySet.
           </p>
         </div>
       </div>

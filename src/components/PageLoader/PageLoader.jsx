@@ -12,7 +12,7 @@ export default function PageLoader() {
             <Icon name="Zap" size={28} />
           </div>
         </div>
-        <span className={styles.pageloader__text}>LearnFlow đang tải...</span>
+        <span className={styles.pageloader__text}>FySet đang tải...</span>
       </div>
     </div>
   );

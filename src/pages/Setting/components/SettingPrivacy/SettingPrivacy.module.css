@@ -1,0 +1,343 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section_title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background-color: #f8fafc;
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid rgba(169, 183, 203, 0.25);
+}
+
+.card_title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.desc {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: -4px;
+}
+
+.sub_label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #475569;
+  margin-top: -4px;
+}
+
+.radio_group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.radio_label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radio_label:hover {
+  border-color: #0950c3;
+}
+
+.radio_title {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.radio_desc {
+  display: block;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.radio {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  margin-top: 3px;
+  accent-color: #0950c3;
+  cursor: pointer;
+}
+
+.toggles_list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row_between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 14px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+}
+
+.toggle_title {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.toggle_desc {
+  display: block;
+  font-size: 0.775rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  accent-color: #0950c3;
+  cursor: pointer;
+}
+
+.select_grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.select_group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.select_label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+/* CUSTOM DROPDOWN STYLES */
+.custom_select_container {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+}
+
+.custom_select_btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom_select_btn:hover {
+  border-color: #0950c3;
+}
+
+.custom_select_btn--open {
+  border-color: #0950c3;
+  box-shadow: 0 0 0 3px rgba(9, 80, 195, 0.12);
+}
+
+.custom_select_chevron {
+  color: #64748b;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.custom_select_chevron--rotated {
+  transform: rotate(180deg);
+}
+
+.custom_select_menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom_select_option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.custom_select_option:hover {
+  background-color: #f1f5f9;
+  color: #0950c3;
+}
+
+.custom_select_option--selected {
+  background-color: rgba(9, 80, 195, 0.08);
+  color: #0950c3;
+  font-weight: 700;
+}
+
+.option_check_icon {
+  color: #0950c3;
+  flex-shrink: 0;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid rgba(169, 183, 203, 0.2);
+  margin: 2px 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.submit_btn {
+  padding: 12px 28px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #003a95;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 58, 149, 0.25);
+}
+
+.submit_btn:hover {
+  background-color: #0950c3;
+  transform: translateY(-1px);
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .section_title,
+:global([data-theme="dark"]) .card_title,
+:global([data-theme="dark"]) .radio_title,
+:global([data-theme="dark"]) .toggle_title,
+:global([data-theme="dark"]) .custom_select_btn {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .card,
+:global([data-theme="dark"]) .radio_label,
+:global([data-theme="dark"]) .row_between {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .desc,
+:global([data-theme="dark"]) .sub_label,
+:global([data-theme="dark"]) .radio_desc,
+:global([data-theme="dark"]) .toggle_desc,
+:global([data-theme="dark"]) .select_label,
+:global([data-theme="dark"]) .custom_select_chevron {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .custom_select_btn {
+  background-color: #0f172a;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .custom_select_menu {
+  background-color: #0f172a;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+:global([data-theme="dark"]) .custom_select_option {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .custom_select_option:hover {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .custom_select_option--selected {
+  background-color: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .option_check_icon {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .divider {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}

@@ -33,7 +33,7 @@ function SignInForm({
             <div className={styles["signin-form__mobile-logo-box"]}>
               <Icon name="PlayLogo" size={28} />
             </div>
-            <span className={styles["signin-form__mobile-logo-text"]}>LearnFlow</span>
+            <span className={styles["signin-form__mobile-logo-text"]}>FySet</span>
           </div>
 
           <h1 className={styles["signin-form__mobile-typing-title"]}>
@@ -47,9 +47,7 @@ function SignInForm({
 
         <div className={styles["signin-form__card"]}>
           <h2 className={styles["signin-form__title"]}>Đăng nhập</h2>
-          <p className={styles["signin-form__desc"]}>
-            Chào mừng bạn trở lại với cộng đồng LearnFlow.
-          </p>
+          <p className={styles["signin-form__desc"]}>Chào mừng bạn trở lại với cộng đồng FySet.</p>
 
           <form noValidate className={styles["signin-form__form"]} onSubmit={handleSubmit}>
             <div className={styles["signin-form__form-group"]}>

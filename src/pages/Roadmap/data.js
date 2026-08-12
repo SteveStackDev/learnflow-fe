@@ -203,7 +203,7 @@ export const roadmapData = {
       id: "roadmap-faq-3",
       question: "Lộ trình có bao gồm dự án thực tế không?",
       answer:
-        "Tất cả các lộ trình tại LearnFlow đều đi kèm dự án thực chiến tốt nghiệp để làm đẹp portfolio của bạn.",
+        "Tất cả các lộ trình tại FySet đều đi kèm dự án thực chiến tốt nghiệp để làm đẹp portfolio của bạn.",
     },
   ],
 };

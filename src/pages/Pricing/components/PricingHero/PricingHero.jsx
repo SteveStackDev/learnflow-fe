@@ -13,7 +13,7 @@ function PricingHero({ isYearly, setIsYearly }) {
           </h1>
           <p className={styles["price-hero__desc"]}>
             Từ những bước đầu tiên làm quen với mã nguồn đến việc trở thành chuyên gia lập trình với
-            sự hỗ trợ của AI. LearnFlow đồng hành cùng mọi giai đoạn sự nghiệp của bạn.
+            sự hỗ trợ của AI. FySet đồng hành cùng mọi giai đoạn sự nghiệp của bạn.
           </p>
 
           {/* Billing Toggle Switch */}

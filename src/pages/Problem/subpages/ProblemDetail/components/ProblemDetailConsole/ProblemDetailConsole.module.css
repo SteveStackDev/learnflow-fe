@@ -1,0 +1,122 @@
+/* ==========================================================================
+   ProblemDetailConsole Component Styling (Full-Width Bottom Console - Contrast Fix)
+   ========================================================================== */
+
+/* Light Mode Default Styling */
+.console_panel {
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.45);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(9, 80, 195, 0.06);
+  overflow: hidden;
+}
+
+/* Header Toolbar */
+.header_bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  background-color: #f1f5f9;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.4);
+}
+
+.header_title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Console Body Output Window */
+.console_body {
+  padding: 16px 20px;
+  min-height: 120px;
+  max-height: 220px;
+  overflow-y: auto;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-family: var(--font-family-code);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(169, 183, 203, 0.4) transparent;
+}
+
+.console_body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.console_body::-webkit-scrollbar-thumb {
+  background-color: rgba(169, 183, 203, 0.4);
+  border-radius: 9999px;
+}
+
+.log_line {
+  margin-bottom: 6px;
+  word-break: break-all;
+}
+
+.log_info {
+  color: #0950c3;
+  font-weight: 600;
+}
+
+.log_stdout {
+  color: #d97706;
+  font-weight: 600;
+}
+
+.log_success {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.empty_log {
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .console_panel {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .header_bar {
+  background-color: #1e293b;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .header_title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .console_body {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+:global([data-theme="dark"]) .console_body::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+:global([data-theme="dark"]) .log_info {
+  color: #89b4fa;
+}
+
+:global([data-theme="dark"]) .log_stdout {
+  color: #fab387;
+}
+
+:global([data-theme="dark"]) .log_success {
+  color: #a6e3a1;
+}
+
+:global([data-theme="dark"]) .empty_log {
+  color: #6c7086;
+}

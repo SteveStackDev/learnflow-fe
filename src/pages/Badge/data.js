@@ -32,7 +32,7 @@ export const badgeData = {
     {
       id: "badge-4",
       title: "Mentor Tiềm năng",
-      description: "Giải đáp 50 câu hỏi đúng trên cộng đồng LearnFlow.",
+      description: "Giải đáp 50 câu hỏi đúng trên cộng đồng FySet.",
       badgeText: "Chưa nhận",
       buttonText: "Chưa đạt điều kiện",
       status: "locked",
@@ -139,7 +139,7 @@ export const badgeData = {
   faqs: [
     {
       id: "badge-faq-1",
-      question: "Huy hiệu trên LearnFlow dùng để làm gì?",
+      question: "Huy hiệu trên FySet dùng để làm gì?",
       answer:
         "Huy hiệu giúp bạn chứng minh năng lực cá nhân, làm đẹp hồ sơ profile và mở khóa những đặc quyền tài khoản.",
     },

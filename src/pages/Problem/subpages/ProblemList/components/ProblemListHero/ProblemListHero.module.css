@@ -1,0 +1,190 @@
+/* ==========================================================================
+   ProblemListHero Component Styling
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, rgba(232, 238, 252, 0.8) 0%, rgba(240, 244, 255, 0.9) 100%);
+  border: 1px solid rgba(169, 183, 203, 0.3);
+  border-radius: 24px;
+  padding: 40px 48px;
+  margin-bottom: 32px;
+  box-shadow: 0 10px 30px rgba(9, 80, 195, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.hero__content {
+  flex: 1;
+  max-width: 640px;
+}
+
+.hero__back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0950c3;
+  background-color: #ffffff;
+  border: 1px solid rgba(9, 80, 195, 0.25);
+  padding: 7px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.06);
+}
+
+.hero__back-btn:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+  border-color: #0950c3;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+  transform: translateX(-2px);
+}
+
+.hero__title {
+  font-family: "Be Vietnam Pro", "Inter", system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #003a95;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.hero__desc {
+  font-size: 0.95rem;
+  color: #434653;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.hero__search-box {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1.5px solid rgba(169, 183, 203, 0.4);
+  border-radius: 14px;
+  padding: 12px 18px;
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.06);
+  transition: all 0.25s ease;
+  max-width: 520px;
+}
+
+.hero__search-box:focus-within {
+  border-color: #0950c3;
+  box-shadow: 0 4px 20px rgba(9, 80, 195, 0.15);
+}
+
+.hero__search-icon {
+  color: #64748b;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.hero__search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: #191b22;
+  outline: none;
+  font-family: inherit;
+}
+
+.hero__search-btn {
+  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.hero__search-btn:hover {
+  background: linear-gradient(135deg, #003a95 0%, #002668 100%);
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.3);
+}
+
+.hero__media {
+  flex-shrink: 0;
+  width: 320px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(9, 80, 195, 0.12);
+  border: 4px solid #ffffff;
+}
+
+.hero__img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Dark Mode */
+:global([data-theme="dark"]) .hero {
+  background: linear-gradient(135deg, #131c31 0%, #0f172a 100%);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .hero__back-btn {
+  background-color: #1e293b;
+  color: #38bdf8;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .hero__back-btn:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+  border-color: #0950c3;
+}
+
+:global([data-theme="dark"]) .hero__title {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .hero__desc {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .hero__search-box {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .hero__search-input {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .hero__search-icon {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .hero__media {
+  border-color: #1e293b;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .hero {
+    flex-direction: column;
+    padding: 32px 24px;
+    gap: 24px;
+  }
+
+  .hero__media {
+    width: 100%;
+    max-width: 400px;
+  }
+}

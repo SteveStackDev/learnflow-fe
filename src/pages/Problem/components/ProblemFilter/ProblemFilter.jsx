@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import useDropdownKeyboard from "~/hooks/useDropdownKeyboard";
 import styles from "./ProblemFilter.module.css";
@@ -220,19 +221,26 @@ function ProblemFilter({
               </p>
             </div>
 
-            <div className={styles["prob-tabs__tab-group"]}>
-              {categories.map((item, index) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => handleTabChange(index)}
-                  className={`${styles["prob-tabs__tab-btn"]} ${
-                    activeTab === index ? styles["prob-tabs__tab-btn--active"] : ""
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
+            <div className={styles["prob-tabs__right-action-wrap"]}>
+              <div className={styles["prob-tabs__tab-group"]}>
+                {categories.map((item, index) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => handleTabChange(index)}
+                    className={`${styles["prob-tabs__tab-btn"]} ${
+                      activeTab === index ? styles["prob-tabs__tab-btn--active"] : ""
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+
+              <Link to="/problem/list" className={styles["prob-tabs__view-all-btn"]}>
+                <span>Xem tất cả</span>
+                <Icon name="ArrowRight" size={16} />
+              </Link>
             </div>
           </div>
         </div>

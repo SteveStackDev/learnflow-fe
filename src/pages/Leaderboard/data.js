@@ -221,7 +221,7 @@ export const leaderboardData = {
       id: "leaderboard-faq-3",
       question: "Top 3 người đứng đầu sẽ nhận được phần thưởng gì?",
       answer:
-        "Top 3 hàng tháng sẽ nhận được huy hiệu danh dự đặc biệt và tài khoản LearnFlow Plus miễn phí.",
+        "Top 3 hàng tháng sẽ nhận được huy hiệu danh dự đặc biệt và tài khoản FySet Plus miễn phí.",
     },
   ],
 };

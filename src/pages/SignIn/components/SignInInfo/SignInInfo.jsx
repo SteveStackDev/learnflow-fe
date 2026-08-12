@@ -11,9 +11,9 @@ function SignInInfo({ signInData, greetingPhrases, phraseIndex, charIndex }) {
 
       {/* Background Code Snippet Pattern */}
       <div className={styles["signin-info__code-pattern"]}>
-        <code>{`// LearnFlow EdTech Hub`}</code>
-        <code>{`import { LearnFlow } from "@learnflow/core";`}</code>
-        <code>{`const student = new LearnFlow({`}</code>
+        <code>{`// FySet EdTech Hub`}</code>
+        <code>{`import { FySet } from "@fyset/core";`}</code>
+        <code>{`const student = new FySet({`}</code>
         <code>{`  level: "Developer",`}</code>
         <code>{`  goal: "Fullstack Mastery"`}</code>
         <code>{`});`}</code>
@@ -29,7 +29,7 @@ function SignInInfo({ signInData, greetingPhrases, phraseIndex, charIndex }) {
           <div className={styles["signin-info__logo-box"]}>
             <Icon name="PlayLogo" size={24} />
           </div>
-          <span className={styles["signin-info__logo-text"]}>LearnFlow</span>
+          <span className={styles["signin-info__logo-text"]}>FySet</span>
         </div>
 
         <h1 className={styles["signin-info__title"]}>

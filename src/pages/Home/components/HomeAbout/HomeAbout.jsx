@@ -12,7 +12,7 @@ function HomeAbout({ highlights }) {
             <img
               className={styles["home-about__img"]}
               src={heroUrl}
-              alt="LearnFlow About Image"
+              alt="FySet About Image"
               loading="lazy"
               decoding="async"
             />
@@ -20,11 +20,11 @@ function HomeAbout({ highlights }) {
         </div>
 
         <div className={styles["home-about__content"]}>
-          <h2 className={styles["home-about__section-title"]}>Tại sao chọn LearnFlow?</h2>
+          <h2 className={styles["home-about__section-title"]}>Tại sao chọn FySet?</h2>
           <p className={styles["home-about__text"]}>
             Khác với các nền tảng giải đố thuần túy như LeetCode có thể gây ngợp cho người mới,
-            LearnFlow được thiết kế như một <strong>người dẫn đường</strong>. Chúng tôi không chỉ
-            đưa bài tập, chúng tôi xây dựng tư duy lập trình từ những viên gạch đầu tiên.
+            FySet được thiết kế như một <strong>người dẫn đường</strong>. Chúng tôi không chỉ đưa
+            bài tập, chúng tôi xây dựng tư duy lập trình từ những viên gạch đầu tiên.
           </p>
 
           <div className={styles["home-about__list"]}>
@@ -48,7 +48,7 @@ function HomeAbout({ highlights }) {
             to="/about"
             className={`${styles["home-about__btn"]} ${styles["home-about__btn--contained"]}`}
           >
-            Tìm hiểu thêm về LearnFlow
+            Tìm hiểu thêm về FySet
           </Link>
         </div>
       </div>

@@ -20,8 +20,8 @@ function HomeContact({
         <div className={styles["home-contact__content"]}>
           <h2 className={styles["home-contact__title"]}>Bạn cần tư vấn lộ trình?</h2>
           <p className={styles["home-contact__desc"]}>
-            Để lại thông tin, đội ngũ chuyên gia của LearnFlow sẽ liên hệ và tư vấn lộ trình học tập
-            phù hợp nhất với mục tiêu nghề nghiệp của bạn.
+            Để lại thông tin, đội ngũ chuyên gia của FySet sẽ liên hệ và tư vấn lộ trình học tập phù
+            hợp nhất với mục tiêu nghề nghiệp của bạn.
           </p>
           <div className={styles["home-contact__tip"]}>
             <span>💡 Nhận tài liệu tư vấn nghề nghiệp miễn phí qua Email sau khi gửi form.</span>

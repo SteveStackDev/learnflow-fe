@@ -1,0 +1,108 @@
+/* ==========================================================================
+   ProblemDetailFooter Component Styling (Editor Bottom Action Bar - Contrast Fix)
+   ========================================================================== */
+
+.footer_bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background-color: #f1f5f9;
+  border-top: 1px solid rgba(169, 183, 203, 0.4);
+  flex-shrink: 0;
+}
+
+.save_status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0950c3;
+}
+
+.actions_right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload_btn,
+.run_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #334155;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.45);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition-base);
+  font-family: inherit;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.upload_btn:hover,
+.run_btn:hover {
+  background-color: #e0ebff;
+  color: #0950c3;
+  border-color: #0950c3;
+}
+
+.submit_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 24px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--gradient-primary);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition-base);
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+  font-family: inherit;
+}
+
+.submit_btn:hover {
+  background: linear-gradient(135deg, #003a95 0%, #002668 100%);
+  box-shadow: 0 6px 18px rgba(9, 80, 195, 0.35);
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .footer_bar {
+  background-color: #181825;
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme="dark"]) .save_status {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .upload_btn,
+:global([data-theme="dark"]) .run_btn {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  box-shadow: none;
+}
+
+:global([data-theme="dark"]) .upload_btn:hover,
+:global([data-theme="dark"]) .run_btn:hover {
+  background-color: #334155;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .submit_btn {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.35);
+}
+
+:global([data-theme="dark"]) .submit_btn:hover {
+  background: linear-gradient(135deg, #053787 0%, #03255c 100%);
+}

@@ -16,7 +16,7 @@ import { useToast } from "~/context/ToastContext.jsx";
 
 const GREETING_PHRASES = [
   "quay trở lại!",
-  "gia nhập LearnFlow!",
+  "gia nhập FySet!",
   "bắt đầu buổi học mới!",
   "chinh phục thử thách!",
 ];

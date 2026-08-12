@@ -54,7 +54,7 @@ function SignUp() {
     }
 
     if (!agreeTerms) {
-      newErrors.agreeTerms = "Bạn cần đồng ý với Điều khoản dịch vụ của LearnFlow!";
+      newErrors.agreeTerms = "Bạn cần đồng ý với Điều khoản dịch vụ của FySet!";
     }
 
     setErrors(newErrors);
@@ -70,7 +70,7 @@ function SignUp() {
     setTimeout(() => {
       setIsSubmitting(false);
       toast.success(
-        "Tạo tài khoản LearnFlow thành công! (UI hoàn thành – chờ kết nối API/backend)",
+        "Tạo tài khoản FySet thành công! (UI hoàn thành – chờ kết nối API/backend)",
         "Đăng ký giả lập",
       );
     }, 1000);

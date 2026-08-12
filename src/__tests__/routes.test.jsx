@@ -8,12 +8,16 @@ import Home from "../pages/Home/Home";
 import Course from "../pages/Course/Course";
 import Roadmap from "../pages/Roadmap/Roadmap";
 import Problem from "../pages/Problem/Problem";
+import ProblemListSubpage from "../pages/Problem/subpages/ProblemList/ProblemList";
+import ProblemDetailSubpage from "../pages/Problem/subpages/ProblemDetail/ProblemDetail";
+import ProblemResultSubpage from "../pages/Problem/subpages/ProblemResult/ProblemResult";
 import Leaderboard from "../pages/Leaderboard/Leaderboard";
 import Contest from "../pages/Contest/Contest";
 import Badge from "../pages/Badge/Badge";
 import Pricing from "../pages/Pricing/Pricing";
 import About from "../pages/About/About";
 import Contact from "../pages/Contact/Contact";
+import Setting from "../pages/Setting/Setting";
 import SignIn from "../pages/SignIn/SignIn";
 import SignUp from "../pages/SignUp/SignUp";
 import NotFound from "../pages/NotFound/NotFound";
@@ -23,10 +27,10 @@ const renderWithRouter = (ui) => {
   return render(<BrowserRouter>{ui}</BrowserRouter>);
 };
 
-describe("LearnFlow Page Routes Smoke Tests", () => {
+describe("FySet Page Routes Smoke Tests", () => {
   it("renders Home page without crashing", () => {
     renderWithRouter(<Home />);
-    expect(screen.getAllByText(/LearnFlow/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/FySet/i).length).toBeGreaterThan(0);
   });
 
   it("renders Course page without crashing", () => {
@@ -42,6 +46,21 @@ describe("LearnFlow Page Routes Smoke Tests", () => {
   it("renders Problem page without crashing", () => {
     renderWithRouter(<Problem />);
     expect(screen.getAllByText(/Bài tập/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders ProblemList subpage without crashing", () => {
+    renderWithRouter(<ProblemListSubpage />);
+    expect(screen.getAllByText(/Thư viện Bài tập/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders ProblemDetail subpage without crashing", () => {
+    renderWithRouter(<ProblemDetailSubpage />);
+    expect(screen.getAllByText(/Hai số tổng/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders ProblemResult subpage without crashing", () => {
+    renderWithRouter(<ProblemResultSubpage />);
+    expect(screen.getAllByText(/Chấp nhận/i).length).toBeGreaterThan(0);
   });
 
   it("renders Leaderboard page without crashing", () => {
@@ -66,7 +85,7 @@ describe("LearnFlow Page Routes Smoke Tests", () => {
 
   it("renders About page without crashing", () => {
     renderWithRouter(<About />);
-    expect(screen.getAllByText(/LearnFlow là gì/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/FySet là gì/i).length).toBeGreaterThan(0);
   });
 
   it("renders Contact page without crashing", () => {
@@ -82,6 +101,11 @@ describe("LearnFlow Page Routes Smoke Tests", () => {
   it("renders SignUp page without crashing", () => {
     renderWithRouter(<SignUp />);
     expect(screen.getAllByText(/Bắt đầu hành trình/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders Setting page without crashing", () => {
+    renderWithRouter(<Setting />);
+    expect(screen.getAllByText(/Cài đặt/i).length).toBeGreaterThan(0);
   });
 
   it("renders NotFound page without crashing", () => {

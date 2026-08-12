@@ -1,32 +1,14 @@
-import { useState, useEffect } from "react";
+import { useTheme } from "~/context/ThemeContext.jsx";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ThemeToggle.module.css";
 
 function ThemeToggle() {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("learnflow_theme") || "light";
-  });
-
-  useEffect(() => {
-    document.documentElement.classList.add("theme-switching");
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("learnflow_theme", theme);
-
-    const timer = setTimeout(() => {
-      document.documentElement.classList.remove("theme-switching");
-    }, 50);
-
-    return () => clearTimeout(timer);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className={styles["theme-toggle__wrapper"]}>
       <span className={styles["theme-toggle__tooltip"]}>
-        {theme === "light" ? "Bật giao diện Tối 🌙" : "Bật giao diện Sáng ☀️"}
+        {theme === "light" ? "Giao diện Sáng ☀️" : "Giao diện Tối 🌙"}
       </span>
       <button
         type="button"

@@ -33,7 +33,7 @@ export const contactData = {
     {
       id: "contact-5",
       title: "Email hỗ trợ",
-      description: "support@learnflow.edu.vn",
+      description: "support@fyset.edu.vn",
       iconName: "Mail",
     },
     {
@@ -55,21 +55,21 @@ export const contactData = {
       id: "contact-8",
       title: "Hỗ trợ học viên",
       description: "Các thắc mắc liên quan đến lộ trình, khóa học và video bài giảng.",
-      email: "learning@learnflow.edu.vn",
+      email: "learning@fyset.edu.vn",
       iconName: "Users",
     },
     {
       id: "contact-9",
       title: "Truyền thông & PR",
       description: "Dành cho báo chí, phỏng vấn và các hoạt động truyền thông xã hội.",
-      email: "press@learnflow.edu.vn",
+      email: "press@fyset.edu.vn",
       iconName: "Zap",
     },
     {
       id: "contact-10",
       title: "Hợp tác doanh nghiệp",
       description: "Đào tạo nhân sự nội bộ hoặc tích hợp nền tảng vào doanh nghiệp.",
-      email: "business@learnflow.edu.vn",
+      email: "business@fyset.edu.vn",
       iconName: "Shield",
     },
   ],
@@ -91,7 +91,7 @@ export const contactData = {
       id: "contact-13",
       question: "Tôi có thể đến văn phòng gặp trực tiếp không?",
       answer:
-        "Văn phòng LearnFlow tại Quận 1 luôn mở cửa chào đón học viên từ 8:30 - 18:00 (Thứ 2 - Thứ 6). Vui lòng đặt lịch hẹn trước qua email để chúng tôi sắp xếp người đón tiếp chu đáo.",
+        "Văn phòng FySet tại Quận 1 luôn mở cửa chào đón học viên từ 8:30 - 18:00 (Thứ 2 - Thứ 6). Vui lòng đặt lịch hẹn trước qua email để chúng tôi sắp xếp người đón tiếp chu đáo.",
     },
   ],
 };

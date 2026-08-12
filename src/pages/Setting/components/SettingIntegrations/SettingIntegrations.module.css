@@ -1,0 +1,121 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section_title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.card {
+  background-color: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid rgba(169, 183, 203, 0.2);
+}
+
+.card_title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.desc {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.integrations_list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+}
+
+.brand_box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #0950c3;
+}
+
+.brand_name {
+  display: block;
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.brand_status {
+  display: block;
+  font-size: 0.775rem;
+  color: #64748b;
+}
+
+.connect_btn {
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #0950c3;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.connect_btn--connected {
+  background-color: #f1f5f9;
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.connect_btn--connected:hover {
+  background-color: #fee2e2;
+}
+
+/* Dark Mode */
+:global([data-theme="dark"]) .section_title,
+:global([data-theme="dark"]) .card_title,
+:global([data-theme="dark"]) .brand_name {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .card,
+:global([data-theme="dark"]) .item {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .desc,
+:global([data-theme="dark"]) .brand_status {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .brand_box {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .connect_btn--connected {
+  background-color: #0f172a;
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.3);
+}

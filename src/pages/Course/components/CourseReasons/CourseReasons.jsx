@@ -7,7 +7,7 @@ function CourseReasons({ benefits }) {
       <div className={styles["course-reasons__container"]}>
         <div className={styles["course-reasons__header"]}>
           <h2 className={styles["course-reasons__section-title"]}>
-            Tại sao nên học khóa học tại LearnFlow?
+            Tại sao nên học khóa học tại FySet?
           </h2>
           <p className={styles["course-reasons__section-subtitle"]}>
             Chúng tôi mang đến môi trường học tập lập trình khác biệt, tập trung vào kết quả và sự

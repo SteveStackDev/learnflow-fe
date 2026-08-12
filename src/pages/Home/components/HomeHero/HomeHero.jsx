@@ -53,7 +53,7 @@ function HomeHero() {
                     className={`${styles["home-hero__dot"]} ${styles["home-hero__dot--green"]}`}
                   />
                 </div>
-                <span className={styles["home-hero__terminal-url"]}>learnflow.dev/dashboard</span>
+                <span className={styles["home-hero__terminal-url"]}>fyset.dev/dashboard</span>
               </div>
 
               <div className={styles["home-hero__terminal-body"]}>
@@ -84,7 +84,7 @@ function HomeHero() {
                       <span className={styles["home-hero__code-keyword"]}>const</span>{" "}
                       <span className={styles["home-hero__code-var"]}>student</span> ={" "}
                       <span className={styles["home-hero__code-func"]}>new</span>{" "}
-                      <span className={styles["home-hero__code-class"]}>LearnFlow</span>();
+                      <span className={styles["home-hero__code-class"]}>FySet</span>();
                     </code>
                   </div>
                   <div className={styles["home-hero__code-line"]}>

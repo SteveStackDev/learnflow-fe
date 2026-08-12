@@ -35,20 +35,20 @@ function SignUpForm({
             <div className={styles["signup-form__mobile-logo-box"]}>
               <Icon name="Layers" size={26} strokeWidth={2.5} />
             </div>
-            <span className={styles["signup-form__mobile-logo-text"]}>LearnFlow</span>
+            <span className={styles["signup-form__mobile-logo-text"]}>FySet</span>
           </div>
 
           <h1 className={styles["signup-form__mobile-title"]}>
             Bắt đầu hành trình{" "}
             <span className={styles["signup-form__title--highlight"]}>học&nbsp;lập&nbsp;trình</span>{" "}
-            cùng LearnFlow
+            cùng FySet
           </h1>
         </div>
 
         <h2 className={styles["signup-form__title"]}>Tạo tài khoản</h2>
         <p className={styles["signup-form__desc"]}>
           Tạo tài khoản để bắt đầu học theo roadmap, luyện bài tập, tham gia contest và theo dõi
-          tiến độ trên LearnFlow.
+          tiến độ trên FySet.
         </p>
 
         <form noValidate className={styles["signup-form__form"]} onSubmit={handleSubmit}>
@@ -214,7 +214,7 @@ function SignUpForm({
                 <a href="#" className={styles["signup-form__link"]}>
                   Chính sách bảo mật
                 </a>{" "}
-                của LearnFlow.
+                của FySet.
               </span>
             </label>
             {errors.agreeTerms && (

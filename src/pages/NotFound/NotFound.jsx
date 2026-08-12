@@ -21,7 +21,7 @@ function NotFound() {
 
             <div className={styles["notfound-content__text-box"]}>
               <h2 className={styles["notfound-content__title"]}>
-                Oops! Có vẻ bạn vừa đi lạc khỏi LearnFlow
+                Oops! Có vẻ bạn vừa đi lạc khỏi FySet
               </h2>
 
               <p className={styles["notfound-content__desc"]}>
@@ -55,8 +55,8 @@ function NotFound() {
               <div className={styles["notfound-footer__support-content"]}>
                 <h3 className={styles["notfound-footer__support-title"]}>Cần thêm sự hỗ trợ?</h3>
                 <p className={styles["notfound-footer__support-desc"]}>
-                  Đội ngũ LearnFlow luôn sẵn sàng giải đáp thắc mắc và hỗ trợ bạn trong quá trình
-                  học tập.
+                  Đội ngũ FySet luôn sẵn sàng giải đáp thắc mắc và hỗ trợ bạn trong quá trình học
+                  tập.
                 </p>
               </div>
               <div className={styles["notfound-footer__support-action"]}>

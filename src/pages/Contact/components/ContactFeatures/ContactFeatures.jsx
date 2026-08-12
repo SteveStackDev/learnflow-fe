@@ -6,7 +6,7 @@ function ContactFeatures({ topics }) {
     <section className={styles["contact-features"]}>
       <div className={styles["contact-features__container"]}>
         <h2 className={styles["contact-features__section-title"]}>
-          LearnFlow là gì? Hệ sinh thái học tập có định hướng
+          FySet là gì? Hệ sinh thái học tập có định hướng
         </h2>
         <div className={styles["contact-features__list"]}>
           {topics.map((obj) => (

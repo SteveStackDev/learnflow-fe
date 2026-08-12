@@ -35,7 +35,7 @@ function Footer() {
         <div className={styles.footer__cta}>
           <div className={styles["footer__cta-content"]}>
             <h3 className={styles["footer__cta-title"]}>
-              Sẵn sàng bắt đầu hành trình học lập trình cùng LearnFlow?
+              Sẵn sàng bắt đầu hành trình học lập trình cùng FySet?
             </h3>
             <p className={styles["footer__cta-description"]}>
               Hàng nghìn bài tập, lộ trình học rõ ràng và cộng đồng luôn đồng hành cùng bạn.
@@ -67,10 +67,10 @@ function Footer() {
               <div className={styles["footer__brand-logo"]}>
                 <Icon name="LogoCap" size={22} style={{ color: "#ffffff" }} />
               </div>
-              <span className={styles["footer__brand-name"]}>LearnFlow</span>
+              <span className={styles["footer__brand-name"]}>FySet</span>
             </Link>
             <p className={styles.footer__about}>
-              LearnFlow là nền tảng học lập trình giúp bạn xây dựng lộ trình học rõ ràng, luyện tập
+              FySet là nền tảng học lập trình giúp bạn xây dựng lộ trình học rõ ràng, luyện tập
               thông qua bài tập thực tế và phát triển kỹ năng để sẵn sàng cho sự nghiệp trong ngành
               công nghệ thông tin.
             </p>
@@ -83,7 +83,7 @@ function Footer() {
                 Nhận thông tin mới nhất
               </label>
               <p className={styles["footer__newsletter-desc"]}>
-                Đăng ký để nhận thông báo về khóa học mới và cập nhật từ LearnFlow.
+                Đăng ký để nhận thông báo về khóa học mới và cập nhật từ FySet.
               </p>
               <form
                 noValidate
@@ -269,7 +269,7 @@ function Footer() {
         <div className={styles.footer__bottom}>
           <div className={styles.footer__copyright}>
             <span className={styles["footer__copyright-text"]}>
-              © 2026 LearnFlow. Tất cả các quyền được bảo lưu.
+              © 2026 FySet. Tất cả các quyền được bảo lưu.
             </span>
             <span className={styles["footer__copyright-heart"]}>
               ❤️ Được xây dựng với đam mê dành cho cộng đồng học lập trình.
