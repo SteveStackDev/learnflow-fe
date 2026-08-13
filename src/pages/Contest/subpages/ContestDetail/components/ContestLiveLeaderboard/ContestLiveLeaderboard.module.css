@@ -253,3 +253,13 @@
 :global([data-theme="dark"]) .score {
   color: #cbd5e1;
 }
+
+@media (max-width: 1024px) {
+  .drawer {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    max-height: 420px;
+    order: -2;
+  }
+}

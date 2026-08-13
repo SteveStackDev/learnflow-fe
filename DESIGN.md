@@ -1,5 +1,5 @@
 ---
-name: LearnFlow Design System
+name: FySet Design System
 colors:
   light:
     primary: "#0950c3"
@@ -57,7 +57,7 @@ motion:
 
 ## 🎨 Thương hiệu & Phong cách (Brand Identity & Style)
 
-Hệ thống thiết kế LearnFlow kết hợp hài hòa hai phong cách kiến trúc giao diện hiện đại: **Corporate Modern (Light Mode)** và **Cyberpunk Dark Navy / Neon Glow (Dark Mode)**.
+Hệ thống thiết kế FySet kết hợp hài hòa hai phong cách kiến trúc giao diện hiện đại: **Corporate Modern (Light Mode)** và **Cyberpunk Dark Navy / Neon Glow (Dark Mode)**.
 
 Mục tiêu cảm xúc & định hướng trải nghiệm:
 
@@ -69,7 +69,7 @@ Mục tiêu cảm xúc & định hướng trải nghiệm:
 
 ## 🌓 Hệ thống Chủ đề Dual Theme (Light & Dark Mode)
 
-LearnFlow sử dụng cơ chế **Semantic HSL & Hex Design Tokens** tự động điều chỉnh theo thuộc tính `data-theme="light"` hoặc `data-theme="dark"` tại thẻ root `<html>`.
+FySet sử dụng cơ chế **Semantic HSL & Hex Design Tokens** tự động điều chỉnh theo thuộc tính `data-theme="light"` hoặc `data-theme="dark"` tại thẻ root `<html>`.
 
 ### 1. Bảng màu Light Mode (Light Elegance)
 

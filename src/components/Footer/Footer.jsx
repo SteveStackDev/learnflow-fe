@@ -191,22 +191,14 @@ function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <button
-                      type="button"
-                      onClick={() => handleComingSoon("Hồ sơ cá nhân")}
-                      className={styles["footer__nav-link-btn"]}
-                    >
-                      Hồ sơ cá nhân <span className={styles["footer__badge-upcoming"]}>Sắp có</span>
-                    </button>
+                    <Link to="/dashboard" className={styles["footer__nav-link"]}>
+                      Dashboard
+                    </Link>
                   </li>
                   <li>
-                    <button
-                      type="button"
-                      onClick={() => handleComingSoon("Cài đặt")}
-                      className={styles["footer__nav-link-btn"]}
-                    >
-                      Cài đặt <span className={styles["footer__badge-upcoming"]}>Sắp có</span>
-                    </button>
+                    <Link to="/setting" className={styles["footer__nav-link"]}>
+                      Cài đặt
+                    </Link>
                   </li>
                 </ul>
               </div>

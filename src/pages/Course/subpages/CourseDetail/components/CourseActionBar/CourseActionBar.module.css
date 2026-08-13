@@ -1,0 +1,101 @@
+.action_bar {
+  margin-top: 32px;
+  padding: 16px 24px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.prev_btn,
+.next_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0950c3;
+  background-color: #f8fafc;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.prev_btn:hover,
+.next_btn:hover {
+  background-color: #e0ebff;
+  border-color: #0950c3;
+  transform: translateY(-2px);
+}
+
+.complete_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.3);
+  transition: all 0.25s ease;
+}
+
+.complete_btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.45);
+}
+
+.complete_btn--active {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.3);
+}
+
+:global([data-theme="dark"]) .action_bar {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .prev_btn,
+:global([data-theme="dark"]) .next_btn {
+  background-color: #1e293b;
+  color: #38bdf8;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .prev_btn:hover,
+:global([data-theme="dark"]) .next_btn:hover {
+  background-color: #334155;
+  border-color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .complete_btn {
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+}
+
+@media (max-width: 640px) {
+  .action_bar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .prev_btn,
+  .next_btn,
+  .complete_btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

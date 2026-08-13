@@ -1,14 +1,14 @@
-# 🚀 LearnFlow Frontend (`learnflow-fe`)
+# 🚀 FySet Frontend (`FySet-fe`)
 
 > Nền tảng học lập trình tương tác & định hướng nghề nghiệp công nghệ hàng đầu dành cho lập trình viên.
 
-![LearnFlow Banner](/src/assets/images/Home/hero.webp)
+![FySet Banner](/src/assets/images/Home/hero.webp)
 
 ---
 
 ## 📖 Tổng quan dự án (Project Overview)
 
-**LearnFlow** là ứng dụng Web học tập trực tuyến được xây dựng bằng **React 19**, **Vite 8**, **React Router 8** và **CSS Modules** theo phong cách thiết kế **Corporate Modern (Light Mode)** và **Cyberpunk Dark Navy / Neon Glow (Dark Mode)**.
+**FySet** là ứng dụng Web học tập trực tuyến được xây dựng bằng **React 19**, **Vite 8**, **React Router 8** và **CSS Modules** theo phong cách thiết kế **Corporate Modern (Light Mode)** và **Cyberpunk Dark Navy / Neon Glow (Dark Mode)**.
 
 Dự án ứng dụng các công nghệ tiên tiến như **React Compiler** (`babel-plugin-react-compiler`), **Code-Splitting** với `React.lazy` & `Suspense`, hệ thống **Global Toast Context** và bộ biến giao diện linh hoạt **Semantic HSL & Hex Design Tokens**. Nền tảng hỗ trợ học viên tiếp thu kiến thức lập trình từ cơ bản đến nâng cao thông qua lộ trình cá nhân hóa, bài tập thực chiến, kỳ thi trực tuyến và hệ thống danh hiệu (Badges) tạo động lực.
 
@@ -50,7 +50,7 @@ Dự án ứng dụng các công nghệ tiên tiến như **React Compiler** (`b
 ## 📁 Cấu trúc thư mục (Directory Structure)
 
 ```text
-learnflow-fe/
+FySet-fe/
 ├── src/
 │   ├── assets/              # Hình ảnh, icon tĩnh và media webp
 │   ├── components/          # Component tái sử dụng toàn ứng dụng
@@ -164,4 +164,4 @@ npm run format
 
 ## 📄 Giấy phép (License)
 
-Dự án được phát triển bởi **LearnFlow Team**. Bảo lưu mọi bản quyền.
+Dự án được phát triển bởi **FySet Team**. Bảo lưu mọi bản quyền.

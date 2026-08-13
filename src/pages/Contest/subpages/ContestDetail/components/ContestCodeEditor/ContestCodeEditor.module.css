@@ -478,3 +478,23 @@
   color: #89b4fa;
   font-weight: 600;
 }
+
+@media (max-width: 1024px) {
+  .container {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    min-height: 480px;
+  }
+
+  .header_bar,
+  .footer_bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer_right {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}

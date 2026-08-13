@@ -291,3 +291,13 @@
   background-color: #1e293b;
   color: #64748b;
 }
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    max-height: 380px;
+    order: -1;
+  }
+}

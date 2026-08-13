@@ -1,7 +1,7 @@
 export const mockContestData = {
   id: "contest-15",
   badge: "CONTEST ARENA",
-  title: "LearnFlow Weekly Contest 15",
+  title: "FySet Weekly Contest 15",
   remainingSeconds: 6150, // 01:42:30
   user: {
     name: "AlexCoder99",

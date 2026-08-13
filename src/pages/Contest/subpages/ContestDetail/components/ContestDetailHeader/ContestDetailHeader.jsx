@@ -35,7 +35,7 @@ export function ContestDetailHeader({
       <div className={styles.header_left}>
         <button
           type="button"
-          onClick={() => navigate("/contest")}
+          onClick={() => navigate("/contest/list")}
           className={styles.back_btn}
           title="Quay lại danh sách cuộc thi"
           aria-label="Quay lại"
@@ -47,8 +47,9 @@ export function ContestDetailHeader({
         <button
           type="button"
           onClick={onToggleProblemsList}
-          className={`${styles.sidebar_toggle_btn} ${showProblemsList ? styles["sidebar_toggle_btn--active"] : ""
-            }`}
+          className={`${styles.sidebar_toggle_btn} ${
+            showProblemsList ? styles["sidebar_toggle_btn--active"] : ""
+          }`}
           title="Bật/Tắt danh sách bài tập"
         >
           <Icon name="List" size={16} />
@@ -61,7 +62,7 @@ export function ContestDetailHeader({
         </div>
       </div>
 
-      <div className={styles.header_right}>
+      <div className={styles.header_center}>
         {/* Real-time Countdown Timer */}
         <div className={styles.timer_pill} title="Thời gian làm bài còn lại">
           <Icon name="Clock" size={18} className={styles.timer_icon} />
@@ -72,13 +73,14 @@ export function ContestDetailHeader({
         <button
           type="button"
           onClick={onToggleLeaderboard}
-          className={`${styles.leaderboard_btn} ${showLeaderboard ? styles["leaderboard_btn--active"] : ""
-            }`}
+          className={`${styles.leaderboard_btn} ${
+            showLeaderboard ? styles["leaderboard_btn--active"] : ""
+          }`}
           title="Bật/Tắt Bảng xếp hạng trực tiếp"
         >
           <Icon name="Trophy" size={16} />
           <span>Bảng xếp hạng</span>
-          <span className={styles.live_badge}>Live</span>
+          <span className={styles.live_badge}>LIVE</span>
         </button>
       </div>
     </header>
