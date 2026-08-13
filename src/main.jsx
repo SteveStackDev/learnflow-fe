@@ -21,12 +21,19 @@ const Home = lazy(() => import("~/pages/Home/Home"));
 const About = lazy(() => import("~/pages/About/About"));
 const Contact = lazy(() => import("~/pages/Contact/Contact"));
 const Roadmap = lazy(() => import("~/pages/Roadmap/Roadmap"));
+const RoadmapDetailSubpage = lazy(
+  () => import("~/pages/Roadmap/subpages/RoadmapDetail/RoadmapDetail"),
+);
 const Pricing = lazy(() => import("~/pages/Pricing/Pricing"));
 const Badge = lazy(() => import("~/pages/Badge/Badge"));
+const BadgeDetailSubpage = lazy(
+  () => import("~/pages/Badge/subpages/BadgeDetail/BadgeDetail"),
+);
 const Leaderboard = lazy(() => import("~/pages/Leaderboard/Leaderboard"));
 const Course = lazy(() => import("~/pages/Course/Course"));
-
-// Problem Pages
+const CourseDetailSubpage = lazy(
+  () => import("~/pages/Course/subpages/CourseDetail/CourseDetail"),
+);
 const Problem = lazy(() => import("~/pages/Problem/Problem"));
 const ProblemList = lazy(() => import("~/pages/ProblemList/ProblemList"));
 const ProblemDetail = lazy(() => import("~/pages/ProblemDetail/ProblemDetail"));
@@ -57,12 +64,18 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/roadmap" element={<Roadmap />} />
+                <Route path="/roadmap/detail" element={<RoadmapDetailSubpage />} />
+                <Route path="/roadmap/:id" element={<RoadmapDetailSubpage />} />
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/badge" element={<Badge />} />
+                <Route path="/badge/detail" element={<BadgeDetailSubpage />} />
+                <Route path="/badge/:id" element={<BadgeDetailSubpage />} />
                 <Route path="/leaderboard" element={<Leaderboard />} />
                 <Route path="/course" element={<Course />} />
 
                 {/* Problem Routes */}
+                <Route path="/course/detail" element={<CourseDetailSubpage />} />
+                <Route path="/course/:id" element={<CourseDetailSubpage />} />
                 <Route path="/problem" element={<Problem />} />
                 <Route path="/problem/list" element={<ProblemList />} />
                 <Route path="/problem/:id" element={<ProblemDetail />} />

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { Pagination } from "~/components/ui";
@@ -14,6 +15,7 @@ function CourseGrid({
   setSearchQuery,
   setActiveCategoryTab,
 }) {
+  const navigate = useNavigate();
   const { toast } = useToast();
   return (
     <section className={styles["course-grid"]}>
@@ -84,15 +86,10 @@ function CourseGrid({
                   <div className={styles["course-grid__card-actions"]}>
                     <button
                       type="button"
-                      onClick={() =>
-                        toast.info(
-                          `Đã chọn xem chi tiết khóa học "${obj.title}"! (UI hoàn thành – chờ kết nối API/backend)`,
-                          "Khóa học lập trình",
-                        )
-                      }
+                      onClick={() => navigate(`/course/${obj.id}`)}
                       className={styles["course-grid__action-btn"]}
                     >
-                      Xem chi tiết
+                      Vào học ngay
                     </button>
                   </div>
                 </div>

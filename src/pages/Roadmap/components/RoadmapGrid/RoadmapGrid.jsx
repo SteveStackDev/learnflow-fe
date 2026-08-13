@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { Pagination } from "~/components/ui";
@@ -15,6 +16,7 @@ function RoadmapGrid({
   setSelectedLevel,
   LEVEL_OPTIONS,
 }) {
+  const navigate = useNavigate();
   return (
     <section className={styles["roadmap-cards"]}>
       <div className={styles["roadmap-cards__container"]}>
@@ -85,7 +87,11 @@ function RoadmapGrid({
                     </div>
                   </div>
                   <div className={styles["roadmap-cards__card-actions"]}>
-                    <button type="button" className={styles["roadmap-cards__card-btn"]}>
+                    <button
+                      type="button"
+                      onClick={() => navigate(`/roadmap/${card.id}`)}
+                      className={styles["roadmap-cards__card-btn"]}
+                    >
                       <span>{card.actionText}</span>
                       <span className={styles["roadmap-cards__card-btn-arrow"]}>→</span>
                     </button>

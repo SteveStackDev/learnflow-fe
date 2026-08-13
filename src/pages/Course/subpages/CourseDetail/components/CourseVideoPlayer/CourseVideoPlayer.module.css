@@ -1,0 +1,218 @@
+.video_card {
+  width: 100%;
+  background-color: #0b1120;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.video_screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: #000000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video_poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.screen_overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.7) 100%);
+  pointer-events: none;
+}
+
+.center_play_btn {
+  position: absolute;
+  z-index: 5;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #0950c3;
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.45);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.center_play_btn:hover {
+  transform: scale(1.1);
+  background: #2563eb;
+  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.6);
+}
+
+.video_top_info {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.badge_tag {
+  background-color: rgba(9, 80, 195, 0.9);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 12px;
+  text-transform: uppercase;
+}
+
+.lesson_code_tag {
+  color: #f8fafc;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Control Bar */
+.control_bar {
+  background-color: #131c31;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.control_left,
+.control_right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ctrl_btn {
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.ctrl_btn:hover {
+  color: #38bdf8;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.time_display {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: #94a3b8;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.progress_track {
+  flex: 1;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+}
+
+.progress_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0950c3 0%, #38bdf8 100%);
+  border-radius: 999px;
+}
+
+.progress_handle {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.speed_wrapper {
+  position: relative;
+}
+
+.speed_btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.speed_btn:hover {
+  color: #ffffff;
+  border-color: #38bdf8;
+}
+
+.speed_dropdown {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 8px;
+  background-color: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+}
+
+.speed_option {
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: left;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.speed_option:hover {
+  background-color: #334155;
+  color: #38bdf8;
+}
+
+.speed_option--active {
+  color: #38bdf8;
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .control_bar {
+    padding: 10px;
+    flex-wrap: wrap;
+  }
+}

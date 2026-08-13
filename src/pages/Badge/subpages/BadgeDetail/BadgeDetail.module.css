@@ -1,0 +1,505 @@
+/* ==========================================================================
+   Badge Detail Page Styles
+   ========================================================================== */
+
+.page_container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+  box-sizing: border-box;
+}
+
+/* 1. Back Navigation Button Styling */
+.header_nav {
+  margin-bottom: 24px;
+}
+
+.back_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #334155;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+}
+
+.back_btn:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+  border-color: #0950c3;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.25);
+  transform: translateX(-3px);
+}
+
+.breadcrumb_link:hover {
+  color: #0950c3;
+}
+
+.breadcrumb_active {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.breadcrumb_sep {
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+}
+
+/* 2. Main Layout Grid */
+.detail_grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ==========================================================================
+   Left Column: Badge Showcase Graphic & Share Action
+   ========================================================================== */
+
+.left_column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.badge_graphic_card {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 10px 30px rgba(9, 80, 195, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+/* Ambient Radial Glow Effect behind central Badge Graphic */
+.badge_ambient_glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(9, 80, 195, 0.18) 0%, rgba(255, 255, 255, 0) 70%);
+  pointer-events: none;
+}
+
+/* Stylized CSS Badge Emblem Composition */
+.badge_emblem_frame {
+  position: relative;
+  z-index: 2;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge_outer_hex {
+  position: absolute;
+  inset: 0;
+  border-radius: 36px;
+  background: linear-gradient(135deg, #0950c3 0%, #1d4ed8 50%, #3b82f6 100%);
+  transform: rotate(45deg);
+  box-shadow: 0 12px 28px rgba(9, 80, 195, 0.35);
+}
+
+.badge_inner_hex {
+  position: absolute;
+  inset: 12px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  transform: rotate(45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge_icon_center {
+  position: relative;
+  z-index: 3;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(245, 124, 0, 0.4);
+}
+
+.badge_banner_label {
+  position: absolute;
+  bottom: 24px;
+  z-index: 4;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 6px 16px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Share Achievement Button */
+.share_btn {
+  width: 100%;
+  padding: 14px 20px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0950c3;
+  background-color: #e0ebff;
+  border: 1px solid rgba(9, 80, 195, 0.25);
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.25s ease;
+}
+
+.share_btn:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+  border-color: #0950c3;
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Right Column: Details & Progress
+   ========================================================================== */
+
+.right_column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 1. Overview Header Card */
+.card_overview {
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.04);
+  padding: 28px 32px;
+}
+
+.tags_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tag_chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.825rem;
+  font-weight: 700;
+}
+
+.tag_chip--tier {
+  background-color: #fff7ed;
+  color: #c2410c;
+  border: 1px solid rgba(194, 65, 12, 0.2);
+}
+
+.tag_chip--category {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid rgba(29, 78, 216, 0.2);
+}
+
+.title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+  line-height: 1.25;
+}
+
+.description {
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* 2. Requirements & Progress Card */
+.card_progress {
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.04);
+  padding: 24px 32px;
+}
+
+.card_subtitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 16px 0;
+}
+
+.requirement_item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 20px;
+}
+
+.check_icon {
+  color: #0950c3;
+  display: flex;
+  align-items: center;
+}
+
+.progress_stats_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.progress_label {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.progress_value {
+  color: #0950c3;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.progress_track {
+  width: 100%;
+  height: 12px;
+  background-color: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(169, 183, 203, 0.25);
+}
+
+.progress_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0950c3 0%, #2563eb 100%);
+  border-radius: 999px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 3. Stats Grid (2 Columns) */
+.stats_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.stat_card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.04);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat_icon_box {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat_icon_box--date {
+  background-color: #fff7ed;
+  color: #c2410c;
+}
+
+.stat_icon_box--owners {
+  background-color: #eff6ff;
+  color: #0950c3;
+}
+
+.stat_info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat_label {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.stat_value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+:global([data-theme="dark"]) .back_btn {
+  background-color: #131c31;
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .back_btn:hover {
+  background-color: #38bdf8;
+  color: #0f172a;
+  border-color: #38bdf8;
+  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.3);
+}
+
+:global([data-theme="dark"]) .breadcrumb_link:hover {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .breadcrumb_active {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .badge_graphic_card,
+:global([data-theme="dark"]) .card_overview,
+:global([data-theme="dark"]) .card_progress,
+:global([data-theme="dark"]) .stat_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .badge_ambient_glow {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(19, 28, 49, 0) 70%);
+}
+
+:global([data-theme="dark"]) .badge_inner_hex {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+:global([data-theme="dark"]) .share_btn {
+  background-color: #1e293b;
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+:global([data-theme="dark"]) .share_btn:hover {
+  background-color: #38bdf8;
+  color: #0f172a;
+  border-color: #38bdf8;
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
+}
+
+:global([data-theme="dark"]) .tag_chip--tier {
+  background-color: rgba(194, 65, 12, 0.2);
+  color: #fb923c;
+  border-color: rgba(251, 146, 60, 0.3);
+}
+
+:global([data-theme="dark"]) .tag_chip--category {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+:global([data-theme="dark"]) .title,
+:global([data-theme="dark"]) .card_subtitle,
+:global([data-theme="dark"]) .stat_value {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .description,
+:global([data-theme="dark"]) .progress_label,
+:global([data-theme="dark"]) .stat_label {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .requirement_item {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .check_icon,
+:global([data-theme="dark"]) .progress_value {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .progress_track {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .progress_fill {
+  background: linear-gradient(90deg, #0950c3 0%, #38bdf8 100%);
+}
+
+:global([data-theme="dark"]) .stat_icon_box--date {
+  background-color: rgba(194, 65, 12, 0.25);
+  color: #fb923c;
+}
+
+:global([data-theme="dark"]) .stat_icon_box--owners {
+  background-color: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 868px) {
+  .detail_grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .badge_graphic_card {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .stats_grid {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+}

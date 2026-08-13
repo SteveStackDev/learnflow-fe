@@ -23,3 +23,11 @@
   margin-top: 16px;
   width: 100%;
 }
+
+@media (max-width: 1024px) {
+  .grid_container {
+    flex-direction: column;
+    height: auto;
+    min-height: auto;
+  }
+}

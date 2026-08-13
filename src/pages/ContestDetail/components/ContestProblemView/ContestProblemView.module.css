@@ -312,3 +312,16 @@
 :global([data-theme="dark"]) .constraint_item {
   color: #cbd5e1;
 }
+
+@media (max-width: 1024px) {
+  .panel {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    min-height: 400px;
+  }
+
+  .tabs_nav {
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,312 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* 1. Progress Card */
+.progress_card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.04);
+  padding: 20px;
+}
+
+.course_meta_row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.course_badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background-color: #e0ebff;
+  color: #0950c3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.title_wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.course_title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 2px 0;
+}
+
+.chapter_subtitle {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.progress_stats_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.825rem;
+  margin-bottom: 8px;
+}
+
+.percent_text {
+  font-weight: 800;
+  color: #0950c3;
+}
+
+.count_text {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.progress_track {
+  width: 100%;
+  height: 8px;
+  background-color: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0950c3 0%, #2563eb 100%);
+  border-radius: 999px;
+}
+
+/* 2. Accordion Chapters List */
+.accordion_list {
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.04);
+  overflow: hidden;
+}
+
+.chapter_item {
+  border-bottom: 1px solid rgba(169, 183, 203, 0.25);
+}
+
+.chapter_item:last-child {
+  border-bottom: none;
+}
+
+.chapter_header {
+  width: 100%;
+  padding: 16px 20px;
+  background-color: #f8fafc;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease;
+}
+
+.chapter_header:hover {
+  background-color: #f1f5f9;
+}
+
+.chapter_header_left {
+  display: flex;
+  flex-direction: column;
+}
+
+.chapter_title {
+  font-size: 0.925rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 2px 0;
+}
+
+.chapter_meta {
+  font-size: 0.775rem;
+  color: #64748b;
+}
+
+.chevron_icon {
+  color: #64748b;
+  display: flex;
+  align-items: center;
+}
+
+/* Lessons Sub-list */
+.lessons_list {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 6px 0;
+}
+
+.lesson_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.lesson_row:hover {
+  background-color: #f8fafc;
+}
+
+.lesson_row--active {
+  background-color: #e0ebff;
+  border-left: 4px solid #0950c3;
+}
+
+.lesson_row--locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.lesson_status_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon_completed {
+  color: #16a34a;
+}
+
+.icon_active {
+  color: #0950c3;
+}
+
+.icon_locked {
+  color: #94a3b8;
+}
+
+.lesson_info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lesson_title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.4;
+}
+
+.lesson_row--active .lesson_title {
+  color: #0950c3;
+}
+
+.lesson_duration {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* 3. AI Mentor Card */
+.ai_mentor_card {
+  margin-top: 4px;
+}
+
+.ai_btn {
+  width: 100%;
+  padding: 12px 20px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0950c3;
+  background-color: #e0ebff;
+  border: 1px solid rgba(9, 80, 195, 0.25);
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.25s ease;
+}
+
+.ai_btn:hover {
+  background-color: #0950c3;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .progress_card,
+:global([data-theme="dark"]) .accordion_list,
+:global([data-theme="dark"]) .lessons_list {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .course_badge {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .course_title,
+:global([data-theme="dark"]) .chapter_title,
+:global([data-theme="dark"]) .lesson_title {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .chapter_subtitle,
+:global([data-theme="dark"]) .count_text,
+:global([data-theme="dark"]) .chapter_meta,
+:global([data-theme="dark"]) .lesson_duration {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .percent_text,
+:global([data-theme="dark"]) .icon_active {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .chapter_header {
+  background-color: #1e293b;
+}
+
+:global([data-theme="dark"]) .chapter_header:hover {
+  background-color: #334155;
+}
+
+:global([data-theme="dark"]) .chapter_item {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .lesson_row:hover {
+  background-color: #1e293b;
+}
+
+:global([data-theme="dark"]) .lesson_row--active {
+  background-color: #1e293b;
+  border-left-color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .lesson_row--active .lesson_title {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .ai_btn {
+  background-color: #1e293b;
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+:global([data-theme="dark"]) .ai_btn:hover {
+  background-color: #38bdf8;
+  color: #0f172a;
+}

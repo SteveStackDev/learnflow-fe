@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { Pagination } from "~/components/ui";
@@ -13,6 +14,7 @@ function BadgeGrid({
   onResetSearch,
 }) {
   const { toast } = useToast();
+  const navigate = useNavigate();
   return (
     <section className={styles["badge-grid"]}>
       <div className={styles["badge-grid__container"]}>
@@ -41,10 +43,11 @@ function BadgeGrid({
               {displayedItems.map((obj, index) => (
                 <div
                   key={obj.id}
+                  onClick={() => navigate(`/badge/${obj.id}`)}
+                  style={{ cursor: "pointer", transitionDelay: `${index * 100}ms` }}
                   className={`${styles["badge-grid__card"]} reveal-card ${
                     obj.status === "locked" ? styles["badge-grid__card--locked"] : ""
                   }`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <div className={styles["badge-grid__card-header"]}>
                     <span
@@ -75,18 +78,15 @@ function BadgeGrid({
                   <div className={styles["badge-grid__card-actions"]}>
                     <button
                       type="button"
-                      onClick={() =>
-                        toast.info(
-                          `Thao tác "${obj.buttonText}" với danh hiệu "${obj.title}"! (UI hoàn thành – chờ kết nối API/backend)`,
-                          "Danh hiệu thành tựu",
-                        )
-                      }
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/badge/${obj.id}`);
+                      }}
                       className={`${styles["badge-grid__btn"]} ${
                         obj.status === "received"
                           ? styles["badge-grid__btn--contained"]
                           : styles["badge-grid__btn--disabled"]
                       }`}
-                      disabled={obj.status === "locked"}
                     >
                       {obj.buttonText}
                     </button>
