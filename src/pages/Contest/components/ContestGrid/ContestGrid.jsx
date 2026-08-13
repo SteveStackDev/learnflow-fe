@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
+import { Pagination } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ContestGrid.module.css";
 
@@ -13,6 +15,7 @@ function ContestGrid({
   setActiveTab,
 }) {
   const { toast } = useToast();
+  const navigate = useNavigate();
   return (
     <section className={styles["contest-grid"]}>
       <div className={styles["contest-grid__container"]}>
@@ -87,12 +90,7 @@ function ContestGrid({
                   <div className={styles["contest-grid__card-actions"]}>
                     <button
                       type="button"
-                      onClick={() =>
-                        toast.info(
-                          `Đã chọn "${obj.actionText}" cho cuộc thi "${obj.title}"! (UI hoàn thành – chờ kết nối API/backend)`,
-                          "Cuộc thi lập trình",
-                        )
-                      }
+                      onClick={() => navigate(`/contest/${obj.id}`)}
                       className={`${styles["contest-grid__action-btn"]} ${
                         obj.actionVariant === "contained"
                           ? styles["contest-grid__action-btn--contained"]
@@ -120,42 +118,11 @@ function ContestGrid({
         )}
 
         {/* Dynamic Pagination Controls */}
-        {filteredAndSortedItems.length > 0 && (
-          <div className={styles["contest-grid__pagination-wrapper"]}>
-            <nav className={styles["contest-grid__pagination"]}>
-              <button
-                type="button"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                className={styles["contest-grid__page-btn"]}
-                disabled={currentPage === 1}
-              >
-                ‹
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  type="button"
-                  onClick={() => setCurrentPage(pageNum)}
-                  className={`${styles["contest-grid__page-btn"]} ${
-                    currentPage === pageNum ? styles["contest-grid__page-btn--active"] : ""
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              ))}
-
-              <button
-                type="button"
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                className={styles["contest-grid__page-btn"]}
-                disabled={currentPage === totalPages}
-              >
-                ›
-              </button>
-            </nav>
-          </div>
-        )}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </section>
   );

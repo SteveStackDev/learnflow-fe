@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { NavLink, Link, useLocation } from "react-router";
+import { NavLink, Link, useLocation, useNavigate } from "react-router";
 import styles from "./Header.module.css";
 // Components
 import Icon from "~/components/Icon/Icon";
@@ -37,16 +37,65 @@ const PRACTICE_DROPDOWN_ITEMS = [
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+
+  // [MODIFIED] - State & ref quản lý hiển thị tài khoản người dùng đã đăng nhập
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  // [MODIFIED] - Lấy thông tin người dùng từ localStorage khi tải trang
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem("fySet_user");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
   const location = useLocation();
+  const navigate = useNavigate();
   const timeoutRef = useRef(null);
+  const userMenuRef = useRef(null);
 
   const isLearnActive = location.pathname === "/roadmap" || location.pathname === "/course";
   const isPracticeActive = location.pathname === "/problem" || location.pathname === "/contest";
 
+  // [MODIFIED] - Đăng ký sự kiện fySet_auth_change & storage để tự động cập nhật Header khi đăng nhập/đăng xuất
+  useEffect(() => {
+    const handleAuthChange = () => {
+      try {
+        const saved = localStorage.getItem("fySet_user");
+        setCurrentUser(saved ? JSON.parse(saved) : null);
+      } catch {
+        setCurrentUser(null);
+      }
+    };
+
+    window.addEventListener("fySet_auth_change", handleAuthChange);
+    window.addEventListener("storage", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("fySet_auth_change", handleAuthChange);
+      window.removeEventListener("storage", handleAuthChange);
+    };
+  }, []);
+
+  // Close menus on route change
   useEffect(() => {
     setActiveDropdown(null);
     setIsMenuOpen(false);
+    setIsUserMenuOpen(false);
   }, [location.pathname]);
+
+  // Click outside user dropdown
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleMouseEnter = (type) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -66,6 +115,16 @@ function Header() {
   const closeMenu = () => {
     setIsMenuOpen(false);
     setActiveDropdown(null);
+    setIsUserMenuOpen(false);
+  };
+
+  // [MODIFIED] - Hàm xử lý Đăng xuất người dùng
+  const handleLogout = () => {
+    localStorage.removeItem("fySet_user");
+    setCurrentUser(null);
+    setIsUserMenuOpen(false);
+    window.dispatchEvent(new Event("fySet_auth_change"));
+    navigate("/");
   };
 
   return (
@@ -237,31 +296,95 @@ function Header() {
             >
               Liên hệ
             </NavLink>
-
-            <NavLink
-              to="/setting"
-              className={({ isActive }) =>
-                `${styles.header__link} ${isActive ? styles["header__link--active"] : ""}`
-              }
-            >
-              Cài đặt
-            </NavLink>
           </nav>
 
-          {/* Desktop Right Action Buttons */}
+          {/* [MODIFIED] - Hiển thị Avatar & Menu người dùng khi đã đăng nhập, ngược lại hiện nút Đăng nhập/Đăng ký */}
           <div className={styles.header__actions}>
-            <Link
-              to="/signin"
-              className={`${styles.header__btn} ${styles["header__btn--outlined"]}`}
-            >
-              Đăng nhập
-            </Link>
-            <Link
-              to="/signup"
-              className={`${styles.header__btn} ${styles["header__btn--contained"]}`}
-            >
-              Đăng ký
-            </Link>
+            {currentUser ? (
+              <div className={styles.header__user_wrapper} ref={userMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                  className={`${styles.header__user_btn} ${
+                    isUserMenuOpen ? styles["header__user_btn--active"] : ""
+                  }`}
+                >
+                  <img
+                    src={currentUser.avatar}
+                    alt={currentUser.name}
+                    className={styles.header__user_avatar}
+                  />
+                  <span className={styles.header__user_name}>{currentUser.name}</span>
+                  <Icon
+                    name="ChevronDown"
+                    size={14}
+                    className={`${styles.header__chevron} ${
+                      isUserMenuOpen ? styles["header__chevron--open"] : ""
+                    }`}
+                  />
+                </button>
+
+                {isUserMenuOpen && (
+                  <div className={styles.header__user_menu}>
+                    <div className={styles.header__user_header}>
+                      <img
+                        src={currentUser.avatar}
+                        alt={currentUser.name}
+                        className={styles.header__user_avatar_large}
+                      />
+                      <div className={styles.header__user_details}>
+                        <span className={styles.header__user_fullname}>{currentUser.name}</span>
+                        <span className={styles.header__user_email}>{currentUser.email}</span>
+                      </div>
+                    </div>
+
+                    <hr className={styles.header__user_divider} />
+
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className={styles.header__user_menu_item}
+                    >
+                      <Icon name="LayoutDashboard" size={16} />
+                      <span>Dashboard</span>
+                    </Link>
+
+                    <Link
+                      to="/setting"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className={styles.header__user_menu_item}
+                    >
+                      <Icon name="Settings" size={16} />
+                      <span>Cài đặt tài khoản</span>
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className={`${styles.header__user_menu_item} ${styles["header__user_menu_item--danger"]}`}
+                    >
+                      <Icon name="LogOut" size={16} />
+                      <span>Đăng xuất</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link
+                  to="/signin"
+                  className={`${styles.header__btn} ${styles["header__btn--outlined"]}`}
+                >
+                  Đăng nhập
+                </Link>
+                <Link
+                  to="/signup"
+                  className={`${styles.header__btn} ${styles["header__btn--contained"]}`}
+                >
+                  Đăng ký
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Hamburger / Close Toggle Button */}
@@ -399,33 +522,60 @@ function Header() {
               >
                 Liên hệ
               </NavLink>
-
-              <NavLink
-                to="/setting"
-                onClick={closeMenu}
-                className={({ isActive }) =>
-                  `${styles["header__mobile-link"]} ${isActive ? styles["header__mobile-link--active"] : ""}`
-                }
-              >
-                Cài đặt
-              </NavLink>
             </nav>
 
+            {/* [MODIFIED] - Mobile user actions box */}
             <div className={styles["header__mobile-actions"]}>
-              <Link
-                to="/signin"
-                onClick={closeMenu}
-                className={`${styles.header__btn} ${styles["header__btn--outlined"]} ${styles["header__btn--full"]}`}
-              >
-                Đăng nhập
-              </Link>
-              <Link
-                to="/signup"
-                onClick={closeMenu}
-                className={`${styles.header__btn} ${styles["header__btn--contained"]} ${styles["header__btn--full"]}`}
-              >
-                Đăng ký
-              </Link>
+              {currentUser ? (
+                <div className={styles.header__mobile_user_box}>
+                  <div className={styles.header__mobile_user_info}>
+                    <img
+                      src={currentUser.avatar}
+                      alt={currentUser.name}
+                      className={styles.header__user_avatar}
+                    />
+                    <div>
+                      <div className={styles.header__user_fullname}>{currentUser.name}</div>
+                      <div className={styles.header__user_email}>{currentUser.email}</div>
+                    </div>
+                  </div>
+                  <Link
+                    to="/dashboard"
+                    onClick={closeMenu}
+                    className={`${styles.header__btn} ${styles["header__btn--contained"]} ${styles["header__btn--full"]}`}
+                    style={{ marginBottom: "8px" }}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      closeMenu();
+                      handleLogout();
+                    }}
+                    className={`${styles.header__btn} ${styles["header__btn--outlined"]} ${styles["header__btn--full"]}`}
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <Link
+                    to="/signin"
+                    onClick={closeMenu}
+                    className={`${styles.header__btn} ${styles["header__btn--outlined"]} ${styles["header__btn--full"]}`}
+                  >
+                    Đăng nhập
+                  </Link>
+                  <Link
+                    to="/signup"
+                    onClick={closeMenu}
+                    className={`${styles.header__btn} ${styles["header__btn--contained"]} ${styles["header__btn--full"]}`}
+                  >
+                    Đăng ký
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}

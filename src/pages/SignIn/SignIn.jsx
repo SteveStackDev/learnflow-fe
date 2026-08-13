@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 // Data
 import { signInData } from "./data";
+// [MODIFIED] - Import dữ liệu tài khoản test từ file testAccountData.js trong thư mục component TestAccount
+import { testAccount } from "./components/TestAccount/testAccountData";
 
 // Import CSS Modules
 import styles from "./SignIn.module.css";
@@ -27,8 +30,11 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
 
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  // [MODIFIED] - Hàm xử lý Đăng nhập & lưu thông tin người dùng vào localStorage
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -53,14 +59,28 @@ function SignIn() {
     }
 
     setIsSubmitting(true);
-    // UI hoàn thành – chờ kết nối API/backend.
+
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success(
-        "Đăng nhập thành công! (UI hoàn thành ! chờ kết nối API/backend)",
-        "Đăng nhập giả lập",
-      );
-    }, 1000);
+
+      // [MODIFIED] - Khởi tạo thông tin người dùng dựa trên tài khoản test hoặc thông tin người dùng tự nhập
+      const userObj = {
+        email: email.trim(),
+        name: email.trim() === testAccount.email ? testAccount.name : email.split("@")[0],
+        avatar:
+          email.trim() === testAccount.email
+            ? testAccount.avatar
+            : `https://api.dicebear.com/7.x/avataaars/svg?seed=${email.split("@")[0]}`,
+        role: email.trim() === testAccount.email ? testAccount.role : "Học viên",
+      };
+
+      // [MODIFIED] - Lưu trạng thái tài khoản vào localStorage & phát sự kiện thông báo thay đổi auth
+      localStorage.setItem("fySet_user", JSON.stringify(userObj));
+      window.dispatchEvent(new Event("fySet_auth_change"));
+
+      toast.success(`Chào mừng ${userObj.name} trở lại!`, "Đăng nhập thành công");
+      navigate("/");
+    }, 600);
   };
 
   // Typewriter effect state
@@ -72,13 +92,11 @@ function SignIn() {
     const currentPhrase = GREETING_PHRASES[phraseIndex];
 
     if (!isDeleting && charIndex === currentPhrase.length + 1) {
-      // Pause at the end of typing before deleting
       const delayTimeout = setTimeout(() => setIsDeleting(true), 2000);
       return () => clearTimeout(delayTimeout);
     }
 
     if (isDeleting && charIndex === 0) {
-      // Switch to next phrase when erased
       setIsDeleting(false);
       setPhraseIndex((prev) => (prev + 1) % GREETING_PHRASES.length);
       return;

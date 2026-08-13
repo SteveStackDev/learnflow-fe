@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ContestFilter.module.css";
 
@@ -5,6 +6,7 @@ function ContestFilter({ searchQuery, setSearchQuery, tabs, activeTab, handleTab
   return (
     <section className={styles["contest-filters"]}>
       <div className={styles["contest-filters__container"]}>
+        {/* Card Wrapper containing Search Box & Filter Tabs */}
         <div className={styles["contest-filters__card-wrapper"]}>
           <div className={styles["contest-filters__row"]}>
             <div className={styles["contest-filters__search-box"]}>
@@ -37,6 +39,14 @@ function ContestFilter({ searchQuery, setSearchQuery, tabs, activeTab, handleTab
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Dedicated Right-Aligned View All Button Row Below the Sort/Filter Bar */}
+        <div className={styles["contest-filters__view-all-row"]}>
+          <Link to="/contest/list" className={styles["contest-filters__view-all-btn"]}>
+            <span>Xem tất cả</span>
+            <Icon name="ArrowRight" size={16} />
+          </Link>
         </div>
       </div>
     </section>

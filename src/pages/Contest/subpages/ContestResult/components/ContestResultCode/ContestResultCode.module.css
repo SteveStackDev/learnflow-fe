@@ -1,0 +1,239 @@
+/* ContestResultCode Component Styling */
+.result_code_card {
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.header_bar {
+  padding: 16px 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.title_group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.problem_title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.775rem;
+  font-weight: 700;
+  background-color: rgba(22, 163, 74, 0.1);
+  color: #16a34a;
+  border: 1px solid rgba(22, 163, 74, 0.25);
+}
+
+.meta_info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.meta_item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* Code Toolbar */
+.code_toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  background-color: #f1f5f9;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.4);
+}
+
+.toolbar_left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.code_tag {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.lines_count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background-color: rgba(9, 80, 195, 0.08);
+  color: #0950c3;
+}
+
+.copy_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.4);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.copy_btn:hover {
+  background-color: #e0ebff;
+  color: #0950c3;
+  border-color: #0950c3;
+}
+
+/* Code Workspace */
+.code_workspace {
+  display: flex;
+  background-color: #ffffff;
+  font-family: var(--font-family-code, monospace);
+  font-size: 14px;
+  line-height: 24px;
+  max-height: 320px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(169, 183, 203, 0.4) transparent;
+}
+
+.code_workspace::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.code_workspace::-webkit-scrollbar-thumb {
+  background-color: rgba(169, 183, 203, 0.4);
+  border-radius: 9999px;
+}
+
+.line_numbers {
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  flex-shrink: 0;
+  padding: 16px 0;
+  user-select: none;
+  background-color: #f1f5f9;
+  border-right: 1px solid rgba(169, 183, 203, 0.4);
+  font-family: var(--font-family-code, monospace);
+  font-size: 14px;
+  line-height: 24px;
+  box-sizing: border-box;
+}
+
+.line_number_item {
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.code_content_wrap {
+  flex: 1;
+  padding: 16px;
+  overflow: auto;
+}
+
+.code_highlight_layer {
+  margin: 0;
+  font-family: var(--font-family-code, monospace);
+  font-size: 14px;
+  line-height: 24px;
+  color: #0f172a;
+  white-space: pre;
+  tab-size: 4;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .result_code_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+:global([data-theme="dark"]) .header_bar {
+  background-color: #131c31;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .problem_title {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .meta_item {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .code_toolbar {
+  background-color: #1e293b;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .code_tag {
+  color: #f1f5f9;
+}
+
+:global([data-theme="dark"]) .lines_count {
+  background-color: rgba(137, 180, 250, 0.15);
+  color: #89b4fa;
+}
+
+:global([data-theme="dark"]) .copy_btn {
+  background-color: #313244;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #cdd6f4;
+}
+
+:global([data-theme="dark"]) .copy_btn:hover {
+  background-color: #45475a;
+  color: #ffffff;
+  border-color: #89b4fa;
+}
+
+:global([data-theme="dark"]) .code_workspace {
+  background-color: #1e1e2e;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+:global([data-theme="dark"]) .line_numbers {
+  background-color: #181825;
+  color: #6c7086;
+  border-right-color: rgba(255, 255, 255, 0.05);
+}
+
+:global([data-theme="dark"]) .code_highlight_layer {
+  color: #cdd6f4;
+}

@@ -1,3 +1,4 @@
+// [ORIGINAL DATA] - Giữ nguyên cấu trúc dữ liệu ban đầu của trang SignIn
 export const signInData = {
   features: [
     {
@@ -30,12 +31,12 @@ export const signInData = {
     {
       id: "signin-5",
       name: "Google",
-      iconName: "IconGoogle",
+      iconName: "Google",
     },
     {
       id: "signin-6",
       name: "GitHub",
-      iconName: "IconGitHub",
+      iconName: "Github",
     },
   ],
 };

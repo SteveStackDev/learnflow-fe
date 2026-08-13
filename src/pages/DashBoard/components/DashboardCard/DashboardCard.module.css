@@ -1,0 +1,243 @@
+/* Student Card Component Styles */
+.dashboard_card {
+  position: relative;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto 36px auto;
+  padding: 24px 32px;
+  background: linear-gradient(135deg, #0947b6 0%, #083794 50%, #041f5a 100%);
+  border-radius: 20px;
+  color: #ffffff;
+  box-shadow:
+    0 16px 36px rgba(9, 80, 195, 0.28),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.dashboard_card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 20px 44px rgba(9, 80, 195, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Background glowing accent */
+.dashboard_card__glow {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(9, 80, 195, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Top Row: Brand & Streak Badge */
+.dashboard_card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.dashboard_card__brand_group {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard_card__brand_title {
+  font-family: "Inter", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.dashboard_card__badge_sub {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 2px;
+}
+
+.dashboard_card__streak_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.775rem;
+  font-weight: 700;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard_card__streak_fire {
+  font-size: 0.9rem;
+}
+
+/* Middle Section: Name, Role & Progress Bar */
+.dashboard_card__middle {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.dashboard_card__identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.dashboard_card__name {
+  font-family: "Inter", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1;
+}
+
+.dashboard_card__role_pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #38bdf8;
+}
+
+/* Progress Bar directly under FRONTEND DEVELOPER role */
+.dashboard_card__progress_block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.dashboard_card__progress_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dashboard_card__progress_track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.dashboard_card__progress_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8 0%, #7dd3fc 100%);
+  border-radius: 9999px;
+  transition: width 0.6s ease;
+}
+
+/* Bottom Section: Student Metadata & Badge Icons */
+.dashboard_card__bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 14px;
+}
+
+.dashboard_card__meta_list {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.dashboard_card__meta_item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dashboard_card__meta_label {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dashboard_card__meta_val {
+  font-size: 0.825rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  font-family: monospace;
+}
+
+.dashboard_card__icon_row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dashboard_card__icon_badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .dashboard_card {
+    padding: 20px;
+  }
+
+  .dashboard_card__name {
+    font-size: 1.25rem;
+  }
+
+  .dashboard_card__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+:global([data-theme="dark"]) .dashboard_card {
+  background: linear-gradient(135deg, #0b1d40 0%, #0d285c 50%, #071533 100%);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}

@@ -18,6 +18,7 @@ import Pricing from "../pages/Pricing/Pricing";
 import About from "../pages/About/About";
 import Contact from "../pages/Contact/Contact";
 import Setting from "../pages/Setting/Setting";
+import DashBoard from "../pages/DashBoard/DashBoard";
 import SignIn from "../pages/SignIn/SignIn";
 import SignUp from "../pages/SignUp/SignUp";
 import NotFound from "../pages/NotFound/NotFound";
@@ -106,6 +107,11 @@ describe("FySet Page Routes Smoke Tests", () => {
   it("renders Setting page without crashing", () => {
     renderWithRouter(<Setting />);
     expect(screen.getAllByText(/Cài đặt/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders DashBoard page without crashing", () => {
+    renderWithRouter(<DashBoard />);
+    expect(screen.getAllByText(/FySet/i).length).toBeGreaterThan(0);
   });
 
   it("renders NotFound page without crashing", () => {

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
+import { Pagination } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ProblemList.module.css";
 
@@ -121,42 +122,11 @@ function ProblemList({
         )}
 
         {/* Dynamic Pagination Controls */}
-        {filteredAndSortedItems.length > 0 && (
-          <div className={styles["prob-challenges__pagination-wrapper"]}>
-            <nav className={styles["prob-challenges__pagination"]}>
-              <button
-                type="button"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                className={styles["prob-challenges__page-btn"]}
-                disabled={currentPage === 1}
-              >
-                ‹
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  type="button"
-                  onClick={() => setCurrentPage(pageNum)}
-                  className={`${styles["prob-challenges__page-btn"]} ${
-                    currentPage === pageNum ? styles["prob-challenges__page-btn--active"] : ""
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              ))}
-
-              <button
-                type="button"
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                className={styles["prob-challenges__page-btn"]}
-                disabled={currentPage === totalPages}
-              >
-                ›
-              </button>
-            </nav>
-          </div>
-        )}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </section>
   );

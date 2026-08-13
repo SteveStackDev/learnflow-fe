@@ -1,5 +1,6 @@
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
+import { Pagination } from "~/components/ui";
 import heroUrl from "~/assets/images/Home/hero.webp";
 import styles from "./RoadmapGrid.module.css";
 
@@ -107,42 +108,11 @@ function RoadmapGrid({
         )}
 
         {/* Dynamic Pagination Controls */}
-        {filteredAndSortedItems.length > 0 && (
-          <div className={styles["roadmap-cards__pagination-wrapper"]}>
-            <nav className={styles["roadmap-cards__pagination"]}>
-              <button
-                type="button"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                className={styles["roadmap-cards__page-btn"]}
-                disabled={currentPage === 1}
-              >
-                ‹
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  type="button"
-                  onClick={() => setCurrentPage(pageNum)}
-                  className={`${styles["roadmap-cards__page-btn"]} ${
-                    currentPage === pageNum ? styles["roadmap-cards__page-btn--active"] : ""
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              ))}
-
-              <button
-                type="button"
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                className={styles["roadmap-cards__page-btn"]}
-                disabled={currentPage === totalPages}
-              >
-                ›
-              </button>
-            </nav>
-          </div>
-        )}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </section>
   );

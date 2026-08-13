@@ -1,0 +1,25 @@
+/* ContestDetail Page Container - full screen width workspace */
+.detail_page {
+  padding: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.header_wrapper {
+  margin-bottom: 16px;
+}
+
+.grid_container {
+  display: flex;
+  gap: 16px;
+  height: 660px;
+  min-height: 520px;
+  position: relative;
+  width: 100%;
+}
+
+.console_wrapper {
+  margin-top: 16px;
+  width: 100%;
+}

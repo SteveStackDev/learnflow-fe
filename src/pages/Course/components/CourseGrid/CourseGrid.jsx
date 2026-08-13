@@ -1,5 +1,6 @@
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
+import { Pagination } from "~/components/ui";
 import heroUrl from "~/assets/images/Home/hero.webp";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./CourseGrid.module.css";
@@ -112,42 +113,11 @@ function CourseGrid({
         )}
 
         {/* Dynamic Pagination Controls */}
-        {filteredAndSortedItems.length > 0 && (
-          <div className={styles["course-grid__pagination-wrapper"]}>
-            <nav className={styles["course-grid__pagination"]}>
-              <button
-                type="button"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                className={styles["course-grid__page-btn"]}
-                disabled={currentPage === 1}
-              >
-                ‹
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  type="button"
-                  onClick={() => setCurrentPage(pageNum)}
-                  className={`${styles["course-grid__page-btn"]} ${
-                    currentPage === pageNum ? styles["course-grid__page-btn--active"] : ""
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              ))}
-
-              <button
-                type="button"
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                className={styles["course-grid__page-btn"]}
-                disabled={currentPage === totalPages}
-              >
-                ›
-              </button>
-            </nav>
-          </div>
-        )}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </section>
   );

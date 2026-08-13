@@ -1,5 +1,6 @@
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
+import { Pagination } from "~/components/ui";
 import styles from "./LeaderboardTable.module.css";
 
 function LeaderboardTable({
@@ -124,42 +125,11 @@ function LeaderboardTable({
         </div>
 
         {/* Dynamic Pagination Controls */}
-        {filteredAndSortedItems.length > 0 && (
-          <div className={styles["board-ranking__pagination-wrapper"]}>
-            <nav className={styles["board-ranking__pagination"]}>
-              <button
-                type="button"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                className={styles["board-ranking__page-btn"]}
-                disabled={currentPage === 1}
-              >
-                ‹
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  type="button"
-                  onClick={() => setCurrentPage(pageNum)}
-                  className={`${styles["board-ranking__page-btn"]} ${
-                    currentPage === pageNum ? styles["board-ranking__page-btn--active"] : ""
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              ))}
-
-              <button
-                type="button"
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                className={styles["board-ranking__page-btn"]}
-                disabled={currentPage === totalPages}
-              >
-                ›
-              </button>
-            </nav>
-          </div>
-        )}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </section>
   );

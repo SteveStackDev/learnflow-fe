@@ -30,12 +30,12 @@ export const signUpData = {
     {
       id: "signup-5",
       name: "Google",
-      iconName: "IconGoogle",
+      iconName: "Google",
     },
     {
       id: "signup-6",
       name: "GitHub",
-      iconName: "IconGitHub",
+      iconName: "Github",
     },
   ],
 };

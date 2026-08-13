@@ -641,3 +641,215 @@
 :global([data-theme="dark"]) .header__mobile-actions {
   border-top-color: rgba(255, 255, 255, 0.15);
 }
+
+/* User Profile Menu Styling */
+.header__user_wrapper {
+  position: relative;
+}
+
+.header__user_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px 6px 6px;
+  background-color: #ffffff;
+  border: 1.5px solid rgba(169, 183, 203, 0.35);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.06);
+}
+
+.header__user_btn:hover,
+.header__user_btn--active {
+  border-color: #0950c3;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.15);
+  background-color: #f8fafc;
+}
+
+.header__user_avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #0950c3;
+  background-color: #e2e8f0;
+}
+
+.header__user_name {
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #191b22;
+  white-space: nowrap;
+}
+
+.header__user_menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 260px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 12px 36px rgba(9, 80, 195, 0.14);
+  padding: 12px;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: dropdownFadeIn 0.2s ease forwards;
+}
+
+.header__user_header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+}
+
+.header__user_avatar_large {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0950c3;
+}
+
+.header__user_details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.header__user_fullname {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #191b22;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.header__user_email {
+  font-size: 0.775rem;
+  color: #64748b;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.header__user_divider {
+  border: none;
+  border-top: 1px solid rgba(169, 183, 203, 0.3);
+  margin: 6px 0;
+}
+
+.header__user_menu_item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #434653;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.header__user_menu_item:hover {
+  background-color: #f0f6ff;
+  color: #0950c3;
+}
+
+.header__user_menu_item--danger {
+  color: #ef4444;
+}
+
+.header__user_menu_item--danger:hover {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+/* Mobile user box */
+.header__mobile_user_box {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.header__mobile_user_info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background-color: rgba(9, 80, 195, 0.05);
+  border-radius: 12px;
+}
+
+:global([data-theme="dark"]) .header__user_btn {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .header__user_btn:hover,
+:global([data-theme="dark"]) .header__user_btn--active {
+  border-color: #38bdf8;
+  background-color: #1e293b;
+}
+
+:global([data-theme="dark"]) .header__user_name,
+:global([data-theme="dark"]) .header__user_fullname {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .header__user_menu {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+:global([data-theme="dark"]) .header__user_email {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .header__user_divider {
+  border-top-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .header__user_menu_item {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .header__user_menu_item:hover {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .header__mobile_user_info {
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+.header__user_btn .header__chevron {
+  color: #434653;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+:global([data-theme="dark"]) .header__user_btn .header__chevron {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .header__user_btn:hover .header__chevron,
+:global([data-theme="dark"]) .header__user_btn--active .header__chevron {
+  color: #38bdf8;
+}

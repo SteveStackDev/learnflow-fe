@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import styles from "./ProblemListTable.module.css";
 import Icon from "~/components/Icon/Icon";
+import { Pagination } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
 import useScrollReveal from "~/hooks/useScrollReveal";
 
@@ -134,38 +135,12 @@ function ProblemListTable({
           {Math.min(currentPage * itemsPerPage, filteredCount)} trên {filteredCount} bài tập
         </div>
 
-        <div className={styles.pagination}>
-          <button
-            type="button"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            className={styles.page_btn}
-          >
-            <Icon name="ChevronLeft" size={16} />
-          </button>
-
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-            <button
-              key={p}
-              type="button"
-              onClick={() => setCurrentPage(p)}
-              className={`${styles.page_btn} ${
-                currentPage === p ? styles["page_btn--active"] : ""
-              }`}
-            >
-              {p}
-            </button>
-          ))}
-
-          <button
-            type="button"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            className={styles.page_btn}
-          >
-            <Icon name="ChevronRight" size={16} />
-          </button>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          showWrapper={false}
+        />
       </div>
     </section>
   );

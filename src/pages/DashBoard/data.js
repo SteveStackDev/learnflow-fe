@@ -1,0 +1,161 @@
+/**
+ * Mock data cho trang Dashboard người dùng (FySet Dashboard)
+ */
+
+export const dashboardData = {
+  student: {
+    id: "8420 2024",
+    name: "MICHAEL",
+    role: "FRONTEND DEVELOPER",
+    joinDate: "01/01/2024",
+    overallProgress: 82,
+    streakDays: 30,
+    badgeLevel: "THẺ HỌC VIÊN CAO CẤP",
+    badgeIcons: ["Award", "Trophy", "CheckCircle", "Zap"],
+  },
+
+  learningPath: {
+    tag: "LEARNING PATH",
+    title: "Frontend Developer",
+    currentModule: "Module 4: Advanced React Patterns & Performance",
+    progress: 82,
+    actionText: "Continue",
+    to: "/roadmap",
+  },
+
+  recommended: [
+    {
+      id: "rec-1",
+      title: "Data Structures in JS",
+      description: "Master arrays, maps, and sets for technical interviews.",
+      meta: "2h 15m",
+      type: "duration",
+      iconName: "Code",
+      to: "/course",
+    },
+    {
+      id: "rec-2",
+      title: "Two Sum - Optimal",
+      description: "Daily Challenge: Solve using O(n) time complexity.",
+      meta: "Medium",
+      type: "difficulty",
+      iconName: "Terminal",
+      to: "/problem",
+    },
+    {
+      id: "rec-3",
+      title: "REST API Design",
+      description: "Best practices for building scalable backend services.",
+      meta: "Article",
+      type: "type",
+      iconName: "BookOpen",
+      to: "/course",
+    },
+  ],
+
+  recentActivities: [
+    {
+      id: "act-1",
+      title: "Solved: Valid Palindrome",
+      time: "2 hours ago",
+      subtext: "JavaScript • O(n) Time",
+      iconName: "CheckCircle2",
+      type: "success",
+    },
+    {
+      id: "act-2",
+      title: "Achievement: 7 Day Coding Streak",
+      time: "Yesterday",
+      subtext: "Giữ vững phong độ luyện tập!",
+      iconName: "Flame",
+      type: "warning",
+    },
+    {
+      id: "act-3",
+      title: "Watched: React Context API Tutorial",
+      time: "2 days ago",
+      subtext: "Frontend Path",
+      iconName: "PlayCircle",
+      type: "info",
+    },
+  ],
+
+  upcomingEvents: [
+    {
+      id: "evt-1",
+      tag: "CONTEST",
+      time: "Sat, 10:00 AM",
+      title: "Weekly Algorithmic Challenge #42",
+      to: "/contest",
+    },
+    {
+      id: "evt-2",
+      tag: "DEADLINE",
+      time: "Tomorrow",
+      title: "Submit Capstone Project Phase 1",
+      isUrgent: true,
+      to: "/roadmap",
+    },
+  ],
+
+  badges: [
+    {
+      id: "badge-1",
+      title: "30 Day Streak",
+      iconName: "Award",
+      isUnlocked: true,
+    },
+    {
+      id: "badge-2",
+      title: "100 Problems",
+      iconName: "Zap",
+      isUnlocked: true,
+    },
+    {
+      id: "badge-3",
+      title: "Top 10% Contest",
+      iconName: "Lock",
+      isUnlocked: false,
+    },
+  ],
+
+  // Ma trận 35 ngày gần nhất điểm danh GitHub style
+  attendanceMatrix: [
+    { date: "2026-07-08", count: 2, level: 1 },
+    { date: "2026-07-09", count: 5, level: 3 },
+    { date: "2026-07-10", count: 8, level: 4 },
+    { date: "2026-07-11", count: 1, level: 1 },
+    { date: "2026-07-12", count: 0, level: 0 },
+    { date: "2026-07-13", count: 3, level: 2 },
+    { date: "2026-07-14", count: 6, level: 3 },
+    { date: "2026-07-15", count: 4, level: 2 },
+    { date: "2026-07-16", count: 7, level: 4 },
+    { date: "2026-07-17", count: 2, level: 1 },
+    { date: "2026-07-18", count: 9, level: 4 },
+    { date: "2026-07-19", count: 3, level: 2 },
+    { date: "2026-07-20", count: 0, level: 0 },
+    { date: "2026-07-21", count: 4, level: 2 },
+    { date: "2026-07-22", count: 6, level: 3 },
+    { date: "2026-07-23", count: 10, level: 4 },
+    { date: "2026-07-24", count: 5, level: 3 },
+    { date: "2026-07-25", count: 1, level: 1 },
+    { date: "2026-07-26", count: 2, level: 1 },
+    { date: "2026-07-27", count: 0, level: 0 },
+    { date: "2026-07-28", count: 4, level: 2 },
+    { date: "2026-07-29", count: 7, level: 4 },
+    { date: "2026-07-30", count: 3, level: 2 },
+    { date: "2026-07-31", count: 5, level: 3 },
+    { date: "2026-08-01", count: 6, level: 3 },
+    { date: "2026-08-02", count: 2, level: 1 },
+    { date: "2026-08-03", count: 0, level: 0 },
+    { date: "2026-08-04", count: 4, level: 2 },
+    { date: "2026-08-05", count: 8, level: 4 },
+    { date: "2026-08-06", count: 5, level: 3 },
+    { date: "2026-08-07", count: 3, level: 2 },
+    { date: "2026-08-08", count: 6, level: 3 },
+    { date: "2026-08-09", count: 9, level: 4 },
+    { date: "2026-08-10", count: 4, level: 2 },
+    { date: "2026-08-11", count: 7, level: 4 },
+    { date: "2026-08-12", count: 5, level: 3 },
+  ],
+};

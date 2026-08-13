@@ -33,7 +33,17 @@ const ProblemResultSubpage = lazy(
   () => import("~/pages/Problem/subpages/ProblemResult/ProblemResult"),
 );
 const Setting = lazy(() => import("~/pages/Setting/Setting"));
+const DashBoard = lazy(() => import("~/pages/DashBoard/DashBoard"));
 const Contest = lazy(() => import("~/pages/Contest/Contest"));
+const ContestListSubpage = lazy(
+  () => import("~/pages/Contest/subpages/ContestList/ContestList"),
+);
+const ContestDetailSubpage = lazy(
+  () => import("~/pages/Contest/subpages/ContestDetail/ContestDetail"),
+);
+const ContestResultSubpage = lazy(
+  () => import("~/pages/Contest/subpages/ContestResult/ContestResult"),
+);
 const SignIn = lazy(() => import("~/pages/SignIn/SignIn"));
 const SignUp = lazy(() => import("~/pages/SignUp/SignUp"));
 const NotFound = lazy(() => import("~/pages/NotFound/NotFound"));
@@ -60,7 +70,13 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/problem/:id/result" element={<ProblemResultSubpage />} />
                 <Route path="/problem/result" element={<ProblemResultSubpage />} />
                 <Route path="/contest" element={<Contest />} />
+                <Route path="/contest/list" element={<ContestListSubpage />} />
+                <Route path="/contest/detail" element={<ContestDetailSubpage />} />
+                <Route path="/contest/result" element={<ContestResultSubpage />} />
+                <Route path="/contest/:id/result" element={<ContestResultSubpage />} />
+                <Route path="/contest/:id" element={<ContestDetailSubpage />} />
                 <Route path="/setting" element={<Setting />} />
+                <Route path="/dashboard" element={<DashBoard />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
               <Route path="/signin" element={<SignIn />} />

@@ -1,0 +1,362 @@
+/* ContestTable Component Styling */
+.table_card {
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.05);
+  overflow: hidden;
+  width: 100%;
+}
+
+.table_responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.contest_table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.contest_table th {
+  padding: 16px 20px;
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.35);
+  white-space: nowrap;
+}
+
+.contest_table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.25);
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+.contest_table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.contest_table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.contest_table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Contest Info Cell */
+.contest_info_cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.status_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 0.725rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.status_badge--live {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.live_dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #dc2626;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.status_badge--upcoming {
+  background-color: rgba(9, 80, 195, 0.1);
+  color: #0950c3;
+  border: 1px solid rgba(9, 80, 195, 0.25);
+}
+
+.status_badge--finished {
+  background-color: rgba(100, 116, 139, 0.1);
+  color: #64748b;
+  border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+.contest_title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.contest_title:hover {
+  color: #0950c3;
+}
+
+.participants_meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* Writers & Meta Cells */
+.text_muted {
+  color: #475569;
+  font-weight: 600;
+}
+
+.start_time_text {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.duration_text {
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* Action & Preview Cell */
+.action_cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.join_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.25);
+  text-decoration: none;
+  width: 130px;
+}
+
+.join_btn:hover {
+  background: linear-gradient(135deg, #0848b0 0%, #04204e 100%);
+  box-shadow: 0 6px 16px rgba(9, 80, 195, 0.35);
+}
+
+.register_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background-color: #ffffff;
+  color: #0950c3;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid rgba(9, 80, 195, 0.45);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 130px;
+}
+
+.register_btn:hover {
+  background-color: #e0ebff;
+  border-color: #0950c3;
+}
+
+.registered_badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background-color: rgba(22, 163, 74, 0.1);
+  color: #16a34a;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  border-radius: 8px;
+  width: 130px;
+}
+
+.standings_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #0950c3;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+  text-decoration: none;
+}
+
+.standings_btn:hover {
+  color: #053787;
+  text-decoration: underline;
+}
+
+.preview_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: #0950c3;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s ease;
+}
+
+.preview_btn:hover {
+  color: #053787;
+  text-decoration: underline;
+}
+
+/* Empty State */
+.empty_state {
+  padding: 40px 20px;
+  text-align: center;
+  color: #64748b;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .table_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+:global([data-theme="dark"]) .contest_table th {
+  background-color: #1e293b;
+  color: #94a3b8;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .contest_table td {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .contest_table tbody tr:hover {
+  background-color: #1e293b;
+}
+
+:global([data-theme="dark"]) .contest_title {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .contest_title:hover {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .participants_meta {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .text_muted {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .start_time_text {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .duration_text {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .register_btn {
+  background-color: #1e293b;
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+:global([data-theme="dark"]) .register_btn:hover {
+  background-color: #334155;
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .standings_btn {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .standings_btn:hover {
+  color: #7dd3fc;
+}
+
+:global([data-theme="dark"]) .preview_btn {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .preview_btn:hover {
+  color: #7dd3fc;
+}
+
+:global([data-theme="dark"]) .status_badge--live {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+:global([data-theme="dark"]) .status_badge--upcoming {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+:global([data-theme="dark"]) .status_badge--finished {
+  background-color: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+  border-color: rgba(148, 163, 184, 0.3);
+}

@@ -1,0 +1,14 @@
+/* ContestList Page Container */
+.contest_list_page {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 60px 24px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .contest_list_page {
+    padding: 20px 16px 40px 16px;
+  }
+}

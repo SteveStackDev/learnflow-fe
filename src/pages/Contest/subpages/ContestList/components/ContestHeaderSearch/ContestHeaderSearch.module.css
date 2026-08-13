@@ -1,0 +1,156 @@
+/* ContestHeaderSearch Component Styling */
+.header_section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+/* Search Bar Wrapper */
+.search_wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.search_input {
+  width: 100%;
+  height: 52px;
+  padding: 0 48px 0 48px;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.45);
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #0f172a;
+  outline: none;
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.04);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.search_input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.search_input:focus {
+  border-color: #0950c3;
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.12);
+  background-color: #ffffff;
+}
+
+.search_icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.clear_btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.clear_btn:hover {
+  color: #0f172a;
+  background-color: #f1f5f9;
+}
+
+/* Tabs Bar */
+.tabs_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.35);
+  padding-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.tab_btn {
+  padding: 10px 20px;
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: #64748b;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.tab_btn:hover {
+  color: #0950c3;
+}
+
+.tab_btn--active {
+  color: #0950c3;
+  border-bottom-color: #0950c3;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .search_input {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .search_input::placeholder {
+  color: #64748b;
+}
+
+:global([data-theme="dark"]) .search_input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 6px 24px rgba(56, 189, 248, 0.2);
+}
+
+:global([data-theme="dark"]) .search_icon {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .clear_btn {
+  color: #64748b;
+}
+
+:global([data-theme="dark"]) .clear_btn:hover {
+  color: #ffffff;
+  background-color: #1e293b;
+}
+
+:global([data-theme="dark"]) .tabs_container {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .tab_btn {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .tab_btn:hover {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .tab_btn--active {
+  color: #38bdf8;
+  border-bottom-color: #38bdf8;
+}
