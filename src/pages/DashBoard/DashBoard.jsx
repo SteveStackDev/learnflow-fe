@@ -3,11 +3,11 @@ import { useState } from "react";
 import DashboardCard from "./components/DashboardCard/DashboardCard";
 import DashboardContent from "./components/DashboardContent/DashboardContent";
 
-// Data
-import { dashboardData } from "./data";
+// Data & Styles
+import { dashboardData } from "~/constants";
 import styles from "./DashBoard.module.css";
 
-// Helper function to get time-based greeting
+// Helper function get time-based greeting (Có thể move sang src/utils/dateUtils.js)
 function getTimeBasedGreeting() {
   const hour = new Date().getHours();
   if (hour >= 5 && hour < 12) return "Chào buổi sáng";
@@ -26,11 +26,11 @@ function DashBoard() {
   });
 
   const greetingPrefix = getTimeBasedGreeting();
-  const userName = currentUser?.name || dashboardData.student.name;
+  const userName = currentUser?.name || dashboardData?.student?.name || "Học viên";
 
   // Merge current user info into student card data
   const studentInfo = {
-    ...dashboardData.student,
+    ...(dashboardData?.student || {}),
     name: userName,
   };
 
@@ -53,12 +53,12 @@ function DashBoard() {
 
         {/* Main Content: Path, Recommended, Recent Activity & Sidebar with GitHub Matrix */}
         <DashboardContent
-          learningPath={dashboardData.learningPath}
-          recommended={dashboardData.recommended}
-          recentActivities={dashboardData.recentActivities}
-          upcomingEvents={dashboardData.upcomingEvents}
-          badges={dashboardData.badges}
-          attendanceMatrix={dashboardData.attendanceMatrix}
+          learningPath={dashboardData?.learningPath || []}
+          recommended={dashboardData?.recommended || []}
+          recentActivities={dashboardData?.recentActivities || []}
+          upcomingEvents={dashboardData?.upcomingEvents || []}
+          badges={dashboardData?.badges || []}
+          attendanceMatrix={dashboardData?.attendanceMatrix || {}}
         />
       </main>
     </div>

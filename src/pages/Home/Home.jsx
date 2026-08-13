@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from "./Home.module.css";
 
 // Data
-import { homeData } from "./data";
+import { homeData } from "../../constants/mockHome";
 
 // Sub-components
 import HomeHero from "./components/HomeHero/HomeHero";

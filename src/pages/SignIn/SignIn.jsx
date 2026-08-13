@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 // Data
-import { signInData } from "./data";
+import { signInData } from "../../constants/mockSignIn";
 // [MODIFIED] - Import dữ liệu tài khoản test từ file testAccountData.js trong thư mục component TestAccount
 import { testAccount } from "./components/TestAccount/testAccountData";
 

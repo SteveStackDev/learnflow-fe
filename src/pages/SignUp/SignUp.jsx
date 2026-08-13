@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // Data
-import { signUpData } from "./data";
+import { signUpData } from "../../constants/mockSignUp";
 
 // Import CSS Modules
 import styles from "./SignUp.module.css";

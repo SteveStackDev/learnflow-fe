@@ -1,6 +1,7 @@
 import { StrictMode, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router";
+// 🎯 CHỈ ĐỔI TỪ "react-router" THÀNH "react-router-dom" Ở DÒNG NÀY:
+import { BrowserRouter, Routes, Route } from "react-router"; 
 
 // Context & Toast
 import { ToastProvider } from "~/context/ToastContext.jsx";
@@ -15,7 +16,7 @@ import "~/styles/main.css";
 import MainLayout from "~/layouts/MainLayout";
 import PageLoader from "~/components/PageLoader/PageLoader";
 
-// Lazy Loaded Page Components (Code-Splitting)
+// Lazy Loaded Page Components (Flat Architecture)
 const Home = lazy(() => import("~/pages/Home/Home"));
 const About = lazy(() => import("~/pages/About/About"));
 const Contact = lazy(() => import("~/pages/Contact/Contact"));
@@ -24,26 +25,22 @@ const Pricing = lazy(() => import("~/pages/Pricing/Pricing"));
 const Badge = lazy(() => import("~/pages/Badge/Badge"));
 const Leaderboard = lazy(() => import("~/pages/Leaderboard/Leaderboard"));
 const Course = lazy(() => import("~/pages/Course/Course"));
+
+// Problem Pages
 const Problem = lazy(() => import("~/pages/Problem/Problem"));
-const ProblemListSubpage = lazy(() => import("~/pages/Problem/subpages/ProblemList/ProblemList"));
-const ProblemDetailSubpage = lazy(
-  () => import("~/pages/Problem/subpages/ProblemDetail/ProblemDetail"),
-);
-const ProblemResultSubpage = lazy(
-  () => import("~/pages/Problem/subpages/ProblemResult/ProblemResult"),
-);
+const ProblemList = lazy(() => import("~/pages/ProblemList/ProblemList"));
+const ProblemDetail = lazy(() => import("~/pages/ProblemDetail/ProblemDetail"));
+const ProblemResult = lazy(() => import("~/pages/ProblemResult/ProblemResult"));
+
+// Contest Pages
+const Contest = lazy(() => import("~/pages/Contest/Contest"));
+const ContestList = lazy(() => import("~/pages/ContestList/ContestList"));
+const ContestDetail = lazy(() => import("~/pages/ContestDetail/ContestDetail"));
+const ContestResult = lazy(() => import("~/pages/ContestResult/ContestResult"));
+
+// General Pages
 const Setting = lazy(() => import("~/pages/Setting/Setting"));
 const DashBoard = lazy(() => import("~/pages/DashBoard/DashBoard"));
-const Contest = lazy(() => import("~/pages/Contest/Contest"));
-const ContestListSubpage = lazy(
-  () => import("~/pages/Contest/subpages/ContestList/ContestList"),
-);
-const ContestDetailSubpage = lazy(
-  () => import("~/pages/Contest/subpages/ContestDetail/ContestDetail"),
-);
-const ContestResultSubpage = lazy(
-  () => import("~/pages/Contest/subpages/ContestResult/ContestResult"),
-);
 const SignIn = lazy(() => import("~/pages/SignIn/SignIn"));
 const SignUp = lazy(() => import("~/pages/SignUp/SignUp"));
 const NotFound = lazy(() => import("~/pages/NotFound/NotFound"));
@@ -64,17 +61,22 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/badge" element={<Badge />} />
                 <Route path="/leaderboard" element={<Leaderboard />} />
                 <Route path="/course" element={<Course />} />
+
+                {/* Problem Routes */}
                 <Route path="/problem" element={<Problem />} />
-                <Route path="/problem/list" element={<ProblemListSubpage />} />
-                <Route path="/problem/:id" element={<ProblemDetailSubpage />} />
-                <Route path="/problem/:id/result" element={<ProblemResultSubpage />} />
-                <Route path="/problem/result" element={<ProblemResultSubpage />} />
+                <Route path="/problem/list" element={<ProblemList />} />
+                <Route path="/problem/:id" element={<ProblemDetail />} />
+                <Route path="/problem/:id/result" element={<ProblemResult />} />
+                <Route path="/problem/result" element={<ProblemResult />} />
+
+                {/* Contest Routes */}
                 <Route path="/contest" element={<Contest />} />
-                <Route path="/contest/list" element={<ContestListSubpage />} />
-                <Route path="/contest/detail" element={<ContestDetailSubpage />} />
-                <Route path="/contest/result" element={<ContestResultSubpage />} />
-                <Route path="/contest/:id/result" element={<ContestResultSubpage />} />
-                <Route path="/contest/:id" element={<ContestDetailSubpage />} />
+                <Route path="/contest/list" element={<ContestList />} />
+                <Route path="/contest/detail" element={<ContestDetail />} />
+                <Route path="/contest/result" element={<ContestResult />} />
+                <Route path="/contest/:id/result" element={<ContestResult />} />
+                <Route path="/contest/:id" element={<ContestDetail />} />
+
                 <Route path="/setting" element={<Setting />} />
                 <Route path="/dashboard" element={<DashBoard />} />
                 <Route path="*" element={<NotFound />} />
@@ -87,5 +89,5 @@ createRoot(document.getElementById("root")).render(
         <ToastContainer />
       </ToastProvider>
     </ThemeProvider>
-  </StrictMode>,
+  </StrictMode>
 );

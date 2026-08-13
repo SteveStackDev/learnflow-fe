@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 // Data
-import { problemData, ALGORITHM_OPTIONS } from "./data";
+import { problemData, ALGORITHM_OPTIONS } from "../../constants/mockProblem";
 
 // Import CSS Modules
 import styles from "./Problem.module.css";

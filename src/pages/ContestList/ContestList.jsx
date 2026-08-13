@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { mockContestListData } from "./data";
+import { mockContestListData } from "../../constants/mockContestList";
 import ContestHeaderSearch from "./components/ContestHeaderSearch/ContestHeaderSearch";
 import ContestTable from "./components/ContestTable/ContestTable";
 import ContestPreviewModal from "./components/ContestPreviewModal/ContestPreviewModal";

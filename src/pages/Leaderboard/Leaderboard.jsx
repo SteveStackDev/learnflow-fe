@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 
 // Data
-import { leaderboardData } from "./data";
+import { leaderboardData } from "../../constants/mockLeaderBoard";
 
 // Styles
 import styles from "./Leaderboard.module.css";

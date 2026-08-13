@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 
 // Data
-import { badgeData } from "./data";
+import { badgeData } from "../../constants/mockBadge";
 
 // Page Container CSS Module
 import styles from "./Badge.module.css";

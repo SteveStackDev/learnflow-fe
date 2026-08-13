@@ -1,5 +1,5 @@
 // Data
-import { contactData } from "./data";
+import { contactData } from "../../constants/mockContact";
 // Styles
 import styles from "./Contact.module.css";
 // Components

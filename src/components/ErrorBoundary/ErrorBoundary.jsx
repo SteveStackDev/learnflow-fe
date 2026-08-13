@@ -2,7 +2,7 @@ import React from "react";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ErrorBoundary.module.css";
 
-class ErrorBoundary extends React.Component {
+export class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -23,20 +23,34 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
+      // Nếu có truyền custom fallback UI từ props thì render fallback đó
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
+      const isDev = import.meta.env?.DEV || process.env.NODE_ENV === "development";
+
       return (
         <div className={styles["error-boundary"]}>
           <div className={styles["error-boundary__card"]}>
             <div className={styles["error-boundary__icon-box"]}>
               <Icon name="Shield" size={32} />
             </div>
+            
             <h2 className={styles["error-boundary__title"]}>Đã xảy ra lỗi không mong muốn</h2>
+            
             <p className={styles["error-boundary__desc"]}>
               Hệ thống đã ghi nhận sự cố runtime. Vui lòng thử tải lại trang hoặc quay về trang chủ
               để tiếp tục trải nghiệm.
             </p>
-            {this.state.error && (
-              <div className={styles["error-boundary__details"]}>{this.state.error.toString()}</div>
+
+            {/* Chỉ hiển thị error detail khi ở môi trường Development */}
+            {isDev && this.state.error && (
+              <div className={styles["error-boundary__details"]}>
+                {this.state.error.toString()}
+              </div>
             )}
+
             <div className={styles["error-boundary__actions"]}>
               <button
                 type="button"
@@ -45,6 +59,7 @@ class ErrorBoundary extends React.Component {
               >
                 <span>Tải lại trang</span>
               </button>
+              
               <a
                 href="/"
                 className={`${styles["error-boundary__btn"]} ${styles["error-boundary__btn--secondary"]}`}

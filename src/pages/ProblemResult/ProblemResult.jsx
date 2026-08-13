@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router";
 import styles from "./ProblemResult.module.css";
-import { problemResultData } from "./data";
+import { problemResultData } from "../../constants/mockProblemResult";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import Icon from "~/components/Icon/Icon";
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 
 // Data
-import { contestData } from "./data";
+import { contestData } from "../../constants/mockContest";
 
 // Styles
 import styles from "./Contest.module.css";

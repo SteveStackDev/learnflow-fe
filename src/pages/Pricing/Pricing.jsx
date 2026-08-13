@@ -1,6 +1,6 @@
 import { useState } from "react";
 // Data
-import { pricingData } from "./data";
+import { pricingData } from "../../constants/mockPricing";
 
 // Styles
 import styles from "./Pricing.module.css";
