@@ -104,7 +104,7 @@ export function CourseTabContent({ lesson }) {
             <div className={styles.discussion_list}>
               {lesson.discussions.map((item, idx) => (
                 <div key={idx} className={styles.comment_card}>
-                  <img src={item.avatar} alt={item.author} className={styles.comment_avatar} />
+                  <img src={item.avatar} alt={`Ảnh đại diện của ${item.author}`} className={styles.comment_avatar} />
                   <div className={styles.comment_body}>
                     <div className={styles.comment_header}>
                       <span className={styles.comment_author}>{item.author}</span>

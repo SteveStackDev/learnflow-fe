@@ -50,7 +50,7 @@ export function RoadmapSidebar({
             <Card key={course.id} hoverable className={styles.course_card}>
               <img
                 src={course.thumbnailUrl}
-                alt={course.title}
+                alt={`Hình ảnh khóa học ${course.title}`}
                 className={styles.course_img}
               />
               <div className={styles.course_info}>

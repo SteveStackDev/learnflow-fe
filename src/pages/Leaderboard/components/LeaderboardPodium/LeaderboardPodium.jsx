@@ -17,7 +17,7 @@ function LeaderboardPodium({ podium }) {
                 <img
                   className={styles["board-podium__avatar"]}
                   src={obj.avatarUrl}
-                  alt={obj.name}
+                  alt={`Ảnh đại diện của ${obj.name}`}
                   loading="lazy"
                   decoding="async"
                 />

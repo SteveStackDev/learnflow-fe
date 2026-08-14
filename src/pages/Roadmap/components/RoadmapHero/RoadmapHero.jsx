@@ -43,7 +43,7 @@ function RoadmapHero() {
               <img
                 className={styles["roadmap-hero__img"]}
                 src={heroUrl}
-                alt="Hero Roadmap Image"
+                alt="Lộ trình học tập lập trình cá nhân hóa FySet"
                 loading="lazy"
                 decoding="async"
               />

@@ -33,6 +33,7 @@ export function ContestDetailHeader({
 
   return (
     <header className={styles.header_bar}>
+      {/* Left: Back Button & Contest Info */}
       <div className={styles.header_left}>
         <Button
           variant="outlined"
@@ -42,30 +43,31 @@ export function ContestDetailHeader({
           aria-label="Quay lại"
         />
 
-        {/* Toggle Problems List Button */}
-        <Button
-          variant={showProblemsList ? "contained" : "outlined"}
-          leftIcon="List"
-          onClick={onToggleProblemsList}
-          title="Bật/Tắt danh sách bài tập"
-        >
-          Danh sách bài
-        </Button>
-
         <div className={styles.contest_meta}>
           <Badge variant="primary" size="sm">{badgeText || "CONTEST ARENA"}</Badge>
           <h1 className={styles.contest_title}>{contestTitle}</h1>
         </div>
       </div>
 
+      {/* Center: Countdown Timer */}
       <div className={styles.header_center}>
-        {/* Real-time Countdown Timer */}
         <div className={styles.timer_pill} title="Thời gian làm bài còn lại">
-          <Icon name="Clock" size={18} className={styles.timer_icon} />
+          <Icon name="Clock" size={16} className={styles.timer_icon} />
           <span>{formatTime(seconds)}</span>
         </div>
+      </div>
 
-        {/* Toggle Live Leaderboard Button */}
+      {/* Right: Workspace Action Toggles (Desktop Only) */}
+      <div className={styles.header_right}>
+        <Button
+          variant={showProblemsList ? "contained" : "outlined"}
+          leftIcon="List"
+          onClick={onToggleProblemsList}
+          title="Bật/Tắt danh sách bài tập"
+        >
+          <span>Danh sách bài</span>
+        </Button>
+
         <Button
           variant={showLeaderboard ? "contained" : "outlined"}
           leftIcon="Trophy"

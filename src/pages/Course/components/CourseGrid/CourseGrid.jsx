@@ -64,7 +64,7 @@ function CourseGrid({
                     </span>
                     <img
                       src={heroUrl}
-                      alt={obj.title}
+                      alt={`Khóa học ${obj.title}`}
                       loading="lazy"
                       decoding="async"
                       className={styles["course-grid__card-img"]}

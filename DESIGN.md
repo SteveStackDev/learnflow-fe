@@ -159,3 +159,10 @@ Sử dụng 3 họ phông chữ chuyên biệt truy xuất qua CSS Variables:
 - **PageLoader:** Màn hình chờ tải trang Suspense hiệu ứng spinner neon.
 - **ErrorBoundary:** Màn hình khôi phục lỗi ứng dụng thân thiện người dùng.
 - **Icon Registry (`src/components/Icon/Icon.jsx`):** Thành phần render SVG Icon tập trung theo tên (`name`), đảm bảo tính nhất quán của bộ biểu tượng toàn hệ thống.
+
+---
+
+## 📝 Quy chuẩn Mã Nguồn CSS & PR Checklist (Coding Convention)
+
+1. **Ưu tiên CSS Variables (Design Tokens)**:
+   - Ưu tiên sử dụng các biến CSS Variables đã khai báo sẵn trong `src/styles/variables.css` (như `var(--color-primary)`, `var(--theme-card-bg)`, `var(--theme-text-primary)`, v.v.) thay vì gán cứng (hardcode) giá trị màu mã hex trong file CSS.

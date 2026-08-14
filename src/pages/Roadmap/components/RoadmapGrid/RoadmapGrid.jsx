@@ -68,7 +68,7 @@ function RoadmapGrid({
                     <img
                       className={styles["roadmap-cards__card-media"]}
                       src={heroUrl}
-                      alt={card.title}
+                      alt={`Biểu tượng lộ trình học ${card.title}`}
                       loading="lazy"
                       decoding="async"
                     />

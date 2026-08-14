@@ -35,7 +35,7 @@ function AboutFeatures({ features }) {
           <img
             className={styles["about-features__img"]}
             src={heroUrl}
-            alt="Feature Showcase"
+            alt="Tính năng nổi bật của hệ thống FySet"
             loading="lazy"
             decoding="async"
           />

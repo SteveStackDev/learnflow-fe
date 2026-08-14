@@ -66,7 +66,7 @@ function ContestGrid({
                       </span>
                       <img
                         src={obj.imageUrl}
-                        alt={obj.title}
+                        alt={`Hình ảnh cuộc thi ${obj.title}`}
                         loading="lazy"
                         decoding="async"
                         className={styles["contest-grid__card-img"]}

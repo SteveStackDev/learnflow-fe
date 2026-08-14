@@ -68,7 +68,7 @@ export default function ContestInfoStandings({ standings = [] }) {
                 <td className={styles.rank_cell}>{renderRankBadge(item.rank)}</td>
                 <td>
                   <div className={styles.user_info}>
-                    <img src={item.avatar} alt={item.name} className={styles.user_avatar} />
+                    <img src={item.avatar} alt={`Ảnh đại diện của ${item.name}`} className={styles.user_avatar} />
                     <span className={styles.user_name}>{item.name}</span>
                   </div>
                 </td>

@@ -46,7 +46,7 @@ function AboutHero({ CAROUSEL_SLIDES, currentSlide, setCurrentSlide, handlePrev,
                 >
                   <img
                     src={slide.image}
-                    alt={slide.title}
+                    alt={`Hình ảnh ${slide.title}`}
                     loading="lazy"
                     decoding="async"
                     className={styles["about-carousel__img"]}

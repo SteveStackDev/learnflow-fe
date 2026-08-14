@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { mockContestData } from "~/constants";
 import { useToast } from "~/context/ToastContext.jsx";
+import Icon from "~/components/Icon/Icon";
 import styles from "./ContestDetail.module.css";
 
 // Components
@@ -25,6 +26,21 @@ export function ContestDetail() {
   const [showProblemsList, setShowProblemsList] = useState(true);
   const [showLeaderboard, setShowLeaderboard] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Responsive Segmented Tab State for Tablet/Mobile (<= 1024px)
+  const [activeMobileTab, setActiveMobileTab] = useState("problem"); // "problem" | "editor" | "leaderboard"
+
+  // Track viewport width to apply responsive tab rendering
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileViewport(window.innerWidth <= 1024);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Dedicated Bottom Console Log State
   const [consoleLogs, setConsoleLogs] = useState([]);
@@ -101,56 +117,157 @@ export function ContestDetail() {
           badgeText={contest.badge}
           initialRemainingSeconds={contest.remainingSeconds}
           showProblemsList={showProblemsList}
-          onToggleProblemsList={() => setShowProblemsList(!showProblemsList)}
+          onToggleProblemsList={() => {
+            setShowProblemsList(!showProblemsList);
+            if (isMobileViewport) setActiveMobileTab("problem");
+          }}
           showLeaderboard={showLeaderboard}
-          onToggleLeaderboard={() => setShowLeaderboard(!showLeaderboard)}
+          onToggleLeaderboard={() => {
+            setShowLeaderboard(!showLeaderboard);
+            if (isMobileViewport) setActiveMobileTab("leaderboard");
+          }}
         />
+      </div>
+
+      {/* Segmented View Switcher (Visible on Tablet & Mobile <= 1024px) */}
+      <div className={styles.mobile_tab_bar}>
+        <button
+          type="button"
+          onClick={() => setActiveMobileTab("problem")}
+          className={`${styles.mobile_tab_btn} ${activeMobileTab === "problem" ? styles["mobile_tab_btn--active"] : ""}`}
+        >
+          <Icon name="FileText" size={16} />
+          <span>Đề bài & Bài tập</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveMobileTab("editor")}
+          className={`${styles.mobile_tab_btn} ${activeMobileTab === "editor" ? styles["mobile_tab_btn--active"] : ""}`}
+        >
+          <Icon name="Code" size={16} />
+          <span>Trình soạn thảo</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveMobileTab("leaderboard")}
+          className={`${styles.mobile_tab_btn} ${activeMobileTab === "leaderboard" ? styles["mobile_tab_btn--active"] : ""}`}
+        >
+          <Icon name="Trophy" size={16} />
+          <span>Bảng xếp hạng</span>
+        </button>
       </div>
 
       {/* Main Workspace Layout */}
       <div className={styles.grid_container}>
-        {/* Left Sidebar: User & Problems List */}
-        {showProblemsList && (
-          <ContestSidebar
-            user={contest.user}
-            problems={contest.problems}
-            activeProblemId={activeProblem.id}
-            onSelectProblem={(problemId) => setActiveProblemId(problemId)}
-          />
-        )}
+        {/* On Mobile Viewport: Render based on activeMobileTab */}
+        {isMobileViewport ? (
+          <>
+            {activeMobileTab === "problem" && (
+              <>
+                {showProblemsList && (
+                  <ContestSidebar
+                    user={contest.user}
+                    problems={contest.problems}
+                    activeProblemId={activeProblem.id}
+                    onSelectProblem={(problemId) => setActiveProblemId(problemId)}
+                  />
+                )}
+                <ContestProblemView problem={activeProblem} />
+                
+                {/* Floating Quick Action: Jump to Editor */}
+                <div className={styles.mobile_quick_banner}>
+                  <button
+                    type="button"
+                    onClick={() => setActiveMobileTab("editor")}
+                    className={styles.mobile_quick_btn}
+                  >
+                    <span>Mở trình soạn thảo & Gõ code</span>
+                    <Icon name="ArrowRight" size={16} />
+                  </button>
+                </div>
+              </>
+            )}
 
-        {/* Center: Problem Statement & Examples */}
-        <ContestProblemView problem={activeProblem} />
+            {activeMobileTab === "editor" && (
+              <>
+                {/* Quick Action: Back to Problem */}
+                <div className={styles.mobile_quick_banner} style={{ marginTop: 0 }}>
+                  <button
+                    type="button"
+                    onClick={() => setActiveMobileTab("problem")}
+                    className={`${styles.mobile_quick_btn} ${styles["mobile_quick_btn--secondary"]}`}
+                  >
+                    <Icon name="ArrowLeft" size={16} />
+                    <span>Xem lại đề bài & ví dụ ({activeProblem.id || "A"})</span>
+                  </button>
+                </div>
 
-        {/* Right Center: Code Editor */}
-        <ContestCodeEditor
-          code={currentCode}
-          onChangeCode={handleChangeCode}
-          onResetCode={handleResetCode}
-          onRunTest={handleRunCode}
-          onSubmitCode={handleSubmitCode}
-          onFileUpload={(content) => handleChangeCode(content)}
-          isSubmitting={isSubmitting}
-        />
+                <ContestCodeEditor
+                  code={currentCode}
+                  onChangeCode={handleChangeCode}
+                  onResetCode={handleResetCode}
+                  onRunTest={handleRunCode}
+                  onSubmitCode={handleSubmitCode}
+                  onFileUpload={(content) => handleChangeCode(content)}
+                  isSubmitting={isSubmitting}
+                />
+              </>
+            )}
 
-        {/* Right Drawer: Live Leaderboard */}
-        {showLeaderboard && (
-          <ContestLiveLeaderboard
-            leaderboard={contest.leaderboard}
-            onClose={() => setShowLeaderboard(false)}
-          />
+            {activeMobileTab === "leaderboard" && (
+              <ContestLiveLeaderboard
+                leaderboard={contest.leaderboard}
+                onClose={() => setActiveMobileTab("problem")}
+              />
+            )}
+          </>
+        ) : (
+          /* Desktop Desktop (> 1024px): Standard Multi-Pane Arena Layout */
+          <>
+            {showProblemsList && (
+              <ContestSidebar
+                user={contest.user}
+                problems={contest.problems}
+                activeProblemId={activeProblem.id}
+                onSelectProblem={(problemId) => setActiveProblemId(problemId)}
+              />
+            )}
+
+            <ContestProblemView problem={activeProblem} />
+
+            <ContestCodeEditor
+              code={currentCode}
+              onChangeCode={handleChangeCode}
+              onResetCode={handleResetCode}
+              onRunTest={handleRunCode}
+              onSubmitCode={handleSubmitCode}
+              onFileUpload={(content) => handleChangeCode(content)}
+              isSubmitting={isSubmitting}
+            />
+
+            {showLeaderboard && (
+              <ContestLiveLeaderboard
+                leaderboard={contest.leaderboard}
+                onClose={() => setShowLeaderboard(false)}
+              />
+            )}
+          </>
         )}
       </div>
 
-      {/* Console Log Panel */}
-      <div className={styles.console_wrapper}>
-        <ProblemDetailConsole
-          consoleLogs={consoleLogs}
-          isExpanded={isConsoleExpanded}
-          setIsExpanded={setIsConsoleExpanded}
-          onClearLogs={() => setConsoleLogs([])}
-        />
-      </div>
+      {/* Console Log Panel (Visible when editor tab active on mobile, or always on desktop) */}
+      {(!isMobileViewport || activeMobileTab === "editor") && (
+        <div className={styles.console_wrapper}>
+          <ProblemDetailConsole
+            consoleLogs={consoleLogs}
+            isExpanded={isConsoleExpanded}
+            setIsExpanded={setIsConsoleExpanded}
+            onClearLogs={() => setConsoleLogs([])}
+          />
+        </div>
+      )}
     </div>
   );
 }

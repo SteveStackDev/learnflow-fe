@@ -50,7 +50,7 @@ export function ContestLiveLeaderboard({
               <span className={`${styles.rank_num} ${styles[`rank_num--${item.rank}`]}`}>
                 {item.rank}
               </span>
-              <img src={item.avatar} alt={item.name} className={styles.avatar} />
+              <img src={item.avatar} alt={`Ảnh đại diện của ${item.name}`} className={styles.avatar} />
               <span className={styles.name}>{item.name}</span>
             </div>
             <span className={styles.score}>{item.score}</span>
@@ -63,7 +63,7 @@ export function ContestLiveLeaderboard({
           <div key={item.rank} className={styles.rank_row}>
             <div className={styles.row_left}>
               <span className={styles.rank_num}>{item.rank}</span>
-              <img src={item.avatar} alt={item.name} className={styles.avatar} />
+              <img src={item.avatar} alt={`Ảnh đại diện của ${item.name}`} className={styles.avatar} />
               <span className={styles.name}>{item.name}</span>
             </div>
             <span className={styles.score}>{item.score}</span>

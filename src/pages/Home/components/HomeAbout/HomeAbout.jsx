@@ -12,7 +12,7 @@ function HomeAbout({ highlights }) {
             <img
               className={styles["home-about__img"]}
               src={heroUrl}
-              alt="FySet About Image"
+              alt="Giới thiệu nền tảng học lập trình FySet"
               loading="lazy"
               decoding="async"
             />

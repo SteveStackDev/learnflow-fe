@@ -1,5 +1,6 @@
 import React from "react";
 import Icon from "~/components/Icon/Icon";
+import { captureException } from "~/services/errorTracker";
 import styles from "./ErrorBoundary.module.css";
 
 export class ErrorBoundary extends React.Component {
@@ -13,7 +14,7 @@ export class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("FySet ErrorBoundary caught an unhandled runtime error:", error, errorInfo);
+    captureException(error, errorInfo);
   }
 
   handleReset = () => {

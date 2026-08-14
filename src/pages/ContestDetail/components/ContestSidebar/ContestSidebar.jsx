@@ -16,7 +16,7 @@ export function ContestSidebar({
       {user && (
         <div className={styles.user_card}>
           <div className={styles.user_header}>
-            <img src={user.avatar} alt={user.name} className={styles.avatar} />
+            <img src={user.avatar} alt={`Ảnh đại diện của ${user.name}`} className={styles.avatar} />
             <div className={styles.user_info}>
               <span className={styles.user_name}>{user.name}</span>
               <span className={styles.user_rank}>Rank: {user.rank}</span>

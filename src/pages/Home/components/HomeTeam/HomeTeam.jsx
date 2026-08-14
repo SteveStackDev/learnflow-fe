@@ -21,7 +21,7 @@ function HomeTeam({ team }) {
             >
               <img
                 className={styles["home-team__card-avatar"]}
-                alt={obj.name}
+                alt={`Chân dung thành viên ${obj.name}`}
                 src={heroUrl}
                 loading="lazy"
                 decoding="async"

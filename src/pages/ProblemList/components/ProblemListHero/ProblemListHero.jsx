@@ -30,7 +30,7 @@ function ProblemListHero({ heroData, searchQuery, setSearchQuery }) {
       </div>
 
       <div className={styles.hero__media}>
-        <img src={heroUrl} alt="Thư viện bài tập" className={styles.hero__img} />
+        <img src={heroUrl} alt="Hình minh họa thư viện bài tập thuật toán FySet" className={styles.hero__img} />
       </div>
     </section>
   );

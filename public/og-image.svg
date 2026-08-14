@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120" />
+      <stop offset="50%" stop-color="#0f1729" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0950c3" />
+      <stop offset="50%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+
+    <filter id="ambientGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="60" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+
+  <!-- Glowing Orbs -->
+  <circle cx="1020" cy="140" r="280" fill="#0950c3" opacity="0.3" filter="url(#ambientGlow)" />
+  <circle cx="180" cy="520" r="240" fill="#38bdf8" opacity="0.18" filter="url(#ambientGlow)" />
+
+  <!-- Subtle Grid Accent -->
+  <path d="M 0 120 H 1200 M 0 240 H 1200 M 0 360 H 1200 M 0 480 H 1200" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+  <path d="M 240 0 V 630 M 480 0 V 630 M 720 0 V 630 M 960 0 V 630" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+
+  <!-- Top Decorative Accent Bar -->
+  <rect x="100" y="110" width="140" height="6" rx="3" fill="url(#brandGrad)" />
+
+  <!-- Brand Logo Icon + Title -->
+  <g transform="translate(100, 150)">
+    <!-- Icon Container -->
+    <rect x="0" y="0" width="76" height="76" rx="20" fill="url(#brandGrad)" />
+    <path d="M 26 26 L 16 38 L 26 50 M 50 26 L 60 38 L 50 50 M 42 22 L 34 54" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+    <!-- Brand Name -->
+    <text x="96" y="54" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="48" font-weight="800" fill="#ffffff" letter-spacing="-0.03em">
+      FySet
+    </text>
+  </g>
+
+  <!-- Main Headline -->
+  <text x="100" y="310" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="46" font-weight="800" fill="#ffffff" letter-spacing="-0.02em">
+    Nền tảng Học Lập Trình &amp; Luyện Thi Thuật Toán
+  </text>
+
+  <!-- Description Text -->
+  <text x="100" y="380" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="24" font-weight="400" fill="#cbd5e1" opacity="0.9">
+    Khóa học chất lượng cao, lộ trình bài bản và đấu trường contest thuật toán hấp dẫn.
+  </text>
+</svg>

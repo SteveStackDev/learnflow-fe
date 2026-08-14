@@ -40,7 +40,8 @@
   gap: 12px;
   text-decoration: none;
   cursor: pointer;
-  flex-shrink: 0;
+  flex: 1;
+  justify-content: flex-start;
 }
 
 .header__logo {
@@ -98,8 +99,8 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  flex-wrap: wrap;
-  flex: 1;
+  flex-shrink: 0;
+  margin: 0 auto;
 }
 
 .header__link {
@@ -254,8 +255,9 @@
 .header__actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
-  flex-shrink: 0;
+  flex: 1;
 }
 
 .header__btn {

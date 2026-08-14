@@ -10,6 +10,51 @@
   margin-bottom: 16px;
 }
 
+/* Mobile & Tablet Segmented View Switcher Bar */
+.mobile_tab_bar {
+  display: none;
+  gap: 6px;
+  margin-bottom: 16px;
+  background: rgba(22, 30, 49, 0.7);
+  backdrop-filter: blur(12px);
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  width: 100%;
+}
+
+.mobile_tab_btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.mobile_tab_btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.mobile_tab_btn--active {
+  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.35);
+}
+
+/* Desktop Grid Layout */
 .grid_container {
   display: flex;
   gap: 16px;
@@ -19,15 +64,84 @@
   width: 100%;
 }
 
+/* Quick Action Banner for Mobile Switch */
+.mobile_quick_banner {
+  display: none;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.mobile_quick_btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0950c3 0%, #003a95 100%);
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.mobile_quick_btn:active {
+  transform: scale(0.98);
+}
+
+.mobile_quick_btn--secondary {
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #38bdf8;
+}
+
 .console_wrapper {
   margin-top: 16px;
   width: 100%;
 }
 
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
 @media (max-width: 1024px) {
+  .detail_page {
+    padding: 12px;
+  }
+
+  .mobile_tab_bar {
+    display: flex;
+  }
+
+  .mobile_quick_banner {
+    display: block;
+  }
+
   .grid_container {
     flex-direction: column;
     height: auto;
     min-height: auto;
+    gap: 12px;
+  }
+
+  /* Responsive visibility rules based on activeMobileTab */
+  :global(.desktop-only) {
+    display: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .mobile_tab_btn span {
+    font-size: 0.8rem;
+  }
+
+  .mobile_tab_btn {
+    padding: 8px 6px;
+    gap: 4px;
   }
 }

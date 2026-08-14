@@ -42,7 +42,11 @@ function SettingAccount({ userData }) {
           <div className={styles.avatar_group}>
             <span className={styles.label}>Ảnh đại diện</span>
             <div className={styles.avatar_row}>
-              <img src={userData.avatarUrl} alt="Avatar" className={styles.avatar_img} />
+              <img
+                src={userData.avatarUrl}
+                alt={`Ảnh đại diện của ${userData.fullName || userData.name || "người dùng"}`}
+                className={styles.avatar_img}
+              />
               <div className={styles.avatar_meta}>
                 <button type="button" onClick={handleAvatarChange} className={styles.avatar_btn}>
                   Đổi ảnh

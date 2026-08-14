@@ -54,7 +54,7 @@ export default function CourseInfoHero({ course, onPlayPreview }) {
 
       {/* Video Preview Banner */}
       <div className={styles.video_preview_wrap} onClick={onPlayPreview}>
-        <img src={heroImgUrl} alt={title} className={styles.preview_img} />
+        <img src={heroImgUrl} alt={`Xem trước khóa học ${title}`} className={styles.preview_img} />
         <div className={styles.play_overlay}>
           <div className={styles.play_btn} title="Xem video giới thiệu">
             <Icon name="Play" size={28} />

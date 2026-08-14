@@ -46,7 +46,7 @@ function CourseHero() {
               <div className={styles["course-hero__img-frame"]}>
                 <img
                   src={heroUrl}
-                  alt="Course Hero Image"
+                  alt="Khóa học lập trình thực chiến FySet"
                   loading="lazy"
                   decoding="async"
                   className={styles["course-hero__img"]}

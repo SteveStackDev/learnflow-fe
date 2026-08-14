@@ -80,7 +80,7 @@ function LeaderboardTable({
                           <img
                             className={styles["board-ranking__avatar"]}
                             src={obj.avatarUrl}
-                            alt={obj.name}
+                            alt={`Ảnh đại diện của ${obj.name}`}
                             loading="lazy"
                             decoding="async"
                           />

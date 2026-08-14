@@ -3,8 +3,6 @@ import { useNavigate } from "react-router";
 
 // Data
 import { signInData } from "../../constants/mockSignIn";
-// [MODIFIED] - Import dữ liệu tài khoản test từ file testAccountData.js trong thư mục component TestAccount
-import { testAccount } from "./components/TestAccount/testAccountData";
 
 // Import CSS Modules
 import styles from "./SignIn.module.css";
@@ -34,7 +32,7 @@ function SignIn() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // [MODIFIED] - Hàm xử lý Đăng nhập & lưu thông tin người dùng vào localStorage
+  // Hàm xử lý Đăng nhập & lưu thông tin người dùng vào localStorage
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -63,18 +61,15 @@ function SignIn() {
     setTimeout(() => {
       setIsSubmitting(false);
 
-      // [MODIFIED] - Khởi tạo thông tin người dùng dựa trên tài khoản test hoặc thông tin người dùng tự nhập
+      // Khởi tạo thông tin người dùng từ dữ liệu đăng nhập
       const userObj = {
         email: email.trim(),
-        name: email.trim() === testAccount.email ? testAccount.name : email.split("@")[0],
-        avatar:
-          email.trim() === testAccount.email
-            ? testAccount.avatar
-            : `https://api.dicebear.com/7.x/avataaars/svg?seed=${email.split("@")[0]}`,
-        role: email.trim() === testAccount.email ? testAccount.role : "Học viên",
+        name: email.split("@")[0],
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email.split("@")[0]}`,
+        role: "Học viên",
       };
 
-      // [MODIFIED] - Lưu trạng thái tài khoản vào localStorage & phát sự kiện thông báo thay đổi auth
+      // Lưu trạng thái tài khoản vào localStorage & phát sự kiện thông báo thay đổi auth
       localStorage.setItem("fySet_user", JSON.stringify(userObj));
       window.dispatchEvent(new Event("fySet_auth_change"));
 

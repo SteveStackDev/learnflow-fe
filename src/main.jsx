@@ -1,7 +1,7 @@
 import { StrictMode, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 // 🎯 CHỈ ĐỔI TỪ "react-router" THÀNH "react-router-dom" Ở DÒNG NÀY:
-import { BrowserRouter, Routes, Route } from "react-router"; 
+import { BrowserRouter, Routes, Route } from "react-router";
 
 // Context & Toast
 import { ToastProvider } from "~/context/ToastContext.jsx";
