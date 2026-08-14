@@ -24,6 +24,9 @@ const RoadmapDetailSubpage = lazy(
   () => import("~/pages/Roadmap/subpages/RoadmapDetail/RoadmapDetail"),
 );
 const Pricing = lazy(() => import("~/pages/Pricing/Pricing"));
+const PricingCheckoutSubpage = lazy(
+  () => import("~/pages/Pricing/subpages/PricingCheckout/PricingCheckout"),
+);
 const Badge = lazy(() => import("~/pages/Badge/Badge"));
 const BadgeDetailSubpage = lazy(
   () => import("~/pages/Badge/subpages/BadgeDetail/BadgeDetail"),
@@ -72,6 +75,8 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/roadmap/detail" element={<RoadmapDetailSubpage />} />
                 <Route path="/roadmap/:id" element={<RoadmapDetailSubpage />} />
                 <Route path="/pricing" element={<Pricing />} />
+                <Route path="/pricing/checkout" element={<PricingCheckoutSubpage />} />
+                <Route path="/checkout" element={<PricingCheckoutSubpage />} />
                 <Route path="/badge" element={<Badge />} />
                 <Route path="/badge/detail" element={<BadgeDetailSubpage />} />
                 <Route path="/badge/:id" element={<BadgeDetailSubpage />} />

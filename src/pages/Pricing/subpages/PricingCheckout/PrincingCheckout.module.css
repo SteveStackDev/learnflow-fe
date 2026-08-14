@@ -1,0 +1,29 @@
+.page_container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 60px 24px;
+  min-height: 100vh;
+  color: var(--text-primary, #0f172a);
+}
+
+.workspace_grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: start;
+}
+
+.left_column {
+  display: flex;
+  flex-direction: column;
+}
+
+.right_column {
+  position: relative;
+}
+
+@media (max-width: 992px) {
+  .workspace_grid {
+    grid-template-columns: 1fr;
+  }
+}

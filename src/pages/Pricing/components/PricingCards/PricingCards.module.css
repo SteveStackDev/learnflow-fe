@@ -142,6 +142,13 @@
 /* Actions & Buttons */
 .price-cards__card-actions {
   margin-top: auto;
+  width: 100%;
+}
+
+.card_btn {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .price-cards__btn {

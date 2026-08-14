@@ -2,7 +2,6 @@ import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { Pagination } from "~/components/ui";
-import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./BadgeGrid.module.css";
 
 function BadgeGrid({
@@ -13,7 +12,6 @@ function BadgeGrid({
   setCurrentPage,
   onResetSearch,
 }) {
-  const { toast } = useToast();
   const navigate = useNavigate();
   return (
     <section className={styles["badge-grid"]}>

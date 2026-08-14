@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
-import { Pagination } from "~/components/ui";
-import { useToast } from "~/context/ToastContext.jsx";
+import { Pagination, Button } from "~/components/ui";
 import styles from "./ContestGrid.module.css";
 
 function ContestGrid({
@@ -14,7 +13,6 @@ function ContestGrid({
   setSearchQuery,
   setActiveTab,
 }) {
-  const { toast } = useToast();
   const navigate = useNavigate();
   return (
     <section className={styles["contest-grid"]}>
@@ -88,17 +86,12 @@ function ContestGrid({
                   </div>
 
                   <div className={styles["contest-grid__card-actions"]}>
-                    <button
-                      type="button"
+                    <Button
+                      variant={obj.actionVariant === "contained" ? "contained" : "outlined"}
                       onClick={() => navigate(`/contest/${obj.id}`)}
-                      className={`${styles["contest-grid__action-btn"]} ${
-                        obj.actionVariant === "contained"
-                          ? styles["contest-grid__action-btn--contained"]
-                          : styles["contest-grid__action-btn--outlined"]
-                      }`}
                     >
                       {obj.actionText}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ))}

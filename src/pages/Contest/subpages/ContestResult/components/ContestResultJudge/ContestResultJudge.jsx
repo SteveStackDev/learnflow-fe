@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ContestResultJudge.module.css";
 
@@ -29,15 +30,13 @@ export function ContestResultJudge({
         </div>
 
         <div className={styles.action_btn_group}>
-          <button type="button" onClick={onRetryProblem} className={styles.retry_btn}>
-            <Icon name="RotateCcw" size={15} />
-            <span>Thử lại bài này</span>
-          </button>
+          <Button variant="outlined" leftIcon="RotateCcw" onClick={onRetryProblem}>
+            Thử lại bài này
+          </Button>
 
-          <button type="button" onClick={onNextProblem} className={styles.next_btn}>
-            <span>Bài tập tiếp theo</span>
-            <Icon name="ChevronRight" size={16} />
-          </button>
+          <Button variant="contained" rightIcon="ChevronRight" onClick={onNextProblem}>
+            Bài tập tiếp theo
+          </Button>
         </div>
       </div>
 

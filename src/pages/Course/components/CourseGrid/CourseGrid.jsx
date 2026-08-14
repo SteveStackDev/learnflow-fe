@@ -3,7 +3,6 @@ import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { Pagination } from "~/components/ui";
 import heroUrl from "~/assets/images/Home/hero.webp";
-import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./CourseGrid.module.css";
 
 function CourseGrid({
@@ -16,7 +15,6 @@ function CourseGrid({
   setActiveCategoryTab,
 }) {
   const navigate = useNavigate();
-  const { toast } = useToast();
   return (
     <section className={styles["course-grid"]}>
       <div className={styles["course-grid__container"]}>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ContestResultCode.module.css";
@@ -26,7 +27,7 @@ function highlightCode(code) {
     const textBefore = rawCode.slice(lastIndex, match.index);
     result += escapeHtml(textBefore);
 
-    const [fullMatch, comment, str, keyword, typeToken, numToken, funcToken] = match;
+    const [, comment, str, keyword, typeToken, numToken, funcToken] = match;
 
     if (comment) {
       result += `<span class="syn_comment">${escapeHtml(comment)}</span>`;
@@ -92,10 +93,14 @@ export function ContestResultCode({ resultData }) {
           <span className={styles.lines_count}>{lines.length} dòng</span>
         </div>
 
-        <button type="button" onClick={handleCopyCode} className={styles.copy_btn}>
-          <Icon name={copied ? "Check" : "Copy"} size={14} />
-          <span>{copied ? "Đã chép" : "Sao chép"}</span>
-        </button>
+        <Button
+          variant="ghost"
+          size="sm"
+          leftIcon={copied ? "Check" : "Copy"}
+          onClick={handleCopyCode}
+        >
+          {copied ? "Đã chép" : "Sao chép"}
+        </Button>
       </div>
 
       {/* Code Workspace */}

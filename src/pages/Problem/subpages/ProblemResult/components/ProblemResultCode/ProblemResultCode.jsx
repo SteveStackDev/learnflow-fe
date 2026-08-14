@@ -21,7 +21,7 @@ function highlightCode(code) {
     const textBefore = code.slice(lastIndex, match.index);
     result += escapeHtml(textBefore);
 
-    const [fullMatch, comment, str, keyword, typeToken, numToken, funcToken] = match;
+    const [, comment, str, keyword, typeToken, numToken, funcToken] = match;
 
     if (comment) {
       result += `<span class="syn_comment">${escapeHtml(comment)}</span>`;

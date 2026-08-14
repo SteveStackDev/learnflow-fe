@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Button } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ContestCodeEditor.module.css";
 
@@ -32,7 +33,7 @@ function highlightCode(code) {
     const textBefore = rawCode.slice(lastIndex, match.index);
     result += escapeHtml(textBefore);
 
-    const [fullMatch, comment, str, keyword, typeToken, numToken, funcToken] = match;
+    const [, comment, str, keyword, typeToken, numToken, funcToken] = match;
 
     if (comment) {
       result += `<span class="syn_comment">${escapeHtml(comment)}</span>`;
@@ -211,30 +212,31 @@ export function ContestCodeEditor({
             style={{ display: "none" }}
           />
 
-          <button
-            type="button"
+          <Button
+            variant="outlined"
+            leftIcon="Upload"
             onClick={() => fileInputRef.current?.click()}
-            className={styles.upload_btn}
             title="Tải tệp mã nguồn từ máy tính"
           >
-            <Icon name="Upload" size={15} />
-            <span>Tải file lên</span>
-          </button>
+            Tải file lên
+          </Button>
 
-          <button type="button" onClick={onRunTest} className={styles.run_btn}>
-            <Icon name="Play" size={15} />
-            <span>Chạy thử</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={onSubmitCode}
-            disabled={isSubmitting}
-            className={styles.submit_btn}
+          <Button
+            variant="outlined"
+            leftIcon="Play"
+            onClick={onRunTest}
           >
-            <Icon name="UploadCloud" size={16} />
-            <span>{isSubmitting ? "Đang nộp..." : "Nộp bài"}</span>
-          </button>
+            Chạy thử
+          </Button>
+
+          <Button
+            variant="contained"
+            leftIcon="UploadCloud"
+            isLoading={isSubmitting}
+            onClick={onSubmitCode}
+          >
+            Nộp bài ngay
+          </Button>
         </div>
       </div>
     </section>

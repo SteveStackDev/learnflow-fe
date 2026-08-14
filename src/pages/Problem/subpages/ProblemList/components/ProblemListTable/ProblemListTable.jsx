@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router";
 import styles from "./ProblemListTable.module.css";
 import Icon from "~/components/Icon/Icon";
 import { Pagination } from "~/components/ui";
-import { useToast } from "~/context/ToastContext.jsx";
 import useScrollReveal from "~/hooks/useScrollReveal";
 
 function ProblemListTable({
@@ -13,7 +12,6 @@ function ProblemListTable({
   totalPages,
   itemsPerPage,
 }) {
-  const { toast } = useToast();
   const navigate = useNavigate();
   useScrollReveal(".reveal-card", [displayedItems, currentPage]);
 

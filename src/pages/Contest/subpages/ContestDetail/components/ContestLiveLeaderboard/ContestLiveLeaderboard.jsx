@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Badge } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ContestLiveLeaderboard.module.css";
 
@@ -19,18 +20,17 @@ export function ContestLiveLeaderboard({
         <div className={styles.header_left}>
           <Icon name="Trophy" size={18} className={styles.header_icon} />
           <h3 className={styles.title}>Live Leaderboard</h3>
-          <span className={styles.live_badge}>Live</span>
+          <Badge variant="error" size="sm">LIVE</Badge>
         </div>
 
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
+          leftIcon="X"
           onClick={onClose}
-          className={styles.close_btn}
           title="Đóng bảng xếp hạng"
           aria-label="Đóng"
-        >
-          <Icon name="X" size={18} />
-        </button>
+        />
       </div>
 
       {/* Current User Card */}

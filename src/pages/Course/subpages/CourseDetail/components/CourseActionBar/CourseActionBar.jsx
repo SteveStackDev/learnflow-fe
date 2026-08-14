@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Icon from "~/components/Icon/Icon";
+import { Button } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./CourseActionBar.module.css";
 
@@ -20,36 +20,31 @@ export function CourseActionBar({ onPrevLesson, onNextLesson }) {
   return (
     <div className={styles.action_bar}>
       {/* Previous Lesson Button */}
-      <button
-        type="button"
+      <Button
+        variant="outlined"
+        leftIcon="ArrowLeft"
         onClick={onPrevLesson}
-        className={styles.prev_btn}
       >
-        <Icon name="ArrowLeft" size={16} />
-        <span>Bài trước</span>
-      </button>
+        Bài trước
+      </Button>
 
       {/* Mark Complete Toggle Button */}
-      <button
-        type="button"
+      <Button
+        variant={isCompleted ? "contained" : "outlined"}
+        leftIcon="Check"
         onClick={toggleCompleted}
-        className={`${styles.complete_btn} ${
-          isCompleted ? styles["complete_btn--active"] : ""
-        }`}
       >
-        <Icon name="Check" size={18} />
-        <span>{isCompleted ? "Đã hoàn thành" : "Đánh dấu hoàn thành"}</span>
-      </button>
+        {isCompleted ? "Đã hoàn thành" : "Đánh dấu hoàn thành"}
+      </Button>
 
       {/* Next Lesson Button */}
-      <button
-        type="button"
+      <Button
+        variant="contained"
+        rightIcon="ArrowRight"
         onClick={onNextLesson}
-        className={styles.next_btn}
       >
-        <span>Bài tiếp theo</span>
-        <Icon name="ArrowRight" size={16} />
-      </button>
+        Bài tiếp theo
+      </Button>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router";
-import Icon from "~/components/Icon/Icon";
+import { Button, Badge, Card } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./RoadmapSidebar.module.css";
 
@@ -25,7 +25,7 @@ export function RoadmapSidebar({
   return (
     <aside className={styles.sidebar}>
       {/* 1. Technologies Box */}
-      <div className={styles.side_card}>
+      <Card className={styles.side_card}>
         <h3 className={styles.card_title}>Công nghệ ứng dụng</h3>
         <div className={styles.tech_list}>
           {technologies.map((tech, idx) => (
@@ -40,14 +40,14 @@ export function RoadmapSidebar({
             </div>
           ))}
         </div>
-      </div>
+      </Card>
 
       {/* 2. Up Next For You (Recommended Courses) */}
-      <div className={styles.side_card}>
+      <Card className={styles.side_card}>
         <h3 className={styles.card_title}>Khóa học tiếp theo cho bạn</h3>
         <div className={styles.course_list}>
           {recommendedCourses.map((course) => (
-            <div key={course.id} className={styles.course_card}>
+            <Card key={course.id} hoverable className={styles.course_card}>
               <img
                 src={course.thumbnailUrl}
                 alt={course.title}
@@ -58,53 +58,58 @@ export function RoadmapSidebar({
                 <span className={styles.course_meta}>
                   {course.type} • {course.duration}
                 </span>
-                <button
-                  type="button"
-                  onClick={() => handleStartCourse(course.title)}
-                  className={styles.start_course_btn}
-                >
-                  <Icon name="Play" size={12} />
-                  <span>Học ngay</span>
-                </button>
+                <div style={{ marginTop: "4px" }}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    leftIcon="Play"
+                    onClick={() => handleStartCourse(course.title)}
+                  >
+                    Học ngay
+                  </Button>
+                </div>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
-      </div>
+      </Card>
 
       {/* 3. Practice Problems ⚡ */}
-      <div className={styles.side_card}>
+      <Card className={styles.side_card}>
         <h3 className={styles.card_title}>
           <span>Bài tập thử thách</span>
           <span className={styles.zap_icon}>⚡</span>
         </h3>
         <div className={styles.problem_list}>
           {practiceProblems.map((prob) => (
-            <div key={prob.id} className={styles.problem_card}>
+            <Card key={prob.id} hoverable className={styles.problem_card}>
               <div className={styles.prob_header}>
                 <h4 className={styles.prob_title}>{prob.title}</h4>
-                <span
-                  className={`${styles.prob_diff} ${
+                <Badge
+                  variant={
                     prob.difficulty === "Easy" || prob.difficulty === "Dễ"
-                      ? styles["prob_diff--easy"]
-                      : styles["prob_diff--medium"]
-                  }`}
+                      ? "success"
+                      : "warning"
+                  }
+                  size="sm"
                 >
                   {prob.difficulty}
-                </span>
+                </Badge>
               </div>
               <span className={styles.prob_topic}>{prob.topic}</span>
-              <button
-                type="button"
-                onClick={() => handleSolveProblem(prob.title)}
-                className={styles.solve_btn}
-              >
-                Thực hành ngay
-              </button>
-            </div>
+              <div style={{ marginTop: "6px" }}>
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  onClick={() => handleSolveProblem(prob.title)}
+                >
+                  Thực hành ngay
+                </Button>
+              </div>
+            </Card>
           ))}
         </div>
-      </div>
+      </Card>
     </aside>
   );
 }

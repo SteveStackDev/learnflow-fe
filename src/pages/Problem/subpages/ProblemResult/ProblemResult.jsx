@@ -8,7 +8,7 @@ import ProblemResultCode from "./components/ProblemResultCode/ProblemResultCode"
 import ProblemResultJudge from "./components/ProblemResultJudge/ProblemResultJudge";
 
 function ProblemResult() {
-  const { id } = useParams();
+  useParams();
   useScrollReveal();
 
   const resultData = problemResultData;

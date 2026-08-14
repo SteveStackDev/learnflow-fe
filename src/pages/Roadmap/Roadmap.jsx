@@ -85,8 +85,10 @@ function Roadmap() {
 
   // Reset page when search or level changes
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedLevel]);
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    }
+  }, [searchQuery, selectedLevel, currentPage]);
 
   // Pagination calculation
   const totalPages = Math.max(1, Math.ceil(filteredAndSortedItems.length / ITEMS_PER_PAGE));

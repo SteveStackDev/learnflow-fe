@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import Icon from "~/components/Icon/Icon";
+import { Button } from "~/components/ui";
 import { mockCourseDetailData } from "./data";
 import CourseVideoPlayer from "./components/CourseVideoPlayer/CourseVideoPlayer";
 import CourseTabContent from "./components/CourseTabContent/CourseTabContent";
@@ -10,7 +10,7 @@ import styles from "./CourseDetail.module.css";
 
 export function CourseDetail() {
   const navigate = useNavigate();
-  const { id } = useParams();
+  useParams();
   const courseData = mockCourseDetailData;
 
   const [activeLessonId, setActiveLessonId] = useState("les-3-3");
@@ -31,15 +31,13 @@ export function CourseDetail() {
     <div className={styles.page_container}>
       {/* Back to Courses Navigation Button */}
       <div className={styles.header_nav}>
-        <button
-          type="button"
+        <Button
+          variant="outlined"
+          leftIcon="ChevronLeft"
           onClick={() => navigate("/course")}
-          className={styles.back_btn}
-          title="Quay lại danh sách khóa học"
         >
-          <Icon name="ChevronLeft" size={18} />
-          <span>Quay lại khóa học</span>
-        </button>
+          Quay lại khóa học
+        </Button>
       </div>
 
       <div className={styles.workspace_grid}>

@@ -76,8 +76,10 @@ function ProblemList() {
   const totalPages = Math.max(1, Math.ceil(filteredItems.length / itemsPerPage));
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedDifficulty, selectedTopic, selectedLanguage, selectedStatus]);
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    }
+  }, [searchQuery, selectedDifficulty, selectedTopic, selectedLanguage, selectedStatus, currentPage]);
 
   const displayedItems = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;

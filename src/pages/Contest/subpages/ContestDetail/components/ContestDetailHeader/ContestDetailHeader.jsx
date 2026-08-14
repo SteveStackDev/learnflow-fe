@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { Button, Badge } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ContestDetailHeader.module.css";
 
 export function ContestDetailHeader({
   contestTitle,
   badgeText,
-  initialRemainingSeconds,
+  remainingSeconds = 5400,
   showProblemsList,
   onToggleProblemsList,
   showLeaderboard,
   onToggleLeaderboard,
 }) {
   const navigate = useNavigate();
-  const [seconds, setSeconds] = useState(initialRemainingSeconds || 6150);
+  const [seconds, setSeconds] = useState(remainingSeconds);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -33,31 +34,26 @@ export function ContestDetailHeader({
   return (
     <header className={styles.header_bar}>
       <div className={styles.header_left}>
-        <button
-          type="button"
+        <Button
+          variant="outlined"
+          leftIcon="ChevronLeft"
           onClick={() => navigate("/contest/list")}
-          className={styles.back_btn}
           title="Quay lại danh sách cuộc thi"
           aria-label="Quay lại"
-        >
-          <Icon name="ChevronLeft" size={18} />
-        </button>
+        />
 
         {/* Toggle Problems List Button */}
-        <button
-          type="button"
+        <Button
+          variant={showProblemsList ? "contained" : "outlined"}
+          leftIcon="List"
           onClick={onToggleProblemsList}
-          className={`${styles.sidebar_toggle_btn} ${
-            showProblemsList ? styles["sidebar_toggle_btn--active"] : ""
-          }`}
           title="Bật/Tắt danh sách bài tập"
         >
-          <Icon name="List" size={16} />
-          <span>Danh sách bài</span>
-        </button>
+          Danh sách bài
+        </Button>
 
         <div className={styles.contest_meta}>
-          <span className={styles.badge_text}>{badgeText || "CONTEST ARENA"}</span>
+          <Badge variant="primary" size="sm">{badgeText || "CONTEST ARENA"}</Badge>
           <h1 className={styles.contest_title}>{contestTitle}</h1>
         </div>
       </div>
@@ -70,18 +66,15 @@ export function ContestDetailHeader({
         </div>
 
         {/* Toggle Live Leaderboard Button */}
-        <button
-          type="button"
+        <Button
+          variant={showLeaderboard ? "contained" : "outlined"}
+          leftIcon="Trophy"
           onClick={onToggleLeaderboard}
-          className={`${styles.leaderboard_btn} ${
-            showLeaderboard ? styles["leaderboard_btn--active"] : ""
-          }`}
           title="Bật/Tắt Bảng xếp hạng trực tiếp"
         >
-          <Icon name="Trophy" size={16} />
           <span>Bảng xếp hạng</span>
-          <span className={styles.live_badge}>LIVE</span>
-        </button>
+          <Badge variant="error" size="sm" style={{ marginLeft: "6px" }}>LIVE</Badge>
+        </Button>
       </div>
     </header>
   );

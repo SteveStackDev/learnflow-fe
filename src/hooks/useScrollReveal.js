@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 
 export function useScrollReveal(selector = ".reveal-card, [class*='reveal-card']", deps = []) {
+  const depsKey = JSON.stringify(deps);
+
   useEffect(() => {
     let delay = 0;
     let timeoutId;
@@ -59,7 +61,7 @@ export function useScrollReveal(selector = ".reveal-card, [class*='reveal-card']
       observer.disconnect();
       mutationObserver.disconnect();
     };
-  }, [selector, ...deps]);
+  }, [selector, depsKey]);
 }
 
 export default useScrollReveal;

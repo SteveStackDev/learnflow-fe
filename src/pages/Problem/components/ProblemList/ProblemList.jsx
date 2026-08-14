@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { Pagination } from "~/components/ui";
-import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ProblemList.module.css";
 
 function ProblemList({
@@ -18,7 +17,6 @@ function ProblemList({
   ALGORITHM_OPTIONS,
   SORT_OPTIONS,
 }) {
-  const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleCardClick = (id) => {

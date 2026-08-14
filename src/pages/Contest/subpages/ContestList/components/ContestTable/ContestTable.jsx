@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
+import { Button, Badge } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ContestTable.module.css";
 
 export function ContestTable({ contests, onOpenPreview }) {
-  const navigate = useNavigate();
   const { toast } = useToast();
   const [registeredMap, setRegisteredMap] = useState({});
 
@@ -105,36 +105,35 @@ export function ContestTable({ contests, onOpenPreview }) {
 
                     {item.status === "UPCOMING" &&
                       (registeredMap[item.id] ? (
-                        <div className={styles.registered_badge}>
-                          <Icon name="Check" size={14} />
-                          <span>Đã đăng ký</span>
-                        </div>
+                        <Badge variant="success" size="sm" icon="Check">
+                          Đã đăng ký
+                        </Badge>
                       ) : (
-                        <button
-                          type="button"
+                        <Button
+                          variant="contained"
+                          size="sm"
                           onClick={() => handleRegister(item.id, item.title)}
-                          className={styles.register_btn}
                         >
-                          <span>Register</span>
-                        </button>
+                          Đăng ký
+                        </Button>
                       ))}
 
                     {item.status === "FINISHED" && (
                       <Link to={`/contest/${item.id}/result`} className={styles.standings_btn}>
-                        <span>Final Standings</span>
+                        <span>Bảng xếp hạng</span>
                         <Icon name="ArrowRight" size={14} />
                       </Link>
                     )}
 
                     {/* Secondary Action: Preview Problems */}
-                    <button
-                      type="button"
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      leftIcon="List"
                       onClick={() => onOpenPreview(item)}
-                      className={styles.preview_btn}
                     >
-                      <Icon name="List" size={13} />
-                      <span>Preview Problems</span>
-                    </button>
+                      Xem bài tập
+                    </Button>
                   </div>
                 </td>
               </tr>

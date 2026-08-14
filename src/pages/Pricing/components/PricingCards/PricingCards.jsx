@@ -1,16 +1,16 @@
+import { useNavigate } from "react-router";
+import { Button } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./PricingCards.module.css";
 
 function PricingCards({ items, isYearly }) {
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleSelectPackage = (title) => {
-    // UI hoàn thành – chờ kết nối API/backend.
-    toast.info(
-      `Đã chọn gói "${title}"! (UI hoàn thành – chờ kết nối API/backend)`,
-      "Đăng ký gói cước",
-    );
+    toast.info(`Đã chọn gói "${title}"! Chuyển sang trang thanh toán...`, "Đăng ký gói cước");
+    navigate("/checkout");
   };
 
   return (
@@ -61,19 +61,13 @@ function PricingCards({ items, isYearly }) {
                 </div>
 
                 <div className={styles["price-cards__card-actions"]}>
-                  <button
-                    type="button"
+                  <Button
+                    variant={obj.isPopular ? "contained" : index === 2 ? "dark" : "outlined"}
+                    className={styles.card_btn}
                     onClick={() => handleSelectPackage(obj.title)}
-                    className={`${styles["price-cards__btn"]} ${
-                      obj.isPopular
-                        ? styles["price-cards__btn--contained"]
-                        : index === 2
-                          ? styles["price-cards__btn--dark"]
-                          : styles["price-cards__btn--outlined"]
-                    }`}
                   >
                     {obj.buttonText}
-                  </button>
+                  </Button>
                 </div>
               </div>
             );

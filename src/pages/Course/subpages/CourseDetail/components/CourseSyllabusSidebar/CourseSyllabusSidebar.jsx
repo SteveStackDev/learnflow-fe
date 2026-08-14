@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./CourseSyllabusSidebar.module.css";
@@ -113,9 +114,8 @@ export function CourseSyllabusSidebar({
                           }
                           onSelectLesson(les.id);
                         }}
-                        className={`${styles.lesson_row} ${
-                          isActive ? styles["lesson_row--active"] : ""
-                        } ${isLocked ? styles["lesson_row--locked"] : ""}`}
+                        className={`${styles.lesson_row} ${isActive ? styles["lesson_row--active"] : ""
+                          } ${isLocked ? styles["lesson_row--locked"] : ""}`}
                       >
                         <div className={styles.lesson_status_icon}>
                           {isCompleted ? (
@@ -145,14 +145,14 @@ export function CourseSyllabusSidebar({
 
       {/* 3. Ask AI Mentor Floating Card */}
       <div className={styles.ai_mentor_card}>
-        <button
-          type="button"
+        <Button
+          variant="contained"
+          leftIcon="Bot"
           onClick={handleAiMentorClick}
           className={styles.ai_btn}
         >
-          <Icon name="Bot" size={18} />
-          <span>Ask AI Mentor</span>
-        </button>
+          Ask AI Mentor
+        </Button>
       </div>
     </aside>
   );

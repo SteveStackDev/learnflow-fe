@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import { Button, Badge, Card } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./RoadmapHeroHeader.module.css";
@@ -41,12 +42,13 @@ export function RoadmapHeroHeader({ roadmapData }) {
   };
 
   return (
-    <div className={styles.hero_card}>
+    <Card className={styles.hero_card}>
       <div className={styles.hero_left}>
         {/* Badge Chip */}
-        <div className={styles.badge_chip}>
-          <Icon name="Compass" size={14} />
-          <span>{roadmapData.badge}</span>
+        <div style={{ marginBottom: "16px" }}>
+          <Badge variant="primary" icon="Compass">
+            {roadmapData.badge}
+          </Badge>
         </div>
 
         {/* Title & Description */}
@@ -73,29 +75,27 @@ export function RoadmapHeroHeader({ roadmapData }) {
 
         {/* Action Buttons Row */}
         <div className={styles.action_row}>
-          <button
-            type="button"
+          <Button
+            variant="contained"
+            rightIcon="ArrowRight"
             onClick={handleStartOrContinue}
-            className={styles.start_btn}
           >
-            <span>{hasStarted ? "Tiếp tục học tập" : "Bắt đầu lộ trình"}</span>
-            <Icon name="ArrowRight" size={16} />
-          </button>
+            {hasStarted ? "Tiếp tục học tập" : "Bắt đầu lộ trình"}
+          </Button>
 
-          <button
-            type="button"
+          <Button
+            variant={isSaved ? "contained" : "outlined"}
+            leftIcon="Bookmark"
             onClick={handleToggleSave}
-            className={`${styles.save_btn} ${isSaved ? styles["save_btn--saved"] : ""}`}
           >
-            <Icon name="Bookmark" size={16} />
-            <span>{isSaved ? "Đã lưu" : "Lưu lộ trình"}</span>
-          </button>
+            {isSaved ? "Đã lưu" : "Lưu lộ trình"}
+          </Button>
         </div>
       </div>
 
       {/* Right Mockup Illustration Showcase Card */}
       <div className={styles.hero_right}>
-        <div className={styles.illustration_card}>
+        <Card className={styles.illustration_card}>
           <div className={styles.card_header}>
             <div className={styles.dot_group}>
               <span className={styles.dot_red} />
@@ -114,9 +114,9 @@ export function RoadmapHeroHeader({ roadmapData }) {
               <div className={`${styles.node_box} ${styles["node_box--locked"]}`}>React SPA</div>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
-    </div>
+    </Card>
   );
 }
 

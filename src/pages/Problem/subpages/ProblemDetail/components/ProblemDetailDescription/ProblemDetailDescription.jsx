@@ -12,6 +12,9 @@ function ProblemDetailDescription({ problem }) {
   const handleVote = (type) => {
     if (!hasVoted) {
       setHasVoted(true);
+      if (type === "up") {
+        setUpvoteCount((prev) => (typeof prev === "number" ? prev + 1 : prev));
+      }
       toast.success(
         `Cảm ơn bạn đã đánh giá ${type === "up" ? "hữu ích" : "chưa hữu ích"} cho bài tập này!`,
         "Đánh giá",

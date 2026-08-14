@@ -18,6 +18,30 @@ export function ContestDetail() {
   const { id } = useParams();
   const { toast } = useToast();
 
+  const validId = id && ["A", "B", "C", "D"].includes(id.toUpperCase()) ? id.toUpperCase() : "B";
+  const [activeProblemId, setActiveProblemId] = useState(validId);
+  const [showProblemsList, setShowProblemsList] = useState(true);
+  const [showLeaderboard, setShowLeaderboard] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [consoleLogs, setConsoleLogs] = useState([]);
+  const [isConsoleExpanded, setIsConsoleExpanded] = useState(true);
+
+  useEffect(() => {
+    if (id && ["A", "B", "C", "D"].includes(id.toUpperCase())) {
+      setActiveProblemId(id.toUpperCase());
+    }
+  }, [id]);
+
+  const [codeMap, setCodeMap] = useState(() => {
+    const initialMap = {};
+    if (contest && contest.problems) {
+      contest.problems.forEach((p) => {
+        initialMap[p.id] = p.starterCode?.cpp || "";
+      });
+    }
+    return initialMap;
+  });
+
   if (id && id.toLowerCase() === "list") {
     return <ContestList />;
   }
@@ -26,32 +50,8 @@ export function ContestDetail() {
     return <ContestResult />;
   }
 
-  const validId = id && ["A", "B", "C", "D"].includes(id.toUpperCase()) ? id.toUpperCase() : "B";
-    const [activeProblemId, setActiveProblemId] = useState(validId);
-    const [showProblemsList, setShowProblemsList] = useState(true);
-    const [showLeaderboard, setShowLeaderboard] = useState(true);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    useEffect(() => {
-        if (id && ["A", "B", "C", "D"].includes(id.toUpperCase())) {
-            setActiveProblemId(id.toUpperCase());
-        }
-    }, [id]);
-
-    // Dedicated Bottom Console Log State
-    const [consoleLogs, setConsoleLogs] = useState([]);
-    const [isConsoleExpanded, setIsConsoleExpanded] = useState(true);
-
-    const activeProblem =
-        contest.problems.find((p) => p.id === activeProblemId) || contest.problems[0];
-
-    const [codeMap, setCodeMap] = useState(() => {
-        const initialMap = {};
-        contest.problems.forEach((p) => {
-            initialMap[p.id] = p.starterCode.cpp || "";
-        });
-        return initialMap;
-    });
+  const activeProblem =
+    contest.problems.find((p) => p.id === activeProblemId) || contest.problems[0];
 
     const currentCode = codeMap[activeProblem.id] || "";
 

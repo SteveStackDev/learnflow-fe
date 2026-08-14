@@ -70,8 +70,10 @@ function Leaderboard() {
 
   // Reset page when search or timeframe changes
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedTime]);
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    }
+  }, [searchQuery, selectedTime, currentPage]);
 
   // Pagination calculation
   const totalPages = Math.max(1, Math.ceil(filteredAndSortedItems.length / ITEMS_PER_PAGE));

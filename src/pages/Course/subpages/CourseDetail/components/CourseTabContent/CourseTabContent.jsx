@@ -21,9 +21,8 @@ export function CourseTabContent({ lesson }) {
             key={tab.id}
             type="button"
             onClick={() => setActiveTab(tab.id)}
-            className={`${styles.tab_btn} ${
-              activeTab === tab.id ? styles["tab_btn--active"] : ""
-            }`}
+            className={`${styles.tab_btn} ${activeTab === tab.id ? styles["tab_btn--active"] : ""
+              }`}
           >
             <Icon name={tab.icon} size={16} />
             <span>{tab.label}</span>

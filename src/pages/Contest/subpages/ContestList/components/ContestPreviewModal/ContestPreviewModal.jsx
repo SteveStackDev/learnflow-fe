@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
+import { Button, Badge } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ContestPreviewModal.module.css";
 
@@ -15,9 +16,7 @@ export function ContestPreviewModal({ contest, onClose }) {
             <Icon name="List" size={18} style={{ color: "#0950c3" }} />
             <h3 className={styles.modal_title}>{contest.title} - Preview</h3>
           </div>
-          <button type="button" onClick={onClose} className={styles.close_btn}>
-            <Icon name="X" size={18} />
-          </button>
+          <Button variant="ghost" size="sm" leftIcon="X" onClick={onClose} aria-label="Đóng" />
         </div>
 
         {/* Body Problems List */}
@@ -31,17 +30,18 @@ export function ContestPreviewModal({ contest, onClose }) {
                 </div>
 
                 <div className={styles.prob_right}>
-                  <span
-                    className={`${styles.diff_tag} ${
+                  <Badge
+                    variant={
                       prob.difficulty === "Dễ"
-                        ? styles["diff_tag--easy"]
+                        ? "success"
                         : prob.difficulty === "Trung bình"
-                        ? styles["diff_tag--medium"]
-                        : styles["diff_tag--hard"]
-                    }`}
+                        ? "warning"
+                        : "error"
+                    }
+                    size="sm"
                   >
                     {prob.difficulty}
-                  </span>
+                  </Badge>
                   <span className={styles.pts_tag}>{prob.points} pts</span>
                 </div>
               </div>
@@ -55,12 +55,13 @@ export function ContestPreviewModal({ contest, onClose }) {
 
         {/* Footer Actions */}
         <div className={styles.modal_footer}>
-          <button type="button" onClick={onClose} className={styles.cancel_btn}>
+          <Button variant="outlined" onClick={onClose}>
             Đóng
-          </button>
-          <Link to={`/contest/${contest.id}`} className={styles.enter_btn}>
-            <span>Vào cuộc thi</span>
-            <Icon name="ArrowRight" size={15} />
+          </Button>
+          <Link to={`/contest/${contest.id}`}>
+            <Button variant="contained" rightIcon="ArrowRight">
+              Vào cuộc thi
+            </Button>
           </Link>
         </div>
       </div>

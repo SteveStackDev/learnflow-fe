@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router";
+import { Button, Badge, Card } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./RoadmapTimelinePath.module.css";
@@ -51,24 +52,19 @@ export function RoadmapTimelinePath({ timelinePath }) {
               </div>
 
               {/* Right Step Content Card */}
-              <div
+              <Card
                 className={`${styles.step_card} ${
                   isInProgress ? styles["step_card--active"] : ""
                 } ${isLocked ? styles["step_card--locked"] : ""}`}
               >
                 <div className={styles.step_header}>
                   <h3 className={styles.step_title}>{step.title}</h3>
-                  <span
-                    className={`${styles.status_badge} ${
-                      isCompleted
-                        ? styles["status_badge--completed"]
-                        : isInProgress
-                        ? styles["status_badge--active"]
-                        : styles["status_badge--locked"]
-                    }`}
+                  <Badge
+                    variant={isCompleted ? "success" : isInProgress ? "warning" : "neutral"}
+                    size="sm"
                   >
                     {isCompleted ? "Đã hoàn thành" : isInProgress ? "Đang học" : "Chưa mở khóa"}
-                  </span>
+                  </Badge>
                 </div>
 
                 <p className={styles.step_desc}>{step.description}</p>
@@ -87,16 +83,15 @@ export function RoadmapTimelinePath({ timelinePath }) {
                 {/* Action button if in-progress */}
                 {isInProgress && (
                   <div className={styles.action_row}>
-                    <button
-                      type="button"
+                    <Button
+                      variant="contained"
                       onClick={() => handleContinue(step.title)}
-                      className={styles.continue_btn}
                     >
                       {step.actionLabel || "Tiếp tục học mốc này"}
-                    </button>
+                    </Button>
                   </div>
                 )}
-              </div>
+              </Card>
             </div>
           );
         })}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router";
-import Icon from "~/components/Icon/Icon";
+import { Button } from "~/components/ui";
 import { mockRoadmapDetailData } from "./data";
 import RoadmapHeroHeader from "./components/RoadmapHeroHeader/RoadmapHeroHeader";
 import RoadmapOutcomes from "./components/RoadmapOutcomes/RoadmapOutcomes";
@@ -10,22 +10,20 @@ import styles from "./RoadmapDetail.module.css";
 
 export function RoadmapDetail() {
   const navigate = useNavigate();
-  const { id } = useParams();
+  useParams();
   const roadmapData = mockRoadmapDetailData;
 
   return (
     <div className={styles.page_container}>
       {/* Back to Roadmaps Navigation Button */}
       <div className={styles.header_nav}>
-        <button
-          type="button"
+        <Button
+          variant="outlined"
+          leftIcon="ChevronLeft"
           onClick={() => navigate("/roadmap")}
-          className={styles.back_btn}
-          title="Quay lại danh sách lộ trình"
         >
-          <Icon name="ChevronLeft" size={18} />
-          <span>Quay lại lộ trình</span>
-        </button>
+          Quay lại lộ trình
+        </Button>
       </div>
 
       {/* Hero Header Showcase Banner */}

@@ -3,7 +3,6 @@ import { mockContestListData } from "./data";
 import ContestHeaderSearch from "./components/ContestHeaderSearch/ContestHeaderSearch";
 import ContestTable from "./components/ContestTable/ContestTable";
 import ContestPreviewModal from "./components/ContestPreviewModal/ContestPreviewModal";
-import useScrollReveal from "~/hooks/useScrollReveal";
 import styles from "./ContestList.module.css";
 
 export function ContestList() {

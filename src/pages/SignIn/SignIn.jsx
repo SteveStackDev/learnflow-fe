@@ -97,9 +97,11 @@ function SignIn() {
     }
 
     if (isDeleting && charIndex === 0) {
-      setIsDeleting(false);
-      setPhraseIndex((prev) => (prev + 1) % GREETING_PHRASES.length);
-      return;
+      const resetTimer = setTimeout(() => {
+        setIsDeleting(false);
+        setPhraseIndex((prev) => (prev + 1) % GREETING_PHRASES.length);
+      }, 0);
+      return () => clearTimeout(resetTimer);
     }
 
     const typingSpeed = isDeleting ? 50 : 100;

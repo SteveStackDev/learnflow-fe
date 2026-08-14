@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router";
+import { Button, Badge as UIBadge, Card } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import useScrollReveal from "~/hooks/useScrollReveal";
@@ -30,22 +31,19 @@ export function BadgeDetail() {
     <div className={styles.page_container}>
       {/* 1. Back Navigation Button */}
       <div className={styles.header_nav}>
-        <button
-          type="button"
+        <Button
+          variant="outlined"
+          leftIcon="ChevronLeft"
           onClick={() => navigate("/badge")}
-          className={styles.back_btn}
-          title="Quay lại danh sách danh hiệu"
-          aria-label="Quay lại danh sách danh hiệu"
         >
-          <Icon name="ChevronLeft" size={18} />
-          <span>Quay lại danh hiệu</span>
-        </button>
+          Quay về danh hiệu
+        </Button>
       </div>
 
       {/* 2. Main 2-Column Detail Grid */}
       <div className={styles.detail_grid}>
         {/* Left Column: Badge Graphic Card & Share Action */}
-        <div className={`${styles.left_column} reveal-card`}>
+        <Card className={`${styles.left_column} reveal-card`}>
           <div className={styles.badge_graphic_card}>
             <div className={styles.badge_ambient_glow} />
 
@@ -61,31 +59,30 @@ export function BadgeDetail() {
             <div className={styles.badge_banner_label}>{badge.title}</div>
           </div>
 
-          <button type="button" onClick={handleShare} className={styles.share_btn}>
-            <Icon name="Share2" size={18} />
-            <span>Chia sẻ thành tích</span>
-          </button>
-        </div>
+          <Button variant="outlined" leftIcon="Share2" onClick={handleShare}>
+            Chia sẻ thành tích
+          </Button>
+        </Card>
 
         {/* Right Column: Information, Progress & Stats */}
         <div className={styles.right_column}>
           {/* Card 1: Overview Header */}
-          <div className={`${styles.card_overview} reveal-card`}>
+          <Card className={`${styles.card_overview} reveal-card`}>
             <div className={styles.tags_row}>
-              <span className={`${styles.tag_chip} ${styles["tag_chip--tier"]}`}>
+              <UIBadge variant="purple" size="sm">
                 ✪ {badge.tierTag || "Huyền thoại"}
-              </span>
-              <span className={`${styles.tag_chip} ${styles["tag_chip--category"]}`}>
+              </UIBadge>
+              <UIBadge variant="primary" size="sm">
                 {badge.categoryTag || "Kỷ luật"}
-              </span>
+              </UIBadge>
             </div>
 
             <h1 className={styles.title}>{badge.title}</h1>
             <p className={styles.description}>{badge.description}</p>
-          </div>
+          </Card>
 
           {/* Card 2: Requirements & Progress */}
-          <div className={`${styles.card_progress} reveal-card`}>
+          <Card className={`${styles.card_progress} reveal-card`}>
             <h2 className={styles.card_subtitle}>Yêu cầu</h2>
 
             <div className={styles.requirement_item}>
@@ -105,11 +102,11 @@ export function BadgeDetail() {
             <div className={styles.progress_track}>
               <div className={styles.progress_fill} style={{ width: `${progressPercent}%` }} />
             </div>
-          </div>
+          </Card>
 
           {/* Card 3: Stats Grid (2 Columns) */}
           <div className={styles.stats_grid}>
-            <div className={`${styles.stat_card} reveal-card`}>
+            <Card className={`${styles.stat_card} reveal-card`}>
               <div className={`${styles.stat_icon_box} ${styles["stat_icon_box--date"]}`}>
                 <Icon name="Trophy" size={24} />
               </div>
@@ -117,9 +114,9 @@ export function BadgeDetail() {
                 <span className={styles.stat_label}>Ngày đạt được</span>
                 <span className={styles.stat_value}>{badge.earnedDate}</span>
               </div>
-            </div>
+            </Card>
 
-            <div className={`${styles.stat_card} reveal-card`}>
+            <Card className={`${styles.stat_card} reveal-card`}>
               <div className={`${styles.stat_icon_box} ${styles["stat_icon_box--owners"]}`}>
                 <Icon name="Users" size={24} />
               </div>
@@ -127,7 +124,7 @@ export function BadgeDetail() {
                 <span className={styles.stat_label}>Số người sở hữu</span>
                 <span className={styles.stat_value}>{badge.totalOwners}</span>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </div>
