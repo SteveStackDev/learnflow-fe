@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 // Data
-import { notFoundData } from "./data";
+import { notFoundData } from "../../constants/mockNotFound";
 // Import CSS Modules
 import styles from "./NotFound.module.css";
 // Components

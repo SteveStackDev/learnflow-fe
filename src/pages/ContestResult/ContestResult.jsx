@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { mockContestResultData } from "./data";
-import { mockContestData } from "../ContestDetail/data";
+import { mockContestResultData } from "../../constants/mockContestResult";
+import { mockContestData } from "../../constants/mockContestDetail";
 import ContestDetailHeader from "../ContestDetail/components/ContestDetailHeader/ContestDetailHeader";
 import ContestSidebar from "../ContestDetail/components/ContestSidebar/ContestSidebar";
 import ContestLiveLeaderboard from "../ContestDetail/components/ContestLiveLeaderboard/ContestLiveLeaderboard";

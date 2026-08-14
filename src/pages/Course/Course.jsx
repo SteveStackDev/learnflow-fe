@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 // Data
-import { courseData } from "./data";
+import { courseData } from "../../constants/mockCourse";
 
 // Import CSS Modules
 import styles from "./Course.module.css";

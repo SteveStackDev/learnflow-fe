@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // Data
-import { aboutData } from "./data";
+import { aboutData } from "../../constants/mockAbout";
 // Styles
 import styles from "./About.module.css";
 // Assets

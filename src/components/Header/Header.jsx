@@ -1,47 +1,33 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { NavLink, Link, useLocation, useNavigate } from "react-router";
 import styles from "./Header.module.css";
-// Components
 import Icon from "~/components/Icon/Icon";
 
+// Navigation Constants
+const NAV_LINKS = [
+  { to: "/", label: "Trang chủ", end: true },
+  { to: "/about", label: "Giới thiệu" },
+  { to: "/leaderboard", label: "Bảng xếp hạng" },
+  { to: "/badge", label: "Danh hiệu" },
+  { to: "/pricing", label: "Bảng giá" },
+  { to: "/contact", label: "Liên hệ" },
+];
+
 const LEARN_DROPDOWN_ITEMS = [
-  {
-    to: "/roadmap",
-    title: "Lộ trình",
-    desc: "Lộ trình nghề nghiệp bài bản",
-    iconName: "Compass",
-  },
-  {
-    to: "/course",
-    title: "Khóa học",
-    desc: "Hệ thống khóa học thực chiến",
-    iconName: "Book",
-  },
+  { to: "/roadmap", title: "Lộ trình", desc: "Lộ trình nghề nghiệp bài bản", iconName: "Compass" },
+  { to: "/course", title: "Khóa học", desc: "Hệ thống khóa học thực chiến", iconName: "Book" },
 ];
 
 const PRACTICE_DROPDOWN_ITEMS = [
-  {
-    to: "/problem",
-    title: "Bài tập",
-    desc: "Kho thử thách coding chuẩn phỏng vấn",
-    iconName: "Terminal",
-  },
-  {
-    to: "/contest",
-    title: "Cuộc thi",
-    desc: "Đấu trường thuật toán & thử thách",
-    iconName: "Trophy",
-  },
+  { to: "/problem", title: "Bài tập", desc: "Kho thử thách coding chuẩn phỏng vấn", iconName: "Terminal" },
+  { to: "/contest", title: "Cuộc thi", desc: "Đấu trường thuật toán & thử thách", iconName: "Trophy" },
 ];
 
-function Header() {
+export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-
-  // [MODIFIED] - State & ref quản lý hiển thị tài khoản người dùng đã đăng nhập
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  // [MODIFIED] - Lấy thông tin người dùng từ localStorage khi tải trang
   const [currentUser, setCurrentUser] = useState(() => {
     try {
       const saved = localStorage.getItem("fySet_user");
@@ -56,10 +42,10 @@ function Header() {
   const timeoutRef = useRef(null);
   const userMenuRef = useRef(null);
 
-  const isLearnActive = location.pathname === "/roadmap" || location.pathname === "/course";
-  const isPracticeActive = location.pathname === "/problem" || location.pathname === "/contest";
+  const isLearnActive = ["/roadmap", "/course"].includes(location.pathname);
+  const isPracticeActive = ["/problem", "/contest"].includes(location.pathname);
 
-  // [MODIFIED] - Đăng ký sự kiện fySet_auth_change & storage để tự động cập nhật Header khi đăng nhập/đăng xuất
+  // Sync Auth State across Tabs and Custom Events
   useEffect(() => {
     const handleAuthChange = () => {
       try {
@@ -79,14 +65,14 @@ function Header() {
     };
   }, []);
 
-  // Close menus on route change
+  // Auto close menus on route change
   useEffect(() => {
     setActiveDropdown(null);
     setIsMenuOpen(false);
     setIsUserMenuOpen(false);
   }, [location.pathname]);
 
-  // Click outside user dropdown
+  // Handle click outside to close User Menu
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
@@ -108,17 +94,12 @@ function Header() {
     }, 150);
   };
 
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
-
   const closeMenu = () => {
     setIsMenuOpen(false);
     setActiveDropdown(null);
     setIsUserMenuOpen(false);
   };
 
-  // [MODIFIED] - Hàm xử lý Đăng xuất người dùng
   const handleLogout = () => {
     localStorage.removeItem("fySet_user");
     setCurrentUser(null);
@@ -127,11 +108,54 @@ function Header() {
     navigate("/");
   };
 
+  // Helper render NavLink
+  const renderNavLink = ({ to, label, end = false, isMobile = false }) => (
+    <NavLink
+      key={to}
+      to={to}
+      end={end}
+      onClick={closeMenu}
+      className={({ isActive }) =>
+        isMobile
+          ? `${styles["header__mobile-link"]} ${isActive ? styles["header__mobile-link--active"] : ""}`
+          : `${styles.header__link} ${isActive ? styles["header__link--active"] : ""}`
+      }
+    >
+      {label}
+    </NavLink>
+  );
+
+  // Helper render Dropdown Menu Items
+  const renderDropdownMenu = (items) => (
+    <div className={styles.header__dropdown_menu}>
+      {items.map((item) => (
+        <NavLink
+          key={item.to}
+          to={item.to}
+          onClick={closeMenu}
+          className={({ isActive }) =>
+            `${styles.header__dropdown_item} ${isActive ? styles["header__dropdown_item--active"] : ""}`
+          }
+        >
+          <div className={styles.header__dropdown_icon}>
+            <Icon name={item.iconName} size={18} />
+          </div>
+          <div className={styles.header__dropdown_info}>
+            <span className={styles.header__dropdown_title}>{item.title}</span>
+            <span className={styles.header__dropdown_desc}>{item.desc}</span>
+          </div>
+        </NavLink>
+      ))}
+    </div>
+  );
+
+  const userAvatar = currentUser?.avatar || "https://ui-avatars.com/api/?name=" + encodeURIComponent(currentUser?.name || "User");
+
   return (
     <header className={styles.header}>
       <div className={`${styles.header__container} ${styles["header__container--fluid"]}`}>
         <div className={styles.header__row}>
-          {/* Logo & Brand Title */}
+          {/* Brand Logo */}
           <Link to="/" className={styles.header__brand} onClick={closeMenu}>
             <div className={styles.header__logo}>
               <Icon name="LogoCap" size={22} style={{ color: "#ffffff" }} />
@@ -142,26 +166,10 @@ function Header() {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation */}
           <nav className={styles.header__nav}>
-            <NavLink
-              to="/"
-              end
-              className={({ isActive }) =>
-                `${styles.header__link} ${isActive ? styles["header__link--active"] : ""}`
-              }
-            >
-              Trang chủ
-            </NavLink>
-
-            <NavLink
-              to="/about"
-              className={({ isActive }) =>
-                `${styles.header__link} ${isActive ? styles["header__link--active"] : ""}`
-              }
-            >
-              Giới thiệu
-            </NavLink>
+            {renderNavLink(NAV_LINKS[0])} {/* Trang chủ */}
+            {renderNavLink(NAV_LINKS[1])} {/* Giới thiệu */}
 
             {/* Learn Dropdown */}
             <div
@@ -185,31 +193,7 @@ function Header() {
                   }`}
                 />
               </button>
-
-              {activeDropdown === "learn" && (
-                <div className={styles.header__dropdown_menu}>
-                  {LEARN_DROPDOWN_ITEMS.map((item) => (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      onClick={closeMenu}
-                      className={({ isActive }) =>
-                        `${styles.header__dropdown_item} ${
-                          isActive ? styles["header__dropdown_item--active"] : ""
-                        }`
-                      }
-                    >
-                      <div className={styles.header__dropdown_icon}>
-                        <Icon name={item.iconName} size={18} />
-                      </div>
-                      <div className={styles.header__dropdown_info}>
-                        <span className={styles.header__dropdown_title}>{item.title}</span>
-                        <span className={styles.header__dropdown_desc}>{item.desc}</span>
-                      </div>
-                    </NavLink>
-                  ))}
-                </div>
-              )}
+              {activeDropdown === "learn" && renderDropdownMenu(LEARN_DROPDOWN_ITEMS)}
             </div>
 
             {/* Practice Dropdown */}
@@ -234,71 +218,14 @@ function Header() {
                   }`}
                 />
               </button>
-
-              {activeDropdown === "practice" && (
-                <div className={styles.header__dropdown_menu}>
-                  {PRACTICE_DROPDOWN_ITEMS.map((item) => (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      onClick={closeMenu}
-                      className={({ isActive }) =>
-                        `${styles.header__dropdown_item} ${
-                          isActive ? styles["header__dropdown_item--active"] : ""
-                        }`
-                      }
-                    >
-                      <div className={styles.header__dropdown_icon}>
-                        <Icon name={item.iconName} size={18} />
-                      </div>
-                      <div className={styles.header__dropdown_info}>
-                        <span className={styles.header__dropdown_title}>{item.title}</span>
-                        <span className={styles.header__dropdown_desc}>{item.desc}</span>
-                      </div>
-                    </NavLink>
-                  ))}
-                </div>
-              )}
+              {activeDropdown === "practice" && renderDropdownMenu(PRACTICE_DROPDOWN_ITEMS)}
             </div>
 
-            <NavLink
-              to="/leaderboard"
-              className={({ isActive }) =>
-                `${styles.header__link} ${isActive ? styles["header__link--active"] : ""}`
-              }
-            >
-              Bảng xếp hạng
-            </NavLink>
-
-            <NavLink
-              to="/badge"
-              className={({ isActive }) =>
-                `${styles.header__link} ${isActive ? styles["header__link--active"] : ""}`
-              }
-            >
-              Danh hiệu
-            </NavLink>
-
-            <NavLink
-              to="/pricing"
-              className={({ isActive }) =>
-                `${styles.header__link} ${isActive ? styles["header__link--active"] : ""}`
-              }
-            >
-              Bảng giá
-            </NavLink>
-
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                `${styles.header__link} ${isActive ? styles["header__link--active"] : ""}`
-              }
-            >
-              Liên hệ
-            </NavLink>
+            {/* Các nav links còn lại */}
+            {NAV_LINKS.slice(2).map((link) => renderNavLink(link))}
           </nav>
 
-          {/* [MODIFIED] - Hiển thị Avatar & Menu người dùng khi đã đăng nhập, ngược lại hiện nút Đăng nhập/Đăng ký */}
+          {/* User Auth / Actions */}
           <div className={styles.header__actions}>
             {currentUser ? (
               <div className={styles.header__user_wrapper} ref={userMenuRef}>
@@ -309,11 +236,7 @@ function Header() {
                     isUserMenuOpen ? styles["header__user_btn--active"] : ""
                   }`}
                 >
-                  <img
-                    src={currentUser.avatar}
-                    alt={currentUser.name}
-                    className={styles.header__user_avatar}
-                  />
+                  <img src={userAvatar} alt={currentUser.name} className={styles.header__user_avatar} />
                   <span className={styles.header__user_name}>{currentUser.name}</span>
                   <Icon
                     name="ChevronDown"
@@ -327,11 +250,7 @@ function Header() {
                 {isUserMenuOpen && (
                   <div className={styles.header__user_menu}>
                     <div className={styles.header__user_header}>
-                      <img
-                        src={currentUser.avatar}
-                        alt={currentUser.name}
-                        className={styles.header__user_avatar_large}
-                      />
+                      <img src={userAvatar} alt={currentUser.name} className={styles.header__user_avatar_large} />
                       <div className={styles.header__user_details}>
                         <span className={styles.header__user_fullname}>{currentUser.name}</span>
                         <span className={styles.header__user_email}>{currentUser.email}</span>
@@ -340,20 +259,12 @@ function Header() {
 
                     <hr className={styles.header__user_divider} />
 
-                    <Link
-                      to="/dashboard"
-                      onClick={() => setIsUserMenuOpen(false)}
-                      className={styles.header__user_menu_item}
-                    >
+                    <Link to="/dashboard" onClick={() => setIsUserMenuOpen(false)} className={styles.header__user_menu_item}>
                       <Icon name="LayoutDashboard" size={16} />
                       <span>Dashboard</span>
                     </Link>
 
-                    <Link
-                      to="/setting"
-                      onClick={() => setIsUserMenuOpen(false)}
-                      className={styles.header__user_menu_item}
-                    >
+                    <Link to="/setting" onClick={() => setIsUserMenuOpen(false)} className={styles.header__user_menu_item}>
                       <Icon name="Settings" size={16} />
                       <span>Cài đặt tài khoản</span>
                     </Link>
@@ -371,169 +282,86 @@ function Header() {
               </div>
             ) : (
               <>
-                <Link
-                  to="/signin"
-                  className={`${styles.header__btn} ${styles["header__btn--outlined"]}`}
-                >
+                <Link to="/signin" className={`${styles.header__btn} ${styles["header__btn--outlined"]}`}>
                   Đăng nhập
                 </Link>
-                <Link
-                  to="/signup"
-                  className={`${styles.header__btn} ${styles["header__btn--contained"]}`}
-                >
+                <Link to="/signup" className={`${styles.header__btn} ${styles["header__btn--contained"]}`}>
                   Đăng ký
                 </Link>
               </>
             )}
           </div>
 
-          {/* Mobile Hamburger / Close Toggle Button */}
+          {/* Mobile Toggle Button */}
           <button
             type="button"
             className={styles.header__toggle}
-            onClick={toggleMenu}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
             aria-label="Toggle Navigation Menu"
             aria-expanded={isMenuOpen}
-            aria-controls="mobile-navigation-menu"
           >
             <Icon name={isMenuOpen ? "X" : "Menu"} size={24} strokeWidth={2.5} />
           </button>
         </div>
 
-        {/* Mobile Dropdown Navigation Drawer */}
+        {/* Mobile Navigation Drawer */}
         {isMenuOpen && (
           <div id="mobile-navigation-menu" className={styles["header__mobile-dropdown"]}>
             <nav className={styles["header__mobile-nav"]}>
-              <NavLink
-                to="/"
-                end
-                onClick={closeMenu}
-                className={({ isActive }) =>
-                  `${styles["header__mobile-link"]} ${isActive ? styles["header__mobile-link--active"] : ""}`
-                }
-              >
-                Trang chủ
-              </NavLink>
+              {renderNavLink({ ...NAV_LINKS[0], isMobile: true })}
+              {renderNavLink({ ...NAV_LINKS[1], isMobile: true })}
 
-              <NavLink
-                to="/about"
-                onClick={closeMenu}
-                className={({ isActive }) =>
-                  `${styles["header__mobile-link"]} ${isActive ? styles["header__mobile-link--active"] : ""}`
-                }
-              >
-                Giới thiệu
-              </NavLink>
-
-              {/* Learn Group */}
+              {/* Mobile Learn Group */}
               <div className={styles["header__mobile-group"]}>
                 <div className={styles["header__mobile-group-title"]}>
                   <Icon name="Compass" size={14} /> Learn
                 </div>
-                <NavLink
-                  to="/roadmap"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
-                      isActive ? styles["header__mobile-link--active"] : ""
-                    }`
-                  }
-                >
-                  Lộ trình
-                </NavLink>
-                <NavLink
-                  to="/course"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
-                      isActive ? styles["header__mobile-link--active"] : ""
-                    }`
-                  }
-                >
-                  Khóa học
-                </NavLink>
+                {LEARN_DROPDOWN_ITEMS.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    onClick={closeMenu}
+                    className={({ isActive }) =>
+                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
+                        isActive ? styles["header__mobile-link--active"] : ""
+                      }`
+                    }
+                  >
+                    {item.title}
+                  </NavLink>
+                ))}
               </div>
 
-              {/* Practice Group */}
+              {/* Mobile Practice Group */}
               <div className={styles["header__mobile-group"]}>
                 <div className={styles["header__mobile-group-title"]}>
                   <Icon name="Terminal" size={14} /> Practice
                 </div>
-                <NavLink
-                  to="/problem"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
-                      isActive ? styles["header__mobile-link--active"] : ""
-                    }`
-                  }
-                >
-                  Bài tập
-                </NavLink>
-                <NavLink
-                  to="/contest"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
-                      isActive ? styles["header__mobile-link--active"] : ""
-                    }`
-                  }
-                >
-                  Cuộc thi
-                </NavLink>
+                {PRACTICE_DROPDOWN_ITEMS.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    onClick={closeMenu}
+                    className={({ isActive }) =>
+                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
+                        isActive ? styles["header__mobile-link--active"] : ""
+                      }`
+                    }
+                  >
+                    {item.title}
+                  </NavLink>
+                ))}
               </div>
 
-              <NavLink
-                to="/leaderboard"
-                onClick={closeMenu}
-                className={({ isActive }) =>
-                  `${styles["header__mobile-link"]} ${isActive ? styles["header__mobile-link--active"] : ""}`
-                }
-              >
-                Bảng xếp hạng
-              </NavLink>
-
-              <NavLink
-                to="/badge"
-                onClick={closeMenu}
-                className={({ isActive }) =>
-                  `${styles["header__mobile-link"]} ${isActive ? styles["header__mobile-link--active"] : ""}`
-                }
-              >
-                Danh hiệu
-              </NavLink>
-
-              <NavLink
-                to="/pricing"
-                onClick={closeMenu}
-                className={({ isActive }) =>
-                  `${styles["header__mobile-link"]} ${isActive ? styles["header__mobile-link--active"] : ""}`
-                }
-              >
-                Bảng giá
-              </NavLink>
-
-              <NavLink
-                to="/contact"
-                onClick={closeMenu}
-                className={({ isActive }) =>
-                  `${styles["header__mobile-link"]} ${isActive ? styles["header__mobile-link--active"] : ""}`
-                }
-              >
-                Liên hệ
-              </NavLink>
+              {NAV_LINKS.slice(2).map((link) => renderNavLink({ ...link, isMobile: true }))}
             </nav>
 
-            {/* [MODIFIED] - Mobile user actions box */}
+            {/* Mobile Actions */}
             <div className={styles["header__mobile-actions"]}>
               {currentUser ? (
                 <div className={styles.header__mobile_user_box}>
                   <div className={styles.header__mobile_user_info}>
-                    <img
-                      src={currentUser.avatar}
-                      alt={currentUser.name}
-                      className={styles.header__user_avatar}
-                    />
+                    <img src={userAvatar} alt={currentUser.name} className={styles.header__user_avatar} />
                     <div>
                       <div className={styles.header__user_fullname}>{currentUser.name}</div>
                       <div className={styles.header__user_email}>{currentUser.email}</div>

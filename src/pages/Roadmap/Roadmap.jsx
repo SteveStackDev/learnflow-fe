@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 // Data
-import { roadmapData } from "./data";
+import { roadmapData } from "../../constants/mockRoadMap";
 
 // Styles
 import styles from "./Roadmap.module.css";

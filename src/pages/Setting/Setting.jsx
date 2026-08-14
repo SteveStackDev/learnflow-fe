@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Icon from "~/components/Icon/Icon";
-import { SETTING_TABS, mockUserData } from "./data";
+import { SETTING_TABS, mockUserData } from "../../constants/mockSetting";
 import styles from "./Setting.module.css";
 
 // Modular Tab Components
