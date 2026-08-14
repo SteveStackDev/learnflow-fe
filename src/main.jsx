@@ -55,6 +55,25 @@ const SignIn = lazy(() => import("~/pages/SignIn/SignIn"));
 const SignUp = lazy(() => import("~/pages/SignUp/SignUp"));
 const NotFound = lazy(() => import("~/pages/NotFound/NotFound"));
 
+// Background preloader for primary routes when browser is idle
+if (typeof window !== "undefined") {
+  const preloadPrimaryRoutes = () => {
+    import("~/pages/Course/Course");
+    import("~/pages/Problem/Problem");
+    import("~/pages/Contest/Contest");
+    import("~/pages/Badge/Badge");
+    import("~/pages/Roadmap/Roadmap");
+    import("~/pages/Leaderboard/Leaderboard");
+    import("~/pages/Pricing/Pricing");
+  };
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(preloadPrimaryRoutes, { timeout: 1500 });
+  } else {
+    setTimeout(preloadPrimaryRoutes, 1000);
+  }
+}
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
