@@ -44,7 +44,12 @@ function CourseGrid({
 
             <div className={styles["course-grid__list"]}>
               {displayedItems.map((obj) => (
-                <div key={obj.id} className={`${styles["course-grid__card"]} reveal-card`}>
+                <div
+                  key={obj.id}
+                  className={`${styles["course-grid__card"]} reveal-card`}
+                  onClick={() => navigate(`/course/${obj.id}/info`)}
+                  style={{ cursor: "pointer" }}
+                >
                   <div className={styles["course-grid__card-media-wrap"]}>
                     <span
                       className={`${styles["course-grid__level-chip"]} ${
@@ -84,10 +89,13 @@ function CourseGrid({
                   <div className={styles["course-grid__card-actions"]}>
                     <button
                       type="button"
-                      onClick={() => navigate(`/course/${obj.id}`)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/course/${obj.id}/info`);
+                      }}
                       className={styles["course-grid__action-btn"]}
                     >
-                      Vào học ngay
+                      Xem chi tiết
                     </button>
                   </div>
                 </div>

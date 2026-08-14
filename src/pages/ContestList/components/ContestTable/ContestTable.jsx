@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Button, Badge } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ContestTable.module.css";
 
-export function ContestTable({ contests, onOpenPreview }) {
+export function ContestTable({ contests, _onOpenPreview }) {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [registeredMap, setRegisteredMap] = useState({});
 
   const handleRegister = (contestId, contestTitle) => {
     setRegisteredMap((prev) => ({ ...prev, [contestId]: true }));
     toast.success(`Đã đăng ký tham gia ${contestTitle}!`, "Đăng ký thành công");
+    navigate(`/contest/${contestId}/info`);
   };
 
   if (!contests || contests.length === 0) {
@@ -40,7 +42,11 @@ export function ContestTable({ contests, onOpenPreview }) {
           </thead>
           <tbody>
             {contests.map((item) => (
-              <tr key={item.id}>
+              <tr
+                key={item.id}
+                onClick={() => navigate(`/contest/${item.id}/info`)}
+                style={{ cursor: "pointer" }}
+              >
                 {/* Contest Name Cell */}
                 <td>
                   <div className={styles.contest_info_cell}>
@@ -66,7 +72,11 @@ export function ContestTable({ contests, onOpenPreview }) {
                         </span>
                       )}
 
-                      <Link to={`/contest/${item.id}`} className={styles.contest_title}>
+                      <Link 
+                        to={`/contest/${item.id}/info`} 
+                        className={styles.contest_title}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         {item.title}
                       </Link>
                     </div>
@@ -95,10 +105,10 @@ export function ContestTable({ contests, onOpenPreview }) {
 
                 {/* Action & Preview Cell */}
                 <td>
-                  <div className={styles.action_cell}>
+                  <div className={styles.action_cell} onClick={(e) => e.stopPropagation()}>
                     {/* Primary Action Button */}
                     {item.status === "LIVE" && (
-                      <Link to={`/contest/${item.id}`} className={styles.join_btn}>
+                      <Link to={`/contest/${item.id}/info`} className={styles.join_btn}>
                         <span>Join Now</span>
                       </Link>
                     )}
@@ -130,7 +140,7 @@ export function ContestTable({ contests, onOpenPreview }) {
                       variant="ghost"
                       size="sm"
                       leftIcon="List"
-                      onClick={() => onOpenPreview(item)}
+                      onClick={() => navigate(`/contest/${item.id}/info`)}
                     >
                       Xem bài tập
                     </Button>

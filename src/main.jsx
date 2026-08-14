@@ -22,20 +22,21 @@ const About = lazy(() => import("~/pages/About/About"));
 const Contact = lazy(() => import("~/pages/Contact/Contact"));
 const Roadmap = lazy(() => import("~/pages/Roadmap/Roadmap"));
 const RoadmapDetailSubpage = lazy(
-  () => import("~/pages/Roadmap/subpages/RoadmapDetail/RoadmapDetail"),
+  () => import("~/pages/RoadmapDetail/RoadmapDetail"),
 );
 const Pricing = lazy(() => import("~/pages/Pricing/Pricing"));
 const PricingCheckoutSubpage = lazy(
-  () => import("~/pages/Pricing/subpages/PricingCheckout/PricingCheckout"),
+  () => import("~/pages/PricingCheckout/PricingCheckout"),
 );
 const Badge = lazy(() => import("~/pages/Badge/Badge"));
 const BadgeDetailSubpage = lazy(
-  () => import("~/pages/Badge/subpages/BadgeDetail/BadgeDetail"),
+  () => import("~/pages/BadgeDetail/BadgeDetail"),
 );
 const Leaderboard = lazy(() => import("~/pages/Leaderboard/Leaderboard"));
 const Course = lazy(() => import("~/pages/Course/Course"));
+const CourseInfo = lazy(() => import("~/pages/CourseInfo/CourseInfo"));
 const CourseDetailSubpage = lazy(
-  () => import("~/pages/Course/subpages/CourseDetail/CourseDetail"),
+  () => import("~/pages/CourseDetail/CourseDetail"),
 );
 const Problem = lazy(() => import("~/pages/Problem/Problem"));
 const ProblemList = lazy(() => import("~/pages/ProblemList/ProblemList"));
@@ -46,6 +47,7 @@ const ProblemResult = lazy(() => import("~/pages/ProblemResult/ProblemResult"));
 const Contest = lazy(() => import("~/pages/Contest/Contest"));
 const ContestList = lazy(() => import("~/pages/ContestList/ContestList"));
 const ContestDetail = lazy(() => import("~/pages/ContestDetail/ContestDetail"));
+const ContestInfo = lazy(() => import("~/pages/ContestInfo/ContestInfo"));
 const ContestResult = lazy(() => import("~/pages/ContestResult/ContestResult"));
 
 // General Pages
@@ -96,8 +98,8 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/badge/:id" element={<BadgeDetailSubpage />} />
                 <Route path="/leaderboard" element={<Leaderboard />} />
                 <Route path="/course" element={<Course />} />
-
-                {/* Problem Routes */}
+                <Route path="/course/info" element={<CourseInfo />} />
+                <Route path="/course/:id/info" element={<CourseInfo />} />
                 <Route path="/course/detail" element={<CourseDetailSubpage />} />
                 <Route path="/course/:id" element={<CourseDetailSubpage />} />
                 <Route path="/problem" element={<Problem />} />
@@ -109,6 +111,8 @@ createRoot(document.getElementById("root")).render(
                 {/* Contest Routes */}
                 <Route path="/contest" element={<Contest />} />
                 <Route path="/contest/list" element={<ContestList />} />
+                <Route path="/contest/info" element={<ContestInfo />} />
+                <Route path="/contest/:id/info" element={<ContestInfo />} />
                 <Route path="/contest/detail" element={<ContestDetail />} />
                 <Route path="/contest/result" element={<ContestResult />} />
                 <Route path="/contest/:id/result" element={<ContestResult />} />

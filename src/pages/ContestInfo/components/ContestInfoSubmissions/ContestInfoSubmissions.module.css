@@ -1,0 +1,113 @@
+.container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section_title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+}
+
+:global([data-theme="dark"]) .section_title,
+:global(.theme-dark) .section_title {
+  color: #f8fafc;
+}
+
+.sub_count {
+  font-size: 13px;
+  color: var(--text-secondary, #64748b);
+  font-weight: 500;
+}
+
+:global([data-theme="dark"]) .sub_count,
+:global(.theme-dark) .sub_count {
+  color: #94a3b8;
+}
+
+.table_wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary, #64748b);
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+}
+
+:global([data-theme="dark"]) .table th,
+:global(.theme-dark) .table th {
+  color: #94a3b8;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.table td {
+  padding: 14px 16px;
+  font-size: 13.5px;
+  color: var(--text-main, #1e293b);
+  border-bottom: 1px solid var(--color-border, #f1f5f9);
+}
+
+:global([data-theme="dark"]) .table td,
+:global(.theme-dark) .table td {
+  color: #e2e8f0;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+.submit_id {
+  font-family: monospace;
+  font-weight: 600;
+  color: var(--color-primary, #0950c3);
+}
+
+:global([data-theme="dark"]) .submit_id,
+:global(.theme-dark) .submit_id {
+  color: #60a5fa;
+}
+
+.problem_name {
+  font-weight: 600;
+}
+
+.time_text {
+  font-size: 12.5px;
+  color: var(--text-secondary, #64748b);
+}
+
+:global([data-theme="dark"]) .time_text,
+:global(.theme-dark) .time_text {
+  color: #94a3b8;
+}
+
+.lang_badge {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background-color: var(--color-bg-secondary, #f1f5f9);
+  color: var(--text-secondary, #475569);
+  font-family: monospace;
+}
+
+:global([data-theme="dark"]) .lang_badge,
+:global(.theme-dark) .lang_badge {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}

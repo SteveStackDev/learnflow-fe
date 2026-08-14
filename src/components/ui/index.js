@@ -4,3 +4,4 @@ export { Badge } from "./Badge/Badge";
 export { FormField } from "./FormField/FormField";
 export { SectionHeader } from "./SectionHeader/SectionHeader";
 export { Pagination } from "./Pagination/Pagination";
+export { ChatInput } from "./ChatInput/ChatInput";

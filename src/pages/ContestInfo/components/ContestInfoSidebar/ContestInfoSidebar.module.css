@@ -1,0 +1,204 @@
+.back_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--color-bg-secondary, #f1f5f9);
+  color: var(--text-secondary, #64748b);
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: fit-content;
+}
+
+:global([data-theme="dark"]) .back_btn,
+:global(.theme-dark) .back_btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+.back_btn:hover {
+  background: var(--color-bg-hover, rgba(9, 80, 195, 0.1));
+  color: var(--color-primary, #0950c3);
+  transform: translateX(-2px);
+}
+
+:global([data-theme="dark"]) .back_btn:hover,
+:global(.theme-dark) .back_btn:hover {
+  color: #60a5fa;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+:global([data-theme="dark"]) .sidebar,
+:global(.theme-dark) .sidebar {
+  background-color: var(--color-surface, #131c31);
+  border-color: var(--color-border, rgba(255, 255, 255, 0.12));
+}
+
+.contest_header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trophy_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(9, 80, 195, 0.15), rgba(59, 130, 246, 0.15));
+  color: var(--color-primary, #0950c3);
+  font-size: 20px;
+}
+
+.contest_info {
+  display: flex;
+  flex-direction: column;
+}
+
+.contest_title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+}
+
+:global([data-theme="dark"]) .contest_title,
+:global(.theme-dark) .contest_title {
+  color: #f8fafc;
+}
+
+.contest_division {
+  font-size: 12px;
+  color: var(--text-secondary, #64748b);
+  margin-top: 2px;
+}
+
+.action_btn {
+  width: 100%;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.action_btn_upcoming {
+  background: linear-gradient(135deg, #0950c3, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.3);
+}
+
+.action_btn_upcoming:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(9, 80, 195, 0.4);
+}
+
+.action_btn_registered {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.action_btn_running {
+  background: linear-gradient(135deg, #0950c3, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.35);
+}
+
+.action_btn_finished {
+  background: var(--color-bg-secondary, #f1f5f9);
+  color: var(--text-main, #1e293b);
+  border: 1px solid var(--color-border, #cbd5e1);
+}
+
+:global([data-theme="dark"]) .action_btn_finished,
+:global(.theme-dark) .action_btn_finished {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.nav_menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav_item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--text-secondary, #64748b);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+:global([data-theme="dark"]) .nav_item,
+:global(.theme-dark) .nav_item {
+  color: #94a3b8;
+}
+
+.nav_item:hover {
+  background-color: var(--color-bg-hover, rgba(9, 80, 195, 0.08));
+  color: var(--color-primary, #0950c3);
+}
+
+.nav_item_active,
+:global([data-theme="dark"]) .nav_item.nav_item_active,
+:global(.theme-dark) .nav_item.nav_item_active {
+  background: linear-gradient(135deg, #0950c3, #2563eb);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.nav_item_disabled,
+.nav_item_disabled:hover,
+:global([data-theme="dark"]) .nav_item.nav_item_disabled,
+:global(.theme-dark) .nav_item.nav_item_disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: transparent;
+  color: var(--text-secondary, #64748b);
+}
+
+.footer_links {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border, #e2e8f0);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+:global([data-theme="dark"]) .footer_links,
+:global(.theme-dark) .footer_links {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}

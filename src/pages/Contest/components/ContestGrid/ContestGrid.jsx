@@ -42,60 +42,70 @@ function ContestGrid({
             </button>
 
             <div className={styles["contest-grid__list"]}>
-              {displayedItems.map((obj) => (
-                <div
-                  key={obj.id || obj.slug || obj.name || obj.title || obj}
-                  className={`${styles["contest-grid__card"]} reveal-card`}
-                >
-                  {/* Banner Image with Status Badge */}
-                  <div className={styles["contest-grid__card-media"]}>
-                    <span
-                      className={`${styles["contest-grid__status-badge"]} ${
-                        obj.statusLabel.includes("ĐANG MỞ")
-                          ? styles["contest-grid__status-badge--open"]
-                          : styles["contest-grid__status-badge--upcoming"]
-                      }`}
-                    >
-                      {obj.statusLabel}
-                    </span>
-                    <img
-                      src={obj.imageUrl}
-                      alt={obj.title}
-                      loading="lazy"
-                      decoding="async"
-                      className={styles["contest-grid__card-img"]}
-                    />
-                  </div>
+              {displayedItems.map((obj) => {
+                const isOpen = obj.statusLabel && obj.statusLabel.includes("ĐANG MỞ");
+                const targetPath = `/contest/${obj.id || "global-round-24"}/info`;
 
-                  <div className={styles["contest-grid__card-body"]}>
-                    <h3 className={styles["contest-grid__card-title"]}>{obj.title}</h3>
-                    <div className={styles["contest-grid__card-meta"]}>
-                      <span className={styles["contest-grid__meta-item"]}>
-                        <Icon name="Calendar" size={16} />
-                        {obj.time}
+                return (
+                  <div
+                    key={obj.id || obj.slug || obj.name || obj.title || obj}
+                    className={`${styles["contest-grid__card"]} reveal-card`}
+                    onClick={() => navigate(targetPath)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {/* Banner Image with Status Badge */}
+                    <div className={styles["contest-grid__card-media"]}>
+                      <span
+                        className={`${styles["contest-grid__status-badge"]} ${
+                          isOpen
+                            ? styles["contest-grid__status-badge--open"]
+                            : styles["contest-grid__status-badge--upcoming"]
+                        }`}
+                      >
+                        {obj.statusLabel}
                       </span>
-                      <span className={styles["contest-grid__meta-item"]}>
-                        <Icon name="Clock" size={15} />
-                        {obj.duration}
-                      </span>
-                      <span className={styles["contest-grid__meta-item"]}>
-                        <Icon name="Users" size={16} />
-                        {obj.participants}
-                      </span>
+                      <img
+                        src={obj.imageUrl}
+                        alt={obj.title}
+                        loading="lazy"
+                        decoding="async"
+                        className={styles["contest-grid__card-img"]}
+                      />
+                    </div>
+
+                    <div className={styles["contest-grid__card-body"]}>
+                      <h3 className={styles["contest-grid__card-title"]}>{obj.title}</h3>
+                      <div className={styles["contest-grid__card-meta"]}>
+                        <span className={styles["contest-grid__meta-item"]}>
+                          <Icon name="Calendar" size={16} />
+                          {obj.time}
+                        </span>
+                        <span className={styles["contest-grid__meta-item"]}>
+                          <Icon name="Clock" size={15} />
+                          {obj.duration}
+                        </span>
+                        <span className={styles["contest-grid__meta-item"]}>
+                          <Icon name="Users" size={16} />
+                          {obj.participants}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className={styles["contest-grid__card-actions"]}>
+                      <Button
+                        variant={obj.actionVariant === "contained" ? "contained" : "outlined"}
+                        className={styles.card_btn}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(targetPath);
+                        }}
+                      >
+                        {obj.actionText}
+                      </Button>
                     </div>
                   </div>
-
-                  <div className={styles["contest-grid__card-actions"]}>
-                    <Button
-                      variant={obj.actionVariant === "contained" ? "contained" : "outlined"}
-                      className={styles.card_btn}
-                      onClick={() => navigate(`/contest/${obj.id}`)}
-                    >
-                      {obj.actionText}
-                    </Button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <button

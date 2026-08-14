@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Icon from "~/components/Icon/Icon";
+import { ChatInput } from "~/components/ui";
 import styles from "./ContestProblemView.module.css";
 
 export function ContestProblemView({ problem }) {
@@ -144,6 +145,9 @@ export function ContestProblemView({ problem }) {
             <p className={styles.statement}>
               Chưa có bình luận nào. Hãy trao đổi thắc mắc hoặc ý tưởng giải của bạn!
             </p>
+            <div style={{ marginTop: "20px" }}>
+              <ChatInput placeholder="Thảo luận hoặc hỏi về bài tập contest này..." />
+            </div>
           </div>
         )}
       </div>

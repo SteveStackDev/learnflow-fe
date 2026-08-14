@@ -1,0 +1,122 @@
+.container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section_title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+}
+
+:global([data-theme="dark"]) .section_title,
+:global(.theme-dark) .section_title {
+  color: #f8fafc;
+}
+
+.table_wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary, #64748b);
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+}
+
+:global([data-theme="dark"]) .table th,
+:global(.theme-dark) .table th {
+  color: #94a3b8;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.table td {
+  padding: 14px 16px;
+  font-size: 13.5px;
+  color: var(--text-main, #1e293b);
+  border-bottom: 1px solid var(--color-border, #f1f5f9);
+}
+
+:global([data-theme="dark"]) .table td,
+:global(.theme-dark) .table td {
+  color: #e2e8f0;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+.rank_cell {
+  width: 60px;
+  text-align: center;
+}
+
+.rank_1 {
+  font-weight: 800;
+  font-size: 16px;
+  color: #f59e0b;
+}
+
+.rank_2 {
+  font-weight: 800;
+  font-size: 16px;
+  color: #94a3b8;
+}
+
+.rank_3 {
+  font-weight: 800;
+  font-size: 16px;
+  color: #d97706;
+}
+
+.rank_default {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-secondary, #64748b);
+}
+
+:global([data-theme="dark"]) .rank_default,
+:global(.theme-dark) .rank_default {
+  color: #cbd5e1;
+}
+
+.user_info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user_avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user_name {
+  font-weight: 600;
+}
+
+.score_text {
+  font-weight: 700;
+  color: #10b981;
+}
+
+.time_penalty {
+  font-size: 12px;
+  color: var(--text-secondary, #64748b);
+}
+
+:global([data-theme="dark"]) .time_penalty,
+:global(.theme-dark) .time_penalty {
+  color: #94a3b8;
+}

@@ -1,7 +1,11 @@
+import React from "react";
+import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import styles from "./RoadmapSuggestions.module.css";
 
 function RoadmapSuggestions({ suggestions }) {
+  const navigate = useNavigate();
+
   return (
     <section className={styles["roadmap-suggestions"]}>
       <div className={styles["roadmap-suggestions__container"]}>
@@ -17,7 +21,12 @@ function RoadmapSuggestions({ suggestions }) {
 
         <div className={styles["roadmap-suggestions__list"]}>
           {suggestions.map((obj) => (
-            <div key={obj.id} className={`${styles["roadmap-suggestions__card"]} reveal-card`}>
+            <div
+              key={obj.id}
+              className={`${styles["roadmap-suggestions__card"]} reveal-card`}
+              onClick={() => navigate(`/roadmap/${obj.id || "frontend"}`)}
+              style={{ cursor: "pointer" }}
+            >
               <div className={styles["roadmap-suggestions__icon-wrapper"]}>
                 <Icon name={obj.iconName} size={24} />
               </div>

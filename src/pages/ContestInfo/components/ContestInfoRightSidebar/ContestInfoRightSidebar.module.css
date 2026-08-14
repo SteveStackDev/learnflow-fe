@@ -1,0 +1,212 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+:global([data-theme="dark"]) .card,
+:global(.theme-dark) .card {
+  background-color: var(--color-surface, #131c31);
+  border-color: var(--color-border, rgba(255, 255, 255, 0.12));
+}
+
+.icon_badge_wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.trophy_badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(9, 80, 195, 0.12), rgba(59, 130, 246, 0.12));
+  color: var(--color-primary, #0950c3);
+}
+
+.status_info {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+}
+
+:global([data-theme="dark"]) .title,
+:global(.theme-dark) .title {
+  color: #f8fafc;
+}
+
+.status_pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status_finished {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+:global([data-theme="dark"]) .status_finished,
+:global(.theme-dark) .status_finished {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+}
+
+.status_running {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.status_upcoming {
+  background-color: rgba(9, 80, 195, 0.15);
+  color: #0950c3;
+  font-weight: 700;
+}
+
+:global([data-theme="dark"]) .status_upcoming,
+:global(.theme-dark) .status_upcoming {
+  color: #60a5fa;
+}
+
+.desc_text {
+  font-size: 13px;
+  color: var(--text-secondary, #64748b);
+  line-height: 1.5;
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .desc_text,
+:global(.theme-dark) .desc_text {
+  color: #94a3b8;
+}
+
+/* Action Button Styles Matching State Colors */
+.card_btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.card_btn_upcoming {
+  background: linear-gradient(135deg, #0950c3, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.35);
+}
+
+.card_btn_upcoming:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(9, 80, 195, 0.45);
+}
+
+.card_btn_running {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+.card_btn_running:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+}
+
+.card_btn_finished {
+  background-color: var(--color-bg-secondary, #f1f5f9);
+  color: var(--text-main, #1e293b);
+  border: 1px solid var(--color-border, #cbd5e1);
+}
+
+:global([data-theme="dark"]) .card_btn_finished,
+:global(.theme-dark) .card_btn_finished {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.card_btn_virtual {
+  background: rgba(9, 80, 195, 0.1);
+  color: var(--color-primary, #0950c3);
+  border: 1px solid rgba(9, 80, 195, 0.25);
+}
+
+:global([data-theme="dark"]) .card_btn_virtual,
+:global(.theme-dark) .card_btn_virtual {
+  background: rgba(9, 80, 195, 0.2);
+  color: #60a5fa;
+  border-color: rgba(9, 80, 195, 0.4);
+}
+
+.card_btn_virtual:hover {
+  background: rgba(9, 80, 195, 0.2);
+}
+
+.section_header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+}
+
+:global([data-theme="dark"]) .section_header,
+:global(.theme-dark) .section_header {
+  color: #f8fafc;
+}
+
+.materials_list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.material_item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--color-primary, #0950c3);
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+:global([data-theme="dark"]) .material_item,
+:global(.theme-dark) .material_item {
+  color: #60a5fa;
+}
+
+.material_item:hover {
+  text-decoration: underline;
+}

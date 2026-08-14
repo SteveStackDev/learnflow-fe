@@ -1,0 +1,56 @@
+.card_container {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+}
+
+:global([data-theme="dark"]) .title,
+:global(.theme-dark) .title {
+  color: #f8fafc;
+}
+
+.points_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+@media (max-width: 768px) {
+  .points_grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.point_item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--text-main, #1e293b);
+}
+
+:global([data-theme="dark"]) .point_item,
+:global(.theme-dark) .point_item {
+  color: #e2e8f0;
+}
+
+.check_icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}

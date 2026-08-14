@@ -47,7 +47,12 @@ function RoadmapGrid({
 
             <div className={styles["roadmap-cards__list"]}>
               {displayedItems.map((card) => (
-                <div key={card.id} className={`${styles["roadmap-cards__card"]} reveal-card`}>
+                <div
+                  key={card.id}
+                  className={`${styles["roadmap-cards__card"]} reveal-card`}
+                  onClick={() => navigate(`/roadmap/${card.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
                   {card.statusLabel && (
                     <span
                       className={`${styles["roadmap-cards__card-badge"]} ${
@@ -89,7 +94,10 @@ function RoadmapGrid({
                   <div className={styles["roadmap-cards__card-actions"]}>
                     <button
                       type="button"
-                      onClick={() => navigate(`/roadmap/${card.id}`)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/roadmap/${card.id}`);
+                      }}
                       className={styles["roadmap-cards__card-btn"]}
                     >
                       <span>{card.actionText}</span>

@@ -9,18 +9,19 @@ import About from "../pages/About/About";
 import Contact from "../pages/Contact/Contact";
 
 import Roadmap from "../pages/Roadmap/Roadmap";
-import RoadmapDetailSubpage from "../pages/Roadmap/subpages/RoadmapDetail/RoadmapDetail";
+import RoadmapDetailSubpage from "../pages/RoadmapDetail/RoadmapDetail";
 
 import Pricing from "../pages/Pricing/Pricing";
-import PricingCheckoutSubpage from "../pages/Pricing/subpages/PricingCheckout/PricingCheckout";
+import PricingCheckoutSubpage from "../pages/PricingCheckout/PricingCheckout";
 
 import Badge from "../pages/Badge/Badge";
-import BadgeDetailSubpage from "../pages/Badge/subpages/BadgeDetail/BadgeDetail";
+import BadgeDetailSubpage from "../pages/BadgeDetail/BadgeDetail";
 
 import Leaderboard from "../pages/Leaderboard/Leaderboard";
 
 import Course from "../pages/Course/Course";
-import CourseDetailSubpage from "../pages/Course/subpages/CourseDetail/CourseDetail";
+import CourseInfo from "../pages/CourseInfo/CourseInfo";
+import CourseDetailSubpage from "../pages/CourseDetail/CourseDetail";
 
 import Problem from "../pages/Problem/Problem";
 import ProblemList from "../pages/ProblemList/ProblemList";
@@ -30,6 +31,7 @@ import ProblemResult from "../pages/ProblemResult/ProblemResult";
 import Contest from "../pages/Contest/Contest";
 import ContestList from "../pages/ContestList/ContestList";
 import ContestDetail from "../pages/ContestDetail/ContestDetail";
+import ContestInfo from "../pages/ContestInfo/ContestInfo";
 import ContestResult from "../pages/ContestResult/ContestResult";
 
 import Setting from "../pages/Setting/Setting";
@@ -99,6 +101,11 @@ describe("FySet Full Page Routes Smoke Tests", () => {
     expect(screen.getAllByText(/Tất cả/i).length).toBeGreaterThan(0);
   });
 
+  it("renders CourseInfo subpage without crashing", () => {
+    renderWithRouter(<CourseInfo />);
+    expect(screen.getAllByText(/ReactJS/i).length).toBeGreaterThan(0);
+  });
+
   it("renders CourseDetail subpage without crashing", () => {
     renderWithRouter(<CourseDetailSubpage />);
     expect(screen.getAllByText(/Quay lại khóa học/i).length).toBeGreaterThan(0);
@@ -137,6 +144,11 @@ describe("FySet Full Page Routes Smoke Tests", () => {
   it("renders ContestDetail subpage without crashing", () => {
     renderWithRouter(<ContestDetail />);
     expect(screen.getAllByText(/Contest/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders ContestInfo subpage without crashing", () => {
+    renderWithRouter(<ContestInfo />);
+    expect(screen.getAllByText(/Danh sách bài tập/i).length).toBeGreaterThan(0);
   });
 
   it("renders ContestResult subpage without crashing", () => {

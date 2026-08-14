@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./ProblemDetailDescription.module.css";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
+import { ChatInput } from "~/components/ui";
 
 function ProblemDetailDescription({ problem }) {
   const [activeTab, setActiveTab] = useState("desc"); // 'desc' | 'solution' | 'discussion'
@@ -184,6 +185,16 @@ function ProblemDetailDescription({ problem }) {
                 <p className={styles.discussion_text}>{d.content}</p>
               </div>
             ))}
+            <div style={{ marginTop: "20px" }}>
+              <ChatInput
+                placeholder="Viết bình luận hoặc câu hỏi của bạn..."
+                onSend={({ text }) => {
+                  if (text) {
+                    toast.success("Đã gửi bình luận của bạn!", "Thảo luận");
+                  }
+                }}
+              />
+            </div>
           </div>
         )}
       </div>

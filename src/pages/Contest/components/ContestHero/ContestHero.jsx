@@ -1,7 +1,11 @@
+import React from "react";
+import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ContestHero.module.css";
 
 function ContestHero() {
+  const navigate = useNavigate();
+
   return (
     <section className={styles["contest-hero"]}>
       <div className={styles["contest-hero__container"]}>
@@ -26,6 +30,7 @@ function ContestHero() {
             <button
               type="button"
               className={`${styles["contest-hero__btn"]} ${styles["contest-hero__btn--contained"]}`}
+              onClick={() => navigate("/contest/global-round-24/info")}
             >
               <Icon name="Book" size={16} />
               <span>Tham gia ngay</span>

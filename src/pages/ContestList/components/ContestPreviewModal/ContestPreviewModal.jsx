@@ -58,7 +58,7 @@ export function ContestPreviewModal({ contest, onClose }) {
           <Button variant="outlined" onClick={onClose}>
             Đóng
           </Button>
-          <Link to={`/contest/${contest.id}`}>
+          <Link to={`/contest/${contest.id}/info`}>
             <Button variant="contained" rightIcon="ArrowRight">
               Vào cuộc thi
             </Button>
