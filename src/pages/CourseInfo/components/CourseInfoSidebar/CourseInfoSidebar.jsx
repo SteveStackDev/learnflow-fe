@@ -17,6 +17,8 @@ export default function CourseInfoSidebar({
     <Card className={styles.card_container}>
       {/* Action Button: Bắt đầu học (chưa học) vs Tiếp tục học (đã học) */}
       <Button
+        variant="contained"
+        size="lg"
         className={styles.action_btn}
         onClick={onActionClick}
         leftIcon={isEnrolled ? "Play" : "BookOpen"}

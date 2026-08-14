@@ -686,6 +686,7 @@
   white-space: nowrap;
 }
 
+.header__user_dropdown,
 .header__user_menu {
   position: absolute;
   top: calc(100% + 10px);
@@ -705,9 +706,9 @@
 
 .header__user_header {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
 }
 
 .header__user_avatar_large {
@@ -726,7 +727,7 @@
 }
 
 .header__user_fullname {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #191b22;
   white-space: nowrap;
@@ -735,7 +736,7 @@
 }
 
 .header__user_email {
-  font-size: 0.775rem;
+  font-size: 0.8rem;
   color: #64748b;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -748,6 +749,7 @@
   margin: 6px 0;
 }
 
+.header__user_item,
 .header__user_menu_item {
   display: flex;
   align-items: center;
@@ -767,15 +769,18 @@
   font-family: inherit;
 }
 
+.header__user_item:hover,
 .header__user_menu_item:hover {
   background-color: #f0f6ff;
   color: #0950c3;
 }
 
+.header__user_item--danger,
 .header__user_menu_item--danger {
   color: #ef4444;
 }
 
+.header__user_item--danger:hover,
 .header__user_menu_item--danger:hover {
   background-color: #fef2f2;
   color: #dc2626;
@@ -813,6 +818,7 @@
   color: #ffffff;
 }
 
+:global([data-theme="dark"]) .header__user_dropdown,
 :global([data-theme="dark"]) .header__user_menu {
   background-color: #131c31;
   border-color: rgba(255, 255, 255, 0.15);
@@ -827,13 +833,26 @@
   border-top-color: rgba(255, 255, 255, 0.15);
 }
 
+:global([data-theme="dark"]) .header__user_item,
 :global([data-theme="dark"]) .header__user_menu_item {
   color: #cbd5e1;
 }
 
+:global([data-theme="dark"]) .header__user_item:hover,
 :global([data-theme="dark"]) .header__user_menu_item:hover {
   background-color: #1e293b;
   color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .header__user_item--danger,
+:global([data-theme="dark"]) .header__user_menu_item--danger {
+  color: #f87171;
+}
+
+:global([data-theme="dark"]) .header__user_item--danger:hover,
+:global([data-theme="dark"]) .header__user_menu_item--danger:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
 }
 
 :global([data-theme="dark"]) .header__mobile_user_info {
@@ -855,3 +874,4 @@
 :global([data-theme="dark"]) .header__user_btn--active .header__chevron {
   color: #38bdf8;
 }
+
