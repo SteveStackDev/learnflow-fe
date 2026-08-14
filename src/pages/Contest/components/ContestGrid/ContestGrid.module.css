@@ -161,6 +161,13 @@
 
 .contest-grid__card-actions {
   padding: 0 24px 20px;
+  width: 100%;
+}
+
+.card_btn {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .contest-grid__action-btn {

@@ -88,6 +88,7 @@ function ContestGrid({
                   <div className={styles["contest-grid__card-actions"]}>
                     <Button
                       variant={obj.actionVariant === "contained" ? "contained" : "outlined"}
+                      className={styles.card_btn}
                       onClick={() => navigate(`/contest/${obj.id}`)}
                     >
                       {obj.actionText}
