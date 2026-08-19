@@ -15,26 +15,36 @@ function DashboardContent({
     <div className={styles.content_grid}>
       {/* Left Column */}
       <div className={styles.left_column}>
-        {/* 1. Learning Path Card */}
+        {/* 1. Learning Path Hero CTA Card */}
         {learningPath && (
           <div className={styles.path_card}>
-            <span className={styles.path_tag}>{learningPath.tag}</span>
+            <div className={styles.path_badge_row}>
+              <span className={styles.path_tag}>{learningPath.tag || "TIẾP TỤC HỌC"}</span>
+              <span className={styles.path_remaining_pill}>
+                {learningPath.remainingInfo || "Còn 2 bài học"}
+              </span>
+            </div>
+
             <div className={styles.path_header_row}>
-              <div>
+              <div className={styles.path_text_block}>
                 <h2 className={styles.path_title}>{learningPath.title}</h2>
                 <p className={styles.path_module}>{learningPath.currentModule}</p>
               </div>
+
               <Link to={learningPath.to} className={styles.path_continue_btn}>
-                <span>{learningPath.actionText}</span>
+                <span>{learningPath.actionText || "Tiếp tục học ngay"}</span>
                 <Icon name="ArrowRight" size={16} />
               </Link>
             </div>
 
-            <div className={styles.path_progress_bar}>
+            <div className={styles.path_progress_block}>
+              <div className={styles.path_progress_header}>
+                <span className={styles.path_progress_label}>TIẾN ĐỘ MODULE HIỆN TẠI</span>
+                <span className={styles.path_percent}>{learningPath.progress}%</span>
+              </div>
               <div className={styles.path_track}>
                 <div className={styles.path_fill} style={{ width: `${learningPath.progress}%` }} />
               </div>
-              <span className={styles.path_percent}>{learningPath.progress}%</span>
             </div>
           </div>
         )}
@@ -65,7 +75,7 @@ function DashboardContent({
           </div>
         </div>
 
-        {/* 3. Recent Activity (Stretches to align with right sidebar) */}
+        {/* 3. Recent Activity */}
         <div className={`${styles.section_block} ${styles.activity_section_block}`}>
           <h3 className={styles.section_title}>
             <Icon name="History" size={18} style={{ color: "#0950c3" }} />

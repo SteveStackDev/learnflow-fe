@@ -4,6 +4,8 @@ import styles from "./DashboardCard.module.css";
 function DashboardCard({ student }) {
   if (!student) return null;
 
+  const completedText = student.completedLessonsCount ? ` (${student.completedLessonsCount})` : "";
+
   return (
     <div className={styles.dashboard_card}>
       <div className={styles.dashboard_card__glow} />
@@ -31,8 +33,10 @@ function DashboardCard({ student }) {
         {/* Progress Bar under FRONTEND DEVELOPER role */}
         <div className={styles.dashboard_card__progress_block}>
           <div className={styles.dashboard_card__progress_header}>
-            <span>TIẾN ĐỘ HỌC TẬP</span>
-            <span>{student.overallProgress}%</span>
+            <span>TỔNG THỂ KHÓA HỌC</span>
+            <span>
+              {student.overallProgress}%{completedText}
+            </span>
           </div>
           <div className={styles.dashboard_card__progress_track}>
             <div
@@ -56,12 +60,24 @@ function DashboardCard({ student }) {
           </div>
         </div>
 
+        {/* Badge Icons with Tooltips */}
         <div className={styles.dashboard_card__icon_row}>
-          {student.badgeIcons?.map((icon, idx) => (
-            <div key={idx} className={styles.dashboard_card__icon_badge}>
-              <Icon name={icon} size={14} />
-            </div>
-          ))}
+          {student.badgeIcons?.map((item, idx) => {
+            const iconName = typeof item === "string" ? item : item.name;
+            const label = typeof item === "string" ? item : item.label;
+
+            return (
+              <div
+                key={idx}
+                className={styles.dashboard_card__icon_badge}
+                title={label}
+                aria-label={label}
+              >
+                <Icon name={iconName} size={14} />
+                <span className={styles.dashboard_card__tooltip}>{label}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

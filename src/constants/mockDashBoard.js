@@ -4,22 +4,29 @@
 
 export const dashboardData = {
   student: {
-    id: "8420 2024",
+    id: "FYSET-84209",
     name: "MICHAEL",
     role: "FRONTEND DEVELOPER",
     joinDate: "01/01/2024",
     overallProgress: 82,
+    completedLessonsCount: "82/100 bài",
     streakDays: 30,
     badgeLevel: "THẺ HỌC VIÊN CAO CẤP",
-    badgeIcons: ["Award", "Trophy", "CheckCircle", "Zap"],
+    badgeIcons: [
+      { name: "Award", label: "Chứng nhận Thành tựu" },
+      { name: "Trophy", label: "Top 10% Contest" },
+      { name: "CheckCircle", label: "Học viên Xác thực" },
+      { name: "Zap", label: "Streak Master 30 ngày" },
+    ],
   },
 
   learningPath: {
-    tag: "LEARNING PATH",
+    tag: "TIẾP TỤC HỌC",
     title: "Frontend Developer",
     currentModule: "Module 4: Advanced React Patterns & Performance",
-    progress: 82,
-    actionText: "Continue",
+    progress: 68,
+    remainingInfo: "Còn 2 bài học • 12/18 bài đã xong",
+    actionText: "Tiếp tục học ngay",
     to: "/roadmap",
   },
 
