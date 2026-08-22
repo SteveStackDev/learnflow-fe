@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "~/components/ui";
+import { Button, ScrollArea } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ContestResultCode.module.css";
@@ -104,7 +104,7 @@ export function ContestResultCode({ resultData }) {
       </div>
 
       {/* Code Workspace */}
-      <div className={styles.code_workspace}>
+      <ScrollArea className={styles.code_workspace}>
         <div className={styles.line_numbers}>
           {lineNumbers.map((num) => (
             <div key={num} className={styles.line_number_item}>
@@ -119,7 +119,7 @@ export function ContestResultCode({ resultData }) {
             dangerouslySetInnerHTML={highlightCode(resultData.code)}
           />
         </div>
-      </div>
+      </ScrollArea>
     </div>
   );
 }

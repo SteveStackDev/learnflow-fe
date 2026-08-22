@@ -1,0 +1,205 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.card {
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+:global([data-theme="dark"]) .card,
+:global(.theme-dark) .card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.card_title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:global([data-theme="dark"]) .card_title,
+:global(.theme-dark) .card_title {
+  color: #ffffff;
+}
+
+.search_wrapper {
+  position: relative;
+  width: 320px;
+}
+
+.search_icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--theme-text-secondary, #94a3b8);
+  pointer-events: none;
+}
+
+.search_input {
+  width: 100%;
+  height: 40px;
+  padding: 0 16px 0 40px;
+  border-radius: 12px;
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.4));
+  background-color: var(--theme-body-bg, #f8fafc);
+  color: var(--theme-text-primary, #0f172a);
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.search_input:focus {
+  border-color: var(--color-primary, #0950c3);
+  background-color: var(--theme-card-bg, #ffffff);
+}
+
+:global([data-theme="dark"]) .search_input,
+:global(.theme-dark) .search_input {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* Table */
+.table_wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.table th {
+  padding: 14px 18px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--theme-text-secondary, #64748b);
+  background-color: rgba(0, 0, 0, 0.02);
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.2));
+  white-space: nowrap;
+}
+
+:global([data-theme="dark"]) .table th,
+:global(.theme-dark) .table th {
+  color: #94a3b8;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.15));
+  color: var(--theme-text-primary, #0f172a);
+  vertical-align: middle;
+}
+
+:global([data-theme="dark"]) .table td,
+:global(.theme-dark) .table td {
+  color: #e2e8f0;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+.participants_wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar_stack {
+  display: flex;
+  align-items: center;
+}
+
+.avatar_stacked {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--theme-card-bg, #ffffff);
+  margin-left: -10px;
+}
+
+.avatar_stacked:first-child {
+  margin-left: 0;
+}
+
+.action_btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  background-color: transparent;
+  color: var(--theme-text-secondary, #64748b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action_btn:hover {
+  background-color: rgba(9, 80, 195, 0.08);
+  color: var(--color-primary, #0950c3);
+  border-color: var(--color-primary, #0950c3);
+}
+
+:global([data-theme="dark"]) .action_btn,
+:global(.theme-dark) .action_btn {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .action_btn:hover,
+:global(.theme-dark) .action_btn:hover {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: #38bdf8;
+}
+
+.pagination_bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page_info {
+  font-size: 0.875rem;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+:global([data-theme="dark"]) .page_info,
+:global(.theme-dark) .page_info {
+  color: #94a3b8;
+}

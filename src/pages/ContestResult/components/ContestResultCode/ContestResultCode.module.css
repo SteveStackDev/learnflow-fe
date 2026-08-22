@@ -124,18 +124,6 @@
   line-height: 24px;
   max-height: 320px;
   overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(169, 183, 203, 0.4) transparent;
-}
-
-.code_workspace::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.code_workspace::-webkit-scrollbar-thumb {
-  background-color: rgba(169, 183, 203, 0.4);
-  border-radius: 9999px;
 }
 
 .line_numbers {

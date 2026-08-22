@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Badge } from "~/components/ui";
 import styles from "./ContestInfoStandings.module.css";
 
-export default function ContestInfoStandings({ standings = [] }) {
+export default function ContestInfoStandings({ standings = [], onSelectUser }) {
   const defaultStandings = [
     {
       rank: 1,
@@ -67,7 +67,22 @@ export default function ContestInfoStandings({ standings = [] }) {
               <tr key={item.rank}>
                 <td className={styles.rank_cell}>{renderRankBadge(item.rank)}</td>
                 <td>
-                  <div className={styles.user_info}>
+                  <div
+                    className={styles.user_info}
+                    onClick={() =>
+                      onSelectUser?.({
+                        id: "user-01",
+                        username: item.name,
+                        handle: item.name.toLowerCase().replace(/\s+/g, "_"),
+                        avatar: item.avatar,
+                        userTitle: `Top #${item.rank} Contestant`,
+                        statusMessage: `Đạt ${item.score} pts trong cuộc thi! 🏆`,
+                        bio: "Thí sinh xuất sắc trên Bảng xếp hạng trực tiếp.",
+                      })
+                    }
+                    style={{ cursor: "pointer" }}
+                    title="Click để xem Profile người dùng"
+                  >
                     <img src={item.avatar} alt={`Ảnh đại diện của ${item.name}`} className={styles.user_avatar} />
                     <span className={styles.user_name}>{item.name}</span>
                   </div>

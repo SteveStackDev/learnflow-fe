@@ -33,25 +33,12 @@
 /* Console Body Output Window */
 .console_body {
   padding: 16px 20px;
-  min-height: 120px;
-  max-height: 220px;
-  overflow-y: auto;
+  flex: 1;
   background-color: #f8fafc;
   color: #0f172a;
   font-family: var(--font-family-code);
   font-size: 0.85rem;
   line-height: 1.6;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(169, 183, 203, 0.4) transparent;
-}
-
-.console_body::-webkit-scrollbar {
-  width: 6px;
-}
-
-.console_body::-webkit-scrollbar-thumb {
-  background-color: rgba(169, 183, 203, 0.4);
-  border-radius: 9999px;
 }
 
 .log_line {
@@ -98,11 +85,6 @@
 :global([data-theme="dark"]) .console_body {
   background-color: #1e1e2e;
   color: #cdd6f4;
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-}
-
-:global([data-theme="dark"]) .console_body::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
 }
 
 :global([data-theme="dark"]) .log_info {

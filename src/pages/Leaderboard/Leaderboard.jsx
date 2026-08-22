@@ -17,6 +17,10 @@ import LeaderboardFaq from "./components/LeaderboardFaq/LeaderboardFaq";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
+// User Profile Popover Modal
+import UserProfileCardModal from "~/components/UserProfileCardModal/UserProfileCardModal";
+import { mockUserProfileData, mockUsersMap } from "~/constants/mockUserProfile";
+
 const TIME_OPTIONS = [
   { id: "this-week", label: "Tuần này" },
   { id: "this-month", label: "Tháng này" },
@@ -31,6 +35,7 @@ function Leaderboard() {
   const [selectedTime, setSelectedTime] = useState(TIME_OPTIONS[0]);
   const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedUserForModal, setSelectedUserForModal] = useState(null);
   const timeDropdownRef = useRef(null);
 
   useScrollReveal();
@@ -70,10 +75,8 @@ function Leaderboard() {
 
   // Reset page when search or timeframe changes
   useEffect(() => {
-    if (currentPage !== 1) {
-      setCurrentPage(1);
-    }
-  }, [searchQuery, selectedTime, currentPage]);
+    setCurrentPage(1);
+  }, [searchQuery, selectedTime]);
 
   // Pagination calculation
   const totalPages = Math.max(1, Math.ceil(filteredAndSortedItems.length / ITEMS_PER_PAGE));
@@ -120,6 +123,19 @@ function Leaderboard() {
         totalPages={totalPages}
         setSearchQuery={setSearchQuery}
         setActiveTab={setActiveTab}
+        onSelectUser={(item) =>
+          setSelectedUserForModal({
+            id: item.id || "user-01",
+            username: item.name || "Alex Tran",
+            handle: item.name ? item.name.toLowerCase().replace(/\s+/g, "_") : "alex_t",
+            avatar: item.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
+            coverImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
+            status: "online",
+            statusMessage: "Đã đạt điểm cao trong...",
+            userTitle: "Anh hùng bàn phím",
+            bio: "Ko có j khó sợ lòng ko bền =))",
+          })
+        }
       />
 
       {/* 5. Guide Section */}
@@ -127,6 +143,13 @@ function Leaderboard() {
 
       {/* 6. FAQ Section */}
       <LeaderboardFaq faqs={leaderboardData.faqs} />
+
+      {/* Quick Profile Popover Card Modal (Image 2) */}
+      <UserProfileCardModal
+        isOpen={!!selectedUserForModal}
+        onClose={() => setSelectedUserForModal(null)}
+        user={selectedUserForModal}
+      />
     </div>
   );
 }

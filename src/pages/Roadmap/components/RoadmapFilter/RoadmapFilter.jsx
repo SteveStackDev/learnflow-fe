@@ -1,5 +1,6 @@
+import React from "react";
 import Icon from "~/components/Icon/Icon";
-import useDropdownKeyboard from "~/hooks/useDropdownKeyboard";
+import { DropdownMenu } from "~/components/ui";
 import styles from "./RoadmapFilter.module.css";
 
 function RoadmapFilter({
@@ -12,17 +13,11 @@ function RoadmapFilter({
   LEVEL_OPTIONS,
   selectedLevel,
   setSelectedLevel,
-  isDropdownOpen,
-  setIsDropdownOpen,
-  dropdownRef,
 }) {
-  const levelKeyboard = useDropdownKeyboard({
-    isOpen: isDropdownOpen,
-    setIsOpen: setIsDropdownOpen,
-    options: LEVEL_OPTIONS,
-    selectedOption: selectedLevel,
-    onSelect: setSelectedLevel,
-  });
+  const options = LEVEL_OPTIONS.map((item) => ({
+    value: item.id,
+    label: item.label,
+  }));
 
   return (
     <section className={styles["roadmap-filters"]}>
@@ -71,62 +66,16 @@ function RoadmapFilter({
             ))}
           </div>
 
-          {/* Custom Modern Dropdown Component */}
-          <div className={styles["roadmap-filters__select-wrapper"]} ref={dropdownRef}>
-            <span className={styles["roadmap-filters__select-label"]}>Hiển thị theo:</span>
-
-            <div className={styles["roadmap-filters__dropdown-container"]}>
-              <button
-                type="button"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                onKeyDown={levelKeyboard.handleKeyDown}
-                aria-haspopup="listbox"
-                aria-expanded={isDropdownOpen}
-                aria-label="Lọc theo trình độ"
-                className={`${styles["roadmap-filters__dropdown-btn"]} ${
-                  isDropdownOpen ? styles["roadmap-filters__dropdown-btn--open"] : ""
-                }`}
-              >
-                <span>{selectedLevel.label}</span>
-                <span className={styles["roadmap-filters__dropdown-chevron"]}>
-                  <Icon name="ChevronDown" size={16} strokeWidth={2.5} />
-                </span>
-              </button>
-
-              {isDropdownOpen && (
-                <div className={styles["roadmap-filters__dropdown-menu"]} role="listbox">
-                  {LEVEL_OPTIONS.map((option, index) => (
-                    <div
-                      key={option.id}
-                      role="option"
-                      aria-selected={selectedLevel.id === option.id}
-                      onClick={() => {
-                        setSelectedLevel(option);
-                        setIsDropdownOpen(false);
-                      }}
-                      onMouseEnter={() => levelKeyboard.setFocusedIndex(index)}
-                      className={`${styles["roadmap-filters__dropdown-item"]} ${
-                        selectedLevel.id === option.id
-                          ? styles["roadmap-filters__dropdown-item--selected"]
-                          : ""
-                      } ${
-                        levelKeyboard.focusedIndex === index
-                          ? styles["roadmap-filters__dropdown-item--focused"]
-                          : ""
-                      }`}
-                    >
-                      <span>{option.label}</span>
-                      {selectedLevel.id === option.id && (
-                        <span className={styles["roadmap-filters__dropdown-check"]}>
-                          <Icon name="Check" size={15} strokeWidth={3} />
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          {/* Unified UI DropdownMenu Component */}
+          <DropdownMenu
+            prefix="Hiển thị theo:"
+            options={options}
+            value={selectedLevel?.id}
+            onChange={(val) => {
+              const target = LEVEL_OPTIONS.find((opt) => opt.id === val);
+              if (target) setSelectedLevel(target);
+            }}
+          />
         </div>
       </div>
     </section>

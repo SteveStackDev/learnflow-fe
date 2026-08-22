@@ -1,0 +1,286 @@
+.sidebar {
+  width: 320px;
+  min-width: 320px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border-right: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+:global([data-theme="dark"]) .sidebar,
+:global(.theme-dark) .sidebar {
+  background-color: #131c31;
+  border-right-color: rgba(255, 255, 255, 0.1);
+}
+
+.search_container {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  box-sizing: border-box;
+}
+
+:global([data-theme="dark"]) .search_container,
+:global(.theme-dark) .search_container {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.search_wrapper {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  background-color: var(--color-bg-secondary, #f1f5f9);
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+:global([data-theme="dark"]) .search_wrapper,
+:global(.theme-dark) .search_wrapper {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.search_wrapper:focus-within {
+  border-color: var(--color-primary, #0950c3);
+  background-color: var(--theme-card-bg, #ffffff);
+  box-shadow: 0 0 10px rgba(9, 80, 195, 0.15);
+}
+
+:global([data-theme="dark"]) .search_wrapper:focus-within,
+:global(.theme-dark) .search_wrapper:focus-within {
+  border-color: #38bdf8;
+  background-color: #0f172a;
+}
+
+.search_icon {
+  color: var(--theme-text-secondary, #94a3b8);
+  flex-shrink: 0;
+}
+
+.search_input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.875rem;
+  color: var(--theme-text-primary, #0f172a);
+  width: 100%;
+  font-family: inherit;
+}
+
+:global([data-theme="dark"]) .search_input,
+:global(.theme-dark) .search_input {
+  color: #ffffff;
+}
+
+.search_input::placeholder {
+  color: var(--theme-text-secondary, #94a3b8);
+}
+
+/* Category Filter Pills (Tất cả, Chưa đọc, Nhóm) */
+.filter_pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.filter_pill {
+  border: 1px solid rgba(169, 183, 203, 0.3);
+  background-color: transparent;
+  color: var(--theme-text-secondary, #64748b);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.filter_pill:hover {
+  background-color: rgba(9, 80, 195, 0.06);
+  color: var(--color-primary, #0950c3);
+  border-color: rgba(9, 80, 195, 0.3);
+}
+
+.filter_pill_active {
+  background-color: var(--color-primary, #0950c3);
+  color: #ffffff;
+  border-color: var(--color-primary, #0950c3);
+}
+
+.filter_pill_active:hover {
+  background-color: var(--color-primary, #0950c3);
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .filter_pill,
+:global(.theme-dark) .filter_pill {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .filter_pill:hover,
+:global(.theme-dark) .filter_pill:hover {
+  background-color: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+:global([data-theme="dark"]) .filter_pill_active,
+:global(.theme-dark) .filter_pill_active {
+  background-color: #38bdf8;
+  color: #0b1120;
+  border-color: #38bdf8;
+}
+
+.empty_filter_text {
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--theme-text-secondary, #94a3b8);
+}
+
+.conversation_list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chat_item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.chat_item:hover {
+  background-color: var(--color-bg-secondary, #f1f5f9);
+}
+
+:global([data-theme="dark"]) .chat_item:hover,
+:global(.theme-dark) .chat_item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chat_item_active {
+  background-color: #e0ebff !important;
+}
+
+:global([data-theme="dark"]) .chat_item_active,
+:global(.theme-dark) .chat_item_active {
+  background-color: rgba(56, 189, 248, 0.15) !important;
+}
+
+.avatar_wrapper {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+}
+
+.online_dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background-color: #22c55e;
+  border: 2px solid var(--theme-card-bg, #ffffff);
+  border-radius: 50%;
+}
+
+.chat_info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.top_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat_name {
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:global([data-theme="dark"]) .chat_name,
+:global(.theme-dark) .chat_name {
+  color: #ffffff;
+}
+
+.time_text {
+  font-size: 0.75rem;
+  color: var(--theme-text-secondary, #94a3b8);
+}
+
+.bottom_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.last_message {
+  font-size: 0.825rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:global([data-theme="dark"]) .last_message,
+:global(.theme-dark) .last_message {
+  color: #cbd5e1;
+}
+
+.unread_badge {
+  background-color: var(--color-primary, #0950c3);
+  color: #ffffff;
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+  }
+}

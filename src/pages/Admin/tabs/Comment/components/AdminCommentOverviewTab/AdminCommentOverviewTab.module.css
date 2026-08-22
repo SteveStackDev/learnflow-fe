@@ -1,0 +1,77 @@
+.card {
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+:global([data-theme="dark"]) .card,
+:global(.theme-dark) .card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card_title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:global([data-theme="dark"]) .card_title,
+:global(.theme-dark) .card_title {
+  color: #ffffff;
+}
+
+.grid_2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .grid_2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form_group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+:global([data-theme="dark"]) .label,
+:global(.theme-dark) .label {
+  color: #94a3b8;
+}
+
+.comment_box {
+  background-color: var(--theme-body-bg, #f8fafc);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 16px;
+  padding: 20px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .comment_box,
+:global(.theme-dark) .comment_box {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}

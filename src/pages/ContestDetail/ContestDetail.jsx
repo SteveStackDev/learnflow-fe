@@ -12,12 +12,14 @@ import ContestProblemView from "./components/ContestProblemView/ContestProblemVi
 import ContestCodeEditor from "./components/ContestCodeEditor/ContestCodeEditor";
 import ContestLiveLeaderboard from "./components/ContestLiveLeaderboard/ContestLiveLeaderboard";
 import ProblemDetailConsole from "~/pages/ProblemDetail/components/ProblemDetailConsole/ProblemDetailConsole";
+import UserProfileCardModal from "~/components/UserProfileCardModal/UserProfileCardModal";
 
 export function ContestDetail() {
   const contest = mockContestData || { problems: [], leaderboard: [] };
   const navigate = useNavigate();
   const { id } = useParams();
   const { toast } = useToast();
+  const [selectedUserForModal, setSelectedUserForModal] = useState(null);
 
   // Mặc định chọn bài tập đầu tiên nếu id không hợp lệ
   const defaultProblemId = contest.problems?.[0]?.id || "A";
@@ -224,7 +226,7 @@ export function ContestDetail() {
             )}
           </>
         ) : (
-          /* Desktop Desktop (> 1024px): Standard Multi-Pane Arena Layout */
+          /* Desktop (> 1024px): Standard Multi-Pane Arena Layout */
           <>
             {showProblemsList && (
               <ContestSidebar
@@ -251,13 +253,14 @@ export function ContestDetail() {
               <ContestLiveLeaderboard
                 leaderboard={contest.leaderboard}
                 onClose={() => setShowLeaderboard(false)}
+                onSelectUser={(u) => setSelectedUserForModal(u)}
               />
             )}
           </>
         )}
       </div>
 
-      {/* Console Log Panel (Visible when editor tab active on mobile, or always on desktop) */}
+      {/* Console Log Panel */}
       {(!isMobileViewport || activeMobileTab === "editor") && (
         <div className={styles.console_wrapper}>
           <ProblemDetailConsole
@@ -268,6 +271,13 @@ export function ContestDetail() {
           />
         </div>
       )}
+
+      {/* User Profile Quick Card Modal */}
+      <UserProfileCardModal
+        isOpen={!!selectedUserForModal}
+        onClose={() => setSelectedUserForModal(null)}
+        user={selectedUserForModal}
+      />
     </div>
   );
 }

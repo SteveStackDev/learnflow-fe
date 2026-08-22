@@ -88,10 +88,8 @@ function ProblemList() {
 
   // Reset to page 1 whenever any filter changes
   useEffect(() => {
-    if (currentPage !== 1) {
-      setCurrentPage(1);
-    }
-  }, [searchQuery, selectedDifficulty, selectedTopic, selectedLanguage, selectedStatus, currentPage]);
+    setCurrentPage(1);
+  }, [searchQuery, selectedDifficulty, selectedTopic, selectedLanguage, selectedStatus]);
 
   const displayedItems = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;

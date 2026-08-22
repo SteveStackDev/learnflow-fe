@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./ProblemResultCode.module.css";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext";
+import { ScrollArea } from "~/components/ui";
 
 function escapeHtml(str) {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -101,7 +102,7 @@ function ProblemResultCode({ resultData }) {
       </div>
 
       {/* Syntax Highlighted Code Viewer */}
-      <div className={styles.code_workspace}>
+      <ScrollArea className={styles.code_workspace}>
         <div className={styles.line_numbers}>
           {lineNumbers.map((num) => (
             <div key={num} className={styles.line_number_item}>
@@ -116,7 +117,7 @@ function ProblemResultCode({ resultData }) {
             dangerouslySetInnerHTML={highlightCode(resultData.submittedCode)}
           />
         </div>
-      </div>
+      </ScrollArea>
     </div>
   );
 }

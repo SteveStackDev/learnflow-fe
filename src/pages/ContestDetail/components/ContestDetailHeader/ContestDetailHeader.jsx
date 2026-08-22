@@ -57,7 +57,7 @@ export function ContestDetailHeader({
         </div>
       </div>
 
-      {/* Right: Workspace Action Toggles (Desktop Only) */}
+      {/* Right: Workspace Action Toggles */}
       <div className={styles.header_right}>
         <Button
           variant={showProblemsList ? "contained" : "outlined"}

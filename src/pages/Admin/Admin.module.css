@@ -1,0 +1,152 @@
+/* ==========================================================================
+   Admin Page Layout Styling (FySet Theme Variables)
+   ========================================================================== */
+
+.admin_layout {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  background-color: var(--color-bg-secondary, #f8fafc);
+  display: flex;
+  position: relative;
+}
+
+:global([data-theme="dark"]) .admin_layout,
+:global(.theme-dark) .admin_layout {
+  background-color: #0b1120;
+}
+
+.main_content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--color-bg-secondary, #f8fafc);
+}
+
+:global([data-theme="dark"]) .main_content,
+:global(.theme-dark) .main_content {
+  background-color: #0b1120;
+}
+
+.scroll_workspace {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.workspace_inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 40px;
+}
+
+.stats_section {
+  width: 100%;
+}
+
+.tab_render_area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Mobile Backdrop Overlay */
+.mobile_backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Tab Placeholder Container */
+.tab_content_container {
+  padding: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.placeholder_card {
+  max-width: 600px;
+  width: 100%;
+  padding: 40px;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.placeholder_title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0 0 12px 0;
+}
+
+:global([data-theme="dark"]) .placeholder_title,
+:global(.theme-dark) .placeholder_title {
+  color: #ffffff;
+}
+
+.placeholder_text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0 0 24px 0;
+}
+
+:global([data-theme="dark"]) .placeholder_text,
+:global(.theme-dark) .placeholder_text {
+  color: #94a3b8;
+}
+
+.reset_btn {
+  background-color: var(--color-primary, #0950c3);
+  color: #ffffff;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset_btn:hover {
+  background-color: #003a95;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.3);
+}
+
+:global([data-theme="dark"]) .reset_btn,
+:global(.theme-dark) .reset_btn {
+  background-color: #38bdf8;
+  color: #0b1120;
+}
+
+:global([data-theme="dark"]) .reset_btn:hover,
+:global(.theme-dark) .reset_btn:hover {
+  background-color: #7dd3fc;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
+}
+
+@media (max-width: 768px) {
+  .tab_content_container {
+    padding: 16px;
+  }
+
+  .placeholder_card {
+    padding: 24px 16px;
+  }
+}

@@ -1,0 +1,123 @@
+.container {
+  background-color: var(--theme-card-bg, #ffffff);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  margin-bottom: 24px;
+}
+
+:global([data-theme="dark"]) .container,
+:global(.theme-dark) .container {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.cover_image {
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 20px;
+}
+
+.cover_actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn_overlay {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+}
+
+:global([data-theme="dark"]) .btn_overlay,
+:global(.theme-dark) .btn_overlay {
+  background: rgba(19, 28, 49, 0.85);
+  color: #ffffff;
+}
+
+.profile_bar {
+  padding: 0 30px 24px 30px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.avatar_container {
+  position: relative;
+  margin-top: -60px;
+  margin-bottom: 14px;
+  width: 120px;
+  height: 120px;
+}
+
+.avatar_img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--theme-card-bg, #ffffff);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+:global([data-theme="dark"]) .avatar_img,
+:global(.theme-dark) .avatar_img {
+  border-color: #131c31;
+}
+
+.status_dot {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #10b981;
+  border: 3px solid var(--theme-card-bg, #ffffff);
+}
+
+:global([data-theme="dark"]) .status_dot,
+:global(.theme-dark) .status_dot {
+  border-color: #131c31;
+}
+
+.user_details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.username {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .username,
+:global(.theme-dark) .username {
+  color: #ffffff;
+}
+
+.handle {
+  font-size: 0.95rem;
+  color: var(--theme-text-secondary, #64748b);
+  font-weight: 600;
+}
+
+:global([data-theme="dark"]) .handle,
+:global(.theme-dark) .handle {
+  color: #94a3b8;
+}
+
+.badges_group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}

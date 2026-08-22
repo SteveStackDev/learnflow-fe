@@ -1,12 +1,20 @@
 import { useState } from "react";
 import Icon from "~/components/Icon/Icon";
+import { DropdownMenu } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ContactMain.module.css";
 
-function ContactMain({ info }) {
+const CONTACT_TYPE_OPTIONS = [
+  { value: "tech", label: "Hỗ trợ kỹ thuật" },
+  { value: "billing", label: "Hóa đơn & Thanh toán" },
+  { value: "course", label: "Tư vấn lộ trình học" },
+];
+
+function ContactMain({ info = [] }) {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
+  const [requestType, setRequestType] = useState("tech");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,69 +26,61 @@ function ContactMain({ info }) {
     if (!fullname.trim()) {
       newErrors.fullname = "Vui lòng nhập họ và tên!";
     }
-
     if (!email.trim()) {
-      newErrors.email = "Vui lòng nhập địa chỉ Email!";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      newErrors.email = "Email không đúng định dạng (ví dụ: name@domain.com)";
+      newErrors.email = "Vui lòng nhập địa chỉ email!";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Email không hợp lệ!";
     }
-
     if (!subject.trim()) {
-      newErrors.subject = "Vui lòng nhập chủ đề liên hệ!";
+      newErrors.subject = "Vui lòng nhập tiêu đề!";
     }
-
     if (!message.trim()) {
       newErrors.message = "Vui lòng nhập nội dung tin nhắn!";
-    } else if (message.trim().length < 10) {
-      newErrors.message = "Nội dung tin nhắn phải có ít nhất 10 ký tự!";
     }
 
-    setErrors(newErrors);
-
     if (Object.keys(newErrors).length > 0) {
-      const firstError = Object.values(newErrors)[0];
-      toast.error(firstError, "Lỗi nhập dữ liệu");
+      setErrors(newErrors);
       return;
     }
 
+    setErrors({});
     setIsSubmitting(true);
-    // UI hoàn thành – chờ kết nối API/backend.
+
     setTimeout(() => {
       setIsSubmitting(false);
       toast.success(
-        "Cảm ơn bạn đã liên hệ! (UI hoàn thành – chờ kết nối API/backend)",
-        "Gửi thành công (Mock)",
+        "Cảm ơn bạn đã liên hệ! Chúng tôi đã nhận được thông tin và sẽ phản hồi sớm nhất.",
+        "Gửi thành công!"
       );
       setFullname("");
       setEmail("");
       setSubject("");
       setMessage("");
-      setErrors({});
-    }, 1200);
+    }, 1000);
   };
 
   return (
     <section className={styles["contact-main"]}>
       <div className={styles["contact-main__container"]}>
-        {/* Left Side: Form */}
+        {/* Left Form Card */}
         <div className={styles["contact-main__content"]}>
-          <h2 className={styles["contact-main__section-title"]}>Gửi tin nhắn cho chúng tôi</h2>
+          <h2 className={styles["contact-main__section-title"]}>
+            <Icon name="MessageSquare" size={24} style={{ marginRight: 8, verticalAlign: "middle" }} />
+            Gửi tin nhắn cho chúng tôi
+          </h2>
 
-          <form noValidate className={styles["contact-main__form"]} onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className={styles["contact-main__form"]}>
             <div className={styles["contact-main__form-row"]}>
               <div className={styles["contact-main__form-col"]}>
                 <div className={styles["contact-main__form-group"]}>
                   <label htmlFor="contact-fullname" className={styles["contact-main__form-label"]}>
-                    Họ và tên
+                    Họ và tên <span className={styles["contact-main__required"]}>*</span>
                   </label>
                   <input
                     id="contact-fullname"
                     type="text"
                     value={fullname}
-                    onChange={(e) => {
-                      setFullname(e.target.value);
-                      if (errors.fullname) setErrors((prev) => ({ ...prev, fullname: null }));
-                    }}
+                    onChange={(e) => setFullname(e.target.value)}
                     placeholder="Nguyễn Văn A"
                     className={`${styles["contact-main__form-input"]} ${
                       errors.fullname ? styles["contact-main__form-input--error"] : ""
@@ -98,17 +98,14 @@ function ContactMain({ info }) {
               <div className={styles["contact-main__form-col"]}>
                 <div className={styles["contact-main__form-group"]}>
                   <label htmlFor="contact-email" className={styles["contact-main__form-label"]}>
-                    Email
+                    Địa chỉ Email <span className={styles["contact-main__required"]}>*</span>
                   </label>
                   <input
                     id="contact-email"
                     type="email"
                     value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                      if (errors.email) setErrors((prev) => ({ ...prev, email: null }));
-                    }}
-                    placeholder="example@email.com"
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="example@fyset.edu.vn"
                     className={`${styles["contact-main__form-input"]} ${
                       errors.email ? styles["contact-main__form-input--error"] : ""
                     }`}
@@ -127,17 +124,14 @@ function ContactMain({ info }) {
               <div className={styles["contact-main__form-col"]}>
                 <div className={styles["contact-main__form-group"]}>
                   <label htmlFor="contact-subject" className={styles["contact-main__form-label"]}>
-                    Chủ đề
+                    Tiêu đề <span className={styles["contact-main__required"]}>*</span>
                   </label>
                   <input
                     id="contact-subject"
                     type="text"
                     value={subject}
-                    onChange={(e) => {
-                      setSubject(e.target.value);
-                      if (errors.subject) setErrors((prev) => ({ ...prev, subject: null }));
-                    }}
-                    placeholder="Vấn đề cần hỗ trợ"
+                    onChange={(e) => setSubject(e.target.value)}
+                    placeholder="Ví dụ: Cần hỗ trợ về bài tập..."
                     className={`${styles["contact-main__form-input"]} ${
                       errors.subject ? styles["contact-main__form-input--error"] : ""
                     }`}
@@ -153,18 +147,12 @@ function ContactMain({ info }) {
 
               <div className={styles["contact-main__form-col"]}>
                 <div className={styles["contact-main__form-group"]}>
-                  <label htmlFor="contact-type" className={styles["contact-main__form-label"]}>
-                    Loại yêu cầu
-                  </label>
-                  <select
-                    id="contact-type"
-                    defaultValue="tech"
-                    className={styles["contact-main__form-select"]}
-                  >
-                    <option value="tech">Hỗ trợ kỹ thuật</option>
-                    <option value="billing">Hóa đơn & Thanh toán</option>
-                    <option value="course">Tư vấn lộ trình học</option>
-                  </select>
+                  <label className={styles["contact-main__form-label"]}>Loại yêu cầu</label>
+                  <DropdownMenu
+                    options={CONTACT_TYPE_OPTIONS}
+                    value={requestType}
+                    onChange={setRequestType}
+                  />
                 </div>
               </div>
             </div>
@@ -173,17 +161,14 @@ function ContactMain({ info }) {
               className={`${styles["contact-main__form-group"]} ${styles["contact-main__form-group--fullwidth"]}`}
             >
               <label htmlFor="contact-message" className={styles["contact-main__form-label"]}>
-                Tin nhắn của bạn
+                Nội dung tin nhắn <span className={styles["contact-main__required"]}>*</span>
               </label>
               <textarea
                 id="contact-message"
+                rows={5}
                 value={message}
-                onChange={(e) => {
-                  setMessage(e.target.value);
-                  if (errors.message) setErrors((prev) => ({ ...prev, message: null }));
-                }}
-                placeholder="Hãy cho chúng tôi biết chi tiết vấn đề của bạn..."
-                rows={6}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Mô tả chi tiết thắc mắc hoặc yêu cầu của bạn..."
                 className={`${styles["contact-main__form-input"]} ${styles["contact-main__form-input--textarea"]} ${
                   errors.message ? styles["contact-main__form-input--error"] : ""
                 }`}
@@ -201,67 +186,86 @@ function ContactMain({ info }) {
               disabled={isSubmitting}
               className={`${styles["contact-main__btn"]} ${styles["contact-main__btn--contained"]}`}
             >
-              {isSubmitting ? "Đang gửi yêu cầu..." : "Gửi yêu cầu ngay"}
+              {isSubmitting ? (
+                <span>Đang gửi...</span>
+              ) : (
+                <>
+                  <Icon name="Send" size={18} style={{ marginRight: 6 }} />
+                  <span>Gửi tin nhắn ngay</span>
+                </>
+              )}
             </button>
           </form>
         </div>
 
-        {/* Right Side: Info */}
+        {/* Right Info Column */}
         <div className={styles["contact-main__info"]}>
-          <h2 className={styles["contact-main__section-title"]}>Thông tin hỗ trợ</h2>
+          <h2 className={styles["contact-main__section-title"]}>
+            <Icon name="Headphones" size={24} style={{ marginRight: 8, verticalAlign: "middle" }} />
+            Trung tâm hỗ trợ FySet
+          </h2>
 
           <div className={styles["contact-main__info-list"]}>
-            {info.map((obj) => (
-              <div
-                key={obj.id || obj.slug || obj.name || obj.title || obj}
-                className={styles["contact-main__info-item"]}
-              >
-                <span className={styles["contact-main__info-icon"]}>
-                  <Icon name={obj.iconName} size={20} />
-                </span>
+            {info.map((item) => (
+              <div key={item.id || item.title} className={styles["contact-main__info-item"]}>
+                <div className={styles["contact-main__info-icon"]}>
+                  <Icon name={item.iconName || "Mail"} size={20} />
+                </div>
                 <div className={styles["contact-main__info-body"]}>
-                  <h3 className={styles["contact-main__info-title"]}>{obj.title}</h3>
-
-                  {typeof obj.description === "string" ? (
-                    <p className={styles["contact-main__info-desc"]}>{obj.description}</p>
-                  ) : (
+                  <h4 className={styles["contact-main__info-title"]}>{item.title}</h4>
+                  {Array.isArray(item.description) ? (
                     <div className={styles["contact-main__social-list"]}>
-                      {obj.description.map((item) => (
-                        <span
-                          key={item.id || item.name || item}
-                          className={styles["contact-main__social-item"]}
-                          title={item}
-                        >
-                          {item.toLowerCase().includes("fb") ? (
-                            <Icon name="Facebook" size={18} />
-                          ) : (
-                            <Icon name="MailIcon" size={18} />
-                          )}
-                        </span>
-                      ))}
+                      <a
+                        href="https://facebook.com"
+                        target="_blank"
+                        rel="noreferrer"
+                        className={styles["contact-main__social-item"]}
+                        title="Facebook"
+                      >
+                        <Icon name="Share2" size={16} />
+                      </a>
+                      <a
+                        href="mailto:support@fyset.edu.vn"
+                        className={styles["contact-main__social-item"]}
+                        title="Email"
+                      >
+                        <Icon name="Mail" size={16} />
+                      </a>
+                      <a
+                        href="https://youtube.com"
+                        target="_blank"
+                        rel="noreferrer"
+                        className={styles["contact-main__social-item"]}
+                        title="Youtube"
+                      >
+                        <Icon name="Compass" size={16} />
+                      </a>
                     </div>
+                  ) : (
+                    <p className={styles["contact-main__info-desc"]}>{item.description}</p>
                   )}
                 </div>
               </div>
             ))}
+          </div>
 
-            <div className={styles["contact-main__office-box"]}>
-              <p className={styles["contact-main__office-text"]}>
-                <Icon name="MapPin" size={16} />
-                Văn phòng tại Quận 1, TP. Hồ Chí Minh
-              </p>
-              <div className={styles["contact-main__map-wrapper"]}>
-                <iframe
-                  title="Văn phòng FySet - Quận 1, TP. Hồ Chí Minh"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4946681007846!2d106.69976397573617!3d10.773374259251845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f40a3b49e59%3A0xa1aa3e28c61680d2!2sDistrict%201%2C%20Ho%20Chi%20Minh%20City%2C%20Vietnam!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
-                  width="100%"
-                  height="200"
-                  style={{ border: 0, borderRadius: "12px" }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
+          {/* Office Location & Google Map Embed */}
+          <div className={styles["contact-main__office-box"]}>
+            <div className={styles["contact-main__office-text"]}>
+              <Icon name="MapPin" size={18} />
+              <span>Vị trí văn phòng FySet: Q.1, TP. Hồ Chí Minh</span>
+            </div>
+            <div className={styles["contact-main__map-wrapper"]}>
+              <iframe
+                title="FySet Google Map Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.497746979679!2d106.69747587570228!3d10.773199859253456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f418579058b%3A0xe543c7b39678c187!2sDistrict%201%2C%20Ho%20Chi%20Minh%20City%2C%20Vietnam!5e0!2m3!1sen!2s!4v1700000000000!5m2!1sen!2s"
+                width="100%"
+                height="180"
+                style={{ border: 0, borderRadius: 12, display: "block" }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
         </div>

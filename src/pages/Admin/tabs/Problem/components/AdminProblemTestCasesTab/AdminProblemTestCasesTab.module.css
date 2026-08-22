@@ -1,0 +1,80 @@
+.card {
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+:global([data-theme="dark"]) .card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card_title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:global([data-theme="dark"]) .card_title {
+  color: #ffffff;
+}
+
+.tc_table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tc_table th,
+.tc_table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.2));
+}
+
+:global([data-theme="dark"]) .tc_table th,
+:global([data-theme="dark"]) .tc_table td {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.code_box {
+  font-family: monospace;
+  font-size: 0.85rem;
+  background-color: rgba(0, 0, 0, 0.04);
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+:global([data-theme="dark"]) .code_box {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #38bdf8;
+}
+
+.action_btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  background-color: transparent;
+  color: var(--theme-text-secondary, #64748b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.danger_icon_btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: #ef4444;
+}

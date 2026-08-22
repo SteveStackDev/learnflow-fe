@@ -9,11 +9,13 @@ import Icon from "~/components/Icon/Icon";
 import ProblemDetailDescription from "./components/ProblemDetailDescription/ProblemDetailDescription";
 import ProblemDetailEditor from "./components/ProblemDetailEditor/ProblemDetailEditor";
 import ProblemDetailConsole from "./components/ProblemDetailConsole/ProblemDetailConsole";
+import UserProfileCardModal from "~/components/UserProfileCardModal/UserProfileCardModal";
 
 function ProblemDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [selectedUserForModal, setSelectedUserForModal] = useState(null);
   useScrollReveal();
 
   // 1. Mock fetch bài tập theo id (dễ thay bằng API sau này)
@@ -84,7 +86,10 @@ function ProblemDetail() {
       {/* Main Grid: Description (Left) & Code Editor (Right) */}
       <div className={styles.grid_container}>
         <div className={`${styles.left_col} reveal-card`}>
-          <ProblemDetailDescription problem={problem} />
+          <ProblemDetailDescription
+            problem={problem}
+            onSelectUser={(u) => setSelectedUserForModal(u)}
+          />
         </div>
 
         <div className={`${styles.right_col} reveal-card`}>
@@ -112,6 +117,13 @@ function ProblemDetail() {
           onClearLogs={() => setConsoleLogs([])}
         />
       </div>
+
+      {/* User Profile Quick Card Modal */}
+      <UserProfileCardModal
+        isOpen={!!selectedUserForModal}
+        onClose={() => setSelectedUserForModal(null)}
+        user={selectedUserForModal}
+      />
     </div>
   );
 }

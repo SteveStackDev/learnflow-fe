@@ -1,0 +1,216 @@
+.sidebar_container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.widget_card {
+  padding: 24px;
+  border-radius: 16px;
+  border: 1.5px solid var(--theme-border-color, rgba(169, 183, 203, 0.35));
+  background-color: var(--theme-card-bg, #ffffff);
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.04);
+}
+
+:global([data-theme="dark"]) .widget_card,
+:global(.theme-dark) .widget_card {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Quick Action Create Post Card */
+.create_cta_card {
+  background: linear-gradient(135deg, rgba(9, 80, 195, 0.08) 0%, rgba(14, 165, 233, 0.08) 100%);
+  border: 1.5px solid rgba(9, 80, 195, 0.25);
+  padding: 24px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+  align-items: center;
+}
+
+:global([data-theme="dark"]) .create_cta_card,
+:global(.theme-dark) .create_cta_card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.cta_icon_box {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(9, 80, 195, 0.12);
+  color: var(--color-primary, #0950c3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global([data-theme="dark"]) .cta_icon_box,
+:global(.theme-dark) .cta_icon_box {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+}
+
+.cta_title {
+  font-family: "Inter", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .cta_title,
+:global(.theme-dark) .cta_title {
+  color: #ffffff;
+}
+
+.cta_desc {
+  font-size: 0.85rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.cta_btn {
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* Header for Popular & Authors Widget */
+.widget_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.2));
+}
+
+.widget_title {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .widget_title,
+:global(.theme-dark) .widget_title {
+  color: #ffffff;
+}
+
+/* Popular Articles List */
+.popular_list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.popular_item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.popular_item:hover {
+  transform: translateX(4px);
+}
+
+.popular_rank {
+  font-family: "Inter", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--theme-text-secondary, #cbd5e1);
+  line-height: 1;
+  min-width: 24px;
+}
+
+.popular_rank_01 { color: #f59e0b; }
+.popular_rank_02 { color: #94a3b8; }
+.popular_rank_03 { color: #b45309; }
+
+.popular_info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.popular_item_title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+  line-height: 1.35;
+  margin: 0;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+:global([data-theme="dark"]) .popular_item_title,
+:global(.theme-dark) .popular_item_title {
+  color: #f8fafc;
+}
+
+.popular_views {
+  font-size: 0.75rem;
+  color: var(--theme-text-secondary, #94a3b8);
+}
+
+/* Authors List */
+.authors_list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.author_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.author_left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.author_avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author_meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.author_name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .author_name,
+:global(.theme-dark) .author_name {
+  color: #ffffff;
+}
+
+.author_sub {
+  font-size: 0.725rem;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+@media (max-width: 1024px) {
+  .sidebar_container {
+    display: none !important;
+  }
+}

@@ -1,0 +1,385 @@
+/* ==========================================================================
+   AdminHeader - High-Tech Terminal Console Aesthetic (FySet Admin)
+   ========================================================================== */
+
+.terminal_header {
+  height: 64px;
+  min-height: 64px;
+  padding: 0 24px;
+  background-color: #090d16;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  font-family: "JetBrains Mono", "Fira Code", "Roboto Mono", Consolas, monospace;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 10;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* Left Window Controls & Prompt */
+.terminal_left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mobile_menu_btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  background-color: rgba(15, 23, 42, 0.8);
+  color: #38bdf8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.mobile_menu_btn:hover {
+  background-color: rgba(56, 189, 248, 0.2);
+  color: #ffffff;
+}
+
+.window_dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot_close {
+  background-color: #ff5f56;
+  box-shadow: 0 0 6px rgba(255, 95, 86, 0.4);
+}
+
+.dot_minimize {
+  background-color: #ffbd2e;
+  box-shadow: 0 0 6px rgba(255, 189, 46, 0.4);
+}
+
+.dot_expand {
+  background-color: #27c93f;
+  box-shadow: 0 0 6px rgba(39, 201, 63, 0.4);
+}
+
+.prompt_box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.prompt_user {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.prompt_sep {
+  color: #94a3b8;
+}
+
+.prompt_path {
+  color: #a855f7;
+  font-weight: 600;
+}
+
+.prompt_symbol {
+  color: #22c55e;
+  font-weight: 800;
+  margin-right: 4px;
+}
+
+.prompt_command {
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.highlight_tab {
+  color: #f43f5e;
+  font-weight: 800;
+  text-shadow: 0 0 8px rgba(244, 63, 94, 0.5);
+  background-color: rgba(244, 63, 94, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+/* Right Status & Tools */
+.terminal_right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.status_pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.status_pulse {
+  width: 8px;
+  height: 8px;
+  background-color: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #22c55e;
+  animation: pulseGreen 2s infinite;
+}
+
+@keyframes pulseGreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+.status_text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #4ade80;
+  letter-spacing: 0.05em;
+}
+
+/* Terminal Search Input */
+.terminal_search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 8px;
+  padding: 0 12px;
+  height: 34px;
+  width: 180px;
+  transition: all 0.2s ease;
+}
+
+.terminal_search:focus-within {
+  border-color: #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+  width: 220px;
+}
+
+.terminal_input {
+  border: none;
+  background: transparent;
+  outline: none;
+  color: #f8fafc;
+  font-size: 0.8rem;
+  font-family: inherit;
+  width: 100%;
+}
+
+.terminal_input::placeholder {
+  color: #64748b;
+}
+
+.search_icon {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+/* Bell Alert */
+.terminal_bell {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background-color: rgba(15, 23, 42, 0.6);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.terminal_bell:hover {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.bell_badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  background-color: #f43f5e;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #f43f5e;
+}
+
+/* ==========================================================================
+   LIGHT MODE STYLING OVERRIDES
+   ========================================================================== */
+
+:global([data-theme="light"]) .terminal_header,
+:global(.theme-light) .terminal_header {
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.35);
+  box-shadow: 0 2px 14px rgba(9, 80, 195, 0.05);
+}
+
+:global([data-theme="light"]) .mobile_menu_btn,
+:global(.theme-light) .mobile_menu_btn {
+  background-color: #f1f5f9;
+  border-color: rgba(9, 80, 195, 0.25);
+  color: #0950c3;
+}
+
+:global([data-theme="light"]) .mobile_menu_btn:hover,
+:global(.theme-light) .mobile_menu_btn:hover {
+  background-color: #e0ebff;
+  color: #053787;
+}
+
+:global([data-theme="light"]) .prompt_user,
+:global(.theme-light) .prompt_user {
+  color: #0950c3;
+}
+
+:global([data-theme="light"]) .prompt_sep,
+:global(.theme-light) .prompt_sep {
+  color: #64748b;
+}
+
+:global([data-theme="light"]) .prompt_path,
+:global(.theme-light) .prompt_path {
+  color: #7c3aed;
+}
+
+:global([data-theme="light"]) .prompt_symbol,
+:global(.theme-light) .prompt_symbol {
+  color: #16a34a;
+}
+
+:global([data-theme="light"]) .prompt_command,
+:global(.theme-light) .prompt_command {
+  color: #0f172a;
+}
+
+:global([data-theme="light"]) .highlight_tab,
+:global(.theme-light) .highlight_tab {
+  color: #dc2626;
+  text-shadow: none;
+  background-color: #fef2f2;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+:global([data-theme="light"]) .status_pill,
+:global(.theme-light) .status_pill {
+  background-color: #f0fdf4;
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+:global([data-theme="light"]) .status_text,
+:global(.theme-light) .status_text {
+  color: #15803d;
+}
+
+:global([data-theme="light"]) .terminal_search,
+:global(.theme-light) .terminal_search {
+  background-color: #f8fafc;
+  border-color: rgba(169, 183, 203, 0.4);
+}
+
+:global([data-theme="light"]) .terminal_search:focus-within,
+:global(.theme-light) .terminal_search:focus-within {
+  border-color: #0950c3;
+  box-shadow: 0 0 0 3px rgba(9, 80, 195, 0.12);
+  background-color: #ffffff;
+}
+
+:global([data-theme="light"]) .terminal_input,
+:global(.theme-light) .terminal_input {
+  color: #0f172a;
+}
+
+:global([data-theme="light"]) .terminal_input::placeholder,
+:global(.theme-light) .terminal_input::placeholder {
+  color: #94a3b8;
+}
+
+:global([data-theme="light"]) .terminal_bell,
+:global(.theme-light) .terminal_bell {
+  background-color: #f1f5f9;
+  border-color: rgba(169, 183, 203, 0.35);
+  color: #64748b;
+}
+
+:global([data-theme="light"]) .terminal_bell:hover,
+:global(.theme-light) .terminal_bell:hover {
+  background-color: #e0ebff;
+  color: #0950c3;
+  border-color: #0950c3;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 900px) {
+  .mobile_menu_btn {
+    display: inline-flex;
+  }
+
+  .window_dots {
+    display: none;
+  }
+
+  .prompt_path {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .terminal_header {
+    padding: 0 12px;
+  }
+
+  .prompt_user, .prompt_sep {
+    display: none;
+  }
+
+  .terminal_search {
+    width: 110px;
+  }
+
+  .terminal_search:focus-within {
+    width: 130px;
+  }
+
+  .status_pill {
+    padding: 4px 8px;
+  }
+
+  .status_text {
+    display: none;
+  }
+}

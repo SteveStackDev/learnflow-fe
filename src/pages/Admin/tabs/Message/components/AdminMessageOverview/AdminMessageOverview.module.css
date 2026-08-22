@@ -1,0 +1,253 @@
+/* ==========================================================================
+   AdminMessageOverview Styling (FySet Theme Variables)
+   ========================================================================== */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+/* 1. Header Banner */
+.header_banner {
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 20px;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+:global([data-theme="dark"]) .header_banner,
+:global(.theme-dark) .header_banner {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+.banner_title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0 0 6px 0;
+  letter-spacing: -0.02em;
+}
+
+:global([data-theme="dark"]) .banner_title,
+:global(.theme-dark) .banner_title {
+  color: #ffffff;
+}
+
+.banner_subtitle {
+  font-size: 0.9rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .banner_subtitle,
+:global(.theme-dark) .banner_subtitle {
+  color: #94a3b8;
+}
+
+/* 2. 4 Stat Cards Grid */
+.stat_cards_grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1024px) {
+  .stat_cards_grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stat_cards_grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat_card {
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 20px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+:global([data-theme="dark"]) .stat_card,
+:global(.theme-dark) .stat_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icon_box {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card_label {
+  font-size: 0.775rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+:global([data-theme="dark"]) .card_label,
+:global(.theme-dark) .card_label {
+  color: #94a3b8;
+}
+
+.card_val {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  line-height: 1.2;
+}
+
+:global([data-theme="dark"]) .card_val,
+:global(.theme-dark) .card_val {
+  color: #ffffff;
+}
+
+/* 3. Section Cards */
+.section_card {
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+:global([data-theme="dark"]) .section_card,
+:global(.theme-dark) .section_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.section_title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:global([data-theme="dark"]) .section_title,
+:global(.theme-dark) .section_title {
+  color: #ffffff;
+}
+
+/* Simulated Chart Bars */
+.chart_container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  height: 180px;
+  padding-top: 20px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+}
+
+.chart_col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.chart_bar {
+  width: 100%;
+  max-width: 48px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(180deg, var(--color-primary, #0950c3) 0%, #38bdf8 100%);
+  transition: height 0.4s ease;
+}
+
+.chart_day {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+/* Conversation Stats Grid */
+.conv_stats_grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1024px) {
+  .conv_stats_grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .conv_stats_grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.conv_stat_box {
+  background-color: var(--theme-body-bg, #f8fafc);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+:global([data-theme="dark"]) .conv_stat_box,
+:global(.theme-dark) .conv_stat_box {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.box_lbl {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+:global([data-theme="dark"]) .box_lbl,
+:global(.theme-dark) .box_lbl {
+  color: #94a3b8;
+}
+
+.box_val {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .box_val,
+:global(.theme-dark) .box_val {
+  color: #ffffff;
+}

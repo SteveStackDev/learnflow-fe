@@ -1,0 +1,85 @@
+.students_card {
+  padding: 28px;
+  border-radius: 20px;
+}
+
+.section_title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0 0 20px 0;
+}
+
+:global([data-theme="dark"]) .section_title {
+  color: #ffffff;
+}
+
+.student_table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.student_table th,
+.student_table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.2));
+}
+
+:global([data-theme="dark"]) .student_table th,
+:global([data-theme="dark"]) .student_table td {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.student_table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--theme-text-secondary, #64748b);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+:global([data-theme="dark"]) .student_table th {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: #94a3b8;
+}
+
+.student_name {
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .student_name {
+  color: #ffffff;
+}
+
+.progress_box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress_bar {
+  flex: 1;
+  max-width: 120px;
+  height: 8px;
+  background-color: rgba(148, 163, 184, 0.2);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0950c3, #38bdf8);
+  border-radius: 9999px;
+}
+
+.progress_text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .progress_text {
+  color: #e2e8f0;
+}

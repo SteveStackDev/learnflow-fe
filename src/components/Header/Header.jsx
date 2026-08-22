@@ -27,6 +27,8 @@ const ACHIEVEMENT_DROPDOWN_ITEMS = [
 const OTHER_DROPDOWN_ITEMS = [
   { to: "/pricing", title: "Bảng giá", desc: "Các gói dịch vụ & ưu đãi", iconName: "Tag" },
   { to: "/contact", title: "Liên hệ", desc: "Hỗ trợ & giải đáp thắc mắc", iconName: "Mail" },
+  { to: "/blog", title: "Bài viết", desc: "Góc chia sẻ kiến thức & Tin tức Tech", iconName: "BookOpen" },
+  { to: "/chat", title: "Trò chuyện", desc: "Trợ lý AI & Nhắn tin cộng đồng", iconName: "MessageSquare" },
 ];
 
 export function Header() {
@@ -51,7 +53,7 @@ export function Header() {
   const isLearnActive = ["/roadmap", "/course"].includes(location.pathname);
   const isPracticeActive = ["/problem", "/contest"].includes(location.pathname);
   const isAchievementActive = ["/leaderboard", "/badge", "/achievement"].includes(location.pathname);
-  const isOtherActive = ["/pricing", "/contact", "/pricing/checkout", "/checkout"].includes(location.pathname);
+  const isOtherActive = ["/pricing", "/contact", "/pricing/checkout", "/checkout", "/blog"].includes(location.pathname);
 
   // Sync Auth State across Tabs and Custom Events
   useEffect(() => {

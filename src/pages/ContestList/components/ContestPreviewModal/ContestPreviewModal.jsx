@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import { Button, Badge } from "~/components/ui";
+import { Button, Badge, ScrollArea } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ContestPreviewModal.module.css";
 
@@ -20,7 +20,7 @@ export function ContestPreviewModal({ contest, onClose }) {
         </div>
 
         {/* Body Problems List */}
-        <div className={styles.modal_body}>
+        <ScrollArea className={styles.modal_body}>
           {contest.problemsPreview && contest.problemsPreview.length > 0 ? (
             contest.problemsPreview.map((prob) => (
               <div key={prob.id} className={styles.problem_item}>
@@ -51,7 +51,7 @@ export function ContestPreviewModal({ contest, onClose }) {
               Chưa có thông tin xem trước cho cuộc thi này.
             </div>
           )}
-        </div>
+        </ScrollArea>
 
         {/* Footer Actions */}
         <div className={styles.modal_footer}>

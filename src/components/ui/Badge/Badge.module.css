@@ -44,6 +44,7 @@
   border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
+.badge--danger,
 .badge--error {
   background: rgba(239, 68, 68, 0.12);
   color: #dc2626;
@@ -87,6 +88,7 @@
   border-color: rgba(245, 158, 11, 0.3);
 }
 
+:global([data-theme="dark"]) .badge--danger,
 :global([data-theme="dark"]) .badge--error {
   background: rgba(239, 68, 68, 0.18);
   color: #f87171;
@@ -102,5 +104,5 @@
 :global([data-theme="dark"]) .badge--neutral {
   background: rgba(148, 163, 184, 0.15);
   color: #cbd5e1;
-  border-color: rgba(148, 163, 184, 0.3);
+  border-color: rgba(148, 163, 184, 0.25);
 }

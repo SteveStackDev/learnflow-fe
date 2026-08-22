@@ -1,0 +1,65 @@
+.grid_3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .grid_3col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat_card {
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+:global([data-theme="dark"]) .stat_card,
+:global(.theme-dark) .stat_card {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.stat_icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: rgba(9, 80, 195, 0.08);
+  color: var(--color-primary, #0950c3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global([data-theme="dark"]) .stat_icon,
+:global(.theme-dark) .stat_icon {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.stat_val {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .stat_val,
+:global(.theme-dark) .stat_val {
+  color: #ffffff;
+}
+
+.stat_lbl {
+  font-size: 0.85rem;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+:global([data-theme="dark"]) .stat_lbl,
+:global(.theme-dark) .stat_lbl {
+  color: #94a3b8;
+}

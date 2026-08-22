@@ -108,10 +108,8 @@ function Problem() {
 
   // Reset page when search, sort, or algorithm changes
   useEffect(() => {
-    if (currentPage !== 1) {
-      setCurrentPage(1);
-    }
-  }, [searchQuery, selectedSort, selectedAlgorithm, currentPage]);
+    setCurrentPage(1);
+  }, [searchQuery, selectedSort, selectedAlgorithm]);
 
   // Pagination calculation
   const totalPages = Math.max(1, Math.ceil(filteredAndSortedItems.length / itemsPerPage));

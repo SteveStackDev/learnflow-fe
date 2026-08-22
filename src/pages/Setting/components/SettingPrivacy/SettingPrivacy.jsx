@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
 import Icon from "~/components/Icon/Icon";
+import { DropdownMenu } from "~/components/ui";
 import styles from "./SettingPrivacy.module.css";
 
 const SOCIAL_OPTIONS = [
@@ -8,63 +9,6 @@ const SOCIAL_OPTIONS = [
   { value: "friends", label: "Chỉ bạn bè" },
   { value: "nobody", label: "Không ai" },
 ];
-
-function CustomSelect({ id, value, onChange, options }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useRef(null);
-
-  const selectedOption = options.find((opt) => opt.value === value) || options[0];
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  return (
-    <div className={styles.custom_select_container} ref={containerRef}>
-      <button
-        id={id}
-        type="button"
-        className={`${styles.custom_select_btn} ${isOpen ? styles["custom_select_btn--open"] : ""}`}
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
-        <span>{selectedOption.label}</span>
-        <Icon
-          name="ChevronDown"
-          size={16}
-          className={`${styles.custom_select_chevron} ${isOpen ? styles["custom_select_chevron--rotated"] : ""}`}
-        />
-      </button>
-
-      {isOpen && (
-        <div className={styles.custom_select_menu}>
-          {options.map((opt) => {
-            const isSelected = opt.value === value;
-            return (
-              <button
-                key={opt.value}
-                type="button"
-                className={`${styles.custom_select_option} ${isSelected ? styles["custom_select_option--selected"] : ""}`}
-                onClick={() => {
-                  onChange(opt.value);
-                  setIsOpen(false);
-                }}
-              >
-                <span>{opt.label}</span>
-                {isSelected && <Icon name="Check" size={14} className={styles.option_check_icon} />}
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
 
 function SettingPrivacy({ userData = {} }) {
   // 1. Profile Visibility
@@ -101,79 +45,102 @@ function SettingPrivacy({ userData = {} }) {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.section_title}>Quyền riêng tư</h2>
-
-      <form onSubmit={handleSave} className={styles.form}>
+      <form onSubmit={handleSave}>
         {/* SECTION 1: PROFILE VISIBILITY */}
         <div className={styles.card}>
-          <h3 className={styles.card_title}>Hiển thị hồ sơ</h3>
-          <p className={styles.desc}>Thiết lập mức độ công khai hồ sơ của bạn trên hệ thống.</p>
+          <h3 className={styles.card_title}>Chế độ hiển thị trang cá nhân</h3>
+          <p className={styles.card_desc}>
+            Quyết định ai có thể truy cập và xem thông tin trang cá nhân của bạn.
+          </p>
 
           <div className={styles.radio_group}>
-            <label className={styles.radio_label}>
+            {/* Public */}
+            <label
+              className={`${styles.radio_card} ${
+                profileVisibility === "public" ? styles["radio_card--active"] : ""
+              }`}
+            >
               <input
                 type="radio"
                 name="profileVisibility"
                 value="public"
                 checked={profileVisibility === "public"}
                 onChange={(e) => setProfileVisibility(e.target.value)}
-                className={styles.radio}
+                className={styles.radio_input}
               />
-              <div>
-                <span className={styles.radio_title}>Công khai</span>
+              <div className={styles.radio_content}>
+                <div className={styles.radio_header}>
+                  <Icon name="Globe" size={18} className={styles.radio_icon} />
+                  <span className={styles.radio_title}>Công khai (Public)</span>
+                </div>
                 <span className={styles.radio_desc}>
-                  Tất cả mọi người trên FySet đều có thể xem trang cá nhân của bạn.
+                  Tất cả người dùng FySet và khách truy cập đều có thể xem trang cá nhân của bạn.
                 </span>
               </div>
             </label>
 
-            <label className={styles.radio_label}>
+            {/* Followers only */}
+            <label
+              className={`${styles.radio_card} ${
+                profileVisibility === "followers" ? styles["radio_card--active"] : ""
+              }`}
+            >
               <input
                 type="radio"
                 name="profileVisibility"
-                value="friends"
-                checked={profileVisibility === "friends"}
+                value="followers"
+                checked={profileVisibility === "followers"}
                 onChange={(e) => setProfileVisibility(e.target.value)}
-                className={styles.radio}
+                className={styles.radio_input}
               />
-              <div>
-                <span className={styles.radio_title}>Bạn bè / Người theo dõi</span>
+              <div className={styles.radio_content}>
+                <div className={styles.radio_header}>
+                  <Icon name="Users" size={18} className={styles.radio_icon} />
+                  <span className={styles.radio_title}>Người theo dõi</span>
+                </div>
                 <span className={styles.radio_desc}>
-                  Chỉ những người bạn kết nối hoặc theo dõi mới xem được thông tin.
+                  Chỉ những tài khoản đang theo dõi bạn mới có thể xem thông tin chi tiết.
                 </span>
               </div>
             </label>
 
-            <label className={styles.radio_label}>
+            {/* Private */}
+            <label
+              className={`${styles.radio_card} ${
+                profileVisibility === "private" ? styles["radio_card--active"] : ""
+              }`}
+            >
               <input
                 type="radio"
                 name="profileVisibility"
                 value="private"
                 checked={profileVisibility === "private"}
                 onChange={(e) => setProfileVisibility(e.target.value)}
-                className={styles.radio}
+                className={styles.radio_input}
               />
-              <div>
-                <span className={styles.radio_title}>Riêng tư</span>
+              <div className={styles.radio_content}>
+                <div className={styles.radio_header}>
+                  <Icon name="Lock" size={18} className={styles.radio_icon} />
+                  <span className={styles.radio_title}>Riêng tư (Private)</span>
+                </div>
                 <span className={styles.radio_desc}>
-                  Chỉ duy nhất mình bạn có thể xem trang cá nhân.
+                  Chỉ bạn mới có thể xem đầy đủ thông tin cá nhân trên trang cá nhân.
                 </span>
               </div>
             </label>
           </div>
         </div>
 
-        {/* SECTION 2: ACTIVITY */}
+        {/* SECTION 2: ACTIVITY & DATA SHARING */}
         <div className={styles.card}>
-          <h3 className={styles.card_title}>Hoạt động</h3>
-          <p className={styles.sub_label}>Cho phép hiển thị:</p>
+          <h3 className={styles.card_title}>Hoạt động & Dữ liệu</h3>
 
-          <div className={styles.toggles_list}>
+          <div className={styles.toggle_list}>
             <div className={styles.row_between}>
               <div>
-                <span className={styles.toggle_title}>Hoạt động học tập</span>
+                <span className={styles.toggle_title}>Hoạt động học tập gần đây</span>
                 <span className={styles.toggle_desc}>
-                  Hiển thị thời gian và lộ trình học tập hàng ngày
+                  Hiển thị chuỗi ngày học (Streak) và lịch sử tham gia khóa học
                 </span>
               </div>
               <input
@@ -188,9 +155,9 @@ function SettingPrivacy({ userData = {} }) {
 
             <div className={styles.row_between}>
               <div>
-                <span className={styles.toggle_title}>Bài tập đã giải</span>
+                <span className={styles.toggle_title}>Danh sách bài tập đã giải</span>
                 <span className={styles.toggle_desc}>
-                  Công khai danh sách các bài tập thuật toán bạn đã vượt qua
+                  Cho phép mọi người xem số bài tập bạn đã nộp thành công
                 </span>
               </div>
               <input
@@ -264,11 +231,10 @@ function SettingPrivacy({ userData = {} }) {
               <label htmlFor="privacy-follow" className={styles.select_label}>
                 Ai có thể theo dõi tôi
               </label>
-              <CustomSelect
-                id="privacy-follow"
+              <DropdownMenu
+                options={SOCIAL_OPTIONS}
                 value={whoCanFollow}
                 onChange={setWhoCanFollow}
-                options={SOCIAL_OPTIONS}
               />
             </div>
 
@@ -277,11 +243,10 @@ function SettingPrivacy({ userData = {} }) {
               <label htmlFor="privacy-message" className={styles.select_label}>
                 Ai có thể nhắn tin cho tôi
               </label>
-              <CustomSelect
-                id="privacy-message"
+              <DropdownMenu
+                options={SOCIAL_OPTIONS}
                 value={whoCanMessage}
                 onChange={setWhoCanMessage}
-                options={SOCIAL_OPTIONS}
               />
             </div>
 
@@ -290,11 +255,10 @@ function SettingPrivacy({ userData = {} }) {
               <label htmlFor="privacy-mention" className={styles.select_label}>
                 Ai có thể nhắc đến tôi
               </label>
-              <CustomSelect
-                id="privacy-mention"
+              <DropdownMenu
+                options={SOCIAL_OPTIONS}
                 value={whoCanMention}
                 onChange={setWhoCanMention}
-                options={SOCIAL_OPTIONS}
               />
             </div>
           </div>
