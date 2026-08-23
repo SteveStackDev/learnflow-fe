@@ -206,6 +206,11 @@ function Footer() {
                     </Link>
                   </li>
                   <li>
+                    <Link to="/profile" className={styles["footer__nav-link"]}>
+                      Hồ sơ cá nhân
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/setting" className={styles["footer__nav-link"]}>
                       Cài đặt
                     </Link>

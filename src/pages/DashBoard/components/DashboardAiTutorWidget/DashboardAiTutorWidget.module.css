@@ -1,0 +1,207 @@
+.tutor_widget {
+  padding: 16px;
+  background: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.35));
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+:global([data-theme="dark"]) .tutor_widget {
+  background: #181825;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.widget_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.25));
+}
+
+:global([data-theme="dark"]) .widget_header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.header_left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ai_avatar_box {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--color-primary, #0950c3) 0%, #3b82f6 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget_title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .widget_title {
+  color: #f8fafc;
+}
+
+.widget_status {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.chat_body {
+  max-height: 180px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(169, 183, 203, 0.4) transparent;
+}
+
+.msg_row {
+  display: flex;
+  width: 100%;
+}
+
+.msg_row--user {
+  justify-content: flex-end;
+}
+
+.msg_row--ai {
+  justify-content: flex-start;
+}
+
+.msg_bubble {
+  max-width: 85%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.msg_row--user .msg_bubble {
+  background: var(--color-primary, #0950c3);
+  color: #ffffff;
+  border-bottom-right-radius: 2px;
+}
+
+:global([data-theme="dark"]) .msg_row--user .msg_bubble {
+  background: #3b82f6;
+}
+
+.msg_row--ai .msg_bubble {
+  background: var(--theme-body-bg, #f1f5f9);
+  color: var(--theme-text-primary, #0f172a);
+  border-bottom-left-radius: 2px;
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+}
+
+:global([data-theme="dark"]) .msg_row--ai .msg_bubble {
+  background: #1e293b;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.msg_text {
+  font-size: 0.8rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.msg_time {
+  font-size: 0.65rem;
+  opacity: 0.75;
+  align-self: flex-end;
+}
+
+.presets_row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.preset_chip {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-primary, #0950c3);
+  background: rgba(9, 80, 195, 0.08);
+  border: 1px solid rgba(9, 80, 195, 0.2);
+  padding: 4px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+:global([data-theme="dark"]) .preset_chip {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+.preset_chip:hover {
+  background: var(--color-primary, #0950c3);
+  color: #ffffff;
+}
+
+.input_bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--theme-body-bg, #f8fafc);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.4));
+  padding: 4px 8px 4px 12px;
+  border-radius: 12px;
+}
+
+:global([data-theme="dark"]) .input_bar {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.input_field {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.825rem;
+  color: var(--theme-text-primary, #0f172a);
+  outline: none;
+}
+
+:global([data-theme="dark"]) .input_field {
+  color: #f8fafc;
+}
+
+.send_btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: var(--color-primary, #0950c3);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+:global([data-theme="dark"]) .send_btn {
+  background: #3b82f6;
+}

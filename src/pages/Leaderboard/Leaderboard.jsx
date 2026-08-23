@@ -19,7 +19,6 @@ import useScrollReveal from "~/hooks/useScrollReveal";
 
 // User Profile Popover Modal
 import UserProfileCardModal from "~/components/UserProfileCardModal/UserProfileCardModal";
-import { mockUserProfileData, mockUsersMap } from "~/constants/mockUserProfile";
 
 const TIME_OPTIONS = [
   { id: "this-week", label: "Tuần này" },

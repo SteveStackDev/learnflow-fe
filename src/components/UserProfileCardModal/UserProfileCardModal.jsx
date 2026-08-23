@@ -1,17 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
-import { Button, Badge } from "~/components/ui";
+import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./UserProfileCardModal.module.css";
 
 export function UserProfileCardModal({ isOpen, onClose, user }) {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isFollowing, setIsFollowing] = useState(false);
 
   if (!isOpen || !user) return null;
 
   const handleViewFullProfile = () => {
     onClose?.();
     navigate(`/profile/${user.id || "user-01"}`);
+  };
+
+  const handleToggleFollow = (e) => {
+    e.stopPropagation();
+    setIsFollowing((prev) => !prev);
+    if (!isFollowing) {
+      toast.success(`Đã gửi lời mời kết bạn với ${user.username || user.name}!`, "Mạng xã hội");
+    } else {
+      toast.info(`Đã hủy theo dõi ${user.username || user.name}.`, "Mạng xã hội");
+    }
+  };
+
+  const handleSendMessage = (e) => {
+    e.stopPropagation();
+    onClose?.();
+    toast.info(`Mở cuộc trò chuyện với ${user.username || user.name}...`, "Messenger");
+    navigate("/chat");
+  };
+
+  const handleRecommend = (e) => {
+    e.stopPropagation();
+    toast.success(`Đã đề xuất hồ sơ năng lực của ${user.username || user.name}! ⭐`, "Đề xuất");
   };
 
   return (
@@ -33,7 +57,7 @@ export function UserProfileCardModal({ isOpen, onClose, user }) {
         <div className={styles.card_content}>
           {/* Avatar & Status Indicator */}
           <div className={styles.avatar_wrapper}>
-            <img src={user.avatar} alt={user.username} className={styles.avatar_img} />
+            <img src={user.avatar} alt={user.username || user.name} className={styles.avatar_img} />
             <span
               className={`${styles.status_dot} ${
                 user.status === "dnd" ? styles.status_dnd : styles.status_online
@@ -42,26 +66,26 @@ export function UserProfileCardModal({ isOpen, onClose, user }) {
           </div>
 
           {/* Status Message Tooltip Pill */}
-          {user.statusMessage && (
+          {(user.statusMessage || user.currentActivity) && (
             <div className={styles.status_pill}>
-              <Icon name="PlusCircle" size={14} className={styles.status_icon} />
-              <span>{user.statusMessage}</span>
+              <Icon name="Sparkles" size={14} className={styles.status_icon} />
+              <span>{user.statusMessage || user.currentActivity}</span>
             </div>
           )}
 
           {/* User Name & Handle */}
           <div className={styles.user_header}>
             <div className={styles.name_row}>
-              <h3 className={styles.display_name}>{user.username}</h3>
+              <h3 className={styles.display_name}>{user.username || user.name}</h3>
               <Icon name="Moon" size={16} className={styles.moon_icon} />
             </div>
 
             <div className={styles.handle_row}>
               <span className={styles.handle_text}>@{user.handle || "user"}</span>
-              {user.userTitle && (
+              {(user.userTitle || user.title) && (
                 <>
                   <span className={styles.dot_separator}>•</span>
-                  <span className={styles.user_title_text}>{user.userTitle}</span>
+                  <span className={styles.user_title_text}>{user.userTitle || user.title}</span>
                 </>
               )}
             </div>
@@ -102,22 +126,28 @@ export function UserProfileCardModal({ isOpen, onClose, user }) {
               <Icon name="ArrowRight" size={16} className={styles.arrow_icon} />
             </button>
 
-            {/* Quick Action Item 1 */}
-            <div className={styles.action_item}>
+            {/* Context Action 1: Connect / Follow */}
+            <div className={styles.action_item} onClick={handleToggleFollow}>
               <div className={styles.action_left}>
-                <Icon name="Edit3" size={16} />
-                <span>Sửa Hồ Sơ</span>
+                <Icon name={isFollowing ? "Check" : "UserPlus"} size={16} />
+                <span>{isFollowing ? "Đã kết bạn / Theo dõi" : "+ Kết bạn / Theo dõi"}</span>
               </div>
-              <Badge variant="error" size="sm">MỚI</Badge>
             </div>
 
-            {/* Quick Action Item 2 */}
-            <div className={styles.action_item}>
+            {/* Context Action 2: Direct Message */}
+            <div className={styles.action_item} onClick={handleSendMessage}>
               <div className={styles.action_left}>
-                <span className={`${styles.status_dot_small} ${styles.status_dnd}`} />
-                <span>Vui Lòng Không Làm Phiền</span>
+                <Icon name="MessageSquare" size={16} />
+                <span>Nhắn tin riêng</span>
               </div>
-              <Icon name="BellOff" size={14} className={styles.action_icon_sub} />
+            </div>
+
+            {/* Context Action 3: Recommend */}
+            <div className={styles.action_item} onClick={handleRecommend}>
+              <div className={styles.action_left}>
+                <Icon name="Star" size={16} />
+                <span>Đề xuất hồ sơ</span>
+              </div>
             </div>
           </div>
         </div>

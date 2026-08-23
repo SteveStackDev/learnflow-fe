@@ -1,0 +1,167 @@
+.goal_card {
+  padding: 16px;
+  background: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.35));
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+:global([data-theme="dark"]) .goal_card {
+  background: #181825;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header_title_block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon_box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(9, 80, 195, 0.1);
+  color: var(--color-primary, #0950c3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global([data-theme="dark"]) .icon_box {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .title {
+  color: #f8fafc;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 2px 0 0 0;
+}
+
+.weekly_targets_grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.target_box {
+  padding: 16px;
+  background: var(--theme-body-bg, #f8fafc);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+:global([data-theme="dark"]) .target_box {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.target_top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.target_icon_blue {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(9, 80, 195, 0.1);
+  color: var(--color-primary, #0950c3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+:global([data-theme="dark"]) .target_icon_blue {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.target_icon_green {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.target_text {
+  display: flex;
+  flex-direction: column;
+}
+
+.target_label {
+  font-size: 0.775rem;
+  font-weight: 700;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+.target_val {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .target_val {
+  color: #f8fafc;
+}
+
+.progress_track {
+  height: 8px;
+  background-color: rgba(169, 183, 203, 0.25);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress_fill_blue {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary, #0950c3) 0%, #3b82f6 100%);
+  border-radius: 999px;
+}
+
+.progress_fill_green {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  border-radius: 999px;
+}
+
+.heatmap_wrapper {
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .weekly_targets_grid {
+    grid-template-columns: 1fr;
+  }
+}

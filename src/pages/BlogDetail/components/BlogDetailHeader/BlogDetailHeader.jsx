@@ -4,7 +4,7 @@ import Icon from "~/components/Icon/Icon";
 import Badge from "~/components/ui/Badge/Badge";
 import styles from "./BlogDetailHeader.module.css";
 
-export default function BlogDetailHeader({ post }) {
+export default function BlogDetailHeader({ post, onSelectUser }) {
   const navigate = useNavigate();
   if (!post) return null;
 
