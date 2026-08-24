@@ -1,0 +1,288 @@
+.roadmap_card {
+  padding: 24px;
+  background: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.35));
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+:global([data-theme="dark"]) .roadmap_card {
+  background: #181825;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header_title_block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon_box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(9, 80, 195, 0.1);
+  color: var(--color-primary, #0950c3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global([data-theme="dark"]) .icon_box {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .title {
+  color: #f8fafc;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 2px 0 0 0;
+}
+
+.view_all_link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--color-primary, #0950c3);
+  text-decoration: none;
+}
+
+:global([data-theme="dark"]) .view_all_link {
+  color: #38bdf8;
+}
+
+.courses_section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section_label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.courses_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.course_item {
+  padding: 16px;
+  background: var(--theme-body-bg, #f8fafc);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+:global([data-theme="dark"]) .course_item {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.course_top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category_badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--color-primary, #0950c3);
+  background: rgba(9, 80, 195, 0.1);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+:global([data-theme="dark"]) .category_badge {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+}
+
+.percent_tag {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #10b981;
+}
+
+.course_name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  line-height: 1.35;
+}
+
+:global([data-theme="dark"]) .course_name {
+  color: #f8fafc;
+}
+
+.next_lesson {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.775rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .next_lesson {
+  color: #94a3b8;
+}
+
+.progress_bar {
+  height: 6px;
+  background-color: rgba(169, 183, 203, 0.25);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  border-radius: 999px;
+}
+
+/* Capstone Box */
+.capstone_box {
+  padding: 18px;
+  background: linear-gradient(135deg, rgba(9, 80, 195, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+  border: 1px solid rgba(9, 80, 195, 0.25);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+:global([data-theme="dark"]) .capstone_box {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%);
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+.capstone_header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.capstone_badge {
+  font-size: 0.675rem;
+  font-weight: 900;
+  color: #6366f1;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.capstone_title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .capstone_title {
+  color: #f8fafc;
+}
+
+.status_pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: #10b981;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.mentor_feedback_row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(169, 183, 203, 0.4);
+}
+
+:global([data-theme="dark"]) .mentor_feedback_row {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.mentor_avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.feedback_content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mentor_meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mentor_name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .mentor_name {
+  color: #f8fafc;
+}
+
+.submitted_date {
+  font-size: 0.75rem;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+.feedback_text {
+  font-size: 0.825rem;
+  font-style: italic;
+  color: var(--theme-text-secondary, #475569);
+  margin: 0;
+  line-height: 1.45;
+}
+
+:global([data-theme="dark"]) .feedback_text {
+  color: #cbd5e1;
+}

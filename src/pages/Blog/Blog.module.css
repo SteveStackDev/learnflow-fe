@@ -1,0 +1,134 @@
+.blog_page {
+  min-height: 100vh;
+  background-color: #ffffff;
+  color: var(--theme-text-primary, #0f172a);
+  padding: 32px 0 60px 0;
+  transition: background-color 0.3s ease;
+}
+
+:global([data-theme="dark"]) .blog_page,
+:global(.theme-dark) .blog_page {
+  background-color: #0b1120 !important;
+  color: #f8fafc;
+}
+
+.blog_container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (max-width: 640px) {
+  .blog_container {
+    padding: 0 16px;
+  }
+}
+
+.main_layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+@media (max-width: 1024px) {
+  .main_layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  /* Hide Sidebar Widgets completely on mobile / tablet responsive screens */
+  .main_layout aside {
+    display: none;
+  }
+}
+
+.feed_column {
+  display: flex;
+  flex-direction: column;
+}
+
+.section_heading {
+  font-family: "Inter", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0 0 16px 0;
+  letter-spacing: -0.01em;
+}
+
+:global([data-theme="dark"]) .section_heading,
+:global(.theme-dark) .section_heading {
+  color: #ffffff;
+}
+
+/* Grid vs List Layout Container */
+.posts_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.posts_list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 768px) {
+  .posts_grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pagination_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.empty_box {
+  padding: 48px 24px;
+  text-align: center;
+  background-color: var(--theme-card-bg, #ffffff);
+  border-radius: 16px;
+  border: 1.5px dashed var(--theme-border-color, rgba(169, 183, 203, 0.35));
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+:global([data-theme="dark"]) .empty_box,
+:global(.theme-dark) .empty_box {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.empty_title {
+  font-family: "Inter", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .empty_title,
+:global(.theme-dark) .empty_title {
+  color: #ffffff;
+}
+
+.empty_desc {
+  font-size: 0.875rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .empty_desc,
+:global(.theme-dark) .empty_desc {
+  color: #94a3b8;
+}

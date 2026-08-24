@@ -141,6 +141,16 @@ function Footer() {
                       Liên hệ
                     </Link>
                   </li>
+                  <li>
+                    <Link to="/blog" className={styles["footer__nav-link"]}>
+                      Bài viết
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/chat" className={styles["footer__nav-link"]}>
+                      Trò chuyện
+                    </Link>
+                  </li>
                 </ul>
               </div>
 
@@ -196,8 +206,18 @@ function Footer() {
                     </Link>
                   </li>
                   <li>
+                    <Link to="/profile" className={styles["footer__nav-link"]}>
+                      Hồ sơ cá nhân
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/setting" className={styles["footer__nav-link"]}>
                       Cài đặt
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/admin" className={styles["footer__nav-link"]}>
+                      Quản trị (Admin)
                     </Link>
                   </li>
                 </ul>

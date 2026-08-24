@@ -3,27 +3,27 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f8fafc;
+  background-color: var(--theme-page-bg, #f8fafc);
 }
 
 .dashboard_container {
   flex: 1;
   width: 100%;
-  max-width: 1240px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 40px 24px 60px 24px;
+  padding: 32px 24px 60px 24px;
 }
 
 /* Dynamic Greeting Header */
 .greeting_header {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .greeting_title {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-family-main, "Be Vietnam Pro", sans-serif);
   font-size: 1.75rem;
   font-weight: 800;
-  color: #191b22;
+  color: var(--theme-text-primary, #191b22);
   margin: 0 0 6px 0;
   display: flex;
   align-items: center;
@@ -65,8 +65,34 @@
 
 .greeting_subtitle {
   font-size: 0.95rem;
-  color: #64748b;
+  color: var(--theme-text-secondary, #64748b);
   margin: 0;
+}
+
+/* 3-Column Grid Layout (Main Content + Sticky Interactive Right Panel) */
+.three_column_layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 24px;
+  margin-top: 24px;
+  align-items: start;
+}
+
+/* Main Content Column (Column 2 - Scrollable) */
+.main_content_col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* Interactive Right Panel (Column 3 - Sticky) */
+.right_panel_col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 84px;
 }
 
 :global([data-theme="dark"]) .dashboard_page {
@@ -79,4 +105,14 @@
 
 :global([data-theme="dark"]) .greeting_subtitle {
   color: #94a3b8;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1084px) {
+  .three_column_layout {
+    grid-template-columns: 1fr;
+  }
+  .right_panel_col {
+    position: static;
+  }
 }

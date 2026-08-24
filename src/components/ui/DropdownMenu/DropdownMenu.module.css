@@ -1,0 +1,243 @@
+/* ==========================================================================
+   FySet UI Component - DropdownMenu Styling
+   ========================================================================== */
+
+.dropdown_container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.dropdown_open {
+  z-index: 9999 !important;
+}
+
+.dropdown_open .trigger_wrapper {
+  z-index: 9999 !important;
+}
+
+.dropdown_disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* PREFIX LABEL (Optional left label) */
+.prefix_label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+:global([data-theme="dark"]) .prefix_label,
+:global(.theme-dark) .prefix_label {
+  color: #94a3b8;
+}
+
+.trigger_wrapper {
+  position: relative;
+}
+
+/* TRIGGER BUTTON */
+.trigger_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  font-family: inherit;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.4));
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .trigger_btn,
+:global(.theme-dark) .trigger_btn {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* SIZES */
+.dropdown--sm .trigger_btn {
+  height: 38px;
+  padding: 0 14px;
+  font-size: 0.8125rem;
+}
+
+.dropdown--md .trigger_btn {
+  height: 44px;
+  padding: 0 18px;
+  font-size: 0.875rem;
+}
+
+.dropdown--lg .trigger_btn {
+  height: 50px;
+  padding: 0 22px;
+  font-size: 0.9375rem;
+}
+
+/* HOVER & FOCUS STATES */
+.trigger_btn:hover {
+  border-color: var(--color-primary, #0950c3);
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.1);
+}
+
+:global([data-theme="dark"]) .trigger_btn:hover,
+:global(.theme-dark) .trigger_btn:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.15);
+}
+
+.dropdown_open .trigger_btn {
+  border-color: var(--color-primary, #0950c3);
+  box-shadow: 0 0 0 3px rgba(9, 80, 195, 0.15);
+}
+
+:global([data-theme="dark"]) .dropdown_open .trigger_btn,
+:global(.theme-dark) .dropdown_open .trigger_btn {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+.trigger_text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-text-secondary, #64748b);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+:global([data-theme="dark"]) .chevron_icon,
+:global(.theme-dark) .chevron_icon {
+  color: #38bdf8;
+}
+
+.chevron_up {
+  transform: rotate(180deg);
+}
+
+/* Menu Popover Dropdown */
+.menu_popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 100%;
+  width: max-content;
+  max-width: 280px;
+  max-height: 280px;
+  overflow-y: auto;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 16px;
+  padding: 6px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  z-index: 99999 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: popoverFadeIn 0.15s ease;
+  box-sizing: border-box;
+}
+
+:global([data-theme="dark"]) .menu_popover,
+:global(.theme-dark) .menu_popover {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Menu Items */
+.menu_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #1e293b);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+:global([data-theme="dark"]) .menu_item,
+:global(.theme-dark) .menu_item {
+  color: #e2e8f0;
+}
+
+.menu_item:hover {
+  background-color: var(--color-bg-secondary, #f1f5f9);
+  color: var(--color-primary, #0950c3);
+}
+
+:global([data-theme="dark"]) .menu_item:hover,
+:global(.theme-dark) .menu_item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #38bdf8;
+}
+
+/* Distinct Keyboard Focused Item Style */
+.menu_item_focused {
+  background-color: rgba(9, 80, 195, 0.1) !important;
+  color: var(--color-primary, #0950c3) !important;
+  box-shadow: inset 0 0 0 2px var(--color-primary, #0950c3);
+}
+
+:global([data-theme="dark"]) .menu_item_focused,
+:global(.theme-dark) .menu_item_focused {
+  background-color: rgba(56, 189, 248, 0.18) !important;
+  color: #38bdf8 !important;
+  box-shadow: inset 0 0 0 2px #38bdf8;
+}
+
+/* Selected Option Style */
+.menu_item_selected {
+  color: var(--color-primary, #0950c3) !important;
+  background-color: rgba(9, 80, 195, 0.08) !important;
+}
+
+:global([data-theme="dark"]) .menu_item_selected,
+:global(.theme-dark) .menu_item_selected {
+  color: #38bdf8 !important;
+  background-color: rgba(56, 189, 248, 0.12) !important;
+}
+
+.check_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary, #0950c3);
+  flex-shrink: 0;
+}
+
+:global([data-theme="dark"]) .check_icon,
+:global(.theme-dark) .check_icon {
+  color: #38bdf8;
+}

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import styles from "./ProblemListTable.module.css";
 import Icon from "~/components/Icon/Icon";
-import { Pagination } from "~/components/ui";
+import { Pagination, ScrollArea } from "~/components/ui";
 import useScrollReveal from "~/hooks/useScrollReveal";
 
 function ProblemListTable({
@@ -41,11 +41,8 @@ function ProblemListTable({
       );
     }
     return (
-      <span
-        className={`${styles.status_icon} ${styles["status_icon--unsolved"]}`}
-        title="Chưa thử sức"
-      >
-        <Icon name="Circle" size={18} />
+      <span className={styles.status_icon} title="Chưa giải">
+        <Icon name="Minus" size={16} />
       </span>
     );
   };
@@ -58,7 +55,7 @@ function ProblemListTable({
 
   return (
     <section className={`${styles.table_card} reveal-card`}>
-      <div className={styles.table_wrap}>
+      <ScrollArea className={styles.table_wrap}>
         <table className={styles.table}>
           <thead className={styles.thead}>
             <tr>
@@ -124,7 +121,7 @@ function ProblemListTable({
             )}
           </tbody>
         </table>
-      </div>
+      </ScrollArea>
 
       {/* Table Footer & Pagination */}
       <div className={styles.table_footer}>

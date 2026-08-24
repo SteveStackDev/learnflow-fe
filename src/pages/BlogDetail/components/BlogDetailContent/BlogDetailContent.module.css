@@ -1,0 +1,209 @@
+.article_body {
+  font-family: var(--font-family-main);
+  line-height: 1.7;
+  color: var(--theme-text-primary, #334155);
+  margin-bottom: 40px;
+}
+
+.quote_callout {
+  margin: 0 0 32px 0;
+  padding: 18px 24px;
+  background-color: var(--color-bg-secondary, #f8fafc);
+  border-left: 4px solid var(--color-primary, #0950c3);
+  border-radius: 0 14px 14px 0;
+  font-size: 1.05rem;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--theme-text-primary, #1e293b);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+}
+
+:global([data-theme="dark"]) .quote_callout,
+:global(.theme-dark) .quote_callout {
+  background-color: rgba(56, 189, 248, 0.08);
+  border-left-color: #38bdf8;
+  color: #e2e8f0;
+}
+
+.section_block {
+  margin-bottom: 32px;
+}
+
+.section_title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 24px 0 14px 0;
+  line-height: 1.3;
+}
+
+:global([data-theme="dark"]) .section_title,
+:global(.theme-dark) .section_title {
+  color: #ffffff;
+}
+
+.paragraph {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--theme-text-secondary, #475569);
+  margin-bottom: 16px;
+}
+
+:global([data-theme="dark"]) .paragraph,
+:global(.theme-dark) .paragraph {
+  color: #cbd5e1;
+}
+
+.bullet_list {
+  margin: 12px 0 20px 24px;
+  padding: 0;
+  list-style-type: disc;
+}
+
+.bullet_item {
+  font-size: 0.975rem;
+  color: var(--theme-text-secondary, #475569);
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+:global([data-theme="dark"]) .bullet_item,
+:global(.theme-dark) .bullet_item {
+  color: #cbd5e1;
+}
+
+.code_box {
+  margin: 20px 0 28px 0;
+  background-color: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.code_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  background-color: #1e293b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code_lang {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.code_copy {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.code_pre {
+  margin: 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  font-family: "Fira Code", monospace, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #f8fafc;
+}
+
+.footer_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 24px;
+  margin-top: 36px;
+  border-top: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.25));
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+:global([data-theme="dark"]) .footer_row,
+:global(.theme-dark) .footer_row {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.tags_list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag_chip {
+  padding: 6px 14px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  background-color: var(--color-bg-secondary, #f1f5f9);
+  color: var(--color-primary, #0950c3);
+  border-radius: 9999px;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+}
+
+:global([data-theme="dark"]) .tag_chip,
+:global(.theme-dark) .tag_chip {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #38bdf8;
+}
+
+.helpful_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-primary, #0950c3);
+  background-color: transparent;
+  border: 1.5px solid var(--color-primary, #0950c3);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.helpful_btn:hover {
+  background-color: var(--color-primary, #0950c3);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.3);
+}
+
+.helpful_active {
+  background-color: var(--color-primary, #0950c3);
+  color: #ffffff;
+  border-color: var(--color-primary, #0950c3);
+}
+
+:global([data-theme="dark"]) .helpful_btn,
+:global(.theme-dark) .helpful_btn {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .helpful_btn:hover,
+:global(.theme-dark) .helpful_btn:hover,
+:global([data-theme="dark"]) .helpful_active,
+:global(.theme-dark) .helpful_active {
+  background-color: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+}
+
+@media (max-width: 640px) {
+  .footer_row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .helpful_btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

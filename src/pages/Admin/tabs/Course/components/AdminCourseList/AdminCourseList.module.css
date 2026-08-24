@@ -1,0 +1,376 @@
+/* ==========================================================================
+   AdminCourseList Styling (FySet Theme Variables)
+   ========================================================================== */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+    gap: 16px;
+  }
+}
+
+/* 1. Header Banner */
+.header_banner {
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 20px;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+:global([data-theme="dark"]) .header_banner,
+:global(.theme-dark) .header_banner {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 640px) {
+  .header_banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+  }
+}
+
+.banner_title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0 0 6px 0;
+  letter-spacing: -0.02em;
+}
+
+:global([data-theme="dark"]) .banner_title,
+:global(.theme-dark) .banner_title {
+  color: #ffffff;
+}
+
+.banner_subtitle {
+  font-size: 0.9rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .banner_subtitle,
+:global(.theme-dark) .banner_subtitle {
+  color: #94a3b8;
+}
+
+.add_btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 2. Toolbar (Search & Filters) */
+.toolbar {
+  position: relative;
+  z-index: 100;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+:global([data-theme="dark"]) .toolbar,
+:global(.theme-dark) .toolbar {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.search_wrapper {
+  flex: 1;
+  min-width: 240px;
+  height: 40px;
+  background-color: var(--color-bg-secondary, #f1f5f9);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+:global([data-theme="dark"]) .search_wrapper,
+:global(.theme-dark) .search_wrapper {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.search_wrapper:focus-within {
+  border-color: var(--color-primary, #0950c3);
+  background-color: var(--theme-card-bg, #ffffff);
+  box-shadow: 0 0 10px rgba(9, 80, 195, 0.15);
+}
+
+.search_icon {
+  color: var(--theme-text-secondary, #94a3b8);
+  flex-shrink: 0;
+}
+
+.search_input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.875rem;
+  color: var(--theme-text-primary, #0f172a);
+  width: 100%;
+  font-family: inherit;
+}
+
+:global([data-theme="dark"]) .search_input,
+:global(.theme-dark) .search_input {
+  color: #ffffff;
+}
+
+.filter_group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.select_filter {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--theme-border-color, #cbd5e1);
+  background-color: var(--theme-card-bg, #ffffff);
+  color: var(--theme-text-primary, #334155);
+  font-size: 0.85rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+:global([data-theme="dark"]) .select_filter,
+:global(.theme-dark) .select_filter {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+}
+
+:global([data-theme="dark"]) .select_filter option {
+  background-color: #131c31;
+  color: #ffffff;
+}
+
+/* 3. Data Table */
+.table_wrapper {
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 20px;
+  overflow-x: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+:global([data-theme="dark"]) .table_wrapper,
+:global(.theme-dark) .table_wrapper {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.table th {
+  padding: 16px 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--theme-text-secondary, #64748b);
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.2));
+  background-color: var(--color-bg-secondary, #f8fafc);
+}
+
+:global([data-theme="dark"]) .table th,
+:global(.theme-dark) .table th {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+
+.table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.15));
+  vertical-align: middle;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .table td,
+:global(.theme-dark) .table td {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.row_selected {
+  background-color: rgba(9, 80, 195, 0.04) !important;
+}
+
+:global([data-theme="dark"]) .row_selected,
+:global(.theme-dark) .row_selected {
+  background-color: rgba(56, 189, 248, 0.08) !important;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--color-primary, #0950c3);
+}
+
+/* Course Meta Column */
+.course_meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+}
+
+.thumbnail {
+  width: 54px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(169, 183, 203, 0.3);
+}
+
+.title_box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.course_title {
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+  transition: color 0.2s ease;
+}
+
+:global([data-theme="dark"]) .course_title,
+:global(.theme-dark) .course_title {
+  color: #ffffff;
+}
+
+.course_meta:hover .course_title {
+  color: var(--color-primary, #0950c3);
+}
+
+:global([data-theme="dark"]) .course_meta:hover .course_title,
+:global(.theme-dark) .course_meta:hover .course_title {
+  color: #38bdf8;
+}
+
+.course_sub {
+  font-size: 0.775rem;
+  color: var(--theme-text-secondary, #64748b);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cat_text,
+.num_text {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Action Row */
+.action_row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.action_btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  background-color: transparent;
+  color: var(--theme-text-secondary, #64748b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+:global([data-theme="dark"]) .action_btn,
+:global(.theme-dark) .action_btn {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+}
+
+.action_btn:hover {
+  background-color: rgba(9, 80, 195, 0.08);
+  color: var(--color-primary, #0950c3);
+  border-color: rgba(9, 80, 195, 0.3);
+}
+
+:global([data-theme="dark"]) .action_btn:hover,
+:global(.theme-dark) .action_btn:hover {
+  background-color: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.action_danger:hover {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.empty_td {
+  padding: 40px !important;
+  text-align: center;
+  color: var(--theme-text-secondary, #94a3b8);
+  font-size: 0.9rem;
+}
+
+/* 4. Pagination Bar */
+.pagination_bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.page_info {
+  font-size: 0.85rem;
+  color: var(--theme-text-secondary, #64748b);
+  font-weight: 500;
+}

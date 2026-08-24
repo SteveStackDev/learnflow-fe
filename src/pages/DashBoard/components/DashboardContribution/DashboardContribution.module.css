@@ -1,161 +1,158 @@
-/* GitHub Style Contribution Matrix Styles */
-.contribution_card {
-  background-color: #ffffff;
-  border: 1px solid rgba(169, 183, 203, 0.35);
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.04);
+/* GitHub Style Contribution Heatmap (Seamless & Theme Aware) */
+.gh_contribution_container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  background: var(--theme-body-bg, #f8fafc);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 12px;
+  box-sizing: border-box;
 }
 
-.contribution_header {
+:global([data-theme="dark"]) .gh_contribution_container {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.gh_header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 16px;
 }
 
-.contribution_title {
+.gh_title {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.9rem;
+  font-size: 0.825rem;
   font-weight: 700;
-  color: #191b22;
-  margin: 0;
-  white-space: nowrap;
+  color: var(--theme-text-primary, #0f172a);
 }
 
-.contribution_title_icon {
-  color: #0950c3;
+:global([data-theme="dark"]) .gh_title {
+  color: #f8fafc;
+}
+
+.gh_icon {
+  color: var(--color-primary, #0950c3);
   flex-shrink: 0;
 }
 
-.contribution_subtitle {
-  font-size: 0.725rem;
-  color: #64748b;
-  font-weight: 600;
-  white-space: nowrap;
-  text-align: right;
+:global([data-theme="dark"]) .gh_icon {
+  color: #38bdf8;
 }
 
-.contribution_grid {
+.gh_stats {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+/* 7-Column Grid Matrix */
+.gh_grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
-  margin-bottom: 14px;
+  gap: 5px;
 }
 
-.contribution_cell {
+.gh_cell {
   aspect-ratio: 1;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
   user-select: none;
 }
 
-.contribution_cell:hover {
-  transform: scale(1.15);
+.gh_cell:hover {
+  transform: scale(1.18);
   z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.contribution_day_num {
-  font-size: 0.65rem;
+.gh_day_num {
+  font-size: 0.6rem;
   font-weight: 700;
-  color: rgba(0, 0, 0, 0.55);
+  color: rgba(0, 0, 0, 0.45);
 }
 
-/* Intensity levels */
+:global([data-theme="dark"]) .gh_day_num {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Iconic GitHub Contribution Green Palette */
 .level_0 {
   background-color: #ebedf0;
+}
+
+:global([data-theme="dark"]) .level_0 {
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 .level_1 {
   background-color: #9be9a8;
 }
 
+:global([data-theme="dark"]) .level_1 {
+  background-color: rgba(16, 185, 129, 0.3);
+}
+
 .level_2 {
   background-color: #40c463;
+}
+
+:global([data-theme="dark"]) .level_2 {
+  background-color: rgba(16, 185, 129, 0.55);
 }
 
 .level_3 {
   background-color: #30a14e;
 }
 
+:global([data-theme="dark"]) .level_3 {
+  background-color: rgba(16, 185, 129, 0.8);
+}
+
 .level_4 {
   background-color: #216e39;
 }
 
+:global([data-theme="dark"]) .level_4 {
+  background-color: #10b981;
+}
+
+.level_4 .gh_day_num,
+.level_3 .gh_day_num {
+  color: #ffffff;
+}
+
 /* Footer Legend */
-.contribution_footer {
+.gh_footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
-  font-size: 0.725rem;
-  color: #64748b;
 }
 
-.legend_cells {
+.legend_text {
+  font-size: 0.675rem;
+  color: var(--theme-text-secondary, #64748b);
+  font-weight: 600;
+}
+
+.legend_boxes {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .legend_box {
   width: 10px;
   height: 10px;
   border-radius: 2px;
-}
-
-:global([data-theme="dark"]) .contribution_card {
-  background-color: #131c31;
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-:global([data-theme="dark"]) .contribution_title {
-  color: #ffffff;
-}
-
-:global([data-theme="dark"]) .contribution_title_icon {
-  color: #38bdf8;
-}
-
-:global([data-theme="dark"]) .contribution_subtitle {
-  color: #94a3b8;
-}
-
-:global([data-theme="dark"]) .contribution_day_num {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-:global([data-theme="dark"]) .level_0 {
-  background-color: #1e293b;
-}
-
-:global([data-theme="dark"]) .level_1 {
-  background-color: #0e4429;
-}
-
-:global([data-theme="dark"]) .level_2 {
-  background-color: #006d32;
-}
-
-:global([data-theme="dark"]) .level_3 {
-  background-color: #26a641;
-}
-
-:global([data-theme="dark"]) .level_4 {
-  background-color: #39d353;
-}
-
-:global([data-theme="dark"]) .contribution_footer {
-  color: #94a3b8;
 }

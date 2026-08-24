@@ -1,27 +1,21 @@
 import Icon from "~/components/Icon/Icon";
-import useDropdownKeyboard from "~/hooks/useDropdownKeyboard";
+import { DropdownMenu } from "~/components/ui";
 import styles from "./LeaderboardFilter.module.css";
 
 function LeaderboardFilter({
   tabs,
   activeTab,
   handleTabChange,
-  timeOptions,
+  timeOptions = [],
   selectedTime,
   setSelectedTime,
-  isTimeDropdownOpen,
-  setIsTimeDropdownOpen,
-  timeDropdownRef,
   searchQuery,
   setSearchQuery,
 }) {
-  const timeKeyboard = useDropdownKeyboard({
-    isOpen: isTimeDropdownOpen,
-    setIsOpen: setIsTimeDropdownOpen,
-    options: timeOptions,
-    selectedOption: selectedTime,
-    onSelect: setSelectedTime,
-  });
+  const options = timeOptions.map((opt) => ({
+    value: opt.id,
+    label: opt.label,
+  }));
 
   return (
     <section className={styles["board-filters"]}>
@@ -44,59 +38,16 @@ function LeaderboardFilter({
               ))}
             </div>
 
-            {/* Right Controls: Custom Dropdown & Search Input */}
+            {/* Right Controls: Unified UI DropdownMenu & Search Input */}
             <div className={styles["board-filters__controls"]}>
-              <div className={styles["board-filters__select-wrapper"]} ref={timeDropdownRef}>
-                <button
-                  type="button"
-                  onClick={() => setIsTimeDropdownOpen(!isTimeDropdownOpen)}
-                  onKeyDown={timeKeyboard.handleKeyDown}
-                  aria-haspopup="listbox"
-                  aria-expanded={isTimeDropdownOpen}
-                  aria-label="Lọc theo thời gian"
-                  className={`${styles["board-filters__dropdown-btn"]} ${
-                    isTimeDropdownOpen ? styles["board-filters__dropdown-btn--open"] : ""
-                  }`}
-                >
-                  <span>{selectedTime.label}</span>
-                  <span className={styles["board-filters__dropdown-chevron"]}>
-                    <Icon name="ChevronDown" size={16} />
-                  </span>
-                </button>
-
-                {isTimeDropdownOpen && (
-                  <div className={styles["board-filters__dropdown-menu"]} role="listbox">
-                    {timeOptions.map((option, index) => (
-                      <div
-                        key={option.id}
-                        role="option"
-                        aria-selected={selectedTime.id === option.id}
-                        onClick={() => {
-                          setSelectedTime(option);
-                          setIsTimeDropdownOpen(false);
-                        }}
-                        onMouseEnter={() => timeKeyboard.setFocusedIndex(index)}
-                        className={`${styles["board-filters__dropdown-item"]} ${
-                          selectedTime.id === option.id
-                            ? styles["board-filters__dropdown-item--selected"]
-                            : ""
-                        } ${
-                          timeKeyboard.focusedIndex === index
-                            ? styles["board-filters__dropdown-item--focused"]
-                            : ""
-                        }`}
-                      >
-                        <span>{option.label}</span>
-                        {selectedTime.id === option.id && (
-                          <span className={styles["board-filters__dropdown-check"]}>
-                            <Icon name="Check" size={14} strokeWidth={3} />
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <DropdownMenu
+                options={options}
+                value={selectedTime?.id}
+                onChange={(val) => {
+                  const target = timeOptions.find((opt) => opt.id === val);
+                  if (target) setSelectedTime(target);
+                }}
+              />
 
               <div className={styles["board-filters__search-box"]}>
                 <span className={styles["board-filters__search-icon"]}>

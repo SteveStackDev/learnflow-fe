@@ -1,0 +1,125 @@
+.footer {
+  padding: 12px 20px 16px 20px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border-top: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+:global([data-theme="dark"]) .footer,
+:global(.theme-dark) .footer {
+  background-color: #131c31;
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Reply Preview Bar attached to bottom above ChatInput */
+.reply_bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background-color: var(--color-bg-secondary, #f1f5f9);
+  border-left: 3px solid var(--color-primary, #0950c3);
+  border-radius: 8px;
+  animation: slideUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:global([data-theme="dark"]) .reply_bar,
+:global(.theme-dark) .reply_bar {
+  background-color: #1e293b;
+  border-left-color: #38bdf8;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reply_content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.reply_header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reply_icon {
+  color: var(--color-primary, #0950c3);
+}
+
+:global([data-theme="dark"]) .reply_icon,
+:global(.theme-dark) .reply_icon {
+  color: #38bdf8;
+}
+
+.reply_author {
+  font-size: 0.775rem;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+:global([data-theme="dark"]) .reply_author,
+:global(.theme-dark) .reply_author {
+  color: #cbd5e1;
+}
+
+.reply_author strong {
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .reply_author strong,
+:global(.theme-dark) .reply_author strong {
+  color: #ffffff;
+}
+
+.reply_snippet {
+  font-size: 0.825rem;
+  color: var(--theme-text-primary, #334155);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:global([data-theme="dark"]) .reply_snippet,
+:global(.theme-dark) .reply_snippet {
+  color: #e2e8f0;
+}
+
+.cancel_btn {
+  background: transparent;
+  border: none;
+  color: var(--theme-text-secondary, #94a3b8);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.cancel_btn:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: #ef4444;
+}
+
+:global([data-theme="dark"]) .cancel_btn:hover,
+:global(.theme-dark) .cancel_btn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ef4444;
+}

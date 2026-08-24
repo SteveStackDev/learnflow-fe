@@ -9,6 +9,7 @@ import ContestInfoAnnouncements from "./components/ContestInfoAnnouncements/Cont
 import ContestInfoSubmissions from "./components/ContestInfoSubmissions/ContestInfoSubmissions";
 import ContestInfoStandings from "./components/ContestInfoStandings/ContestInfoStandings";
 import ContestInfoRightSidebar from "./components/ContestInfoRightSidebar/ContestInfoRightSidebar";
+import UserProfileCardModal from "~/components/UserProfileCardModal/UserProfileCardModal";
 import styles from "./ContestInfo.module.css";
 
 export default function ContestInfo() {
@@ -16,6 +17,7 @@ export default function ContestInfo() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { id } = useParams();
+  const [selectedUserForModal, setSelectedUserForModal] = useState(null);
 
   // State: contest status ('upcoming' | 'running' | 'finished')
   const [contestStatus, setContestStatus] = useState("upcoming");
@@ -141,7 +143,9 @@ export default function ContestInfo() {
           {/* Render active tab content only when contest has started or finished */}
           {contestStatus !== "upcoming" && (
             <>
-              {activeTab === "standings" && <ContestInfoStandings />}
+              {activeTab === "standings" && (
+                <ContestInfoStandings onSelectUser={(u) => setSelectedUserForModal(u)} />
+              )}
               {activeTab === "submissions" && <ContestInfoSubmissions />}
               {activeTab === "announcements" && <ContestInfoAnnouncements />}
             </>
@@ -156,6 +160,13 @@ export default function ContestInfo() {
           />
         </div>
       </div>
+
+      {/* User Profile Quick Card Modal */}
+      <UserProfileCardModal
+        isOpen={!!selectedUserForModal}
+        onClose={() => setSelectedUserForModal(null)}
+        user={selectedUserForModal}
+      />
     </div>
   );
 }

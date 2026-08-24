@@ -23,6 +23,12 @@
   width: 100%;
 }
 
+@media (max-width: 1024px) {
+  .mobile_tab_bar {
+    display: flex;
+  }
+}
+
 .mobile_tab_btn {
   flex: 1;
   display: flex;
@@ -98,50 +104,23 @@
 .mobile_quick_btn--secondary {
   background: rgba(30, 41, 59, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #38bdf8;
 }
 
+/* Bottom Console Log Wrapper */
 .console_wrapper {
   margin-top: 16px;
   width: 100%;
 }
 
-/* ==========================================================================
-   Responsive Breakpoints
-   ========================================================================== */
+/* Responsive Media Queries */
 @media (max-width: 1024px) {
-  .detail_page {
-    padding: 12px;
-  }
-
-  .mobile_tab_bar {
-    display: flex;
-  }
-
-  .mobile_quick_banner {
-    display: block;
-  }
-
   .grid_container {
     flex-direction: column;
     height: auto;
     min-height: auto;
-    gap: 12px;
   }
 
-  /* Responsive visibility rules based on activeMobileTab */
-  :global(.desktop-only) {
-    display: none !important;
-  }
-}
-
-@media (max-width: 600px) {
-  .mobile_tab_btn span {
-    font-size: 0.8rem;
-  }
-
-  .mobile_tab_btn {
-    padding: 8px 6px;
-    gap: 4px;
+  .mobile_quick_banner {
+    display: block;
   }
 }

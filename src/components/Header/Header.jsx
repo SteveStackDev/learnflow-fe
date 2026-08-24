@@ -27,6 +27,8 @@ const ACHIEVEMENT_DROPDOWN_ITEMS = [
 const OTHER_DROPDOWN_ITEMS = [
   { to: "/pricing", title: "Bảng giá", desc: "Các gói dịch vụ & ưu đãi", iconName: "Tag" },
   { to: "/contact", title: "Liên hệ", desc: "Hỗ trợ & giải đáp thắc mắc", iconName: "Mail" },
+  { to: "/blog", title: "Bài viết", desc: "Góc chia sẻ kiến thức & Tin tức Tech", iconName: "BookOpen" },
+  { to: "/chat", title: "Trò chuyện", desc: "Trợ lý AI & Nhắn tin cộng đồng", iconName: "MessageSquare" },
 ];
 
 export function Header() {
@@ -51,7 +53,7 @@ export function Header() {
   const isLearnActive = ["/roadmap", "/course"].includes(location.pathname);
   const isPracticeActive = ["/problem", "/contest"].includes(location.pathname);
   const isAchievementActive = ["/leaderboard", "/badge", "/achievement"].includes(location.pathname);
-  const isOtherActive = ["/pricing", "/contact", "/pricing/checkout", "/checkout"].includes(location.pathname);
+  const isOtherActive = ["/pricing", "/contact", "/pricing/checkout", "/checkout", "/blog"].includes(location.pathname);
 
   // Sync Auth State across Tabs and Custom Events
   useEffect(() => {
@@ -181,17 +183,15 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === "learn" ? null : "learn")}
-                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${
-                  isLearnActive ? styles["header__link--active"] : ""
-                }`}
+                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${isLearnActive ? styles["header__link--active"] : ""
+                  }`}
               >
                 <span>Learn</span>
                 <Icon
                   name="ChevronDown"
                   size={14}
-                  className={`${styles.header__chevron} ${
-                    activeDropdown === "learn" ? styles["header__chevron--open"] : ""
-                  }`}
+                  className={`${styles.header__chevron} ${activeDropdown === "learn" ? styles["header__chevron--open"] : ""
+                    }`}
                 />
               </button>
               {activeDropdown === "learn" && renderDropdownMenu(LEARN_DROPDOWN_ITEMS)}
@@ -206,17 +206,15 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === "practice" ? null : "practice")}
-                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${
-                  isPracticeActive ? styles["header__link--active"] : ""
-                }`}
+                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${isPracticeActive ? styles["header__link--active"] : ""
+                  }`}
               >
                 <span>Practice</span>
                 <Icon
                   name="ChevronDown"
                   size={14}
-                  className={`${styles.header__chevron} ${
-                    activeDropdown === "practice" ? styles["header__chevron--open"] : ""
-                  }`}
+                  className={`${styles.header__chevron} ${activeDropdown === "practice" ? styles["header__chevron--open"] : ""
+                    }`}
                 />
               </button>
               {activeDropdown === "practice" && renderDropdownMenu(PRACTICE_DROPDOWN_ITEMS)}
@@ -231,17 +229,15 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === "achievement" ? null : "achievement")}
-                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${
-                  isAchievementActive ? styles["header__link--active"] : ""
-                }`}
+                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${isAchievementActive ? styles["header__link--active"] : ""
+                  }`}
               >
                 <span>Achievement</span>
                 <Icon
                   name="ChevronDown"
                   size={14}
-                  className={`${styles.header__chevron} ${
-                    activeDropdown === "achievement" ? styles["header__chevron--open"] : ""
-                  }`}
+                  className={`${styles.header__chevron} ${activeDropdown === "achievement" ? styles["header__chevron--open"] : ""
+                    }`}
                 />
               </button>
               {activeDropdown === "achievement" && renderDropdownMenu(ACHIEVEMENT_DROPDOWN_ITEMS)}
@@ -256,17 +252,15 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === "other" ? null : "other")}
-                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${
-                  isOtherActive ? styles["header__link--active"] : ""
-                }`}
+                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${isOtherActive ? styles["header__link--active"] : ""
+                  }`}
               >
                 <span>Other</span>
                 <Icon
                   name="ChevronDown"
                   size={14}
-                  className={`${styles.header__chevron} ${
-                    activeDropdown === "other" ? styles["header__chevron--open"] : ""
-                  }`}
+                  className={`${styles.header__chevron} ${activeDropdown === "other" ? styles["header__chevron--open"] : ""
+                    }`}
                 />
               </button>
               {activeDropdown === "other" && renderDropdownMenu(OTHER_DROPDOWN_ITEMS)}
@@ -358,8 +352,7 @@ export function Header() {
                     to={item.to}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
-                        isActive ? styles["header__mobile-link--active"] : ""
+                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${isActive ? styles["header__mobile-link--active"] : ""
                       }`
                     }
                   >
@@ -379,8 +372,7 @@ export function Header() {
                     to={item.to}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
-                        isActive ? styles["header__mobile-link--active"] : ""
+                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${isActive ? styles["header__mobile-link--active"] : ""
                       }`
                     }
                   >
@@ -400,8 +392,7 @@ export function Header() {
                     to={item.to}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
-                        isActive ? styles["header__mobile-link--active"] : ""
+                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${isActive ? styles["header__mobile-link--active"] : ""
                       }`
                     }
                   >
@@ -421,8 +412,7 @@ export function Header() {
                     to={item.to}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
-                        isActive ? styles["header__mobile-link--active"] : ""
+                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${isActive ? styles["header__mobile-link--active"] : ""
                       }`
                     }
                   >

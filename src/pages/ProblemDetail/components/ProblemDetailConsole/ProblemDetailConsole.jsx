@@ -1,5 +1,6 @@
 import styles from "./ProblemDetailConsole.module.css";
 import Icon from "~/components/Icon/Icon";
+import { ScrollArea } from "~/components/ui";
 
 function ProblemDetailConsole({ consoleLogs }) {
   return (
@@ -13,7 +14,7 @@ function ProblemDetailConsole({ consoleLogs }) {
       </div>
 
       {/* Terminal Output Window */}
-      <div className={styles.console_body}>
+      <ScrollArea className={styles.console_body}>
         {consoleLogs && consoleLogs.length > 0 ? (
           consoleLogs.map((log, idx) => (
             <div key={idx} className={styles.log_line}>
@@ -34,7 +35,7 @@ function ProblemDetailConsole({ consoleLogs }) {
             xem kết quả biên dịch và thông tin xuất dữ liệu (stdout).
           </div>
         )}
-      </div>
+      </ScrollArea>
     </div>
   );
 }

@@ -17,21 +17,6 @@
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(169, 183, 203, 0.4) transparent;
-}
-
-.table_wrap::-webkit-scrollbar {
-  height: 6px;
-}
-
-.table_wrap::-webkit-scrollbar-thumb {
-  background-color: rgba(169, 183, 203, 0.4);
-  border-radius: 9999px;
-}
-
-.table_wrap::-webkit-scrollbar-track {
-  background: transparent;
 }
 
 .table {

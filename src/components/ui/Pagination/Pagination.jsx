@@ -52,64 +52,68 @@ function getPaginationRange(currentPage, totalPages, siblingCount = 1) {
 
 export function Pagination({
   currentPage = 1,
+  page,
   totalPages = 1,
   onPageChange,
   className = "",
   showWrapper = true,
   siblingCount = 1,
 }) {
+  const activePage = page !== undefined ? page : currentPage;
+
   const paginationRange = useMemo(
-    () => getPaginationRange(currentPage, totalPages, siblingCount),
-    [currentPage, totalPages, siblingCount]
+    () => getPaginationRange(activePage, totalPages, siblingCount),
+    [activePage, totalPages, siblingCount]
   );
 
-  if (!totalPages || totalPages <= 1) return null;
+  if (!totalPages || totalPages < 1) return null;
 
   const content = (
     <nav className={`${styles.pagination} ${className}`} aria-label="Phân trang">
       {/* Nút Previous */}
       <button
         type="button"
-        onClick={() => onPageChange?.(Math.max(currentPage - 1, 1))}
+        onClick={() => onPageChange?.(Math.max(activePage - 1, 1))}
         className={styles.page_btn}
-        disabled={currentPage === 1}
+        disabled={activePage === 1}
         aria-label="Trang trước"
       >
         <Icon name="ChevronLeft" size={16} />
       </button>
 
       {/* Render Danh sách trang */}
-      {paginationRange.map((pageNumber, index) => {
-        if (pageNumber === "...") {
+      {paginationRange &&
+        paginationRange.map((pageNumber, index) => {
+          if (pageNumber === "...") {
+            return (
+              <span key={`ellipsis-${index}`} className={styles.page_ellipsis}>
+                &#8230;
+              </span>
+            );
+          }
+
+          const isActive = activePage === pageNumber;
+
           return (
-            <span key={`ellipsis-${index}`} className={styles.page_ellipsis}>
-              &#8230;
-            </span>
+            <button
+              key={pageNumber}
+              type="button"
+              onClick={() => onPageChange?.(pageNumber)}
+              className={`${styles.page_btn} ${isActive ? styles["page_btn--active"] : ""}`}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {pageNumber}
+            </button>
           );
-        }
-
-        const isActive = currentPage === pageNumber;
-
-        return (
-          <button
-            key={pageNumber}
-            type="button"
-            onClick={() => onPageChange?.(pageNumber)}
-            className={`${styles.page_btn} ${isActive ? styles["page_btn--active"] : ""}`}
-            aria-current={isActive ? "page" : undefined}
-          >
-            {pageNumber}
-          </button>
-        );
-      })}
+        })}
 
       {/* Nút Next */}
       <button
         type="button"
-        onClick={() => onPageChange?.(Math.min(currentPage + 1, totalPages))}
+        onClick={() => onPageChange?.(Math.min(activePage + 1, totalPages))}
         className={styles.page_btn}
-        disabled={currentPage === totalPages}
-        aria-label="Trang sau"
+        disabled={activePage === totalPages}
+        aria-label="Trang tiếp theo"
       >
         <Icon name="ChevronRight" size={16} />
       </button>

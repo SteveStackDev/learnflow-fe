@@ -1,5 +1,6 @@
 import React from "react";
 import Icon from "~/components/Icon/Icon";
+import { ScrollArea } from "~/components/ui";
 import styles from "./ContestSidebar.module.css";
 
 export function ContestSidebar({
@@ -11,7 +12,7 @@ export function ContestSidebar({
   const percentScore = user ? Math.min((user.score / user.maxScore) * 100, 100) : 0;
 
   return (
-    <aside className={sidebarClass(styles)}>
+    <ScrollArea className={styles.sidebar}>
       {/* User Info Card */}
       {user && (
         <div className={styles.user_card}>
@@ -79,12 +80,8 @@ export function ContestSidebar({
           );
         })}
       </div>
-    </aside>
+    </ScrollArea>
   );
-}
-
-function sidebarClass(styles) {
-  return styles.sidebar;
 }
 
 export default ContestSidebar;

@@ -36,6 +36,7 @@ import ContestResult from "../pages/ContestResult/ContestResult";
 
 import Setting from "../pages/Setting/Setting";
 import DashBoard from "../pages/DashBoard/DashBoard";
+import Blog from "../pages/Blog/Blog";
 import SignIn from "../pages/SignIn/SignIn";
 import SignUp from "../pages/SignUp/SignUp";
 import NotFound from "../pages/NotFound/NotFound";
@@ -164,6 +165,11 @@ describe("FySet Full Page Routes Smoke Tests", () => {
   it("renders DashBoard page without crashing", () => {
     renderWithRouter(<DashBoard />);
     expect(screen.getAllByText(/FySet/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders Blog page without crashing", () => {
+    renderWithRouter(<Blog />);
+    expect(screen.getAllByText(/Blog/i).length).toBeGreaterThan(0);
   });
 
   it("renders SignIn page without crashing", () => {

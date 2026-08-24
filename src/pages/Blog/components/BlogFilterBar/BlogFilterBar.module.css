@@ -1,0 +1,150 @@
+.bar_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.category_list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-top: 4px;
+  padding-bottom: 10px;
+  padding-left: 24px;
+  padding-right: 24px;
+  margin-left: -24px;
+  margin-right: -24px;
+  width: calc(100% + 48px);
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(9, 80, 195, 0.35) transparent;
+}
+
+:global([data-theme="dark"]) .category_list,
+:global(.theme-dark) .category_list {
+  scrollbar-color: rgba(56, 189, 248, 0.4) transparent;
+}
+
+/* Flex spacer element ensuring last category button has buffer space on scroll */
+.category_list::after {
+  content: "";
+  flex: 0 0 24px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.category_btn {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1.5px solid var(--theme-border-color, rgba(169, 183, 203, 0.35));
+  background-color: var(--theme-card-bg, #ffffff);
+  color: var(--theme-text-secondary, #64748b);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex: 0 0 auto;
+}
+
+.category_btn:hover {
+  border-color: var(--color-primary, #0950c3);
+  color: var(--color-primary, #0950c3);
+}
+
+.category_btn--active {
+  background-color: var(--color-primary, #0950c3);
+  border-color: var(--color-primary, #0950c3);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.25);
+}
+
+:global([data-theme="dark"]) .category_btn,
+:global(.theme-dark) .category_btn {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .category_btn:hover,
+:global(.theme-dark) .category_btn:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .category_btn--active,
+:global(.theme-dark) .category_btn--active {
+  background-color: #0950c3;
+  border-color: #0950c3;
+  color: #ffffff;
+}
+
+.view_toggle_group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1.5px solid var(--theme-border-color, rgba(169, 183, 203, 0.35));
+  border-radius: 10px;
+  padding: 3px;
+}
+
+:global([data-theme="dark"]) .view_toggle_group,
+:global(.theme-dark) .view_toggle_group {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.view_btn {
+  background: transparent;
+  border: none;
+  color: var(--theme-text-secondary, #64748b);
+  padding: 6px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.view_btn:hover {
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .view_btn:hover,
+:global(.theme-dark) .view_btn:hover {
+  color: #ffffff;
+}
+
+.view_btn--active {
+  background-color: var(--color-primary, #0950c3);
+  color: #ffffff !important;
+}
+
+:global([data-theme="dark"]) .view_btn--active,
+:global(.theme-dark) .view_btn--active {
+  background-color: #38bdf8;
+  color: #0f172a !important;
+}
+
+/* RESPONSIVE FULL-BLEED HORIZONTAL SCROLL FOR CATEGORY PILLS */
+@media (max-width: 640px) {
+  .bar_container {
+    margin-top: 20px;
+    margin-bottom: 24px;
+  }
+
+  .category_list {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 24px;
+    width: calc(100% + 32px);
+  }
+}

@@ -1,0 +1,98 @@
+.card {
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+:global([data-theme="dark"]) .card,
+:global(.theme-dark) .card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.card_title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:global([data-theme="dark"]) .card_title,
+:global(.theme-dark) .card_title {
+  color: #ffffff;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.2));
+}
+
+:global([data-theme="dark"]) .table th,
+:global([data-theme="dark"]) .table td,
+:global(.theme-dark) .table th,
+:global(.theme-dark) .table td {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.code_badge {
+  font-family: monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background-color: rgba(9, 80, 195, 0.08);
+  color: var(--color-primary, #0950c3);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+:global([data-theme="dark"]) .code_badge,
+:global(.theme-dark) .code_badge {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.score_badge {
+  font-weight: 800;
+  color: #10b981;
+}
+
+.action_btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  background-color: transparent;
+  color: var(--theme-text-secondary, #64748b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.danger_btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: #ef4444;
+}

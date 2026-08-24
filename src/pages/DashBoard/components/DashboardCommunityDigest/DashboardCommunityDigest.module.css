@@ -1,0 +1,239 @@
+.digest_card {
+  padding: 24px;
+  background: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.35));
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+:global([data-theme="dark"]) .digest_card {
+  background: #181825;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header_title_block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon_box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(9, 80, 195, 0.1);
+  color: var(--color-primary, #0950c3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global([data-theme="dark"]) .icon_box {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .title {
+  color: #f8fafc;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 2px 0 0 0;
+}
+
+.view_all_link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--color-primary, #0950c3);
+  text-decoration: none;
+}
+
+:global([data-theme="dark"]) .view_all_link {
+  color: #38bdf8;
+}
+
+.digest_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.column_label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.825rem;
+  font-weight: 800;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.blogs_list,
+.discussions_list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.blog_item,
+.disc_item {
+  padding: 14px;
+  background: var(--theme-body-bg, #f8fafc);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+:global([data-theme="dark"]) .blog_item,
+:global([data-theme="dark"]) .disc_item {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.blog_meta_top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.author_block {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.author_avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author_name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .author_name {
+  color: #f8fafc;
+}
+
+.author_block:hover .author_name {
+  color: var(--color-primary, #0950c3);
+}
+
+:global([data-theme="dark"]) .author_block:hover .author_name {
+  color: #38bdf8;
+}
+
+.category_tag {
+  font-size: 0.675rem;
+  font-weight: 800;
+  color: var(--color-primary, #0950c3);
+  background: rgba(9, 80, 195, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+:global([data-theme="dark"]) .category_tag {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+}
+
+.blog_title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+  text-decoration: none;
+  line-height: 1.35;
+}
+
+:global([data-theme="dark"]) .blog_title {
+  color: #f8fafc;
+}
+
+.blog_title:hover {
+  color: var(--color-primary, #0950c3);
+}
+
+:global([data-theme="dark"]) .blog_title:hover {
+  color: #38bdf8;
+}
+
+.blog_stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Discussion Styles */
+.disc_title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  line-height: 1.35;
+}
+
+:global([data-theme="dark"]) .disc_title {
+  color: #f8fafc;
+}
+
+.disc_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+.disc_author {
+  font-weight: 600;
+}
+
+.disc_counts {
+  display: flex;
+  gap: 6px;
+}
+
+@media (max-width: 768px) {
+  .digest_grid {
+    grid-template-columns: 1fr;
+  }
+}

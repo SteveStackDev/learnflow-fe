@@ -51,8 +51,13 @@ const ContestInfo = lazy(() => import("~/pages/ContestInfo/ContestInfo"));
 const ContestResult = lazy(() => import("~/pages/ContestResult/ContestResult"));
 
 // General Pages
+const Blog = lazy(() => import("~/pages/Blog/Blog.jsx"));
+const BlogDetail = lazy(() => import("~/pages/BlogDetail/BlogDetail.jsx"));
+const Chat = lazy(() => import("~/pages/Chat/Chat.jsx"));
+const Admin = lazy(() => import("~/pages/Admin/Admin.jsx"));
 const Setting = lazy(() => import("~/pages/Setting/Setting"));
 const DashBoard = lazy(() => import("~/pages/DashBoard/DashBoard"));
+const UserProfile = lazy(() => import("~/pages/UserProfile/UserProfile"));
 const SignIn = lazy(() => import("~/pages/SignIn/SignIn"));
 const SignUp = lazy(() => import("~/pages/SignUp/SignUp"));
 const NotFound = lazy(() => import("~/pages/NotFound/NotFound"));
@@ -67,6 +72,7 @@ if (typeof window !== "undefined") {
     import("~/pages/Roadmap/Roadmap");
     import("~/pages/Leaderboard/Leaderboard");
     import("~/pages/Pricing/Pricing");
+    import("~/pages/Blog/Blog.jsx");
   };
 
   if ("requestIdleCallback" in window) {
@@ -120,6 +126,14 @@ createRoot(document.getElementById("root")).render(
 
                 <Route path="/setting" element={<Setting />} />
                 <Route path="/dashboard" element={<DashBoard />} />
+                <Route path="/profile" element={<UserProfile />} />
+                <Route path="/profile/:id" element={<UserProfile />} />
+                <Route path="/user/:id" element={<UserProfile />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/detail" element={<BlogDetail />} />
+                <Route path="/blog/:id" element={<BlogDetail />} />
+                <Route path="/chat" element={<Chat />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
               <Route path="/signin" element={<SignIn />} />

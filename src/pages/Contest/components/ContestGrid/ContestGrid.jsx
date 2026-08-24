@@ -94,6 +94,7 @@ function ContestGrid({
                     <div className={styles["contest-grid__card-actions"]}>
                       <Button
                         variant={obj.actionVariant === "contained" ? "contained" : "outlined"}
+                        rightIcon="ArrowRight"
                         className={styles.card_btn}
                         onClick={(e) => {
                           e.stopPropagation();

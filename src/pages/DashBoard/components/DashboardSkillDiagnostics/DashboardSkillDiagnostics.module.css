@@ -1,0 +1,241 @@
+.diagnostics_card {
+  padding: 24px;
+  background: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.35));
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+:global([data-theme="dark"]) .diagnostics_card {
+  background: #181825;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header_title_block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon_box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(9, 80, 195, 0.1);
+  color: var(--color-primary, #0950c3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global([data-theme="dark"]) .icon_box {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .title {
+  color: #f8fafc;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 2px 0 0 0;
+}
+
+.overall_score_badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 6px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+:global([data-theme="dark"]) .overall_score_badge {
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.score_val {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #10b981;
+}
+
+.score_status {
+  font-size: 0.675rem;
+  font-weight: 800;
+  color: #059669;
+  letter-spacing: 0.04em;
+}
+
+:global([data-theme="dark"]) .score_status {
+  color: #34d399;
+}
+
+/* Grid Layout */
+.grid_layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.radar_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.radar_svg {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  overflow: visible;
+}
+
+.grid_polygon {
+  fill: none;
+  stroke: rgba(169, 183, 203, 0.35);
+  stroke-width: 1;
+}
+
+:global([data-theme="dark"]) .grid_polygon {
+  stroke: rgba(255, 255, 255, 0.12);
+}
+
+.axis_line {
+  stroke: rgba(169, 183, 203, 0.35);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+
+:global([data-theme="dark"]) .axis_line {
+  stroke: rgba(255, 255, 255, 0.12);
+}
+
+.data_polygon {
+  fill: rgba(9, 80, 195, 0.25);
+  stroke: var(--color-primary, #0950c3);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+:global([data-theme="dark"]) .data_polygon {
+  fill: rgba(56, 189, 248, 0.25);
+  stroke: #38bdf8;
+}
+
+.data_dot {
+  fill: var(--color-primary, #0950c3);
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+:global([data-theme="dark"]) .data_dot {
+  fill: #38bdf8;
+  stroke: #181825;
+}
+
+.axis_label {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--theme-text-primary, #334155);
+  font-family: inherit;
+}
+
+:global([data-theme="dark"]) .axis_label {
+  fill: #cbd5e1;
+}
+
+/* Insights Container */
+.insights_container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.insight_block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.block_header_green {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #10b981;
+}
+
+.block_header_amber {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #f59e0b;
+}
+
+.insight_list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.825rem;
+  color: var(--theme-text-secondary, #475569);
+  line-height: 1.5;
+}
+
+:global([data-theme="dark"]) .insight_list {
+  color: #94a3b8;
+}
+
+.recommendation_pill {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(9, 80, 195, 0.06);
+  border: 1px dashed rgba(9, 80, 195, 0.3);
+  border-radius: 12px;
+  font-size: 0.825rem;
+  color: var(--color-primary, #0950c3);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+:global([data-theme="dark"]) .recommendation_pill {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+}
+
+.lightbulb_icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+@media (max-width: 768px) {
+  .grid_layout {
+    grid-template-columns: 1fr;
+  }
+}

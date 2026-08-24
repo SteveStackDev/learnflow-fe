@@ -19,6 +19,7 @@ export default defineConfig({
         "./src/pages/Pricing/Pricing.jsx",
         "./src/pages/Setting/Setting.jsx",
         "./src/pages/DashBoard/DashBoard.jsx",
+        "./src/pages/Blog/Blog.jsx",
       ],
     },
   },

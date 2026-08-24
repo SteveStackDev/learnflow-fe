@@ -11,6 +11,7 @@ function LeaderboardTable({
   totalPages,
   setSearchQuery,
   setActiveTab,
+  onSelectUser,
 }) {
   return (
     <section className={styles["board-ranking"]}>
@@ -73,7 +74,12 @@ function LeaderboardTable({
                       {obj.rank}
                     </td>
                     <td className={styles["board-ranking__table-cell"]}>
-                      <div className={styles["board-ranking__user-info"]}>
+                      <div
+                        className={styles["board-ranking__user-info"]}
+                        onClick={() => onSelectUser?.(obj)}
+                        style={{ cursor: "pointer" }}
+                        title="Click để xem Hồ sơ người dùng"
+                      >
                         {obj.isCurrentUser ? (
                           <div className={styles["board-ranking__avatar-fallback"]}>B</div>
                         ) : (

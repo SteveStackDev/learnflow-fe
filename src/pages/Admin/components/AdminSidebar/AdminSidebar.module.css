@@ -1,0 +1,194 @@
+/* ==========================================================================
+   AdminSidebar Component Styling (FySet Theme Variables)
+   ========================================================================== */
+
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  min-height: 100%;
+  align-self: stretch;
+  background-color: var(--theme-card-bg, #ffffff);
+  border-right: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  user-select: none;
+  transition: transform 0.3s ease, background-color 0.2s ease, border-right-color 0.2s ease;
+  z-index: 100;
+}
+
+:global([data-theme="dark"]) .sidebar,
+:global(.theme-dark) .sidebar {
+  background-color: #131c31;
+  border-right-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile_header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.2));
+}
+
+.mobile_title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--color-primary, #0950c3);
+  letter-spacing: 0.05em;
+}
+
+:global([data-theme="dark"]) .mobile_title,
+:global(.theme-dark) .mobile_title {
+  color: #38bdf8;
+}
+
+.close_btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background-color: transparent;
+  color: var(--theme-text-secondary, #64748b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.close_btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+/* Scroll Area */
+.nav_scroll {
+  flex: 1;
+  padding: 20px 14px;
+}
+
+.nav_menu {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section_group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section_title {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: var(--theme-text-secondary, #94a3b8);
+  letter-spacing: 0.08em;
+  padding: 0 10px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.items_list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav_item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  color: var(--theme-text-secondary, #64748b);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+:global([data-theme="dark"]) .nav_item,
+:global(.theme-dark) .nav_item {
+  color: #94a3b8;
+}
+
+.item_left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item_icon {
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.item_label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.nav_item:hover {
+  background-color: rgba(9, 80, 195, 0.06);
+  color: var(--color-primary, #0950c3);
+}
+
+:global([data-theme="dark"]) .nav_item:hover,
+:global(.theme-dark) .nav_item:hover {
+  background-color: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+}
+
+.nav_item:hover .item_icon {
+  transform: translateX(2px);
+}
+
+/* Active State */
+.nav_item_active {
+  background-color: var(--color-primary, #0950c3) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.3);
+}
+
+:global([data-theme="dark"]) .nav_item_active,
+:global(.theme-dark) .nav_item_active {
+  background-color: #0950c3 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.4);
+}
+
+.count_badge {
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 0.725rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  line-height: 1;
+}
+
+/* Mobile Drawer Responsive Media Queries */
+@media (max-width: 900px) {
+  .mobile_header {
+    display: flex;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+    transform: translateX(-100%);
+  }
+
+  .sidebar_open {
+    transform: translateX(0);
+  }
+}

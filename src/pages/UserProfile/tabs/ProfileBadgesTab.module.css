@@ -1,0 +1,226 @@
+.tab_card {
+  padding: 24px;
+  background: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.35));
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+:global([data-theme="dark"]) .tab_card {
+  background: #181825;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.tab_header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.25));
+}
+
+:global([data-theme="dark"]) .tab_header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.tab_title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .tab_title {
+  color: #f8fafc;
+}
+
+.tab_subtitle {
+  font-size: 0.8rem;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+.section_block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.section_title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .section_title {
+  color: #f8fafc;
+}
+
+.amber_icon {
+  color: #f59e0b;
+}
+
+.green_icon {
+  color: #10b981;
+}
+
+.badges_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.badge_card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: var(--theme-body-bg, #f8fafc);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 12px;
+}
+
+:global([data-theme="dark"]) .badge_card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.badge_card_locked {
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+
+.badge_icon_box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.badge_info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.badge_category {
+  font-size: 0.675rem;
+  font-weight: 800;
+  color: var(--color-primary, #0950c3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+:global([data-theme="dark"]) .badge_category {
+  color: #38bdf8;
+}
+
+.badge_name {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .badge_name {
+  color: #f8fafc;
+}
+
+.badge_unlocked_date {
+  font-size: 0.725rem;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+.certificates_grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cert_card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  background: var(--theme-body-bg, #f8fafc);
+  border: 1px solid var(--theme-border-color, rgba(169, 183, 203, 0.3));
+  border-radius: 12px;
+}
+
+:global([data-theme="dark"]) .cert_card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.cert_icon_wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cert_details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cert_title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+:global([data-theme="dark"]) .cert_title {
+  color: #f8fafc;
+}
+
+.cert_issuer {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--theme-text-primary, #334155);
+}
+
+:global([data-theme="dark"]) .cert_issuer {
+  color: #cbd5e1;
+}
+
+.cert_meta {
+  font-size: 0.725rem;
+  color: var(--theme-text-secondary, #64748b);
+}
+
+.cert_verify_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 8px;
+  font-size: 0.775rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
