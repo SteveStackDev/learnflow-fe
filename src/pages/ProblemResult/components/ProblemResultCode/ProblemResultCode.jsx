@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styles from "./ProblemResultCode.module.css";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext";
-import { ScrollArea } from "~/components/ui";
+import { Button, ScrollArea } from "~/components/ui";
 
 function escapeHtml(str) {
+  if (!str) return "";
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
@@ -49,6 +50,7 @@ function highlightCode(code) {
 function ProblemResultCode({ resultData }) {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
+  const lineNumbersRef = useRef(null);
 
   const lines = (resultData.submittedCode || "").split("\n");
   const lineNumbers = Array.from({ length: lines.length }, (_, i) => i + 1);
@@ -58,6 +60,12 @@ function ProblemResultCode({ resultData }) {
     setCopied(true);
     toast.success("Đã sao chép mã nguồn làm vào clipboard!", "Sao chép");
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleScroll = (e) => {
+    if (lineNumbersRef.current) {
+      lineNumbersRef.current.scrollTop = e.target.scrollTop;
+    }
   };
 
   return (
@@ -90,20 +98,19 @@ function ProblemResultCode({ resultData }) {
           <span className={styles.lines_count}>{lines.length} dòng</span>
         </div>
 
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
+          leftIcon={copied ? "Check" : "Copy"}
           onClick={handleCopyCode}
-          className={styles.copy_btn}
-          title="Sao chép code"
         >
-          <Icon name={copied ? "Check" : "Copy"} size={14} />
-          <span>{copied ? "Đã chép" : "Sao chép"}</span>
-        </button>
+          {copied ? "Đã chép" : "Sao chép"}
+        </Button>
       </div>
 
-      {/* Syntax Highlighted Code Viewer */}
-      <ScrollArea className={styles.code_workspace}>
-        <div className={styles.line_numbers}>
+      {/* Syntax Highlighted Code Viewer with Shared UI ScrollArea */}
+      <div className={styles.code_workspace}>
+        <div className={styles.line_numbers} ref={lineNumbersRef}>
           {lineNumbers.map((num) => (
             <div key={num} className={styles.line_number_item}>
               {num}
@@ -111,13 +118,13 @@ function ProblemResultCode({ resultData }) {
           ))}
         </div>
 
-        <div className={styles.code_content_wrap}>
+        <ScrollArea className={styles.code_content_wrap} onScroll={handleScroll}>
           <pre
             className={styles.code_highlight_layer}
             dangerouslySetInnerHTML={highlightCode(resultData.submittedCode)}
           />
-        </div>
-      </ScrollArea>
+        </ScrollArea>
+      </div>
     </div>
   );
 }

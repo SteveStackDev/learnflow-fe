@@ -1,0 +1,155 @@
+/* SubmissionsTable Component Styling */
+
+.table_card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(169, 183, 203, 0.45);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.table_responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.submissions_table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.submissions_table th {
+  padding: 14px 18px;
+  font-size: 0.775rem;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.05em;
+  background-color: #f8fafc;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.35);
+  white-space: nowrap;
+}
+
+.submissions_table td {
+  padding: 14px 18px;
+  color: #334155;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.25);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.submissions_table tr:last-child td {
+  border-bottom: none;
+}
+
+.clickable_row {
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.clickable_row:hover {
+  background-color: #f0f6ff !important;
+}
+
+.id_cell {
+  font-weight: 700;
+  color: #64748b;
+}
+
+.title_cell {
+  font-weight: 700;
+}
+
+.problem_name_text {
+  color: #0950c3;
+  font-weight: 700;
+  transition: var(--transition-base);
+}
+
+.clickable_row:hover .problem_name_text {
+  text-decoration: underline;
+}
+
+.contest_tag {
+  font-size: 0.775rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.muted_text {
+  color: #94a3b8;
+}
+
+.lang_pill {
+  font-size: 0.775rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background-color: #f1f5f9;
+  color: #475569;
+  font-family: var(--font-family-code, monospace);
+}
+
+.meta_cell {
+  font-weight: 600;
+  color: #475569;
+}
+
+.time_cell {
+  color: #64748b;
+  font-size: 0.825rem;
+}
+
+.empty_cell {
+  padding: 40px !important;
+  text-align: center;
+}
+
+.empty_state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #94a3b8;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .table_card,
+:global(.theme-dark) .table_card {
+  background-color: #181825;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .submissions_table th,
+:global(.theme-dark) .submissions_table th {
+  background-color: #131c31;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .submissions_table td,
+:global(.theme-dark) .submissions_table td {
+  color: #cbd5e1;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .clickable_row:hover,
+:global(.theme-dark) .clickable_row:hover {
+  background-color: #1e293b !important;
+}
+
+:global([data-theme="dark"]) .problem_name_text,
+:global(.theme-dark) .problem_name_text {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .lang_pill,
+:global(.theme-dark) .lang_pill {
+  background-color: #334155;
+  color: #e2e8f0;
+}

@@ -49,6 +49,7 @@ const ContestList = lazy(() => import("~/pages/ContestList/ContestList"));
 const ContestDetail = lazy(() => import("~/pages/ContestDetail/ContestDetail"));
 const ContestInfo = lazy(() => import("~/pages/ContestInfo/ContestInfo"));
 const ContestResult = lazy(() => import("~/pages/ContestResult/ContestResult"));
+const Submissions = lazy(() => import("~/pages/Submissions/Submissions"));
 
 // General Pages
 const Blog = lazy(() => import("~/pages/Blog/Blog.jsx"));
@@ -112,6 +113,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/problem/list" element={<ProblemList />} />
                 <Route path="/problem/:id" element={<ProblemDetail />} />
                 <Route path="/problem/:id/result" element={<ProblemResult />} />
+                <Route path="/problem/:id/submissions" element={<Submissions />} />
                 <Route path="/problem/result" element={<ProblemResult />} />
 
                 {/* Contest Routes */}
@@ -122,7 +124,12 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/contest/detail" element={<ContestDetail />} />
                 <Route path="/contest/result" element={<ContestResult />} />
                 <Route path="/contest/:id/result" element={<ContestResult />} />
+                <Route path="/contest/:id/submissions" element={<Submissions />} />
                 <Route path="/contest/:id" element={<ContestDetail />} />
+
+                {/* Submissions Routes */}
+                <Route path="/submissions" element={<Submissions />} />
+                <Route path="/user/submissions" element={<Submissions />} />
 
                 <Route path="/setting" element={<Setting />} />
                 <Route path="/dashboard" element={<DashBoard />} />

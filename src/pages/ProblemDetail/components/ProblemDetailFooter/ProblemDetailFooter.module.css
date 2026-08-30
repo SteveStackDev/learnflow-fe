@@ -45,8 +45,8 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.upload_btn:hover,
-.run_btn:hover {
+.upload_btn:hover:not(:disabled),
+.run_btn:hover:not(:disabled) {
   background-color: #e0ebff;
   color: #0950c3;
   border-color: #0950c3;
@@ -69,9 +69,34 @@
   font-family: inherit;
 }
 
-.submit_btn:hover {
+.submit_btn:hover:not(:disabled) {
   background: linear-gradient(135deg, #003a95 0%, #002668 100%);
   box-shadow: 0 6px 18px rgba(9, 80, 195, 0.35);
+}
+
+/* Double-Submit Prevention & Disabled State */
+.btn--disabled,
+.upload_btn:disabled,
+.run_btn:disabled,
+.submit_btn:disabled {
+  opacity: 0.65 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+}
+
+/* Spinner Keyframes Animation */
+.spin_icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Dark Mode Overrides */
@@ -92,17 +117,8 @@
   box-shadow: none;
 }
 
-:global([data-theme="dark"]) .upload_btn:hover,
-:global([data-theme="dark"]) .run_btn:hover {
+:global([data-theme="dark"]) .upload_btn:hover:not(:disabled),
+:global([data-theme="dark"]) .run_btn:hover:not(:disabled) {
   background-color: #334155;
   color: #38bdf8;
-}
-
-:global([data-theme="dark"]) .submit_btn {
-  background: linear-gradient(135deg, #0950c3 0%, #053787 100%);
-  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.35);
-}
-
-:global([data-theme="dark"]) .submit_btn:hover {
-  background: linear-gradient(135deg, #053787 0%, #03255c 100%);
 }

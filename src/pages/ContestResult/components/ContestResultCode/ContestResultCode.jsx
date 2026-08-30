@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button, ScrollArea } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ContestResultCode.module.css";
 
 function escapeHtml(str) {
+  if (!str) return "";
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
@@ -54,6 +55,7 @@ function highlightCode(code) {
 export function ContestResultCode({ resultData }) {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
+  const lineNumbersRef = useRef(null);
 
   const lines = (resultData.code || "").split("\n");
   const lineNumbers = Array.from({ length: Math.max(lines.length, 1) }, (_, i) => i + 1);
@@ -63,6 +65,12 @@ export function ContestResultCode({ resultData }) {
     setCopied(true);
     toast.success("Đã sao chép mã nguồn bài làm vào bộ nhớ tạm!", "Sao chép code");
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleScroll = (e) => {
+    if (lineNumbersRef.current) {
+      lineNumbersRef.current.scrollTop = e.target.scrollTop;
+    }
   };
 
   return (
@@ -103,9 +111,9 @@ export function ContestResultCode({ resultData }) {
         </Button>
       </div>
 
-      {/* Code Workspace */}
-      <ScrollArea className={styles.code_workspace}>
-        <div className={styles.line_numbers}>
+      {/* Code Workspace with Shared UI ScrollArea */}
+      <div className={styles.code_workspace}>
+        <div className={styles.line_numbers} ref={lineNumbersRef}>
           {lineNumbers.map((num) => (
             <div key={num} className={styles.line_number_item}>
               {num}
@@ -113,13 +121,13 @@ export function ContestResultCode({ resultData }) {
           ))}
         </div>
 
-        <div className={styles.code_content_wrap}>
+        <ScrollArea className={styles.code_content_wrap} onScroll={handleScroll}>
           <pre
             className={styles.code_highlight_layer}
             dangerouslySetInnerHTML={highlightCode(resultData.code)}
           />
-        </div>
-      </ScrollArea>
+        </ScrollArea>
+      </div>
     </div>
   );
 }

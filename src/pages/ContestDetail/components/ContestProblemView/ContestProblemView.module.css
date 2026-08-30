@@ -1,12 +1,16 @@
+/* ==========================================================================
+   ContestProblemView Component Styling
+   ========================================================================== */
+
 .panel {
   flex: 1;
-  background-color: #ffffff;
-  border-radius: 14px;
-  border: 1px solid rgba(169, 183, 203, 0.35);
-  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.05);
   display: flex;
   flex-direction: column;
   height: 100%;
+  background-color: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(169, 183, 203, 0.45);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.05);
   overflow: hidden;
 }
 
@@ -14,22 +18,25 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 14px;
+  height: 44px;
+  padding: 0 16px;
   background-color: #f1f5f9;
-  border-bottom: 1px solid rgba(169, 183, 203, 0.35);
+  border-bottom: 1px solid rgba(169, 183, 203, 0.4);
+  flex-shrink: 0;
 }
 
 .tab_btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  font-size: 0.825rem;
-  font-weight: 700;
-  color: #475569;
-  background: transparent;
-  border: 1px solid transparent;
+  gap: 8px;
+  height: 32px;
+  padding: 0 14px;
   border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  background: transparent;
+  border: none;
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
@@ -37,14 +44,13 @@
 
 .tab_btn:hover {
   color: #0950c3;
-  background-color: #e0ebff;
+  background-color: rgba(9, 80, 195, 0.06);
 }
 
 .tab_btn--active {
   color: #0950c3;
   background-color: #ffffff;
-  border-color: rgba(9, 80, 195, 0.25);
-  box-shadow: 0 2px 8px rgba(9, 80, 195, 0.08);
+  box-shadow: 0 2px 6px rgba(9, 80, 195, 0.1);
 }
 
 .content_scroll {
@@ -58,8 +64,41 @@
   font-size: 1.3rem;
   font-weight: 800;
   color: #0f172a;
-  margin: 0 0 12px 0;
+  margin: 0 0 14px 0;
   line-height: 1.3;
+}
+
+.meta_chips {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.limit_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.775rem;
+  font-weight: 700;
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid rgba(169, 183, 203, 0.4);
+}
+
+.points_badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.775rem;
+  font-weight: 700;
+  background-color: #fff7ed;
+  color: #d97706;
+  border: 1px solid rgba(249, 115, 22, 0.25);
 }
 
 .meta_row {
@@ -101,20 +140,6 @@
   background-color: #e0ebff;
   color: #0950c3;
   border-color: #0950c3;
-}
-
-.chip {
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 6px;
-  background-color: #f1f5f9;
-  color: #475569;
-}
-
-.chip_points {
-  background-color: #fff7ed;
-  color: #d97706;
 }
 
 .statement {
@@ -219,11 +244,11 @@
 
 :global([data-theme="dark"]) .explanation_box,
 :global(.theme-dark) .explanation_box {
-  color: #94a3b8;
+  color: #cbd5e1;
 }
 
 .explanation_label {
-  font-weight: 700;
+  font-weight: 800;
   color: var(--color-primary, #0950c3);
 }
 
@@ -232,118 +257,115 @@
   color: #38bdf8;
 }
 
-.section_block {
-  margin-top: 14px;
-  margin-bottom: 14px;
-}
-
 .format_list,
 .constraints_list {
   padding-left: 20px;
-  margin: 4px 0 10px 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .format_item,
 .constraint_item {
   font-size: 0.9rem;
-  color: var(--theme-text-primary, #334155);
-  margin-bottom: 4px;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: #334155;
 }
 
-:global([data-theme="dark"]) .format_item,
-:global([data-theme="dark"]) .constraint_item,
-:global(.theme-dark) .format_item,
-:global(.theme-dark) .constraint_item {
-  color: #cbd5e1;
+.constraint_item code {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.85rem;
+  background-color: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #0950c3;
 }
 
-/* Dark Mode */
-:global([data-theme="dark"]) .panel {
-  background-color: #131c31;
+:global([data-theme="dark"]) .constraint_item code,
+:global(.theme-dark) .constraint_item code {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .panel,
+:global(.theme-dark) .panel {
+  background-color: #1e293b;
   border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
-:global([data-theme="dark"]) .tabs_nav {
-  background-color: #0b1120;
-  border-bottom-color: rgba(255, 255, 255, 0.15);
+:global([data-theme="dark"]) .tabs_nav,
+:global(.theme-dark) .tabs_nav {
+  background-color: #1a2234;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
 }
 
-:global([data-theme="dark"]) .tab_btn {
-  color: #cbd5e1;
+:global([data-theme="dark"]) .tab_btn,
+:global(.theme-dark) .tab_btn {
+  color: #94a3b8;
 }
 
-:global([data-theme="dark"]) .tab_btn:hover {
-  background-color: #1e293b;
+:global([data-theme="dark"]) .tab_btn:hover,
+:global(.theme-dark) .tab_btn:hover {
   color: #38bdf8;
+  background-color: rgba(56, 189, 248, 0.1);
 }
 
-:global([data-theme="dark"]) .tab_btn--active {
-  background-color: #1e293b;
+:global([data-theme="dark"]) .tab_btn--active,
+:global(.theme-dark) .tab_btn--active {
   color: #38bdf8;
-  border-color: rgba(56, 189, 248, 0.3);
+  background-color: #1e293b;
 }
 
-:global([data-theme="dark"]) .title {
+:global([data-theme="dark"]) .title,
+:global(.theme-dark) .title {
   color: #ffffff;
 }
 
-:global([data-theme="dark"]) .level_badge {
-  background-color: rgba(6, 78, 59, 0.8);
-  color: #4ade80;
+:global([data-theme="dark"]) .limit_badge,
+:global(.theme-dark) .limit_badge {
+  background-color: #1e293b;
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
-:global([data-theme="dark"]) .vote_btn {
+:global([data-theme="dark"]) .points_badge,
+:global(.theme-dark) .points_badge {
+  background-color: rgba(249, 115, 22, 0.15);
+  color: #fb923c;
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+:global([data-theme="dark"]) .vote_btn,
+:global(.theme-dark) .vote_btn {
   background-color: #1e293b;
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.12);
   color: #cbd5e1;
 }
 
-:global([data-theme="dark"]) .vote_btn:hover {
+:global([data-theme="dark"]) .vote_btn:hover,
+:global(.theme-dark) .vote_btn:hover {
   background-color: #0950c3;
   color: #ffffff;
   border-color: #0950c3;
 }
 
-:global([data-theme="dark"]) .chip {
-  background-color: #1e293b;
-  color: #cbd5e1;
-}
-
-:global([data-theme="dark"]) .chip_points {
-  background-color: rgba(217, 119, 6, 0.2);
-  color: #fbbf24;
-}
-
 :global([data-theme="dark"]) .statement,
-:global([data-theme="dark"]) .statement_note {
-  color: #cbd5e1;
+:global(.theme-dark) .statement,
+:global([data-theme="dark"]) .statement_note,
+:global(.theme-dark) .statement_note,
+:global([data-theme="dark"]) .format_item,
+:global(.theme-dark) .format_item,
+:global([data-theme="dark"]) .constraint_item,
+:global(.theme-dark) .constraint_item {
+  color: #e2e8f0;
 }
 
-:global([data-theme="dark"]) .section_heading {
+:global([data-theme="dark"]) .section_heading,
+:global(.theme-dark) .section_heading {
   color: #ffffff;
-}
-
-:global([data-theme="dark"]) .example_title {
-  color: #ffffff;
-}
-
-:global([data-theme="dark"]) .code_box {
-  background-color: #1e293b;
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #f8fafc;
-}
-
-:global([data-theme="dark"]) .box_label {
-  color: #38bdf8;
-}
-
-:global([data-theme="dark"]) .explanation {
-  color: #94a3b8;
-}
-
-:global([data-theme="dark"]) .constraint_item {
-  color: #cbd5e1;
 }
 
 @media (max-width: 1024px) {

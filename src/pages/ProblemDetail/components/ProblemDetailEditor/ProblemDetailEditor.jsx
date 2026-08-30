@@ -1,9 +1,10 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import styles from "./ProblemDetailEditor.module.css";
 import Icon from "~/components/Icon/Icon";
 import ProblemDetailFooter from "../ProblemDetailFooter/ProblemDetailFooter";
 
 function escapeHtml(str) {
+  if (!str) return "";
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
@@ -51,22 +52,18 @@ function highlightCode(code) {
 }
 
 function ProblemDetailEditor({
-  languages,
-  selectedLanguage,
-  setSelectedLanguage,
   code,
   setCode,
   onResetCode,
   onRunCode,
   onSubmitCode,
   isSubmitting,
+  isExecuting,
   onFileUpload,
 }) {
-  const [openLangDropdown, setOpenLangDropdown] = useState(false);
   const textareaRef = useRef(null);
   const lineNumbersRef = useRef(null);
 
-  // Calculate line numbers strictly matching actual code lines
   const lines = (code || "").split("\n");
   const lineNumbers = Array.from({ length: Math.max(lines.length, 1) }, (_, i) => i + 1);
 
@@ -76,18 +73,12 @@ function ProblemDetailEditor({
     }
   };
 
-  const handleWorkspaceClick = (e) => {
-    if (e.target !== textareaRef.current && textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  };
-
   const handleKeyDown = (e) => {
     if (e.key === "Tab") {
       e.preventDefault();
       const start = e.target.selectionStart;
       const end = e.target.selectionEnd;
-      const val = code;
+      const val = code || "";
       setCode(val.substring(0, start) + "    " + val.substring(end));
       setTimeout(() => {
         if (textareaRef.current) {
@@ -102,61 +93,40 @@ function ProblemDetailEditor({
       {/* Editor Header Toolbar */}
       <div className={styles.toolbar}>
         <div className={styles.toolbar_left}>
-          {/* Language Selector */}
+          {/* Hardcoded Language Selector (C++ Only as required) */}
           <div className={styles.select_wrapper}>
             <button
               type="button"
-              onClick={() => setOpenLangDropdown(!openLangDropdown)}
               className={styles.select_btn}
+              title="Máy chấm (Judge System) hiện tại chỉ hỗ trợ ngôn ngữ C++"
+              style={{ cursor: "default" }}
             >
-              <span>{selectedLanguage.label}</span>
-              <Icon name="ChevronDown" size={14} />
+              <span>C++</span>
             </button>
-
-            {openLangDropdown && (
-              <div className={styles.dropdown_menu}>
-                {languages.map((lang) => (
-                  <div
-                    key={lang.id}
-                    onClick={() => {
-                      setSelectedLanguage(lang);
-                      setOpenLangDropdown(false);
-                    }}
-                    className={`${styles.dropdown_item} ${
-                      selectedLanguage.id === lang.id ? styles["dropdown_item--selected"] : ""
-                    }`}
-                  >
-                    <span>{lang.label}</span>
-                    {selectedLanguage.id === lang.id && <Icon name="Check" size={14} />}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
           <button
             type="button"
             onClick={onResetCode}
             className={styles.tool_icon_btn}
-            title="Đặt lại mã mẫu"
+            title="Đặt lại mã mẫu ban đầu"
           >
-            <Icon name="RotateCcw" size={16} />
+            <Icon name="RotateCcw" size={15} />
           </button>
         </div>
 
         <div className={styles.toolbar_right}>
           <button type="button" className={styles.tool_icon_btn} title="Cài đặt trình soạn thảo">
-            <Icon name="Settings" size={16} />
+            <Icon name="Settings" size={15} />
           </button>
           <button type="button" className={styles.tool_icon_btn} title="Toàn màn hình">
-            <Icon name="Maximize2" size={16} />
+            <Icon name="Maximize2" size={15} />
           </button>
         </div>
       </div>
 
-      {/* Code Textarea Workspace */}
-      <div className={styles.workspace} onClick={handleWorkspaceClick}>
-        {/* Fixed Width Centered Line Numbers */}
+      {/* Code Area Workspace - Identical to ContestCodeEditor */}
+      <div className={styles.workspace}>
         <div className={styles.line_numbers} ref={lineNumbersRef}>
           {lineNumbers.map((num) => (
             <div key={num} className={styles.line_number_item}>
@@ -165,32 +135,35 @@ function ProblemDetailEditor({
           ))}
         </div>
 
-        {/* Single Scrollable Code Container */}
         <div className={styles.code_scroll_container} onScroll={handleScroll}>
           <div className={styles.code_inner_wrap}>
             <pre
+              aria-hidden="true"
               className={styles.code_highlight_layer}
               dangerouslySetInnerHTML={highlightCode(code)}
             />
-
             <textarea
               ref={textareaRef}
-              value={code}
+              value={code || ""}
               rows={Math.max(lines.length, 15)}
               onChange={(e) => setCode(e.target.value)}
               onKeyDown={handleKeyDown}
               className={styles.code_textarea}
               spellCheck="false"
+              autoCapitalize="off"
+              autoComplete="off"
+              autoCorrect="off"
             />
           </div>
         </div>
       </div>
 
-      {/* Editor Integrated Footer Action Bar */}
+      {/* Embedded Problem Footer Actions */}
       <ProblemDetailFooter
         onRunCode={onRunCode}
         onSubmitCode={onSubmitCode}
         isSubmitting={isSubmitting}
+        isExecuting={isExecuting}
         onFileUpload={onFileUpload}
       />
     </div>

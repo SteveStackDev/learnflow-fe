@@ -1,37 +1,50 @@
+/**
+ * FySet Problem Detail Mock Data (C++ Only for Judge Engine)
+ */
+
 export const problemDetailData = {
-  id: "cong-trinh-xay-dung",
-  number: 1,
-  title: "Công trình xây dựng",
-  author: "FySet Team",
-  level: "Dễ",
-  upvotes: "15.4K",
-  downvotes: "203",
-  statement:
-    "Một đội công nhân gồm N người đang chuẩn bị xây dựng một tòa nhà cao tầng để phục vụ cho một sự kiện hợp tác quan trọng giữa hai công ty. Mỗi công nhân thứ i có mức tiền công là a[i] đồng cho mỗi tháng làm việc. Chủ đầu tư có ngân sách tối đa T đồng để thuê công nhân trong tháng này. Chủ đầu tư muốn thuê được nhiều công nhân nhất có thể và yêu cầu tổng tiền công của tất cả công nhân được thuê không vượt quá T. Hãy giúp chủ đầu tư xác định số lượng công nhân lớn nhất có thể thuê.",
+  id: "1",
+  title: "Two Sum (Hai số tổng)",
+  difficulty: "Easy",
+  difficultyLabel: "Dễ",
+  timeLimit: "2.0s",
+  memoryLimit: "256MB",
+  author: {
+    name: "FySet DevTeam",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=fyset-dev",
+    role: "System Admin",
+    userId: "user-01",
+  },
+  stats: {
+    acceptedCount: 1420,
+    submissionCount: 2850,
+    acceptedRate: "49.8%",
+    points: 100,
+  },
+  description: `Cho một mảng các số nguyên \`nums\` và một số nguyên \`target\`, hãy tìm chỉ số (index) của hai số trong mảng sao cho tổng của chúng bằng \`target\`.
+
+Bạn có thể giả định rằng mỗi đầu vào sẽ có **đúng một giải pháp**, và bạn không được sử dụng cùng một phần tử hai lần. Bạn có thể trả về câu trả lời theo bất kỳ thứ tự nào.`,
+
   inputFormat: [
-    "Dòng đầu tiên gồm hai số nguyên dương N và T, tương ứng với số lượng công nhân và tổng số tiền mà chủ đầu tư hiện có.",
-    "Dòng thứ hai gồm N số công nhân, mỗi công nhân thứ i nhận được số tiền công a[i] đồng.",
+    "Dòng đầu tiên chứa hai số nguyên N và T (1 <= N <= 10^5, 1 <= T <= 10^9).",
+    "Dòng thứ hai chứa N số nguyên phân tách bởi khoảng trắng.",
   ],
   outputFormat: [
-    "In ra một số nguyên duy nhất là số lượng công nhân lớn nhất mà chủ đầu tư có thể thuê sao cho tổng tiền công không vượt quá T.",
+    "In ra số lượng phần tử tối đa có thể chọn.",
   ],
   constraints: [
-    "1 <= N <= 10⁶",
-    "1 <= T <= 10¹²",
-    "1 <= a[i] <= 10⁹",
-    "Công nhân thứ i có thể được thuê hoặc không được thuê.",
+    "2 <= nums.length <= 10^4",
+    "-10^9 <= nums[i] <= 10^9",
+    "-10^9 <= target <= 10^9",
+    "Chỉ tồn tại đúng 1 đáp án hợp lệ.",
   ],
   examples: [
     {
-      id: 1,
-      title: "Ví dụ 1:",
       input: "5 10\n2 3 1 5 4",
       output: "3",
       explanation: "Thuê các công nhân có mức công 1, 2, 3 (tổng = 6 <= 10). Số công nhân lớn nhất thuê được là 3.",
     },
     {
-      id: 2,
-      title: "Ví dụ 2:",
       input: "3 5\n6 7 8",
       output: "0",
       explanation: "Không đủ ngân sách để thuê bất kỳ công nhân nào.",
@@ -40,23 +53,6 @@ export const problemDetailData = {
   tags: ["Greedy (Tham ăn)", "Sort (Sắp xếp)", "Toán học (Math)"],
 
   languages: [
-    {
-      id: "python3",
-      label: "Python3",
-      template: `# Viết code của bạn tại đây
-n, t = map(int, input().split())
-a = list(map(int, input().split()))
-a.sort()
-count = 0
-total = 0
-for val in a:
-    if total + val <= t:
-        total += val
-        count += 1
-    else:
-        break
-print(count)`,
-    },
     {
       id: "cpp",
       label: "C++",
@@ -68,11 +64,14 @@ using namespace std;
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    
     long long n, t;
     if (!(cin >> n >> t)) return 0;
+    
     vector<long long> a(n);
     for (int i = 0; i < n; i++) cin >> a[i];
     sort(a.begin(), a.end());
+    
     long long count = 0, sum = 0;
     for (int i = 0; i < n; i++) {
         if (sum + a[i] <= t) {
@@ -80,28 +79,10 @@ int main() {
             count++;
         } else break;
     }
+    
     cout << count << "\n";
     return 0;
 }`,
-    },
-  ],
-
-  sampleTestCases: [
-    {
-      id: 1,
-      name: "Test case 1",
-      input: "5 10\n2 3 1 5 4",
-      expectedOutput: "3",
-      userOutput: "",
-      status: "untested",
-    },
-    {
-      id: 2,
-      name: "Test case 2",
-      input: "3 5\n6 7 8",
-      expectedOutput: "0",
-      userOutput: "",
-      status: "untested",
     },
   ],
 };

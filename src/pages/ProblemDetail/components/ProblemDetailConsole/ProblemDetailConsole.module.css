@@ -24,10 +24,118 @@
 .header_title {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 0.875rem;
   font-weight: 700;
   color: #0f172a;
+}
+
+.status_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(9, 80, 195, 0.1);
+  color: #0950c3;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.clear_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  background: transparent;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.clear_btn:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* Judging Banner & Progress Indicator */
+.judging_banner {
+  padding: 12px 18px;
+  background: linear-gradient(135deg, rgba(9, 80, 195, 0.08) 0%, rgba(56, 189, 248, 0.08) 100%);
+  border-bottom: 1px solid rgba(9, 80, 195, 0.15);
+}
+
+.banner_content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.banner_icon {
+  color: #0950c3;
+  animation: pulse 1.5s infinite;
+}
+
+.banner_text strong {
+  display: block;
+  font-size: 0.85rem;
+  color: #0950c3;
+}
+
+.banner_text p {
+  margin: 2px 0 0 0;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+.progress_bar_wrap {
+  height: 4px;
+  background: rgba(9, 80, 195, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress_bar_fill {
+  height: 100%;
+  width: 65%;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+  animation: progress_anim 2s infinite ease-in-out;
+}
+
+@keyframes progress_anim {
+  0% {
+    width: 15%;
+    margin-left: 0%;
+  }
+  50% {
+    width: 60%;
+    margin-left: 20%;
+  }
+  100% {
+    width: 30%;
+    margin-left: 70%;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.08); }
+}
+
+.spin_icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Console Body Output Window */
@@ -61,6 +169,16 @@
   font-weight: 700;
 }
 
+.log_error {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.log_warning {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
 .empty_log {
   color: #64748b;
   font-style: italic;
@@ -82,6 +200,29 @@
   color: #ffffff;
 }
 
+:global([data-theme="dark"]) .status_badge {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .clear_btn {
+  color: #94a3b8;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .judging_banner {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
+  border-bottom-color: rgba(56, 189, 248, 0.2);
+}
+
+:global([data-theme="dark"]) .banner_text strong {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .banner_text p {
+  color: #cbd5e1;
+}
+
 :global([data-theme="dark"]) .console_body {
   background-color: #1e1e2e;
   color: #cdd6f4;
@@ -99,6 +240,10 @@
   color: #a6e3a1;
 }
 
-:global([data-theme="dark"]) .empty_log {
-  color: #6c7086;
+:global([data-theme="dark"]) .log_error {
+  color: #f38ba8;
+}
+
+:global([data-theme="dark"]) .log_warning {
+  color: #f9e2af;
 }

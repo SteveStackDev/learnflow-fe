@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, Link } from "react-router";
 import { mockContestResultData } from "../../constants/mockContestResult";
 import { mockContestData } from "../../constants/mockContestDetail";
 import ContestDetailHeader from "../ContestDetail/components/ContestDetailHeader/ContestDetailHeader";
@@ -7,10 +7,13 @@ import ContestSidebar from "../ContestDetail/components/ContestSidebar/ContestSi
 import ContestLiveLeaderboard from "../ContestDetail/components/ContestLiveLeaderboard/ContestLiveLeaderboard";
 import ContestResultCode from "./components/ContestResultCode/ContestResultCode";
 import ContestResultJudge from "./components/ContestResultJudge/ContestResultJudge";
+import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
+import useScrollReveal from "~/hooks/useScrollReveal";
 import styles from "./ContestResult.module.css";
 
 export function ContestResult() {
+  useScrollReveal();
   const contest = mockContestData;
   const navigate = useNavigate();
   const { id } = useParams();
@@ -85,6 +88,24 @@ export function ContestResult() {
 
         {/* Center: Contest Result Stacked Cards */}
         <main className={styles.result_main_content}>
+          {/* Top Quick Actions Bar */}
+          <div className={styles.top_bar}>
+            <Link to={`/contest/${activeProblemId}`} className={styles.back_btn}>
+              <Icon name="ArrowLeft" size={16} />
+              <span>Quay lại bài #{activeProblemId}</span>
+            </Link>
+
+            <Link to="/contest/list" className={styles.secondary_nav_link}>
+              <Icon name="List" size={16} />
+              <span>Danh sách cuộc thi</span>
+            </Link>
+
+            <Link to={`/contest/${activeProblemId}/submissions`} className={styles.secondary_nav_link}>
+              <Icon name="History" size={16} />
+              <span>Bài nộp của tôi (My Submissions)</span>
+            </Link>
+          </div>
+
           {/* Card 1: User Submitted Code */}
           <ContestResultCode resultData={resultData} />
 

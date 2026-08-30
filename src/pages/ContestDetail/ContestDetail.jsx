@@ -1,45 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
-import { mockContestData } from "~/constants";
+import { useParams, useNavigate } from "react-router";
 import { useToast } from "~/context/ToastContext.jsx";
 import Icon from "~/components/Icon/Icon";
-import styles from "./ContestDetail.module.css";
 
-// Components
+// Import Custom Component Sub-Views
 import ContestDetailHeader from "./components/ContestDetailHeader/ContestDetailHeader";
 import ContestSidebar from "./components/ContestSidebar/ContestSidebar";
 import ContestProblemView from "./components/ContestProblemView/ContestProblemView";
 import ContestCodeEditor from "./components/ContestCodeEditor/ContestCodeEditor";
 import ContestLiveLeaderboard from "./components/ContestLiveLeaderboard/ContestLiveLeaderboard";
 import ProblemDetailConsole from "~/pages/ProblemDetail/components/ProblemDetailConsole/ProblemDetailConsole";
-import UserProfileCardModal from "~/components/UserProfileCardModal/UserProfileCardModal";
 
-export function ContestDetail() {
-  const contest = mockContestData || { problems: [], leaderboard: [] };
-  const navigate = useNavigate();
+import styles from "./ContestDetail.module.css";
+import { mockContestData } from "~/constants/mockContestDetail";
+import { mockRunCodeLogs, mockJudgingSequence } from "~/constants/mockJudgingLogs";
+
+export default function ContestDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { toast } = useToast();
-  const [selectedUserForModal, setSelectedUserForModal] = useState(null);
 
-  // Mặc định chọn bài tập đầu tiên nếu id không hợp lệ
-  const defaultProblemId = contest.problems?.[0]?.id || "A";
-  const [activeProblemId, setActiveProblemId] = useState(id?.toUpperCase() || defaultProblemId);
+  const contest = mockContestData;
 
+  // Track Layout Controls (Panels display toggles)
   const [showProblemsList, setShowProblemsList] = useState(true);
-  const [showLeaderboard, setShowLeaderboard] = useState(true);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+
+  // Active Problem Selection State
+  const [activeProblemId, setActiveProblemId] = useState("A");
+
+  // Loading States for Code Execution and Submission (Judger Engine)
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [judgingStep, setJudgingStep] = useState("");
 
-  // Responsive Segmented Tab State for Tablet/Mobile (<= 1024px)
-  const [activeMobileTab, setActiveMobileTab] = useState("problem"); // "problem" | "editor" | "leaderboard"
+  // Mobile View Tabs State ('problem' | 'editor' | 'leaderboard')
+  const [activeMobileTab, setActiveMobileTab] = useState("problem");
+  const [isMobileViewport, setIsMobileViewport] = useState(window.innerWidth <= 1024);
 
-  // Track viewport width to apply responsive tab rendering
-  const [isMobileViewport, setIsMobileViewport] = useState(false);
-
+  // Responsive Viewport Resize Listener
   useEffect(() => {
     const handleResize = () => {
       setIsMobileViewport(window.innerWidth <= 1024);
     };
-    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -90,24 +93,54 @@ export function ContestDetail() {
   };
 
   const handleRunCode = () => {
-    const timestamp = new Date().toLocaleTimeString();
-    setConsoleLogs([
-      { type: "info", text: `Compiling solution for ${activeProblem.title || "Problem"} at ${timestamp}...` },
-      { type: "stdout", text: "stdout: Running test cases..." },
-      { type: "success", text: "Testcase 1: Accepted (Execution time: 0ms, Memory: 14.2MB)" },
-      { type: "success", text: "Testcase 2: Accepted (Execution time: 1ms, Memory: 14.3MB)" },
-    ]);
+    if (isSubmitting || isExecuting) return;
+
+    setIsExecuting(true);
     setIsConsoleExpanded(true);
-    toast.success("Đã chạy thử thành công tất cả testcases!", "Chạy thử code");
+    setConsoleLogs(mockRunCodeLogs(activeProblem.title || `Bài ${activeProblem.id || "A"}`));
+
+    setTimeout(() => {
+      setIsExecuting(false);
+      toast.success("Chạy thử mã nguồn thành công!", "Biên dịch C++");
+    }, 800);
   };
 
   const handleSubmitCode = () => {
+    if (isSubmitting || isExecuting) return;
+
+    const s1 = mockJudgingSequence.step1(activeProblem.id || "A");
+    const s2 = mockJudgingSequence.step2;
+    const s3 = mockJudgingSequence.step3;
+
     setIsSubmitting(true);
-    toast.info("Đang nộp bài và chuyển hướng tới kết quả...", "Nộp bài thành công");
+    setIsConsoleExpanded(true);
+    setJudgingStep(s1.stepLabel);
+    setConsoleLogs(s1.logs);
+
+    setTimeout(() => {
+      setJudgingStep(s2.stepLabel);
+      setConsoleLogs((prev) => [...prev, ...s2.logs]);
+    }, 1100);
+
+    setTimeout(() => {
+      setJudgingStep(s3.stepLabel);
+      setConsoleLogs((prev) => [...prev, ...s3.logs]);
+    }, 2200);
+
     setTimeout(() => {
       setIsSubmitting(false);
-      navigate(`/contest/${activeProblem.id || "A"}/result`);
-    }, 600);
+      setJudgingStep("");
+      navigate(`/contest/${activeProblem.id || "A"}/result`, {
+        state: {
+          submissionResult: {
+            status: "Accepted",
+            statusLabel: "Chấp nhận (Accepted)",
+            submittedCode: currentCode,
+            language: "C++",
+          },
+        },
+      });
+    }, 3000);
   };
 
   return (
@@ -161,61 +194,38 @@ export function ContestDetail() {
         </button>
       </div>
 
-      {/* Main Workspace Layout */}
+      {/* Main Responsive Grid Layout Container */}
       <div className={styles.grid_container}>
-        {/* On Mobile Viewport: Render based on activeMobileTab */}
         {isMobileViewport ? (
+          /* Mobile / Tablet Single Viewport Renderer */
           <>
             {activeMobileTab === "problem" && (
               <>
                 {showProblemsList && (
-                  <ContestSidebar
-                    user={contest.user}
-                    problems={contest.problems}
-                    activeProblemId={activeProblem.id}
-                    onSelectProblem={(problemId) => setActiveProblemId(problemId)}
-                  />
+                  <div className={styles.mobile_sidebar_card}>
+                    <ContestSidebar
+                      user={contest.user}
+                      problems={contest.problems}
+                      activeProblemId={activeProblem.id}
+                      onSelectProblem={(problemId) => setActiveProblemId(problemId)}
+                    />
+                  </div>
                 )}
                 <ContestProblemView problem={activeProblem} />
-                
-                {/* Floating Quick Action: Jump to Editor */}
-                <div className={styles.mobile_quick_banner}>
-                  <button
-                    type="button"
-                    onClick={() => setActiveMobileTab("editor")}
-                    className={styles.mobile_quick_btn}
-                  >
-                    <span>Mở trình soạn thảo & Gõ code</span>
-                    <Icon name="ArrowRight" size={16} />
-                  </button>
-                </div>
               </>
             )}
 
             {activeMobileTab === "editor" && (
-              <>
-                {/* Quick Action: Back to Problem */}
-                <div className={styles.mobile_quick_banner} style={{ marginTop: 0 }}>
-                  <button
-                    type="button"
-                    onClick={() => setActiveMobileTab("problem")}
-                    className={`${styles.mobile_quick_btn} ${styles["mobile_quick_btn--secondary"]}`}
-                  >
-                    <Icon name="ArrowLeft" size={16} />
-                    <span>Xem lại đề bài & ví dụ ({activeProblem.id || "A"})</span>
-                  </button>
-                </div>
-
-                <ContestCodeEditor
-                  code={currentCode}
-                  onChangeCode={handleChangeCode}
-                  onResetCode={handleResetCode}
-                  onRunTest={handleRunCode}
-                  onSubmitCode={handleSubmitCode}
-                  onFileUpload={(content) => handleChangeCode(content)}
-                  isSubmitting={isSubmitting}
-                />
-              </>
+              <ContestCodeEditor
+                code={currentCode}
+                onChangeCode={handleChangeCode}
+                onResetCode={handleResetCode}
+                onRunTest={handleRunCode}
+                onSubmitCode={handleSubmitCode}
+                onFileUpload={(content) => handleChangeCode(content)}
+                isSubmitting={isSubmitting}
+                isExecuting={isExecuting}
+              />
             )}
 
             {activeMobileTab === "leaderboard" && (
@@ -247,39 +257,31 @@ export function ContestDetail() {
               onSubmitCode={handleSubmitCode}
               onFileUpload={(content) => handleChangeCode(content)}
               isSubmitting={isSubmitting}
+              isExecuting={isExecuting}
             />
 
             {showLeaderboard && (
               <ContestLiveLeaderboard
                 leaderboard={contest.leaderboard}
                 onClose={() => setShowLeaderboard(false)}
-                onSelectUser={(u) => setSelectedUserForModal(u)}
               />
             )}
           </>
         )}
       </div>
 
-      {/* Console Log Panel */}
-      {(!isMobileViewport || activeMobileTab === "editor") && (
-        <div className={styles.console_wrapper}>
-          <ProblemDetailConsole
-            consoleLogs={consoleLogs}
-            isExpanded={isConsoleExpanded}
-            setIsExpanded={setIsConsoleExpanded}
-            onClearLogs={() => setConsoleLogs([])}
-          />
-        </div>
-      )}
-
-      {/* User Profile Quick Card Modal */}
-      <UserProfileCardModal
-        isOpen={!!selectedUserForModal}
-        onClose={() => setSelectedUserForModal(null)}
-        user={selectedUserForModal}
-      />
+      {/* Full Width Integrated Bottom Console Logs */}
+      <div className={styles.console_wrapper}>
+        <ProblemDetailConsole
+          consoleLogs={consoleLogs}
+          isExpanded={isConsoleExpanded}
+          setIsExpanded={setIsConsoleExpanded}
+          onClearLogs={() => setConsoleLogs([])}
+          isSubmitting={isSubmitting}
+          isExecuting={isExecuting}
+          judgingStep={judgingStep}
+        />
+      </div>
     </div>
   );
 }
-
-export default ContestDetail;

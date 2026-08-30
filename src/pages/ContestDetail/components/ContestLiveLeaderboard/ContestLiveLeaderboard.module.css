@@ -291,3 +291,12 @@
   border-color: #38bdf8 !important;
   background-color: rgba(56, 189, 248, 0.12) !important;
 }
+
+@media (max-width: 1024px) {
+  .drawer {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    max-height: 520px;
+  }
+}

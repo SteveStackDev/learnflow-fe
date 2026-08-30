@@ -1,11 +1,19 @@
 import { useRef } from "react";
 import styles from "./ProblemDetailFooter.module.css";
 import Icon from "~/components/Icon/Icon";
+import { Button } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
 
-function ProblemDetailFooter({ onRunCode, onSubmitCode, isSubmitting, onFileUpload }) {
+function ProblemDetailFooter({
+  onRunCode,
+  onSubmitCode,
+  isSubmitting,
+  isExecuting,
+  onFileUpload,
+}) {
   const fileInputRef = useRef(null);
   const { toast } = useToast();
+  const isDisabled = isSubmitting || isExecuting;
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
@@ -40,30 +48,35 @@ function ProblemDetailFooter({ onRunCode, onSubmitCode, isSubmitting, onFileUplo
           style={{ display: "none" }}
         />
 
-        <button
-          type="button"
+        <Button
+          variant="outlined"
+          leftIcon="Upload"
+          disabled={isDisabled}
           onClick={() => fileInputRef.current?.click()}
-          className={styles.upload_btn}
           title="Tải tệp mã nguồn từ máy tính"
         >
-          <Icon name="Upload" size={15} />
-          <span>Tải file lên</span>
-        </button>
+          Tải file lên
+        </Button>
 
-        <button type="button" onClick={onRunCode} className={styles.run_btn}>
-          <Icon name="Play" size={15} />
-          <span>Chạy thử</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={onSubmitCode}
-          disabled={isSubmitting}
-          className={styles.submit_btn}
+        <Button
+          variant="outlined"
+          leftIcon="Play"
+          isLoading={isExecuting}
+          disabled={isDisabled}
+          onClick={onRunCode}
         >
-          <Icon name="UploadCloud" size={16} />
-          <span>{isSubmitting ? "Đang nộp..." : "Nộp bài"}</span>
-        </button>
+          {isExecuting ? "Đang chạy..." : "Chạy thử"}
+        </Button>
+
+        <Button
+          variant="contained"
+          leftIcon="UploadCloud"
+          isLoading={isSubmitting}
+          disabled={isDisabled}
+          onClick={onSubmitCode}
+        >
+          {isSubmitting ? "Đang chấm bài..." : "Nộp bài"}
+        </Button>
       </div>
     </div>
   );
