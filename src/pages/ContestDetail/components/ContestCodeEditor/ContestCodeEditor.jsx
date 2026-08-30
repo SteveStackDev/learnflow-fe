@@ -1,16 +1,10 @@
-import React, { useState, useRef } from "react";
-import { Button } from "~/components/ui";
-import Icon from "~/components/Icon/Icon";
+import { useRef } from "react";
 import styles from "./ContestCodeEditor.module.css";
-
-const LANGUAGES = [
-  { id: "cpp", label: "C++ (GCC 9.2.0)" },
-  { id: "python", label: "Python3" },
-  { id: "java", label: "Java 17" },
-  { id: "js", label: "JavaScript (Node 18)" },
-];
+import Icon from "~/components/Icon/Icon";
+import { Button } from "~/components/ui";
 
 function escapeHtml(str) {
+  if (!str) return "";
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
@@ -65,15 +59,15 @@ export function ContestCodeEditor({
   onSubmitCode,
   onFileUpload,
   isSubmitting,
+  isExecuting,
 }) {
-  const [selectedLang, setSelectedLang] = useState(LANGUAGES[0]);
-  const [openLangDropdown, setOpenLangDropdown] = useState(false);
   const textareaRef = useRef(null);
   const lineNumbersRef = useRef(null);
   const fileInputRef = useRef(null);
 
   const lines = (code || "").split("\n");
   const lineNumbers = Array.from({ length: Math.max(lines.length, 1) }, (_, i) => i + 1);
+  const isDisabled = isSubmitting || isExecuting;
 
   const handleScroll = (e) => {
     if (lineNumbersRef.current) {
@@ -86,7 +80,7 @@ export function ContestCodeEditor({
       e.preventDefault();
       const start = e.target.selectionStart;
       const end = e.target.selectionEnd;
-      const val = code;
+      const val = code || "";
       onChangeCode(val.substring(0, start) + "    " + val.substring(end));
       setTimeout(() => {
         if (textareaRef.current) {
@@ -116,35 +110,16 @@ export function ContestCodeEditor({
       {/* Toolbar */}
       <div className={styles.toolbar}>
         <div className={styles.toolbar_left}>
+          {/* Hardcoded Language Selector (C++ Only) */}
           <div className={styles.select_wrapper}>
             <button
               type="button"
-              onClick={() => setOpenLangDropdown(!openLangDropdown)}
               className={styles.select_btn}
+              title="Hệ thống chấm chỉ hỗ trợ C++"
+              style={{ cursor: "default" }}
             >
-              <span>{selectedLang.label}</span>
-              <Icon name="ChevronDown" size={14} />
+              <span>C++</span>
             </button>
-
-            {openLangDropdown && (
-              <div className={styles.dropdown_menu}>
-                {LANGUAGES.map((lang) => (
-                  <div
-                    key={lang.id}
-                    onClick={() => {
-                      setSelectedLang(lang);
-                      setOpenLangDropdown(false);
-                    }}
-                    className={`${styles.dropdown_item} ${
-                      selectedLang.id === lang.id ? styles["dropdown_item--selected"] : ""
-                    }`}
-                  >
-                    <span>{lang.label}</span>
-                    {selectedLang.id === lang.id && <Icon name="Check" size={14} />}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
           <button
@@ -167,7 +142,7 @@ export function ContestCodeEditor({
         </div>
       </div>
 
-      {/* Code Area */}
+      {/* Code Area Workspace */}
       <div className={styles.workspace}>
         <div className={styles.line_numbers} ref={lineNumbersRef}>
           {lineNumbers.map((num) => (
@@ -185,18 +160,21 @@ export function ContestCodeEditor({
             />
             <textarea
               ref={textareaRef}
-              value={code}
+              value={code || ""}
               rows={Math.max(lines.length, 15)}
               onChange={(e) => onChangeCode(e.target.value)}
               onKeyDown={handleKeyDown}
               className={styles.code_textarea}
               spellCheck="false"
+              autoCapitalize="off"
+              autoComplete="off"
+              autoCorrect="off"
             />
           </div>
         </div>
       </div>
 
-      {/* Integrated Footer Action Bar */}
+      {/* Integrated Footer Action Bar using UI Button component */}
       <div className={styles.footer_bar}>
         <div className={styles.save_status}>
           <Icon name="CheckCircle" size={16} />
@@ -208,15 +186,16 @@ export function ContestCodeEditor({
             type="file"
             ref={fileInputRef}
             onChange={handleFileChange}
-            accept=".py,.cpp,.c,.java,.js,.ts,.txt"
+            accept=".cpp,.hpp,.c,.h,.txt"
             style={{ display: "none" }}
           />
 
           <Button
             variant="outlined"
             leftIcon="Upload"
+            disabled={isDisabled}
             onClick={() => fileInputRef.current?.click()}
-            title="Tải tệp mã nguồn từ máy tính"
+            title="Tải tệp mã nguồn C++ từ máy tính"
           >
             Tải file lên
           </Button>
@@ -224,18 +203,21 @@ export function ContestCodeEditor({
           <Button
             variant="outlined"
             leftIcon="Play"
+            isLoading={isExecuting}
+            disabled={isDisabled}
             onClick={onRunTest}
           >
-            Chạy thử
+            {isExecuting ? "Đang chạy..." : "Chạy thử"}
           </Button>
 
           <Button
             variant="contained"
             leftIcon="UploadCloud"
             isLoading={isSubmitting}
+            disabled={isDisabled}
             onClick={onSubmitCode}
           >
-            Nộp bài ngay
+            {isSubmitting ? "Đang chấm bài..." : "Nộp bài"}
           </Button>
         </div>
       </div>

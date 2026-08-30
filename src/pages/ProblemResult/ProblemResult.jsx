@@ -1,6 +1,6 @@
-import { useParams, Link } from "react-router";
+import { useParams, Link, useLocation } from "react-router";
 import styles from "./ProblemResult.module.css";
-import { problemResultData } from "../../constants/mockProblemResult";
+import { problemResultData } from "~/constants/mockProblemResult";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import Icon from "~/components/Icon/Icon";
 
@@ -8,31 +8,48 @@ import ProblemResultCode from "./components/ProblemResultCode/ProblemResultCode"
 import ProblemResultJudge from "./components/ProblemResultJudge/ProblemResultJudge";
 
 function ProblemResult() {
-  useParams();
+  const { id } = useParams();
+  const location = useLocation();
   useScrollReveal();
 
-  const resultData = problemResultData;
+  const submissionState = location.state?.submissionResult;
+  const resultData = {
+    ...problemResultData,
+    id: id || problemResultData.id,
+    ...(submissionState?.submittedCode ? { submittedCode: submissionState.submittedCode } : {}),
+    ...(submissionState?.language ? { language: submissionState.language } : {}),
+  };
 
   return (
     <div className={styles.result_page}>
-      {/* Outer Back Navigation Link */}
+      {/* Outer Back Navigation Link Bar */}
       <div className={styles.top_bar}>
-        <Link to="/problem/list" className={styles.back_btn}>
+        <Link to={`/problem/${id || 1}`} className={styles.back_btn}>
           <Icon name="ArrowLeft" size={16} />
-          <span>Quay về danh sách bài tập</span>
+          <span>Quay lại bài tập #{id || 1}</span>
+        </Link>
+
+        <Link to="/problem/list" className={styles.secondary_nav_link}>
+          <Icon name="List" size={16} />
+          <span>Danh sách bài tập</span>
+        </Link>
+
+        <Link to={`/problem/${id || 1}/submissions`} className={styles.secondary_nav_link}>
+          <Icon name="History" size={16} />
+          <span>Bài nộp của tôi (My Submissions)</span>
         </Link>
       </div>
 
-      {/* Main Stacked Layout (NO Description Tab): Submitted Code (Top) & Judge Result (Bottom) */}
+      {/* Main Stacked Layout: Submitted Code (Top) & Judge Result (Bottom) */}
       <div className={styles.container}>
         {/* Component 1 (Top): User Submitted Code */}
-        <div className="reveal-card">
+        <div>
           <ProblemResultCode resultData={resultData} />
         </div>
 
-        {/* Component 2 (Bottom): Result & Grading Inspection */}
-        <div className="reveal-card">
-          <ProblemResultJudge resultData={resultData} />
+        {/* Component 2 (Bottom): Result & Subtask Inspection */}
+        <div>
+          <ProblemResultJudge resultData={resultData} initialStatus={submissionState?.status || "Accepted"} />
         </div>
       </div>
     </div>

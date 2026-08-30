@@ -1,0 +1,22 @@
+/* SubmissionsPagination Component Styling */
+
+.pagination_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+}
+
+.info_text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .info_text,
+:global(.theme-dark) .info_text {
+  color: #94a3b8;
+}

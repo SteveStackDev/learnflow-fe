@@ -14,9 +14,12 @@
 .top_bar {
   display: flex;
   align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
-.back_btn {
+.back_btn,
+.secondary_nav_link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -32,7 +35,8 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
-.back_btn:hover {
+.back_btn:hover,
+.secondary_nav_link:hover {
   background-color: #e0ebff;
   color: #0950c3;
   border-color: #0950c3;
@@ -45,13 +49,16 @@
 }
 
 /* Dark Mode Overrides */
-:global([data-theme="dark"]) .back_btn {
+:global([data-theme="dark"]) .back_btn,
+:global([data-theme="dark"]) .secondary_nav_link {
   background-color: #131c31;
   border-color: rgba(255, 255, 255, 0.15);
   color: #cdd6f4;
 }
 
-:global([data-theme="dark"]) .back_btn:hover {
+:global([data-theme="dark"]) .back_btn:hover,
+:global([data-theme="dark"]) .secondary_nav_link:hover {
   background-color: #313244;
   color: #38bdf8;
+  border-color: #38bdf8;
 }

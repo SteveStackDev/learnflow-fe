@@ -10,6 +10,11 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
   const [hasVoted, setHasVoted] = useState(false);
   const { toast } = useToast();
 
+  const authorName =
+    typeof problem.author === "object"
+      ? problem.author?.name || "FySet DevTeam"
+      : problem.author || "FySet DevTeam";
+
   const handleVote = (type) => {
     if (!hasVoted) {
       setHasVoted(true);
@@ -63,38 +68,68 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
       <ScrollArea className={styles.content_scroll}>
         {activeTab === "desc" && (
           <>
-            {/* Title & Metadata */}
-            <h1 className={styles.title}>
-              Bài {problem.number || 1}: {problem.title}
-            </h1>
+            {/* Title & Vote Actions Row */}
+            <div className={styles.title_header_row}>
+              <h1 className={styles.title}>
+                Bài {problem.number || 1}: {problem.title}
+              </h1>
 
+              <div className={styles.vote_group}>
+                <button
+                  type="button"
+                  onClick={() => handleVote("up")}
+                  className={styles.vote_btn}
+                  title="Hữu ích"
+                >
+                  <Icon name="ThumbsUp" size={14} />
+                  <span>{upvoteCount}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleVote("down")}
+                  className={styles.vote_btn}
+                  title="Chưa hữu ích"
+                >
+                  <Icon name="ThumbsDown" size={14} />
+                  <span>{problem.downvotes || 12}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Metadata Badges Row */}
             <div className={styles.meta_row}>
-              <span className={styles.level_badge}>{problem.level}</span>
-              <span className={styles.author_badge}>Tác giả: {problem.author}</span>
+              <span className={styles.level_badge}>{problem.level || problem.difficultyLabel || "Dễ"}</span>
 
-              <button
-                type="button"
-                onClick={() => handleVote("up")}
-                className={styles.vote_btn}
-                title="Hữu ích"
-              >
-                <Icon name="ThumbsUp" size={14} />
-                <span>{upvoteCount}</span>
-              </button>
+              {/* Time Limit */}
+              <span className={styles.limit_badge} title="Giới hạn thời gian chạy">
+                <Icon name="Clock" size={13} />
+                <span>{problem.timeLimit || "2.0s"}</span>
+              </span>
 
-              <button
-                type="button"
-                onClick={() => handleVote("down")}
-                className={styles.vote_btn}
-                title="Chưa hữu ích"
+              {/* Memory Limit */}
+              <span className={styles.limit_badge} title="Giới hạn bộ nhớ sử dụng">
+                <Icon name="Cpu" size={13} />
+                <span>{problem.memoryLimit || "256MB"}</span>
+              </span>
+
+              {/* Author Badge */}
+              <span
+                className={styles.author_badge}
+                onClick={() => {
+                  if (typeof problem.author === "object" && onSelectUser) {
+                    onSelectUser(problem.author);
+                  }
+                }}
+                style={{ cursor: typeof problem.author === "object" ? "pointer" : "default" }}
+                title={typeof problem.author === "object" ? "Click để xem hồ sơ tác giả" : undefined}
               >
-                <Icon name="ThumbsDown" size={14} />
-                <span>{problem.downvotes}</span>
-              </button>
+                Tác giả: {authorName}
+              </span>
             </div>
 
             {/* 1. Problem Statement (Mô tả bài toán) */}
-            <div className={styles.statement}>{problem.statement}</div>
+            <div className={styles.statement}>{problem.statement || problem.description}</div>
 
             {problem.statementNotes &&
               problem.statementNotes.map((note, idx) => (
@@ -157,11 +192,11 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
               </div>
             )}
 
-            {/* 5. Examples (Chỉ hiển thị Ví dụ 1:, Ví dụ 2:, không lặp lại tiêu đề Ví dụ mẫu) */}
+            {/* 5. Examples (Ví dụ 1:, Ví dụ 2: - Giống hệt Contest layout) */}
             {problem.examples && problem.examples.length > 0 && (
               <div className={styles.section_block} style={{ marginTop: 16 }}>
                 {problem.examples.map((ex, idx) => (
-                  <div key={ex.id || idx} className={styles.example_block}>
+                  <div key={ex.id || idx} className={styles.example_card}>
                     <div className={styles.example_title}>{ex.title || `Ví dụ ${idx + 1}:`}</div>
                     <div className={styles.example_grid}>
                       <div className={styles.code_box}>

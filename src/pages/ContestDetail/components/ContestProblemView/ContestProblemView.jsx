@@ -37,9 +37,22 @@ export default function ContestProblemView({ problem }) {
             <h2 className={styles.title}>{problem.title}</h2>
 
             <div className={styles.meta_chips}>
-              <span className={styles.chip}>Time Limit: {problem.timeLimit}</span>
-              <span className={styles.chip}>Memory Limit: {problem.memoryLimit}</span>
-              <span className={`${styles.chip} ${styles.chip_points}`}>{problem.points} pt</span>
+              {/* Time Limit */}
+              <span className={styles.limit_badge} title="Giới hạn thời gian chạy">
+                <Icon name="Clock" size={13} />
+                <span>{problem.timeLimit || "1.0s"}</span>
+              </span>
+
+              {/* Memory Limit */}
+              <span className={styles.limit_badge} title="Giới hạn bộ nhớ sử dụng">
+                <Icon name="Cpu" size={13} />
+                <span>{problem.memoryLimit || "256MB"}</span>
+              </span>
+
+              {/* Points Badge */}
+              <span className={styles.points_badge} title="Điểm bài tập">
+                {problem.points || 500} pt
+              </span>
             </div>
 
             {/* 1. Problem Statement (Mô tả bài toán) */}
@@ -138,7 +151,7 @@ export default function ContestProblemView({ problem }) {
           <div>
             <h3 className={styles.section_heading}>Giải pháp & Thuật toán đề xuất</h3>
             <p className={styles.statement}>
-              Bài toán có thể được giải bằng cách áp dụng giải thuật Tham ăn (Greedy) kết hợp Sắp xếp (Sort) để đạt hiệu năng tối ưu O(N log N).
+              Sử dụng giải thuật Tham ăn (Greedy) kết hợp Sắp xếp (Sorting) để ưu tiên chọn công nhân có mức tiền công nhỏ nhất trước, giúp tối đa hóa số lượng công nhân được thuê với chi phí không quá T.
             </p>
           </div>
         )}
