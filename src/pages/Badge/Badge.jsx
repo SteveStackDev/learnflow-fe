@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 
-// Data
+// Data & Services
 import { badgeData } from "../../constants/mockBadge";
+import { badgeService } from "~/services/badgeService";
 
 // Page Container CSS Module
 import styles from "./Badge.module.css";
@@ -18,6 +19,7 @@ import BadgeFaq from "./components/BadgeFaq/BadgeFaq";
 import useScrollReveal from "~/hooks/useScrollReveal";
 
 function Badge() {
+  const [badgesList, setBadgesList] = useState(badgeData.items || []);
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,6 +37,17 @@ function Badge() {
 
   useScrollReveal();
 
+  // Nạp danh sách danh hiệu từ badgeService
+  useEffect(() => {
+    badgeService.getBadges().then((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setBadgesList(data);
+      } else if (Array.isArray(data?.items)) {
+        setBadgesList(data.items);
+      }
+    });
+  }, []);
+
   const handleTabChange = (index) => {
     setActiveTab(index);
     setCurrentPage(1);
@@ -44,7 +57,7 @@ function Badge() {
 
   // Filter Logic
   const filteredAndSortedItems = useMemo(() => {
-    return badgeData.items.filter((item) => {
+    return (badgesList || []).filter((item) => {
       const matchesSearch =
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -59,7 +72,7 @@ function Badge() {
           item.status === "locked");
       return matchesSearch && matchesTab;
     });
-  }, [searchQuery, activeTab]);
+  }, [badgesList, searchQuery, activeTab]);
 
   // Reset page when search changes
   useEffect(() => {

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import { dashboardData } from "~/constants/mockDashBoard";
+import { userService } from "~/services/userService";
 
 // Sub-Components
 import DashboardCard from "./components/DashboardCard/DashboardCard";
@@ -38,14 +39,34 @@ export default function DashBoard() {
     }
   });
 
+  const [onlineFriends, setOnlineFriends] = useState(
+    dashboardData.onlineFriends || [],
+  );
   const [selectedUserForModal, setSelectedUserForModal] = useState(null);
 
-  const greetingPrefix = getTimeBasedGreeting();
-  const userName = currentUser?.name || dashboardData?.student?.name || "Học viên";
+  // Tải danh sách bạn bè từ userService
+  useEffect(() => {
+    userService.getFriends().then((friends) => {
+      if (Array.isArray(friends) && friends.length > 0) {
+        setOnlineFriends(friends);
+      }
+    });
+  }, []);
 
+  const greetingPrefix = getTimeBasedGreeting();
+  const userName =
+    currentUser?.name ||
+    currentUser?.username ||
+    dashboardData?.student?.name ||
+    "Học viên";
+
+  const stats = userService.getUserStats(currentUser);
   const studentInfo = {
     ...(dashboardData?.student || {}),
     name: userName,
+    streakDays: stats.dailyStreak,
+    xp: stats.xp,
+    rating: stats.rating,
   };
 
   return (
@@ -107,7 +128,7 @@ export default function DashBoard() {
 
             {/* 4. Online Friends & Direct Messaging */}
             <DashboardOnlineFriends
-              onlineFriends={dashboardData.onlineFriends}
+              onlineFriends={onlineFriends}
               onSelectUser={(u) => setSelectedUserForModal(u)}
             />
 

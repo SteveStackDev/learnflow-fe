@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-// Data
+// Data & Services
 import { courseData } from "../../constants/mockCourse";
+import { courseService } from "~/services/courseService";
 
 // Import CSS Modules
 import styles from "./Course.module.css";
@@ -24,6 +25,7 @@ const SORT_OPTIONS = [
 const ITEMS_PER_PAGE = 4; // 1 clean row of 4 cards!
 
 function Course() {
+  const [coursesList, setCoursesList] = useState(courseData.items || []);
   const [activeCategoryTab, setActiveCategoryTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
@@ -32,6 +34,15 @@ function Course() {
   const sortDropdownRef = useRef(null);
 
   useScrollReveal();
+
+  // Nạp danh sách khóa học từ courseService
+  useEffect(() => {
+    courseService.getCourses().then((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setCoursesList(data);
+      }
+    });
+  }, []);
 
   const handleCategoryChange = (index) => {
     setActiveCategoryTab(index);
@@ -52,7 +63,7 @@ function Course() {
   // Filter & Sort Logic
   const filteredAndSortedItems = useMemo(() => {
     const categories = courseData.categoryTabs || courseData.categories || ["Tất cả"];
-    return (courseData.items || courseData.courses || [])
+    return (coursesList || [])
       .filter((item) => {
         const matchesSearch =
           item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -75,7 +86,7 @@ function Course() {
         }
         return (b.studentsNum || 0) - (a.studentsNum || 0);
       });
-  }, [searchQuery, activeCategoryTab, selectedSort]);
+  }, [coursesList, searchQuery, activeCategoryTab, selectedSort]);
 
   // Reset page when search or sort changes
   useEffect(() => {

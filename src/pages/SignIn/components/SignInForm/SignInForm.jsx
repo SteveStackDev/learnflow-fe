@@ -52,7 +52,7 @@ function SignInForm({
           <form noValidate className={styles["signin-form__form"]} onSubmit={handleSubmit}>
             <div className={styles["signin-form__form-group"]}>
               <label htmlFor="signin-email" className={styles["signin-form__label"]}>
-                Địa chỉ Email
+                Địa chỉ Email hoặc Username
               </label>
               <div className={styles["signin-form__input-wrapper"]}>
                 <span
@@ -62,13 +62,13 @@ function SignInForm({
                 </span>
                 <input
                   id="signin-email"
-                  type="email"
+                  type="text"
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
                     if (errors.email) setErrors((prev) => ({ ...prev, email: null }));
                   }}
-                  placeholder="example@email.com"
+                  placeholder="example@email.com hoặc username"
                   className={`${styles["signin-form__input"]} ${
                     errors.email ? styles["signin-form__input--error"] : ""
                   }`}
@@ -87,9 +87,9 @@ function SignInForm({
                 <label htmlFor="signin-password" className={styles["signin-form__label"]}>
                   Mật khẩu
                 </label>
-                <a href="#" className={styles["signin-form__link"]}>
+                <Link to="/forgot-password" className={styles["signin-form__link"]}>
                   Quên mật khẩu?
-                </a>
+                </Link>
               </div>
               <div className={styles["signin-form__input-wrapper"]}>
                 <span

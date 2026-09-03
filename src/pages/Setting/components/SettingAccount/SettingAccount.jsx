@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
+import { userService } from "~/services/userService";
 import Icon from "~/components/Icon/Icon";
 import styles from "./SettingAccount.module.css";
 
@@ -9,6 +10,16 @@ function SettingAccount({ userData }) {
   const [bio, setBio] = useState(userData.bio || "");
   const [phone, setPhone] = useState(userData.phone || "+84 912 345 678");
   const [phoneVerified, setPhoneVerified] = useState(userData.phoneVerified ?? true);
+  const [avatarUrl, setAvatarUrl] = useState(() => {
+    try {
+      const u = JSON.parse(localStorage.getItem("fySet_user"));
+      return u?.avatar || userData.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+    } catch {
+      return userData.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+    }
+  });
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const fileInputRef = useRef(null);
   const { toast } = useToast();
 
   const handleSave = (e) => {
@@ -16,8 +27,45 @@ function SettingAccount({ userData }) {
     toast.success("Cập nhật thông tin hồ sơ tài khoản thành công!", "Tài khoản");
   };
 
-  const handleAvatarChange = () => {
-    toast.info("Tính năng đổi ảnh đại diện đang được phát triển!", "Đổi ảnh đại diện");
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Vui lòng chọn tệp định dạng hình ảnh (JPG, PNG, GIF)!", "Đổi ảnh");
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Kích thước ảnh tối đa 2MB!", "Đổi ảnh");
+      return;
+    }
+
+    setIsUploadingAvatar(true);
+    try {
+      const res = await userService.updateAvatar(file);
+      const newUrl = res?.data?.avatar?.url || res?.url || URL.createObjectURL(file);
+      setAvatarUrl(newUrl);
+
+      // Đồng bộ vào localStorage để Header và Dashboard nhận ảnh mới
+      try {
+        const saved = JSON.parse(localStorage.getItem("fySet_user")) || {};
+        saved.avatar = newUrl;
+        localStorage.setItem("fySet_user", JSON.stringify(saved));
+      } catch {
+        // ignore
+      }
+
+      toast.success("Cập nhật ảnh đại diện thành công!", "Ảnh đại diện");
+    } catch (err) {
+      toast.error(err.message || "Tải ảnh lên thất bại!", "Đổi ảnh");
+    } finally {
+      setIsUploadingAvatar(false);
+    }
   };
 
   const handleVerifyPhone = () => {
@@ -43,13 +91,25 @@ function SettingAccount({ userData }) {
             <span className={styles.label}>Ảnh đại diện</span>
             <div className={styles.avatar_row}>
               <img
-                src={userData.avatarUrl}
+                src={avatarUrl}
                 alt={`Ảnh đại diện của ${userData.fullName || userData.name || "người dùng"}`}
                 className={styles.avatar_img}
               />
               <div className={styles.avatar_meta}>
-                <button type="button" onClick={handleAvatarChange} className={styles.avatar_btn}>
-                  Đổi ảnh
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                />
+                <button
+                  type="button"
+                  onClick={handleAvatarClick}
+                  disabled={isUploadingAvatar}
+                  className={styles.avatar_btn}
+                >
+                  {isUploadingAvatar ? "Đang tải..." : "Đổi ảnh"}
                 </button>
                 <span className={styles.avatar_hint}>JPG, GIF hoặc PNG. Tối đa 2MB.</span>
               </div>

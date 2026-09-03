@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { NavLink, Link, useLocation, useNavigate } from "react-router";
 import styles from "./Header.module.css";
 import Icon from "~/components/Icon/Icon";
+import { authService } from "~/services/authService";
 
 // Navigation Constants
 const NAV_LINKS = [
@@ -103,10 +104,9 @@ export function Header() {
     setIsUserMenuOpen(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("fySet_user");
+  const handleLogout = async () => {
+    await authService.logout();
     setCurrentUser(null);
-    window.dispatchEvent(new Event("fySet_auth_change"));
     closeMenu();
     navigate("/signin");
   };
