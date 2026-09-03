@@ -3,6 +3,18 @@ import { createContext, useContext, useState, useEffect } from "react";
 const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
+  // Tự động dọn dẹp các key localStorage cũ không cần thiết
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.removeItem("learnflow_theme");
+      localStorage.removeItem("learnflow_user");
+      localStorage.removeItem("learnflow_token");
+      localStorage.removeItem("fyset_token");
+    } catch {
+      // bỏ qua lỗi nếu có
+    }
+  }
+
   const [theme, setTheme] = useState(() => {
     return (
       document.documentElement.getAttribute("data-theme") ||

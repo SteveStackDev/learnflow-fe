@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 // Data
 import { signUpData } from "../../constants/mockSignUp";
@@ -11,13 +12,15 @@ import SignUpInfo from "./components/SignUpInfo/SignUpInfo";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
 import ThemeToggle from "~/components/ThemeToggle/ThemeToggle";
 
-// Context
+// Context & Service
 import { useToast } from "~/context/ToastContext.jsx";
+import { authService } from "~/services/authService";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [fullname, setFullname] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -25,14 +28,25 @@ function SignUp() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
+
     if (!fullname.trim()) {
       newErrors.fullname = "Vui lòng nhập họ và tên!";
     } else if (fullname.trim().length < 2) {
       newErrors.fullname = "Họ và tên phải có ít nhất 2 ký tự!";
+    }
+
+    const trimmedUsername = username.trim();
+    if (!trimmedUsername) {
+      newErrors.username = "Vui lòng nhập tên người dùng (username)!";
+    } else if (trimmedUsername.length < 3 || trimmedUsername.length > 30) {
+      newErrors.username = "Tên người dùng phải từ 3 đến 30 ký tự!";
+    } else if (!/^[a-zA-Z0-9_]+$/.test(trimmedUsername)) {
+      newErrors.username = "Tên người dùng chỉ được chứa chữ cái, số và dấu gạch dưới (_)";
     }
 
     if (!email.trim()) {
@@ -43,8 +57,14 @@ function SignUp() {
 
     if (!password) {
       newErrors.password = "Vui lòng nhập mật khẩu!";
-    } else if (password.length < 6) {
-      newErrors.password = "Mật khẩu phải chứa ít nhất 6 ký tự!";
+    } else if (password.length < 8) {
+      newErrors.password = "Mật khẩu phải chứa ít nhất 8 ký tự!";
+    } else if (!/[A-Z]/.test(password)) {
+      newErrors.password = "Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa!";
+    } else if (!/[0-9]/.test(password)) {
+      newErrors.password = "Mật khẩu phải chứa ít nhất 1 chữ số!";
+    } else if (!/[^a-zA-Z0-9]/.test(password)) {
+      newErrors.password = "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt (!@#$%^&...)";
     }
 
     if (!confirmPassword) {
@@ -65,15 +85,31 @@ function SignUp() {
       return;
     }
 
-    setIsSubmitting(true);
-    // UI hoàn thành – chờ kết nối API/backend.
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      setIsSubmitting(true);
+      await authService.register({
+        username: trimmedUsername,
+        email: email.trim(),
+        password,
+        confirmPassword,
+      });
+
       toast.success(
-        "Tạo tài khoản FySet thành công! (UI hoàn thành – chờ kết nối API/backend)",
-        "Đăng ký giả lập",
+        "Đăng ký tài khoản thành công! Vui lòng kiểm tra email để kích hoạt tài khoản.",
+        "Đăng ký thành công",
       );
-    }, 1000);
+      navigate("/sign-in");
+    } catch (error) {
+      if (error.errors) {
+        setErrors(error.errors);
+      }
+      toast.error(
+        error.message || "Đăng ký không thành công, vui lòng thử lại!",
+        "Đăng ký thất bại",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -91,6 +127,8 @@ function SignUp() {
         <SignUpForm
           fullname={fullname}
           setFullname={setFullname}
+          username={username}
+          setUsername={setUsername}
           email={email}
           setEmail={setEmail}
           password={password}

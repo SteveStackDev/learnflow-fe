@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
+import { userService } from "~/services/userService";
 import styles from "./UserProfileCardModal.module.css";
 
 export function UserProfileCardModal({ isOpen, onClose, user }) {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [friendshipState, setFriendshipState] = useState(
+    user?.friendshipStatus || "none",
+  );
 
   if (!isOpen || !user) return null;
 
@@ -16,13 +19,32 @@ export function UserProfileCardModal({ isOpen, onClose, user }) {
     navigate(`/profile/${user.id || "user-01"}`);
   };
 
-  const handleToggleFollow = (e) => {
+  const handleToggleFollow = async (e) => {
     e.stopPropagation();
-    setIsFollowing((prev) => !prev);
-    if (!isFollowing) {
-      toast.success(`Đã gửi lời mời kết bạn với ${user.username || user.name}!`, "Mạng xã hội");
+    const targetId = user.id || user._id;
+
+    if (friendshipState === "none") {
+      setFriendshipState("pending");
+      toast.success(
+        `Đã gửi lời mời kết bạn tới ${user.username || user.name}!`,
+        "Kết bạn",
+      );
+      try {
+        await userService.sendFriendRequest(targetId);
+      } catch (err) {
+        console.warn("Lỗi gửi lời mời kết bạn:", err.message);
+      }
+    } else if (friendshipState === "pending") {
+      setFriendshipState("none");
+      toast.info(
+        `Đã hủy lời mời kết bạn với ${user.username || user.name}.`,
+        "Kết bạn",
+      );
     } else {
-      toast.info(`Đã hủy theo dõi ${user.username || user.name}.`, "Mạng xã hội");
+      toast.info(
+        `Bạn và ${user.username || user.name} đã là bạn bè trên FySet!`,
+        "Bạn bè",
+      );
     }
   };
 
@@ -129,8 +151,23 @@ export function UserProfileCardModal({ isOpen, onClose, user }) {
             {/* Context Action 1: Connect / Follow */}
             <div className={styles.action_item} onClick={handleToggleFollow}>
               <div className={styles.action_left}>
-                <Icon name={isFollowing ? "Check" : "UserPlus"} size={16} />
-                <span>{isFollowing ? "Đã kết bạn / Theo dõi" : "+ Kết bạn / Theo dõi"}</span>
+                <Icon
+                  name={
+                    friendshipState === "accepted"
+                      ? "Check"
+                      : friendshipState === "pending"
+                      ? "Clock"
+                      : "UserPlus"
+                  }
+                  size={16}
+                />
+                <span>
+                  {friendshipState === "accepted"
+                    ? "Bạn bè"
+                    : friendshipState === "pending"
+                    ? "Đã gửi lời mời (Đang chờ)"
+                    : "+ Kết bạn / Theo dõi"}
+                </span>
               </div>
             </div>
 

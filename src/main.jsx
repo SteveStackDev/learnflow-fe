@@ -61,6 +61,8 @@ const DashBoard = lazy(() => import("~/pages/DashBoard/DashBoard"));
 const UserProfile = lazy(() => import("~/pages/UserProfile/UserProfile"));
 const SignIn = lazy(() => import("~/pages/SignIn/SignIn"));
 const SignUp = lazy(() => import("~/pages/SignUp/SignUp"));
+const VerifyEmail = lazy(() => import("~/pages/VerifyEmail/VerifyEmail"));
+const ForgotPassword = lazy(() => import("~/pages/ForgotPassword/ForgotPassword"));
 const NotFound = lazy(() => import("~/pages/NotFound/NotFound"));
 
 // Background preloader for primary routes when browser is idle
@@ -145,6 +147,8 @@ createRoot(document.getElementById("root")).render(
               </Route>
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
             </Routes>
           </Suspense>
         </BrowserRouter>

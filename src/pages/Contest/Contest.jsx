@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 
-// Data
+// Data & Services
 import { contestData } from "../../constants/mockContest";
+import { contestService } from "~/services/contestService";
 
 // Styles
 import styles from "./Contest.module.css";
@@ -20,11 +21,23 @@ import useScrollReveal from "~/hooks/useScrollReveal";
 const ITEMS_PER_PAGE = 3; // 1 clean row of 3 cards!
 
 function Contest() {
+  const [contestsList, setContestsList] = useState(contestData.items || []);
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   useScrollReveal();
+
+  // Nạp danh sách cuộc thi từ contestService
+  useEffect(() => {
+    contestService.getContests().then((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setContestsList(data);
+      } else if (Array.isArray(data?.items)) {
+        setContestsList(data.items);
+      }
+    });
+  }, []);
 
   const handleTabChange = (index) => {
     setActiveTab(index);
@@ -33,7 +46,7 @@ function Contest() {
 
   // Filter & Sort Logic
   const filteredAndSortedItems = useMemo(() => {
-    return contestData.items.filter((item) => {
+    return (contestsList || []).filter((item) => {
       const selectedTab = contestData.tabs[activeTab];
       const matchesSearch =
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -51,7 +64,7 @@ function Contest() {
       }
       return matchesSearch;
     });
-  }, [searchQuery, activeTab]);
+  }, [contestsList, searchQuery, activeTab]);
 
   // Reset page when search changes
   useEffect(() => {

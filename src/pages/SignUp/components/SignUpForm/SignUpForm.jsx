@@ -5,6 +5,8 @@ import styles from "./SignUpForm.module.css";
 function SignUpForm({
   fullname,
   setFullname,
+  username,
+  setUsername,
   email,
   setEmail,
   password,
@@ -85,9 +87,22 @@ function SignUpForm({
               <input
                 id="signup-username"
                 type="text"
+                value={username}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  if (errors.username) setErrors((prev) => ({ ...prev, username: null }));
+                }}
                 placeholder="van_a_99"
-                className={styles["signup-form__input"]}
+                className={`${styles["signup-form__input"]} ${
+                  errors.username ? styles["signup-form__input--error"] : ""
+                }`}
               />
+              {errors.username && (
+                <span className={styles["signup-form__error-text"]}>
+                  <Icon name="AlertCircle" size={13} />
+                  {errors.username}
+                </span>
+              )}
             </div>
           </div>
 

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-// Data
+// Data & Services
 import { roadmapData } from "../../constants/mockRoadMap";
+import { roadmapService } from "~/services/roadmapService";
 
 // Styles
 import styles from "./Roadmap.module.css";
@@ -26,6 +27,9 @@ const LEVEL_OPTIONS = [
 const ITEMS_PER_PAGE = 4; // 1 clean row of 4 cards!
 
 function Roadmap() {
+  const [roadmapsList, setRoadmapsList] = useState(
+    roadmapData.items || roadmapData.cards || [],
+  );
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState(LEVEL_OPTIONS[0]);
@@ -34,6 +38,17 @@ function Roadmap() {
   const dropdownRef = useRef(null);
 
   useScrollReveal();
+
+  // Nạp danh sách lộ trình từ roadmapService
+  useEffect(() => {
+    roadmapService.getRoadmaps().then((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setRoadmapsList(data);
+      } else if (Array.isArray(data?.items)) {
+        setRoadmapsList(data.items);
+      }
+    });
+  }, []);
 
   const handleTabChange = (index) => {
     setActiveTab(index);
@@ -53,7 +68,7 @@ function Roadmap() {
 
   // Filter & Sort Logic
   const filteredAndSortedItems = useMemo(() => {
-    const list = (roadmapData.items || roadmapData.cards || []).filter((item) => {
+    const list = (roadmapsList || []).filter((item) => {
       const matchesSearch =
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -81,7 +96,7 @@ function Roadmap() {
       if (isBHot && !isAHot) return 1;
       return (b.viewsNum || 0) - (a.viewsNum || 0);
     });
-  }, [searchQuery, activeTab, selectedLevel]);
+  }, [roadmapsList, searchQuery, activeTab, selectedLevel]);
 
   // Reset page when search or level changes
   useEffect(() => {

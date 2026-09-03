@@ -14,6 +14,7 @@ import ThemeToggle from "~/components/ThemeToggle/ThemeToggle";
 
 // Context
 import { useToast } from "~/context/ToastContext.jsx";
+import { authService } from "~/services/authService";
 
 const GREETING_PHRASES = [
   "quay trở lại!",
@@ -32,14 +33,20 @@ function SignIn() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Hàm xử lý Đăng nhập & lưu thông tin người dùng vào localStorage
-  const handleSubmit = (e) => {
+  // Hàm xử lý Đăng nhập qua authService
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
-    if (!email.trim()) {
-      newErrors.email = "Vui lòng nhập địa chỉ Email!";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      newErrors.email = "Email không đúng định dạng (ví dụ: name@domain.com)";
+    const inputVal = email.trim();
+
+    if (!inputVal) {
+      newErrors.email = "Vui lòng nhập Email hoặc Username!";
+    } else if (inputVal.includes("@")) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputVal)) {
+        newErrors.email = "Email không đúng định dạng (ví dụ: name@domain.com)";
+      }
+    } else if (inputVal.length < 3) {
+      newErrors.email = "Username phải chứa ít nhất 3 ký tự!";
     }
 
     if (!password) {
@@ -56,26 +63,25 @@ function SignIn() {
       return;
     }
 
-    setIsSubmitting(true);
-
-    setTimeout(() => {
-      setIsSubmitting(false);
-
-      // Khởi tạo thông tin người dùng từ dữ liệu đăng nhập
-      const userObj = {
-        email: email.trim(),
-        name: email.split("@")[0],
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email.split("@")[0]}`,
-        role: "Học viên",
-      };
-
-      // Lưu trạng thái tài khoản vào localStorage & phát sự kiện thông báo thay đổi auth
-      localStorage.setItem("fySet_user", JSON.stringify(userObj));
-      window.dispatchEvent(new Event("fySet_auth_change"));
-
-      toast.success(`Chào mừng ${userObj.name} trở lại!`, "Đăng nhập thành công");
+    try {
+      setIsSubmitting(true);
+      const user = await authService.login({ identifier: inputVal, password });
+      toast.success(
+        `Chào mừng ${user.name || user.username || "bạn"} trở lại!`,
+        "Đăng nhập thành công",
+      );
       navigate("/");
-    }, 600);
+    } catch (error) {
+      if (error.errors) {
+        setErrors(error.errors);
+      }
+      toast.error(
+        error.message || "Đăng nhập thất bại, vui lòng kiểm tra lại thông tin!",
+        "Đăng nhập thất bại",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Typewriter effect state

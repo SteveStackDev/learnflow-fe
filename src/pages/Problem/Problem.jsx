@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-// Data
+// Data & Services
 import { problemData, ALGORITHM_OPTIONS } from "../../constants/mockProblem";
+import { problemService } from "~/services/problemService";
 
 // Import CSS Modules
 import styles from "./Problem.module.css";
@@ -22,6 +23,9 @@ const SORT_OPTIONS = [
 ];
 
 function Problem() {
+  const [problemsList, setProblemsList] = useState(
+    problemData.items || problemData.challenges || [],
+  );
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
@@ -34,6 +38,17 @@ function Problem() {
   );
   const sortDropdownRef = useRef(null);
   const algoDropdownRef = useRef(null);
+
+  // Nạp danh sách bài tập từ problemService
+  useEffect(() => {
+    problemService.getProblems().then((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setProblemsList(data);
+      } else if (Array.isArray(data?.items)) {
+        setProblemsList(data.items);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -70,7 +85,7 @@ function Problem() {
   const filteredAndSortedItems = useMemo(() => {
     const tabs = problemData.tabs ||
       problemData.categories || ["Tất cả", "Dễ", "Trung bình", "Khó"];
-    return (problemData.items || problemData.challenges || [])
+    return (problemsList || [])
       .filter((item) => {
         const matchesSearch =
           item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -104,7 +119,7 @@ function Problem() {
           (b.submissionsCount || b.studentsNum || 0) - (a.submissionsCount || a.studentsNum || 0)
         );
       });
-  }, [searchQuery, activeTab, selectedSort, selectedAlgorithm]);
+  }, [problemsList, searchQuery, activeTab, selectedSort, selectedAlgorithm]);
 
   // Reset page when search, sort, or algorithm changes
   useEffect(() => {

@@ -1,0 +1,143 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.otp_grid {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+}
+
+.otp_box {
+  width: 52px;
+  height: 60px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid var(--theme-border);
+  color: var(--theme-text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  transition: var(--transition-fast);
+}
+
+.otp_box:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(9, 80, 195, 0.2);
+  transform: translateY(-2px);
+}
+
+.otp_box_filled {
+  border-color: rgba(9, 80, 195, 0.5);
+  background: rgba(9, 80, 195, 0.08);
+}
+
+.timer_box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--theme-text-secondary);
+}
+
+.timer_time {
+  font-weight: 700;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.timer_expired {
+  color: #ef4444;
+}
+
+.resend_btn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 4px 8px;
+  transition: var(--transition-fast);
+}
+
+.resend_btn:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.resend_btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.error_msg {
+  font-size: 0.85rem;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: -8px;
+}
+
+.btn_verify {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 12px;
+  background: var(--gradient-primary);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-fast);
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.35);
+}
+
+.btn_verify:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.45);
+}
+
+.btn_verify:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 440px) {
+  .otp_grid {
+    gap: 6px;
+  }
+  .otp_box {
+    width: 42px;
+    height: 52px;
+    font-size: 1.25rem;
+    border-radius: 10px;
+  }
+}
