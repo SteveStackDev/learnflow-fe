@@ -34,6 +34,11 @@ import ContestDetail from "../pages/ContestDetail/ContestDetail";
 import ContestInfo from "../pages/ContestInfo/ContestInfo";
 import ContestResult from "../pages/ContestResult/ContestResult";
 
+import AILearning from "../pages/AILearning/AILearning";
+import AILearningAlgorithm from "../pages/AILearningAlgorithm/AILearningAlgorithm";
+import AILearningSubmissions from "../pages/AILearningSubmissions/AILearningSubmissions";
+import AILearningAnalysis from "../pages/AILearningAnalysis/AILearningAnalysis";
+
 import Setting from "../pages/Setting/Setting";
 import DashBoard from "../pages/DashBoard/DashBoard";
 import Blog from "../pages/Blog/Blog";
@@ -130,6 +135,26 @@ describe("FySet Full Page Routes Smoke Tests", () => {
   it("renders ProblemResult subpage without crashing", () => {
     renderWithRouter(<ProblemResult />);
     expect(screen.getAllByText(/Chấp nhận/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders AI Learning dashboard without crashing", () => {
+    renderWithRouter(<AILearning />);
+    expect(screen.getAllByText(/AI Learning/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders AI Learning Algorithm subpage without crashing", () => {
+    renderWithRouter(<AILearningAlgorithm />);
+    expect(screen.getAllByText(/Algorithm not found/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders AI Learning Submissions subpage without crashing", () => {
+    renderWithRouter(<AILearningSubmissions />);
+    expect(screen.getAllByText(/No submissions found/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders AI Learning Analysis subpage without crashing", () => {
+    renderWithRouter(<AILearningAnalysis />);
+    expect(screen.getAllByText(/Submission not found/i).length).toBeGreaterThan(0);
   });
 
   it("renders Contest page without crashing", () => {

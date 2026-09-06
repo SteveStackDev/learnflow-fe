@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import styles from "./ProblemDetailEditor.module.css";
 import Icon from "~/components/Icon/Icon";
 import ProblemDetailFooter from "../ProblemDetailFooter/ProblemDetailFooter";
@@ -54,6 +54,9 @@ function highlightCode(code) {
 function ProblemDetailEditor({
   code,
   setCode,
+  languages = [],
+  selectedLanguage,
+  onLanguageChange,
   onResetCode,
   onRunCode,
   onSubmitCode,
@@ -63,6 +66,29 @@ function ProblemDetailEditor({
 }) {
   const textareaRef = useRef(null);
   const lineNumbersRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+
+  const defaultLanguages = [
+    { id: "cpp", label: "C++ (g++)" },
+    { id: "python", label: "Python 3" },
+    { id: "java", label: "Java" },
+    { id: "javascript", label: "JavaScript (Node.js)" },
+  ];
+
+  const availableLanguages = languages && languages.length > 0 ? languages : defaultLanguages;
+  const currentLang = selectedLanguage || availableLanguages[0];
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsLangDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
 
   const lines = (code || "").split("\n");
   const lineNumbers = Array.from({ length: Math.max(lines.length, 1) }, (_, i) => i + 1);
@@ -93,23 +119,48 @@ function ProblemDetailEditor({
       {/* Editor Header Toolbar */}
       <div className={styles.toolbar}>
         <div className={styles.toolbar_left}>
-          {/* Hardcoded Language Selector (C++ Only as required) */}
-          <div className={styles.select_wrapper}>
+          {/* Interactive Multi-Language Dropdown Selector */}
+          <div className={styles.select_wrapper} ref={dropdownRef}>
             <button
               type="button"
               className={styles.select_btn}
-              title="Máy chấm (Judge System) hiện tại chỉ hỗ trợ ngôn ngữ C++"
-              style={{ cursor: "default" }}
+              onClick={() => setIsLangDropdownOpen((prev) => !prev)}
+              title="Chọn ngôn ngữ lập trình cho bài tập"
             >
-              <span>C++</span>
+              <Icon name="Code" size={14} style={{ color: "#0950c3" }} />
+              <span>{currentLang.label || currentLang.name || "C++"}</span>
+              <Icon name="ChevronDown" size={13} style={{ opacity: 0.6 }} />
             </button>
+
+            {isLangDropdownOpen && (
+              <div className={styles.dropdown_menu}>
+                {availableLanguages.map((lang) => {
+                  const isSelected = lang.id === currentLang.id;
+                  return (
+                    <div
+                      key={lang.id}
+                      className={`${styles.dropdown_item} ${isSelected ? styles["dropdown_item--selected"] : ""}`}
+                      onClick={() => {
+                        if (onLanguageChange) {
+                          onLanguageChange(lang);
+                        }
+                        setIsLangDropdownOpen(false);
+                      }}
+                    >
+                      <span>{lang.label || lang.name}</span>
+                      {isSelected && <Icon name="Check" size={13} />}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <button
             type="button"
             onClick={onResetCode}
             className={styles.tool_icon_btn}
-            title="Đặt lại mã mẫu ban đầu"
+            title="Đặt lại mã mẫu ban đầu cho ngôn ngữ hiện tại"
           >
             <Icon name="RotateCcw" size={15} />
           </button>

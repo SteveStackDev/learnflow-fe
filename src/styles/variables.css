@@ -466,6 +466,10 @@
   --theme-dropdown-text: #191b22;
   --theme-dropdown-hover-text: #0950c3;
 
+  /* THEME SHORTCUT ALIASES (LIGHT MODE) */
+  --theme-bg: var(--theme-page-bg);
+  --theme-card-border: var(--theme-border);
+
   /* UI COMPONENT ALIASES (LIGHT MODE) */
   --primary-color: #0950c3;
   --primary-light: #e0ebff;
@@ -509,6 +513,10 @@
   --theme-dropdown-selected-bg: rgba(56, 189, 248, 0.12);
   --theme-dropdown-text: #cbd5e1;
   --theme-dropdown-hover-text: #38bdf8;
+
+  /* THEME SHORTCUT ALIASES (DARK MODE) */
+  --theme-bg: var(--theme-page-bg);
+  --theme-card-border: var(--theme-border);
 
   /* UI COMPONENT ALIASES (DARK MODE) */
   --primary-color: #38bdf8;

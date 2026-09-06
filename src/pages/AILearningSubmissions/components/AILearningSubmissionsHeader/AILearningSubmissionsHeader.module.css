@@ -1,0 +1,122 @@
+/* ==========================================================================
+   AI Learning Submissions Header Module Styling
+   ========================================================================== */
+
+.header_section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Top Navigation: Back Button */
+.top_nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.45));
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #1e293b);
+  text-decoration: none;
+  transition: var(--transition-base, all 0.2s ease);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.back_btn:hover {
+  background-color: var(--theme-primary-hover-bg, #e0ebff);
+  color: var(--color-primary, #0950c3);
+  border-color: var(--color-primary, #0950c3);
+  transform: translateY(-1px);
+}
+
+/* Title & Badges Row */
+.title_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  letter-spacing: -0.025em;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.badge_group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.difficulty_badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: #fef3c7;
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  line-height: 1;
+}
+
+.code_badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: var(--theme-chip-bg, #f1f5f9);
+  color: var(--theme-text-secondary, #475569);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.3));
+  line-height: 1;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Dark Theme Overrides */
+:global([data-theme="dark"]) .difficulty_badge {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+:global([data-theme="dark"]) .code_badge {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.45rem;
+  }
+
+  .subtitle {
+    font-size: 0.86rem;
+  }
+}

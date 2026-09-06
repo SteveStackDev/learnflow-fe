@@ -1,5 +1,5 @@
 /**
- * FySet Problem Detail Mock Data (C++ Only for Judge Engine)
+ * FySet Problem Detail Mock Data (C++ & Multi-language for Judge Engine)
  */
 
 export const problemDetailData = {
@@ -21,68 +21,97 @@ export const problemDetailData = {
     acceptedRate: "49.8%",
     points: 100,
   },
-  description: `Cho một mảng các số nguyên \`nums\` và một số nguyên \`target\`, hãy tìm chỉ số (index) của hai số trong mảng sao cho tổng của chúng bằng \`target\`.
+  description: `Cho một mảng các số nguyên \`nums\` gồm \`N\` phần tử và một số nguyên \`target\` (\`T\`). Hãy tìm và in ra hai chỉ số (0-indexed) của hai số trong mảng sao cho tổng của chúng bằng \`target\`.
 
-Bạn có thể giả định rằng mỗi đầu vào sẽ có **đúng một giải pháp**, và bạn không được sử dụng cùng một phần tử hai lần. Bạn có thể trả về câu trả lời theo bất kỳ thứ tự nào.`,
+Bạn có thể giả định rằng mỗi đầu vào sẽ có **đúng một giải pháp duy nhất**, và bạn không được sử dụng cùng một phần tử hai lần. In ra hai chỉ số cách nhau bởi một khoảng trắng theo thứ tự tăng dần.`,
 
   inputFormat: [
-    "Dòng đầu tiên chứa hai số nguyên N và T (1 <= N <= 10^5, 1 <= T <= 10^9).",
-    "Dòng thứ hai chứa N số nguyên phân tách bởi khoảng trắng.",
+    "Dòng đầu tiên chứa hai số nguyên N và T (2 <= N <= 10^5, -10^9 <= T <= 10^9).",
+    "Dòng thứ hai chứa N số nguyên phân tách bởi khoảng trắng (-10^9 <= nums[i] <= 10^9).",
   ],
   outputFormat: [
-    "In ra số lượng phần tử tối đa có thể chọn.",
+    "In ra hai chỉ số (0-indexed) cách nhau bởi khoảng trắng thỏa mãn nums[i] + nums[j] == T.",
   ],
   constraints: [
-    "2 <= nums.length <= 10^4",
+    "2 <= N <= 10^5",
     "-10^9 <= nums[i] <= 10^9",
     "-10^9 <= target <= 10^9",
-    "Chỉ tồn tại đúng 1 đáp án hợp lệ.",
+    "Chỉ tồn tại đúng 1 đáp án hợp lệ duy nhất.",
   ],
   examples: [
     {
-      input: "5 10\n2 3 1 5 4",
-      output: "3",
-      explanation: "Thuê các công nhân có mức công 1, 2, 3 (tổng = 6 <= 10). Số công nhân lớn nhất thuê được là 3.",
+      input: "4 9\n2 7 11 15",
+      output: "0 1",
+      explanation: "nums[0] + nums[1] = 2 + 7 = 9. Chỉ số tương ứng là 0 và 1.",
     },
     {
-      input: "3 5\n6 7 8",
-      output: "0",
-      explanation: "Không đủ ngân sách để thuê bất kỳ công nhân nào.",
+      input: "3 6\n3 2 4",
+      output: "1 2",
+      explanation: "nums[1] + nums[2] = 2 + 4 = 6. Chỉ số tương ứng là 1 và 2.",
+    },
+    {
+      input: "2 6\n3 3",
+      output: "0 1",
+      explanation: "nums[0] + nums[1] = 3 + 3 = 6. Chỉ số tương ứng là 0 và 1.",
     },
   ],
-  tags: ["Greedy (Tham ăn)", "Sort (Sắp xếp)", "Toán học (Math)"],
+  tags: ["Hash Table (Bảng băm)", "Array (Mảng)", "Two Pointers (Hai con trỏ)"],
 
   languages: [
     {
       id: "cpp",
       label: "C++",
       template: `#include <iostream>
-#include <vector>
-#include <algorithm>
+
 using namespace std;
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    
-    long long n, t;
-    if (!(cin >> n >> t)) return 0;
-    
-    vector<long long> a(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    sort(a.begin(), a.end());
-    
-    long long count = 0, sum = 0;
-    for (int i = 0; i < n; i++) {
-        if (sum + a[i] <= t) {
-            sum += a[i];
-            count++;
-        } else break;
-    }
-    
-    cout << count << "\n";
+int main()
+{
+    cout << "Hello world!" << endl;
     return 0;
 }`,
     },
+    {
+      id: "python",
+      label: "Python 3",
+      template: `import sys
+
+def main():
+    input_data = sys.stdin.read().split()
+    if not input_data:
+        return
+    # Viết mã nguồn giải thuật của bạn tại đây
+    pass
+
+if __name__ == "__main__":
+    main()`,
+    },
+    {
+      id: "java",
+      label: "Java",
+      template: `import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        // Viết mã nguồn giải thuật của bạn tại đây
+    }
+}`,
+    },
+    {
+      id: "javascript",
+      label: "JavaScript (Node.js)",
+      template: `const fs = require("fs");
+
+function main() {
+    const input = fs.readFileSync(0, "utf-8").trim();
+    if (!input) return;
+    // Viết mã nguồn giải thuật của bạn tại đây
+}
+
+main();`,
+    },
   ],
 };
+
+export default problemDetailData;

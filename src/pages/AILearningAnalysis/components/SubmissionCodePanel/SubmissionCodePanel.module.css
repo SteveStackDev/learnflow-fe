@@ -1,0 +1,257 @@
+/* ==========================================================================
+   AI Learning Analysis Submission Code Panel Module Styling
+   ========================================================================== */
+
+.code_card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.code_card:hover {
+  border-color: rgba(9, 80, 195, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Toolbar */
+.code_toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background-color: var(--theme-chip-bg, #f8fafc);
+  border-bottom: 1px solid var(--theme-border, rgba(169, 183, 203, 0.35));
+}
+
+.toolbar_left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toolbar_title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.lines_count_badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+}
+
+.copy_btn {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 5px 14px;
+}
+
+/* Code Scroll Viewport (Light Theme Default) */
+.code_scroll_viewport {
+  background-color: #f8fafc;
+  max-height: 480px;
+  min-height: 240px;
+  overflow-x: auto;
+  border-top: 1px solid var(--theme-border, rgba(169, 183, 203, 0.25));
+}
+
+.code_grid {
+  display: flex;
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, Consolas, monospace);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  min-width: 100%;
+}
+
+/* Gutter */
+.gutter {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+  background-color: #f1f5f9;
+  border-right: 1px solid rgba(169, 183, 203, 0.45);
+  user-select: none;
+  min-width: 44px;
+}
+
+.line_number {
+  padding: 0 12px;
+  text-align: right;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.line_number--suspected {
+  color: #dc2626;
+  font-weight: 800;
+  background-color: rgba(239, 68, 68, 0.12);
+}
+
+/* Code Content */
+.code_lines_container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.code_line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  min-height: 1.6em;
+  position: relative;
+}
+
+.code_line--suspected {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid #ef4444;
+}
+
+.code_text {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: #0f172a;
+  white-space: pre;
+}
+
+/* Syntax Highlighting Tokens (Light Mode Default) */
+:global(.syn_comment) {
+  color: #64748b;
+  font-style: italic;
+}
+
+:global(.syn_keyword) {
+  color: #e11d48;
+  font-weight: 700;
+}
+
+:global(.syn_type) {
+  color: #0284c7;
+  font-weight: 600;
+}
+
+:global(.syn_string) {
+  color: #16a34a;
+}
+
+:global(.syn_number) {
+  color: #d97706;
+}
+
+:global(.syn_function) {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+.suspected_flag {
+  color: #ef4444;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 12px;
+}
+
+/* Suspected Footer */
+.suspected_footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background-color: rgba(239, 68, 68, 0.08);
+  border-top: 1px solid rgba(239, 68, 68, 0.2);
+  color: #dc2626;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.suspected_icon {
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.suspected_text strong {
+  font-weight: 800;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .code_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .code_toolbar {
+  background-color: #0b1329;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme="dark"]) .code_scroll_viewport {
+  background-color: #0b1329;
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme="dark"]) .gutter {
+  background-color: rgba(0, 0, 0, 0.25);
+  border-right-color: rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme="dark"]) .line_number {
+  color: #475569;
+}
+
+:global([data-theme="dark"]) .line_number--suspected {
+  color: #f87171;
+  background-color: rgba(239, 68, 68, 0.18);
+}
+
+:global([data-theme="dark"]) .code_line--suspected {
+  background-color: rgba(239, 68, 68, 0.18);
+}
+
+:global([data-theme="dark"]) .code_text {
+  color: #e2e8f0;
+}
+
+:global([data-theme="dark"] .syn_comment) {
+  color: #64748b;
+}
+
+:global([data-theme="dark"] .syn_keyword) {
+  color: #f43f5e;
+}
+
+:global([data-theme="dark"] .syn_type) {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"] .syn_string) {
+  color: #34d399;
+}
+
+:global([data-theme="dark"] .syn_number) {
+  color: #fbbf24;
+}
+
+:global([data-theme="dark"] .syn_function) {
+  color: #818cf8;
+}
+
+:global([data-theme="dark"]) .suspected_footer {
+  background-color: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}

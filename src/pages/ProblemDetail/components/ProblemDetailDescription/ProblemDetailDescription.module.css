@@ -153,6 +153,18 @@
   border-color: rgba(9, 80, 195, 0.3);
 }
 
+.vote_btn_active_up {
+  background-color: #dcfce7 !important;
+  color: #15803d !important;
+  border-color: rgba(34, 197, 94, 0.5) !important;
+}
+
+.vote_btn_active_down {
+  background-color: #fee2e2 !important;
+  color: #b91c1c !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+}
+
 /* Statement Text */
 .statement {
   font-size: 0.95rem;
@@ -266,7 +278,77 @@
   font-size: 0.875rem;
   line-height: 1.5;
   color: #475569;
-  padding: 8px 2px 4px 2px;
+}
+
+/* Subtasks Table in Problem Description */
+.subtasks_table_wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(169, 183, 203, 0.4);
+  background-color: #ffffff;
+  margin-top: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.subtasks_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.subtasks_table th {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-weight: 700;
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.4);
+}
+
+.subtasks_table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.2);
+  color: #334155;
+  transition: background-color 0.15s ease;
+}
+
+.subtasks_table tr:hover td {
+  background-color: rgba(9, 80, 195, 0.02);
+}
+
+.subtasks_table tr:last-child td {
+  border-bottom: none;
+}
+
+.subtasks_table strong {
+  color: #0f172a;
+}
+
+.subtasks_table code {
+  font-family: var(--font-family-code, monospace);
+  font-size: 0.825rem;
+  background-color: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 6px;
+  color: #0950c3;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+}
+
+.subtask_pts {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background-color: #e0ebff;
+  color: #0950c3;
+  font-weight: 700;
+  font-size: 0.775rem;
+  border: 1px solid rgba(9, 80, 195, 0.15);
+}
+
+.subtask_no_constraint {
+  color: #94a3b8;
+  font-style: italic;
+  font-size: 0.825rem;
 }
 
 .explanation_label {
@@ -428,6 +510,56 @@
   background-color: #1e293b;
   color: #cbd5e1;
   border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Subtasks Table Dark Mode */
+:global([data-theme="dark"]) .subtasks_table_wrapper,
+:global(.theme-dark) .subtasks_table_wrapper {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+:global([data-theme="dark"]) .subtasks_table th,
+:global(.theme-dark) .subtasks_table th {
+  background-color: #0f172a;
+  color: #94a3b8;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .subtasks_table td,
+:global(.theme-dark) .subtasks_table td {
+  color: #cbd5e1;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme="dark"]) .subtasks_table tr:hover td,
+:global(.theme-dark) .subtasks_table tr:hover td {
+  background-color: rgba(56, 189, 248, 0.05);
+}
+
+:global([data-theme="dark"]) .subtasks_table strong,
+:global(.theme-dark) .subtasks_table strong {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .subtasks_table code,
+:global(.theme-dark) .subtasks_table code {
+  background-color: #0f172a;
+  color: #38bdf8;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .subtask_pts,
+:global(.theme-dark) .subtask_pts {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+:global([data-theme="dark"]) .subtask_no_constraint,
+:global(.theme-dark) .subtask_no_constraint {
+  color: #64748b;
 }
 
 /* Discussion Pinned Bottom Input */

@@ -1,0 +1,333 @@
+/* ==========================================================================
+   AI Learning Submissions List Module Styling
+   ========================================================================== */
+
+.list_container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Submission Row Card */
+.submission_card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 14px;
+  padding: 16px 20px;
+  transition: var(--transition-base, all 0.2s ease);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.submission_card:hover {
+  border-color: rgba(9, 80, 195, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+/* Green border highlight for Accepted (Latest) card */
+.submission_card--ac {
+  border: 1.5px solid rgba(16, 185, 129, 0.45);
+  background-color: var(--theme-card-bg, #ffffff);
+}
+
+.submission_card--ac:hover {
+  border-color: rgba(16, 185, 129, 0.7);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.08);
+}
+
+/* Left Group */
+.card_left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* Circle Status Icon */
+.status_circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.status_circle--ac {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1.5px solid rgba(16, 185, 129, 0.3);
+}
+
+.status_circle--wa {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1.5px solid rgba(239, 68, 68, 0.25);
+}
+
+/* Info Block */
+.info_block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.status_title_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.status_name {
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.status_name--ac {
+  color: #10b981;
+}
+
+.status_name--wa {
+  color: #ef4444;
+}
+
+/* Status Pill Tags */
+.tag_badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tag_badge--latest {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.tag_badge--test-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.tag_badge--first {
+  background-color: var(--theme-chip-bg, #f1f5f9);
+  color: var(--theme-text-secondary, #64748b);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.3));
+}
+
+/* Meta Data Row */
+.meta_row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.81rem;
+  color: var(--theme-text-muted, #64748b);
+  font-weight: 500;
+  flex-wrap: wrap;
+}
+
+.meta_item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.meta_dot {
+  color: var(--theme-border, #cbd5e1);
+  font-size: 0.75rem;
+}
+
+.error_note {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* Right Actions Group */
+.card_right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.analyze_link_wrapper {
+  text-decoration: none;
+  display: inline-flex;
+}
+
+/* 1. Analyze Button (Blue Gradient) */
+.analyze_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 9px;
+  background: var(--gradient-primary, linear-gradient(135deg, #0950c3 0%, #0ea5e9 100%));
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 3px 10px rgba(9, 80, 195, 0.22);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.analyze_btn:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 5px 14px rgba(9, 80, 195, 0.32);
+}
+
+/* 2. View Code Button (Outlined) */
+.view_code_btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 15px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.55));
+  color: var(--theme-text-primary, #1e293b);
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base, all 0.2s ease);
+  white-space: nowrap;
+}
+
+.view_code_btn:hover {
+  background-color: var(--theme-chip-bg, #f1f5f9);
+  border-color: var(--color-primary, #0950c3);
+  color: var(--color-primary, #0950c3);
+}
+
+/* 3. Details Button */
+.details_btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: none;
+  color: var(--theme-text-secondary, #475569);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.details_btn:hover {
+  color: var(--color-primary, #0950c3);
+  text-decoration: underline;
+}
+
+/* 4. More Button (...) */
+.more_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: none;
+  color: var(--theme-text-muted, #94a3b8);
+  cursor: pointer;
+  transition: var(--transition-base, all 0.15s ease);
+}
+
+.more_btn:hover {
+  background-color: var(--theme-chip-bg, #f1f5f9);
+  color: var(--theme-text-primary, #0f172a);
+}
+
+/* Dark Theme Overrides */
+:global([data-theme="dark"]) .submission_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .submission_card:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .submission_card--ac {
+  border-color: rgba(16, 185, 129, 0.4);
+  background-color: #131c31;
+}
+
+:global([data-theme="dark"]) .tag_badge--latest {
+  background-color: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+:global([data-theme="dark"]) .tag_badge--test-error {
+  background-color: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+:global([data-theme="dark"]) .tag_badge--first {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .view_code_btn {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+}
+
+:global([data-theme="dark"]) .view_code_btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .details_btn {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .details_btn:hover {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .more_btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .submission_card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+  }
+
+  .card_left {
+    width: 100%;
+  }
+
+  .card_right {
+    width: 100%;
+    justify-content: flex-end;
+    padding-top: 6px;
+    border-top: 1px dashed var(--theme-border, rgba(169, 183, 203, 0.25));
+  }
+}

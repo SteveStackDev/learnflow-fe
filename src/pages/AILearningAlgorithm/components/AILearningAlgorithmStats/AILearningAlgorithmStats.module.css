@@ -1,0 +1,128 @@
+/* ==========================================================================
+   AI Learning Algorithm Stats Module Styling
+   ========================================================================== */
+
+.stats_grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.stat_card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 14px;
+  padding: 18px 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.stat_card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  border-color: rgba(9, 80, 195, 0.3);
+}
+
+.stat_card--action {
+  cursor: pointer;
+}
+
+.stat_card--action:hover .stat_action_text {
+  color: var(--color-primary, #0950c3);
+  text-decoration: underline;
+}
+
+.stat_label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--theme-text-muted, #64748b);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.stat_value_row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.stat_value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.stat_value--danger {
+  color: #ef4444;
+}
+
+.stat_value--warning {
+  color: #d97706;
+  font-size: 1.08rem;
+}
+
+.stat_subtext {
+  font-size: 0.82rem;
+  color: var(--theme-text-muted, #64748b);
+  font-weight: 500;
+}
+
+.stat_action_row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-primary, #0950c3);
+}
+
+.stat_action_text {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--color-primary, #0950c3);
+  transition: color var(--transition-base, 0.2s ease);
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .stat_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .stat_card:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .stat_value--danger {
+  color: #f87171;
+}
+
+:global([data-theme="dark"]) .stat_value--warning {
+  color: #fbbf24;
+}
+
+:global([data-theme="dark"]) .stat_action_text,
+:global([data-theme="dark"]) .stat_action_row {
+  color: #38bdf8;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .stats_grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats_grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
