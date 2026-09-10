@@ -1,0 +1,17 @@
+{
+  "id": "test_demo",
+  "title": "Thuê công nhân",
+  "statement": "Một đội công nhân gồm N người đang chuẩn bị xây dựng một tòa nhà cao tầng để phục vụ cho một sự kiện hợp tác quan trọng giữa hai công ty. Mỗi công nhân thứ i có mức tiền công là a[i] đồng cho mỗi tháng làm việc. Chủ đầu tư có ngân sách tối đa T đồng để thuê công nhân trong tháng này. Chủ đầu tư muốn thuê được nhiều công nhân nhất có thể và yêu cầu tổng tiền công của tất cả công nhân được thuê không vượt quá T. Hãy giúp chủ đầu tư xác định số lượng công nhân lớn nhất có thể thuê.",
+  "input": "Dòng đầu tiên gồm hai số nguyên dương N và T, tương ứng với số lượng công nhân và tổng số tiền mà chủ đầu tư hiện có.\nDòng thứ hai gồm N số nguyên a[i], tương ứng với tiền công của từng công nhân.",
+  "output": "In ra một số nguyên duy nhất là số lượng công nhân lớn nhất có thể thuê sao cho tổng tiền công không vượt quá T.",
+  "constraints": [
+    "1 <= N <= 10^6",
+    "1 <= T <= 10^12",
+    "1 <= a[i] <= 10^9"
+  ],
+  "tags": [
+    "greedy",
+    "math",
+    "sort"
+  ]
+}

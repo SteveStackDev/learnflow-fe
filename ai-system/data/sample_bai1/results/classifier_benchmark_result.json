@@ -1,0 +1,382 @@
+{
+  "summary": {
+    "total_samples": 40,
+    "status_counts": {
+      "CORRECT": 22,
+      "WRONG": 11,
+      "INVALID_RESPONSE": 0,
+      "TRUNCATED": 7,
+      "API_ERROR": 0
+    },
+    "accuracy": 0.6666666666666666,
+    "macro_f1": 0.5912698412698413,
+    "valid_response_rate": 0.825,
+    "truncated_rate": 0.175,
+    "invalid_response_rate": 0.0,
+    "api_error_rate": 0.0,
+    "avg_latency_ms": 3025.3838336828985,
+    "note": "accuracy va macro_f1 chi tinh tren cac case status=OK (CORRECT+WRONG). API_ERROR/TRUNCATED/INVALID_RESPONSE KHONG duoc tinh la WRONG, chi phan anh qua *_rate tuong ung."
+  },
+  "per_case": [
+    {
+      "id": "case01.cpp",
+      "ground_truth": "OFF_BY_ONE",
+      "predicted_error_type": "OFF_BY_ONE",
+      "confidence": 1.0,
+      "status": "CORRECT",
+      "latency_ms": 5502.419471740723,
+      "error": null
+    },
+    {
+      "id": "case02.cpp",
+      "ground_truth": "OFF_BY_ONE",
+      "predicted_error_type": "BOUNDARY_ERROR",
+      "confidence": 1.0,
+      "status": "WRONG",
+      "latency_ms": 1450.2286911010742,
+      "error": null
+    },
+    {
+      "id": "case03.cpp",
+      "ground_truth": "OFF_BY_ONE",
+      "predicted_error_type": "OFF_BY_ONE",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 3277.4932384490967,
+      "error": null
+    },
+    {
+      "id": "case04.cpp",
+      "ground_truth": "OFF_BY_ONE",
+      "predicted_error_type": "OFF_BY_ONE",
+      "confidence": 0.9,
+      "status": "CORRECT",
+      "latency_ms": 3120.4731464385986,
+      "error": null
+    },
+    {
+      "id": "case05.cpp",
+      "ground_truth": "OFF_BY_ONE",
+      "predicted_error_type": null,
+      "confidence": null,
+      "status": "TRUNCATED",
+      "latency_ms": null,
+      "error": "LLM response truncated because completion token limit was reached."
+    },
+    {
+      "id": "case06.cpp",
+      "ground_truth": "LOOP_CONDITION",
+      "predicted_error_type": "OFF_BY_ONE",
+      "confidence": 0.9,
+      "status": "WRONG",
+      "latency_ms": 5474.0002155303955,
+      "error": null
+    },
+    {
+      "id": "case07.cpp",
+      "ground_truth": "LOOP_CONDITION",
+      "predicted_error_type": "BOUNDARY_ERROR",
+      "confidence": 1.0,
+      "status": "WRONG",
+      "latency_ms": 1606.0004234313965,
+      "error": null
+    },
+    {
+      "id": "case08.cpp",
+      "ground_truth": "LOOP_CONDITION",
+      "predicted_error_type": "LOOP_CONDITION",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 5816.001176834106,
+      "error": null
+    },
+    {
+      "id": "case09.cpp",
+      "ground_truth": "LOOP_CONDITION",
+      "predicted_error_type": null,
+      "confidence": null,
+      "status": "TRUNCATED",
+      "latency_ms": null,
+      "error": "LLM response truncated because completion token limit was reached."
+    },
+    {
+      "id": "case10.cpp",
+      "ground_truth": "BOUNDARY_ERROR",
+      "predicted_error_type": null,
+      "confidence": null,
+      "status": "TRUNCATED",
+      "latency_ms": null,
+      "error": "LLM response truncated because completion token limit was reached."
+    },
+    {
+      "id": "case11.cpp",
+      "ground_truth": "BOUNDARY_ERROR",
+      "predicted_error_type": "BOUNDARY_ERROR",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 1619.922399520874,
+      "error": null
+    },
+    {
+      "id": "case12.cpp",
+      "ground_truth": "BOUNDARY_ERROR",
+      "predicted_error_type": null,
+      "confidence": null,
+      "status": "TRUNCATED",
+      "latency_ms": null,
+      "error": "LLM response truncated because completion token limit was reached."
+    },
+    {
+      "id": "case13.cpp",
+      "ground_truth": "BOUNDARY_ERROR",
+      "predicted_error_type": null,
+      "confidence": null,
+      "status": "TRUNCATED",
+      "latency_ms": null,
+      "error": "LLM response truncated because completion token limit was reached."
+    },
+    {
+      "id": "case14.cpp",
+      "ground_truth": "INTEGER_OVERFLOW",
+      "predicted_error_type": "INTEGER_OVERFLOW",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 2327.0418643951416,
+      "error": null
+    },
+    {
+      "id": "case15.cpp",
+      "ground_truth": "INTEGER_OVERFLOW",
+      "predicted_error_type": "INTEGER_OVERFLOW",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 2493.0028915405273,
+      "error": null
+    },
+    {
+      "id": "case16.cpp",
+      "ground_truth": "INTEGER_OVERFLOW",
+      "predicted_error_type": "INTEGER_OVERFLOW",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 3352.691650390625,
+      "error": null
+    },
+    {
+      "id": "case17.cpp",
+      "ground_truth": "INTEGER_OVERFLOW",
+      "predicted_error_type": "INTEGER_OVERFLOW",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 3052.551746368408,
+      "error": null
+    },
+    {
+      "id": "case18.cpp",
+      "ground_truth": "WRONG_SORT_ORDER",
+      "predicted_error_type": "WRONG_SORT_ORDER",
+      "confidence": 1.0,
+      "status": "CORRECT",
+      "latency_ms": 2253.9985179901123,
+      "error": null
+    },
+    {
+      "id": "case19.cpp",
+      "ground_truth": "WRONG_SORT_ORDER",
+      "predicted_error_type": "WRONG_SORT_ORDER",
+      "confidence": 1.0,
+      "status": "CORRECT",
+      "latency_ms": 2028.0344486236572,
+      "error": null
+    },
+    {
+      "id": "case20.cpp",
+      "ground_truth": "WRONG_SORT_ORDER",
+      "predicted_error_type": "WRONG_SORT_ORDER",
+      "confidence": 1.0,
+      "status": "CORRECT",
+      "latency_ms": 1568.1684017181396,
+      "error": null
+    },
+    {
+      "id": "case21.cpp",
+      "ground_truth": "WRONG_SORT_ORDER",
+      "predicted_error_type": "WRONG_SORT_ORDER",
+      "confidence": 1.0,
+      "status": "CORRECT",
+      "latency_ms": 1620.0084686279297,
+      "error": null
+    },
+    {
+      "id": "case22.cpp",
+      "ground_truth": "GREEDY_LOGIC_ERROR",
+      "predicted_error_type": "WRONG_SORT_ORDER",
+      "confidence": 1.0,
+      "status": "WRONG",
+      "latency_ms": 1655.0023555755615,
+      "error": null
+    },
+    {
+      "id": "case23.cpp",
+      "ground_truth": "GREEDY_LOGIC_ERROR",
+      "predicted_error_type": "WRONG_FORMULA",
+      "confidence": 1.0,
+      "status": "WRONG",
+      "latency_ms": 2064.5337104797363,
+      "error": null
+    },
+    {
+      "id": "case24.cpp",
+      "ground_truth": "GREEDY_LOGIC_ERROR",
+      "predicted_error_type": "OFF_BY_ONE",
+      "confidence": 0.95,
+      "status": "WRONG",
+      "latency_ms": 2224.3294715881348,
+      "error": null
+    },
+    {
+      "id": "case25.cpp",
+      "ground_truth": "GREEDY_LOGIC_ERROR",
+      "predicted_error_type": "WRONG_FORMULA",
+      "confidence": 1.0,
+      "status": "WRONG",
+      "latency_ms": 2155.1146507263184,
+      "error": null
+    },
+    {
+      "id": "case26.cpp",
+      "ground_truth": "MISSING_UPDATE",
+      "predicted_error_type": "MISSING_UPDATE",
+      "confidence": 1.0,
+      "status": "CORRECT",
+      "latency_ms": 1974.8551845550537,
+      "error": null
+    },
+    {
+      "id": "case27.cpp",
+      "ground_truth": "MISSING_UPDATE",
+      "predicted_error_type": "MISSING_UPDATE",
+      "confidence": 1.0,
+      "status": "CORRECT",
+      "latency_ms": 1384.0045928955078,
+      "error": null
+    },
+    {
+      "id": "case28.cpp",
+      "ground_truth": "MISSING_UPDATE",
+      "predicted_error_type": "MISSING_UPDATE",
+      "confidence": 1.0,
+      "status": "CORRECT",
+      "latency_ms": 2903.550386428833,
+      "error": null
+    },
+    {
+      "id": "case29.cpp",
+      "ground_truth": "WRONG_INITIALIZATION",
+      "predicted_error_type": "WRONG_INITIALIZATION",
+      "confidence": 1.0,
+      "status": "CORRECT",
+      "latency_ms": 2251.006603240967,
+      "error": null
+    },
+    {
+      "id": "case30.cpp",
+      "ground_truth": "WRONG_INITIALIZATION",
+      "predicted_error_type": "WRONG_INITIALIZATION",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 2412.968158721924,
+      "error": null
+    },
+    {
+      "id": "case31.cpp",
+      "ground_truth": "WRONG_INITIALIZATION",
+      "predicted_error_type": "WRONG_INITIALIZATION",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 3228.1839847564697,
+      "error": null
+    },
+    {
+      "id": "case32.cpp",
+      "ground_truth": "WRONG_FORMULA",
+      "predicted_error_type": "WRONG_FORMULA",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 2588.41609954834,
+      "error": null
+    },
+    {
+      "id": "case33.cpp",
+      "ground_truth": "WRONG_FORMULA",
+      "predicted_error_type": "WRONG_FORMULA",
+      "confidence": 1.0,
+      "status": "CORRECT",
+      "latency_ms": 2676.147937774658,
+      "error": null
+    },
+    {
+      "id": "case34.cpp",
+      "ground_truth": "WRONG_FORMULA",
+      "predicted_error_type": "MISSING_UPDATE",
+      "confidence": 0.95,
+      "status": "WRONG",
+      "latency_ms": 5753.528833389282,
+      "error": null
+    },
+    {
+      "id": "case35.cpp",
+      "ground_truth": "WRONG_FORMULA",
+      "predicted_error_type": "WRONG_FORMULA",
+      "confidence": 0.95,
+      "status": "CORRECT",
+      "latency_ms": 3475.980520248413,
+      "error": null
+    },
+    {
+      "id": "case36.cpp",
+      "ground_truth": "EDGE_CASE",
+      "predicted_error_type": "GREEDY_LOGIC_ERROR",
+      "confidence": 0.95,
+      "status": "WRONG",
+      "latency_ms": 5633.999347686768,
+      "error": null
+    },
+    {
+      "id": "case37.cpp",
+      "ground_truth": "EDGE_CASE",
+      "predicted_error_type": "LOOP_CONDITION",
+      "confidence": 0.95,
+      "status": "WRONG",
+      "latency_ms": 7866.999626159668,
+      "error": null
+    },
+    {
+      "id": "case38.cpp",
+      "ground_truth": "EDGE_CASE",
+      "predicted_error_type": "WRONG_FORMULA",
+      "confidence": 0.95,
+      "status": "WRONG",
+      "latency_ms": 3027.008295059204,
+      "error": null
+    },
+    {
+      "id": "case39.cpp",
+      "ground_truth": "OTHER",
+      "predicted_error_type": null,
+      "confidence": null,
+      "status": "TRUNCATED",
+      "latency_ms": null,
+      "error": "LLM response truncated because completion token limit was reached."
+    },
+    {
+      "id": "case40.cpp",
+      "ground_truth": "OTHER",
+      "predicted_error_type": null,
+      "confidence": null,
+      "status": "TRUNCATED",
+      "latency_ms": null,
+      "error": "LLM response truncated because completion token limit was reached."
+    }
+  ]
+}
