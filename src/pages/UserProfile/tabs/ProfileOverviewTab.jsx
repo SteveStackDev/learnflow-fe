@@ -1,6 +1,6 @@
 import React from "react";
 import Icon from "~/components/Icon/Icon";
-import DashboardContribution from "~/pages/Dashboard/components/DashboardContribution/DashboardContribution";
+import DashboardContribution from "~/pages/DashBoard/components/DashboardContribution/DashboardContribution";
 import styles from "./ProfileOverviewTab.module.css";
 
 export default function ProfileOverviewTab({ user, onSelectUser }) {
@@ -51,7 +51,9 @@ export default function ProfileOverviewTab({ user, onSelectUser }) {
             <Icon name="CheckCircle" size={18} className={styles.card_icon_green} />
             <div>
               <h3 className={styles.card_title}>Verified Skill Radar (Kỹ Năng Đã Xác Thực)</h3>
-              <span className={styles.card_subtitle}>Điểm số đo lường qua các bài tập & contest thực tế</span>
+              <span className={styles.card_subtitle}>
+                Điểm số đo lường qua các bài tập & contest thực tế
+              </span>
             </div>
           </div>
 
@@ -170,7 +172,11 @@ export default function ProfileOverviewTab({ user, onSelectUser }) {
               <div
                 key={b.id}
                 className={`${styles.badge_item} ${!b.isUnlocked ? styles.badge_locked : ""}`}
-                title={b.isUnlocked ? `${b.title} - Đạt ngày ${b.unlockedAt}` : `${b.title} - Chưa mở khóa`}
+                title={
+                  b.isUnlocked
+                    ? `${b.title} - Đạt ngày ${b.unlockedAt}`
+                    : `${b.title} - Chưa mở khóa`
+                }
               >
                 <div className={styles.badge_icon_circle}>
                   <Icon name={b.icon || "Zap"} size={16} />
@@ -194,7 +200,9 @@ export default function ProfileOverviewTab({ user, onSelectUser }) {
                 <Icon name="ShieldCheck" size={18} className={styles.cert_icon} />
                 <div className={styles.cert_meta}>
                   <h5 className={styles.cert_title}>{cert.title}</h5>
-                  <span className={styles.cert_sub}>{cert.issuer} • {cert.issueDate}</span>
+                  <span className={styles.cert_sub}>
+                    {cert.issuer} • {cert.issueDate}
+                  </span>
                 </div>
               </div>
             ))}
