@@ -3,15 +3,47 @@ import { Card, Button } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import styles from "./CourseInfoSidebar.module.css";
 
-export default function CourseInfoSidebar({
-  course,
-  isEnrolled,
-  onActionClick,
-}) {
-  const duration = course?.duration || "45 giờ";
-  const totalLessons = course?.totalLessons || "156 bài";
-  const access = course?.access || "Trọn đời";
-  const certificate = course?.certificate || "Cấp sau khi hoàn thành";
+export default function CourseInfoSidebar({ curriculum, isEnrolled, onActionClick }) {
+  function formatMsToHHMMSS(ms) {
+    if (!ms || ms < 0) return "00:00:00";
+
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const paddedHours = String(hours).padStart(2, "0");
+    const paddedMinutes = String(minutes).padStart(2, "0");
+    const paddedSeconds = String(seconds).padStart(2, "0");
+
+    if (paddedHours === "00") {
+      return `${paddedMinutes}:${paddedSeconds}`;
+    } else {
+      return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+    }
+  }
+
+  const duration = formatMsToHHMMSS(
+    curriculum
+      .map((mod) => {
+        let courseTotalDuration = 0;
+        let chapterTotalDuration = mod.lessons.reduce((accumulator, currentValue) => {
+          return accumulator + currentValue.duration;
+        }, 0);
+
+        courseTotalDuration += chapterTotalDuration;
+
+        return courseTotalDuration;
+      })
+      .reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+      }, 0),
+  );
+  const totalLessons = curriculum.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue.lessons.length;
+  }, 0);
+  const access = "Trọn đời";
+  const certificate = "Cấp sau khi hoàn thành";
 
   return (
     <Card className={styles.card_container}>

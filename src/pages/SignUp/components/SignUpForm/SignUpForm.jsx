@@ -23,6 +23,7 @@ function SignUpForm({
   setErrors,
   isSubmitting,
   handleSubmit,
+  handleSubmitWithGoogle,
 }) {
   return (
     <div className={styles["signup-form"]}>
@@ -258,7 +259,11 @@ function SignUpForm({
 
         {/* Social Buttons Row */}
         <div className={styles["signup-form__social-list"]}>
-          <button type="button" className={styles["signup-form__social-btn"]}>
+          <button
+            type="button"
+            className={styles["signup-form__social-btn"]}
+            onClick={handleSubmitWithGoogle}
+          >
             <span className={styles["signup-form__social-icon"]}>
               <Icon name="Google" size={18} />
             </span>

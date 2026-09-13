@@ -1,77 +1,78 @@
 import api from "./api";
 import { courseData } from "~/constants/mockCourse";
-import { mockCourseDetailData as courseDetailData } from "~/constants/mockCourseDetail";
 
-const USE_MOCK = true;
+const USE_MOCK = false;
 
-// Adapter chuẩn hóa dữ liệu khóa học từ MongoDB sang UI
 export const adaptCourse = (course) => {
   if (!course) return null;
 
   const stats = course.stats || {};
   return {
+    ...course,
     id: course._id?.toString() || course.id,
     slug: course.slug,
     title: course.title,
     description: course.description,
     category: course.category,
-    imageUrl:
-      course.thumbnail ||
-      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&auto=format&fit=crop&q=80",
-    lessonsCount: `${stats.lessons || 12} bài`,
-    studentsCount: `${stats.learners || 150}`,
-    rating: stats.rating || 5.0,
+    imageUrl: course.thumbnail,
+    lessonsCount: stats.lessons,
+    studentsCount: stats.learners,
+    rating: stats.rating,
     price: course.price,
     salePrice: course.salePrice,
     level:
       course.level === "beginner"
         ? "Cơ bản"
         : course.level === "intermediate"
-        ? "Trung cấp"
-        : "Nâng cao",
+          ? "Trung cấp"
+          : "Nâng cao",
     instructor: course.instructorId?.name || "FySet Mentor",
-    raw: course,
   };
 };
 
 export const courseService = {
-  /**
-   * Lấy danh sách khóa học
-   */
-  getCourses: async (params = {}) => {
+  getAllCourses: async () => {
     if (USE_MOCK) {
       return courseData?.items || [];
     }
 
     try {
-      const data = await api.get("/courses", { params });
-      if (Array.isArray(data)) {
-        return data.map(adaptCourse);
-      }
-      if (Array.isArray(data?.items)) {
-        return data.items.map(adaptCourse);
-      }
-      return courseData?.items || [];
+      const data = await api.get("/course/all");
+
+      return data.map(adaptCourse);
     } catch (error) {
       console.warn("⚠️ [courseService] Dùng mock courses dự phòng:", error.message);
       return courseData?.items || [];
     }
   },
 
-  /**
-   * Lấy chi tiết một khóa học theo slug hoặc id
-   */
-  getCourseBySlug: async (slug) => {
+  getCourse: async (id) => {
     if (USE_MOCK) {
-      return courseDetailData;
+      return courseData?.items || [];
     }
 
     try {
-      const data = await api.get(`/courses/${slug}`);
-      return adaptCourse(data) || courseDetailData;
+      const data = await api.get(`/course/${id}`);
+
+      return adaptCourse(data);
     } catch (error) {
-      console.warn("⚠️ [courseService] Dùng mock chi tiết khóa học:", error.message);
-      return courseDetailData;
+      console.warn("⚠️ [courseService] Dùng mock courses dự phòng:", error.message);
+      return courseData?.items || [];
+    }
+  },
+
+  getCurriculum: async (courseId) => {
+    if (USE_MOCK) {
+      return courseData?.items || [];
+    }
+
+    try {
+      const data = await api.get(`/course/curriculum/${courseId}`);
+
+      return data;
+    } catch (error) {
+      console.warn("⚠️ [courseService] Dùng mock courses dự phòng:", error.message);
+      return courseData?.items || [];
     }
   },
 };

@@ -13,6 +13,7 @@ function SignInForm({
   setErrors,
   isSubmitting,
   handleSubmit,
+  handleSubmitWithGoogle,
   greetingPhrases,
   phraseIndex,
   charIndex,
@@ -154,7 +155,11 @@ function SignInForm({
           </div>
 
           <div className={styles["signin-form__social-list"]}>
-            <button type="button" className={styles["signin-form__social-btn"]}>
+            <button
+              type="button"
+              className={styles["signin-form__social-btn"]}
+              onClick={handleSubmitWithGoogle}
+            >
               <span className={styles["signin-form__social-icon"]}>
                 <Icon name="Google" size={18} />
               </span>

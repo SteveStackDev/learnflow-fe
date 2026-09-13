@@ -13,9 +13,7 @@ export const adaptConversation = (conv, currentUserId) => {
   // Tìm đối phương nếu là chat 1-1
   let otherUser = null;
   if (!isGroup && Array.isArray(conv.participants)) {
-    otherUser = conv.participants.find(
-      (p) => (p._id?.toString() || p.id) !== currentUserId,
-    );
+    otherUser = conv.participants.find((p) => (p._id?.toString() || p.id) !== currentUserId);
   }
 
   const name =
@@ -46,7 +44,10 @@ export const adaptConversation = (conv, currentUserId) => {
       : "",
     messages: (conv.messages || []).map((msg) => ({
       id: msg._id?.toString() || msg.id,
-      sender: (msg.senderId?._id?.toString() || msg.senderId?.toString()) === currentUserId ? "me" : "them",
+      sender:
+        (msg.senderId?._id?.toString() || msg.senderId?.toString()) === currentUserId
+          ? "me"
+          : "them",
       time: msg.createdAt
         ? new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
         : "Vừa xong",
@@ -70,7 +71,10 @@ export const chatService = {
       }
       return mockChatData.conversations;
     } catch (error) {
-      console.warn("⚠️ [chatService] Dùng mock chat dự phòng do chưa có dữ liệu backend:", error.message);
+      console.warn(
+        "⚠️ [chatService] Dùng mock chat dự phòng do chưa có dữ liệu backend:",
+        error.message,
+      );
       return mockChatData.conversations;
     }
   },

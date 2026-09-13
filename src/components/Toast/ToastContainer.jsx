@@ -8,6 +8,8 @@ export function ToastContainer() {
 
   if (!toasts || toasts.length === 0) return null;
 
+  console.log(toasts);
+
   return (
     <div
       className={styles["toast-container"]}

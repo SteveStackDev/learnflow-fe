@@ -19,7 +19,7 @@ import BadgeFaq from "./components/BadgeFaq/BadgeFaq";
 import useScrollReveal from "~/hooks/useScrollReveal";
 
 function Badge() {
-  const [badgesList, setBadgesList] = useState(badgeData.items || []);
+  const [badgesList, setBadgesList] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,8 +39,9 @@ function Badge() {
 
   // Nạp danh sách danh hiệu từ badgeService
   useEffect(() => {
-    badgeService.getBadges().then((data) => {
+    badgeService.getAllBadges().then((data) => {
       if (Array.isArray(data) && data.length > 0) {
+        console.log(data);
         setBadgesList(data);
       } else if (Array.isArray(data?.items)) {
         setBadgesList(data.items);
@@ -57,9 +58,9 @@ function Badge() {
 
   // Filter Logic
   const filteredAndSortedItems = useMemo(() => {
-    return (badgesList || []).filter((item) => {
+    return badgesList.filter((item) => {
       const matchesSearch =
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase());
       const selectedTab = badgeData.tabs[activeTab];
       const matchesTab =

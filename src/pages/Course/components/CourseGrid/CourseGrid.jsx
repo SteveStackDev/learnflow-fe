@@ -2,7 +2,6 @@ import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { Pagination } from "~/components/ui";
-import heroUrl from "~/assets/images/Home/hero.webp";
 import styles from "./CourseGrid.module.css";
 
 function CourseGrid({
@@ -15,6 +14,12 @@ function CourseGrid({
   setActiveCategoryTab,
 }) {
   const navigate = useNavigate();
+
+  async function handleViewCourseInfo(e, id) {
+    e.stopPropagation();
+    navigate(`/course/${id}/info`);
+  }
+
   return (
     <section className={styles["course-grid"]}>
       <div className={styles["course-grid__container"]}>
@@ -63,7 +68,7 @@ function CourseGrid({
                       {obj.level}
                     </span>
                     <img
-                      src={heroUrl}
+                      src={obj.imageUrl}
                       alt={`Khóa học ${obj.title}`}
                       loading="lazy"
                       decoding="async"
@@ -90,8 +95,7 @@ function CourseGrid({
                     <button
                       type="button"
                       onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/course/${obj.id}/info`);
+                        handleViewCourseInfo(e, obj.id);
                       }}
                       className={styles["course-grid__action-btn"]}
                     >

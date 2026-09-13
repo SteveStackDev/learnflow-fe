@@ -55,7 +55,7 @@ function BadgeGrid({
                           : styles["badge-grid__status-chip--locked"]
                       }`}
                     >
-                      {obj.badgeText}
+                      Chưa nhận
                     </span>
                   </div>
 
@@ -67,9 +67,9 @@ function BadgeGrid({
                           : styles["badge-grid__card-icon--disabled"]
                       }`}
                     >
-                      <Icon name={obj.iconName} size={24} />
+                      <Icon name={obj.icon} size={24} />
                     </div>
-                    <h3 className={styles["badge-grid__card-title"]}>{obj.title}</h3>
+                    <h3 className={styles["badge-grid__card-title"]}>{obj.name}</h3>
                     <p className={styles["badge-grid__card-desc"]}>{obj.description}</p>
                   </div>
 
@@ -86,7 +86,7 @@ function BadgeGrid({
                           : styles["badge-grid__btn--disabled"]
                       }`}
                     >
-                      {obj.buttonText}
+                      Chưa đạt điều kiện
                     </button>
                   </div>
                 </div>

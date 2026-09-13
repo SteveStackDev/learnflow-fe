@@ -32,13 +32,13 @@ export async function submitCode({
       signal: controller.signal,
     });
 
-    clearTimeout(timeoutId);
+//     clearTimeout(timeoutId);
 
-    const data = await response.json();
+//     const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(data.error || "Gửi bài tập lên máy chấm thất bại!");
-    }
+//     if (!response.ok) {
+//       throw new Error(data.error || "Gửi bài tập lên máy chấm thất bại!");
+//     }
 
     return {
       submission_id: data.submission_id,
@@ -138,12 +138,12 @@ export async function getSubmission(submissionId) {
   const response = await fetch(`${API_BASE_URL}/submissions/${submissionId}/`);
   const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data.error || "Khôi phục dữ liệu bài nộp thất bại");
-  }
+//   if (!response.ok) {
+//     throw new Error(data.error || "Khôi phục dữ liệu bài nộp thất bại");
+//   }
 
-  return data;
-}
+//   return data;
+// }
 
 /**
  * Lấy toàn bộ danh sách bài nộp từ server
@@ -152,9 +152,9 @@ export async function getSubmissions() {
   const response = await fetch(`${API_BASE_URL}/submissions/`);
   const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data.error || "Không thể lấy danh sách bài nộp");
-  }
+//   if (!response.ok) {
+//     throw new Error(data.error || "Không thể lấy danh sách bài nộp");
+//   }
 
-  return data;
-}
+//   return data;
+// }

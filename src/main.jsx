@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 // Context & Toast
 import { ToastProvider } from "~/context/ToastContext.jsx";
 import { ThemeProvider } from "~/context/ThemeContext.jsx";
+import { AuthProvider } from "./context/authContext";
 import ToastContainer from "~/components/Toast/ToastContainer.jsx";
 
 // Styles
@@ -21,23 +22,15 @@ const Home = lazy(() => import("~/pages/Home/Home"));
 const About = lazy(() => import("~/pages/About/About"));
 const Contact = lazy(() => import("~/pages/Contact/Contact"));
 const Roadmap = lazy(() => import("~/pages/Roadmap/Roadmap"));
-const RoadmapDetailSubpage = lazy(
-  () => import("~/pages/RoadmapDetail/RoadmapDetail"),
-);
+const RoadmapDetailSubpage = lazy(() => import("~/pages/RoadmapDetail/RoadmapDetail"));
 const Pricing = lazy(() => import("~/pages/Pricing/Pricing"));
-const PricingCheckoutSubpage = lazy(
-  () => import("~/pages/PricingCheckout/PricingCheckout"),
-);
+const PricingCheckoutSubpage = lazy(() => import("~/pages/PricingCheckout/PricingCheckout"));
 const Badge = lazy(() => import("~/pages/Badge/Badge"));
-const BadgeDetailSubpage = lazy(
-  () => import("~/pages/BadgeDetail/BadgeDetail"),
-);
+const BadgeDetailSubpage = lazy(() => import("~/pages/BadgeDetail/BadgeDetail"));
 const Leaderboard = lazy(() => import("~/pages/Leaderboard/Leaderboard"));
 const Course = lazy(() => import("~/pages/Course/Course"));
 const CourseInfo = lazy(() => import("~/pages/CourseInfo/CourseInfo"));
-const CourseDetailSubpage = lazy(
-  () => import("~/pages/CourseDetail/CourseDetail"),
-);
+const CourseDetailSubpage = lazy(() => import("~/pages/CourseDetail/CourseDetail"));
 const Problem = lazy(() => import("~/pages/Problem/Problem"));
 const ProblemList = lazy(() => import("~/pages/ProblemList/ProblemList"));
 const ProblemDetail = lazy(() => import("~/pages/ProblemDetail/ProblemDetail"));
@@ -99,36 +92,37 @@ if (typeof window !== "undefined") {
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ThemeProvider>
-      <ToastProvider>
-        <BrowserRouter>
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route element={<MainLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/roadmap" element={<Roadmap />} />
-                <Route path="/roadmap/detail" element={<RoadmapDetailSubpage />} />
-                <Route path="/roadmap/:id" element={<RoadmapDetailSubpage />} />
-                <Route path="/pricing" element={<Pricing />} />
-                <Route path="/pricing/checkout" element={<PricingCheckoutSubpage />} />
-                <Route path="/checkout" element={<PricingCheckoutSubpage />} />
-                <Route path="/badge" element={<Badge />} />
-                <Route path="/badge/detail" element={<BadgeDetailSubpage />} />
-                <Route path="/badge/:id" element={<BadgeDetailSubpage />} />
-                <Route path="/leaderboard" element={<Leaderboard />} />
-                <Route path="/course" element={<Course />} />
-                <Route path="/course/info" element={<CourseInfo />} />
-                <Route path="/course/:id/info" element={<CourseInfo />} />
-                <Route path="/course/detail" element={<CourseDetailSubpage />} />
-                <Route path="/course/:id" element={<CourseDetailSubpage />} />
-                <Route path="/problem" element={<Problem />} />
-                <Route path="/problem/list" element={<ProblemList />} />
-                <Route path="/problem/:id" element={<ProblemDetail />} />
-                <Route path="/problem/:id/result" element={<ProblemResult />} />
-                <Route path="/problem/:id/submissions" element={<Submissions />} />
-                <Route path="/problem/result" element={<ProblemResult />} />
+    <AuthProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <BrowserRouter>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route element={<MainLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/roadmap" element={<Roadmap />} />
+                  <Route path="/roadmap/detail" element={<RoadmapDetailSubpage />} />
+                  <Route path="/roadmap/:id" element={<RoadmapDetailSubpage />} />
+                  <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/pricing/checkout" element={<PricingCheckoutSubpage />} />
+                  <Route path="/checkout" element={<PricingCheckoutSubpage />} />
+                  <Route path="/badge" element={<Badge />} />
+                  <Route path="/badge/detail" element={<BadgeDetailSubpage />} />
+                  <Route path="/badge/:id" element={<BadgeDetailSubpage />} />
+                  <Route path="/leaderboard" element={<Leaderboard />} />
+                  <Route path="/course" element={<Course />} />
+                  <Route path="/course/info" element={<CourseInfo />} />
+                  <Route path="/course/:id/info" element={<CourseInfo />} />
+                  <Route path="/course/detail" element={<CourseDetailSubpage />} />
+                  <Route path="/course/:id" element={<CourseDetailSubpage />} />
+                  <Route path="/problem" element={<Problem />} />
+                  <Route path="/problem/list" element={<ProblemList />} />
+                  <Route path="/problem/:id" element={<ProblemDetail />} />
+                  <Route path="/problem/:id/result" element={<ProblemResult />} />
+                  <Route path="/problem/:id/submissions" element={<Submissions />} />
+                  <Route path="/problem/result" element={<ProblemResult />} />
 
                 {/* AI Learning Routes */}
                 <Route path="/ai-learning" element={<AILearning />} />
@@ -148,31 +142,32 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/contest/:id/submissions" element={<Submissions />} />
                 <Route path="/contest/:id" element={<ContestDetail />} />
 
-                {/* Submissions Routes */}
-                <Route path="/submissions" element={<Submissions />} />
-                <Route path="/user/submissions" element={<Submissions />} />
+                  {/* Submissions Routes */}
+                  <Route path="/submissions" element={<Submissions />} />
+                  <Route path="/user/submissions" element={<Submissions />} />
 
-                <Route path="/setting" element={<Setting />} />
-                <Route path="/dashboard" element={<DashBoard />} />
-                <Route path="/profile" element={<UserProfile />} />
-                <Route path="/profile/:id" element={<UserProfile />} />
-                <Route path="/user/:id" element={<UserProfile />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/detail" element={<BlogDetail />} />
-                <Route path="/blog/:id" element={<BlogDetail />} />
-                <Route path="/chat" element={<Chat />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/verify-email" element={<VerifyEmail />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-        <ToastContainer />
-      </ToastProvider>
-    </ThemeProvider>
-  </StrictMode>
+                  <Route path="/setting" element={<Setting />} />
+                  <Route path="/dashboard" element={<DashBoard />} />
+                  <Route path="/profile" element={<UserProfile />} />
+                  <Route path="/profile/:id" element={<UserProfile />} />
+                  <Route path="/user/:id" element={<UserProfile />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/detail" element={<BlogDetail />} />
+                  <Route path="/blog/:id" element={<BlogDetail />} />
+                  <Route path="/chat" element={<Chat />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/verify-email" element={<VerifyEmail />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+          <ToastContainer />
+        </ToastProvider>
+      </ThemeProvider>
+    </AuthProvider>
+  </StrictMode>,
 );

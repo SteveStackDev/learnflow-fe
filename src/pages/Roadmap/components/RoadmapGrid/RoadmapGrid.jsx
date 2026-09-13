@@ -2,7 +2,6 @@ import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { Pagination } from "~/components/ui";
-import heroUrl from "~/assets/images/Home/hero.webp";
 import styles from "./RoadmapGrid.module.css";
 
 function RoadmapGrid({
@@ -67,7 +66,7 @@ function RoadmapGrid({
                   <div className={styles["roadmap-cards__card-media-wrap"]}>
                     <img
                       className={styles["roadmap-cards__card-media"]}
-                      src={heroUrl}
+                      src={card.banner}
                       alt={`Biểu tượng lộ trình học ${card.title}`}
                       loading="lazy"
                       decoding="async"
@@ -84,7 +83,7 @@ function RoadmapGrid({
                     <p className={styles["roadmap-cards__card-desc"]}>{card.description}</p>
 
                     <div className={styles["roadmap-cards__card-tags"]}>
-                      {card.tags.map((item) => (
+                      {(card.tags ? card.tags : []).map((item) => (
                         <span key={item} className={styles["roadmap-cards__tag-chip"]}>
                           {item}
                         </span>
@@ -100,7 +99,7 @@ function RoadmapGrid({
                       }}
                       className={styles["roadmap-cards__card-btn"]}
                     >
-                      <span>{card.actionText}</span>
+                      <span>Khám phá lộ trình</span>
                       <span className={styles["roadmap-cards__card-btn-arrow"]}>→</span>
                     </button>
                   </div>

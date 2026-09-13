@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Button } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
@@ -8,6 +8,7 @@ import CourseInfoLearningPoints from "./components/CourseInfoLearningPoints/Cour
 import CourseInfoCurriculum from "./components/CourseInfoCurriculum/CourseInfoCurriculum";
 import CourseInfoSidebar from "./components/CourseInfoSidebar/CourseInfoSidebar";
 import styles from "./CourseInfo.module.css";
+import { courseService } from "~/services";
 
 export default function CourseInfo() {
   useScrollReveal();
@@ -15,29 +16,27 @@ export default function CourseInfo() {
   const { toast } = useToast();
   const { id } = useParams();
 
+  const [course, setCourse] = useState(null);
+  const [curriculum, setCurriculum] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   // State: enrolled status (false = chưa học | true = đã học)
   const [isEnrolled, setIsEnrolled] = useState(false);
 
-  const courseId = id || "reactjs-co-ban";
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const course = await courseService.getCourse(id);
+      const curriculum = await courseService.getCurriculum(id);
+      setCurriculum(curriculum);
+      setCourse(course);
+      setLoading(false);
+    }
 
-  const mockCourse = {
-    id: courseId,
-    title: "Lập trình ReactJS từ cơ bản đến nâng cao",
-    category: "Lập trình Web",
-    subcategory: "ReactJS",
-    description:
-      "Khóa học toàn diện giúp bạn làm chủ ReactJS. Xây dựng các ứng dụng web tương tác, hiệu suất cao với các khái niệm hiện đại như Hooks, Redux Toolkit, Next.js và nhiều hơn nữa.",
-    rating: 4.8,
-    ratingCount: "2,450",
-    studentsCount: "15,000+",
-    lastUpdated: "10/2024",
-    price: "1,499,000đ",
-    originalPrice: "2,500,000đ",
-    duration: "45 giờ",
-    totalLessons: "156 bài",
-    access: "Trọn đời",
-    certificate: "Cấp sau khi hoàn thành",
-  };
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
 
   const handleActionClick = () => {
     if (!isEnrolled) {
@@ -45,8 +44,16 @@ export default function CourseInfo() {
     } else {
       toast.info("Đang chuyển tới bài học tiếp theo...", "Khóa học");
     }
-    navigate(`/course/${courseId}`);
+    navigate(`/course/${id}`);
   };
+
+  if (loading) {
+    return (
+      <div className={styles.loading_wrapper} style={{ textAlign: "center", padding: "50px" }}>
+        <p>Đang tải thông tin khóa học...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page_wrapper}>
@@ -76,19 +83,17 @@ export default function CourseInfo() {
         {/* Left Column: Hero, What you will learn, Curriculum */}
         <main className={styles.main_content}>
           <CourseInfoHero
-            course={mockCourse}
-            onPlayPreview={() =>
-              toast.info("Xem trước video giới thiệu khóa học", "Video Preview")
-            }
+            course={course}
+            onPlayPreview={() => toast.info("Xem trước video giới thiệu khóa học", "Video Preview")}
           />
-          <CourseInfoLearningPoints />
-          <CourseInfoCurriculum />
+          <CourseInfoLearningPoints course={course} />
+          <CourseInfoCurriculum curriculum={curriculum} />
         </main>
 
         {/* Right Column: Sticky Sidebar Card */}
         <aside className={styles.right_col}>
           <CourseInfoSidebar
-            course={mockCourse}
+            curriculum={curriculum}
             isEnrolled={isEnrolled}
             onActionClick={handleActionClick}
           />
