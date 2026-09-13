@@ -1,0 +1,50 @@
+.ai_learning_page {
+  min-height: calc(100vh - 72px);
+  background-color: var(--theme-page-bg);
+  color: var(--theme-text-primary);
+  padding: var(--spacing-6, 24px) var(--spacing-4, 16px) var(--spacing-16, 64px);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Ambient glow orb for premium AI aesthetic */
+.ai_learning_page::before {
+  content: "";
+  position: absolute;
+  top: -150px;
+  right: 15%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, rgba(14, 165, 233, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ai_learning_page::after {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: -100px;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, rgba(99, 102, 241, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 1260px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .ai_learning_page {
+    padding: var(--spacing-4, 16px) var(--spacing-3, 12px) var(--spacing-10, 40px);
+  }
+}

@@ -1,0 +1,263 @@
+/* ==========================================================================
+   AI Learning Algorithm Sidebar Module Styling
+   ========================================================================== */
+
+.sidebar_container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   1. AI Pattern Diagnosis Card (Deep Navy Styling)
+   ========================================================================== */
+
+.diagnosis_card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: linear-gradient(175deg, #f0f7ff 0%, #e0effe 100%);
+  border: 1.5px solid rgba(9, 80, 195, 0.25);
+  border-radius: 18px;
+  padding: 24px 24px;
+  color: var(--theme-text-primary, #0f172a);
+  box-shadow: 0 4px 16px rgba(9, 80, 195, 0.06);
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.diagnosis_card:hover {
+  border-color: rgba(9, 80, 195, 0.45);
+  box-shadow: 0 8px 24px rgba(9, 80, 195, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Header Tag */
+.tag_header {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tag_blue_dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-primary, #0950c3);
+  box-shadow: 0 0 0 3px rgba(9, 80, 195, 0.2);
+}
+
+.tag_text {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--color-primary, #0950c3);
+  text-transform: uppercase;
+}
+
+/* Main Question */
+.question_title {
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  line-height: 1.35;
+  margin: 0;
+  letter-spacing: -0.015em;
+}
+
+/* Narrative */
+.narrative {
+  font-size: 0.9rem;
+  color: var(--theme-text-secondary, #334155);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Key Takeaways List */
+.takeaways_list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 2px;
+}
+
+.takeaway_item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background-color: #ffffff;
+  border: 1px solid rgba(9, 80, 195, 0.18);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: #1e293b;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.item_number {
+  font-weight: 800;
+  color: var(--color-primary, #0950c3);
+  flex-shrink: 0;
+}
+
+.item_content {
+  flex: 1;
+}
+
+.code_chip {
+  display: inline-block;
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  margin: 0 2px;
+  border-radius: 5px;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid rgba(3, 105, 161, 0.25);
+  vertical-align: baseline;
+}
+
+/* CTA Lecture Button */
+.cta_lecture_btn {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 18px;
+  background: var(--gradient-primary, linear-gradient(135deg, #0950c3 0%, #0ea5e9 100%)) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.3);
+  border: none;
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.cta_lecture_btn:hover {
+  box-shadow: 0 6px 20px rgba(9, 80, 195, 0.45);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   2. Quick Practice Card
+   ========================================================================== */
+
+.practice_card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 16px;
+  padding: 22px 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.practice_card:hover {
+  border-color: rgba(9, 80, 195, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.practice_title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.practice_description {
+  font-size: 0.88rem;
+  color: var(--theme-text-secondary, #64748b);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.practice_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.reward_badge {
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 4px 10px;
+}
+
+.fix_link_wrapper {
+  text-decoration: none;
+}
+
+.start_fix_btn {
+  font-weight: 700;
+  font-size: 0.84rem;
+  padding: 8px 18px;
+  border-radius: 8px;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .diagnosis_card {
+  background: linear-gradient(175deg, #0f1c3f 0%, #09132b 100%);
+  border-color: rgba(56, 189, 248, 0.28);
+  color: #f8fafc;
+  box-shadow: 0 10px 30px rgba(15, 28, 63, 0.28), 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+:global([data-theme="dark"]) .diagnosis_card:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 12px 36px rgba(15, 28, 63, 0.38), 0 0 20px rgba(56, 189, 248, 0.12);
+}
+
+:global([data-theme="dark"]) .tag_blue_dot {
+  background-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+
+:global([data-theme="dark"]) .tag_text {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .question_title {
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .narrative {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .takeaway_item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+}
+
+:global([data-theme="dark"]) .item_number {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .code_chip {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #7dd3fc;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .practice_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .practice_card:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .practice_description {
+  color: #94a3b8;
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 // Data & Services
-import { problemData, ALGORITHM_OPTIONS } from "../../constants/mockProblem";
+import { ALGORITHM_OPTIONS, problemData } from "../../constants/mockProblem";
 import { problemService } from "~/services/problemService";
 
 // Import CSS Modules
@@ -22,10 +22,11 @@ const SORT_OPTIONS = [
   { id: "rate", label: "Tỷ lệ làm đúng" },
 ];
 
+const CATEGORIES = ["Tất cả", "Dễ", "Trung bình", "Khó"];
+
 function Problem() {
-  const [problemsList, setProblemsList] = useState(
-    problemData.items || problemData.challenges || [],
-  );
+  const [problemsList, setProblemsList] = useState([]);
+  const [problemStats, setProblemStats] = useState({ total: 0, topicsCount: 0, recentCount: 0 });
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
@@ -39,15 +40,31 @@ function Problem() {
   const sortDropdownRef = useRef(null);
   const algoDropdownRef = useRef(null);
 
-  // Nạp danh sách bài tập từ problemService
+  // Nạp danh sách bài tập & thống kê thực tế từ SQLite Backend
   useEffect(() => {
-    problemService.getProblems().then((data) => {
-      if (Array.isArray(data) && data.length > 0) {
-        setProblemsList(data);
-      } else if (Array.isArray(data?.items)) {
-        setProblemsList(data.items);
+    const fetchProblems = async () => {
+      try {
+        const [data, stats] = await Promise.all([
+          problemService.getProblems(),
+          problemService.getProblemStats(),
+        ]);
+        const list = Array.isArray(data) ? data : [];
+        setProblemsList(list);
+
+        // Tính toán các topics duy nhất nếu stats chưa có
+        const uniqueTopics = new Set(list.map((p) => p.topic).filter(Boolean));
+        setProblemStats({
+          total: typeof stats?.total === "number" ? stats.total : list.length,
+          topicsCount: typeof stats?.topicsCount === "number" ? stats.topicsCount : uniqueTopics.size,
+          recentCount: typeof stats?.recentCount === "number" ? stats.recentCount : list.length,
+        });
+      } catch (err) {
+        console.warn("Lỗi nạp bài tập từ Backend:", err.message);
+        setProblemsList([]);
       }
-    });
+    };
+
+    fetchProblems();
   }, []);
 
   useEffect(() => {
@@ -83,26 +100,29 @@ function Problem() {
 
   // Filter & Sort Logic
   const filteredAndSortedItems = useMemo(() => {
-    const tabs = problemData.tabs ||
-      problemData.categories || ["Tất cả", "Dễ", "Trung bình", "Khó"];
     return (problemsList || [])
       .filter((item) => {
+        const q = searchQuery.toLowerCase().trim();
         const matchesSearch =
-          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchQuery.toLowerCase());
+          !q ||
+          (item.title && item.title.toLowerCase().includes(q)) ||
+          (item.statement && item.statement.toLowerCase().includes(q)) ||
+          (item.topic && item.topic.toLowerCase().includes(q)) ||
+          (item.tags && item.tags.some((t) => t.toLowerCase().includes(q)));
 
-        const selectedCategory = tabs[activeTab] || "Tất cả";
+        const selectedCategory = CATEGORIES[activeTab] || "Tất cả";
         const matchesCategory =
           activeTab === 0 ||
           selectedCategory === "Tất cả" ||
-          selectedCategory === "Tất cả dạng bài" ||
           item.level === selectedCategory ||
-          (item.tags && item.tags.includes(selectedCategory));
+          item.difficultyLabel === selectedCategory ||
+          item.difficulty === selectedCategory;
 
         const matchesAlgorithm =
           selectedAlgorithm.id === "all" ||
-          item.algorithm === selectedAlgorithm.id ||
-          item.algorithmLabel === selectedAlgorithm.label;
+          item.topic === selectedAlgorithm.label ||
+          item.topic === selectedAlgorithm.id ||
+          (item.tags && item.tags.includes(selectedAlgorithm.label));
 
         return matchesSearch && matchesCategory && matchesAlgorithm;
       })
@@ -111,13 +131,11 @@ function Problem() {
           return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
         }
         if (selectedSort.id === "rate") {
-          const rateA = parseFloat(a.successRate) || 0;
-          const rateB = parseFloat(b.successRate) || 0;
+          const rateA = parseFloat(a.acceptanceRate || a.successRate) || 0;
+          const rateB = parseFloat(b.acceptanceRate || b.successRate) || 0;
           return rateB - rateA;
         }
-        return (
-          (b.submissionsCount || b.studentsNum || 0) - (a.submissionsCount || a.studentsNum || 0)
-        );
+        return (b.solved || 0) - (a.solved || 0);
       });
   }, [problemsList, searchQuery, activeTab, selectedSort, selectedAlgorithm]);
 
@@ -133,8 +151,24 @@ function Problem() {
     return filteredAndSortedItems.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredAndSortedItems, currentPage, itemsPerPage]);
 
-  const categories = problemData.tabs ||
-    problemData.categories || ["Tất cả", "Dễ", "Trung bình", "Khó"];
+  // 3 Metric Cards động từ dữ liệu thật
+  const dynamicStats = [
+    {
+      title: "Tổng số bài tập",
+      value: String(problemStats.total ?? problemsList.length ?? 0),
+      iconName: "Code",
+    },
+    {
+      title: "Chủ đề đa dạng",
+      value: String(problemStats.topicsCount ?? 0),
+      iconName: "Grid",
+    },
+    {
+      title: "Bài mới tuần này",
+      value: String(problemStats.recentCount ?? 0),
+      iconName: "Clock",
+    },
+  ];
 
   return (
     <div className={styles.problempage}>
@@ -145,7 +179,7 @@ function Problem() {
 
       <ProblemHero />
 
-      <ProblemDaily />
+      {problemsList.length > 0 && <ProblemDaily problem={problemsList[0]} />}
 
       <ProblemFilter
         searchQuery={searchQuery}
@@ -162,8 +196,8 @@ function Problem() {
         setIsSortDropdownOpen={setIsSortDropdownOpen}
         sortDropdownRef={sortDropdownRef}
         SORT_OPTIONS={SORT_OPTIONS}
-        stats={problemData.stats}
-        categories={categories}
+        stats={dynamicStats}
+        categories={CATEGORIES}
         activeTab={activeTab}
         handleTabChange={handleTabChange}
       />

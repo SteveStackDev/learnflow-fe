@@ -1,0 +1,127 @@
+/* ==========================================================================
+   AI Learning Analysis Failed Test Case Card Module Styling
+   ========================================================================== */
+
+.testcase_card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.testcase_card:hover {
+  border-color: rgba(9, 80, 195, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header_icon {
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detail_group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail_label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--theme-text-muted, #64748b);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.input_box {
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(169, 183, 203, 0.45);
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Outputs Grid */
+.outputs_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.output_box {
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.output_box--expected {
+  background-color: rgba(16, 185, 129, 0.08);
+  border: 1.5px solid #10b981;
+  color: #10b981;
+}
+
+.output_box--actual {
+  background-color: rgba(239, 68, 68, 0.08);
+  border: 1.5px solid #ef4444;
+  color: #ef4444;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .testcase_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .testcase_card:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .input_box {
+  background-color: #0b1329;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .outputs_grid {
+    grid-template-columns: 1fr;
+  }
+}

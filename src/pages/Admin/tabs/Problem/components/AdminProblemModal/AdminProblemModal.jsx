@@ -19,6 +19,8 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
     topic: "Array & Hashing",
     points: 500,
     status: "Active",
+    timeLimit: "2.0",
+    memoryLimit: "256",
     statement: "",
     inputFormat: "",
     outputFormat: "",
@@ -29,9 +31,28 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
     { input: "", output: "", explanation: "" },
   ]);
 
-  const [testCases, setTestCases] = useState([
-    { input: "", expected: "", points: 200, isHidden: false },
+  const [subtasks, setSubtasks] = useState([
+    {
+      id: 1,
+      name: "Subtask 1",
+      points: 200,
+      constraints: "N <= 100",
+      testCases: [
+        { id: 1, input: "", expected: "", points: 100, isHidden: false },
+        { id: 2, input: "", expected: "", points: 100, isHidden: true },
+      ],
+    },
+    {
+      id: 2,
+      name: "Subtask 2",
+      points: 300,
+      constraints: "N <= 10^5",
+      testCases: [
+        { id: 3, input: "", expected: "", points: 300, isHidden: true },
+      ],
+    },
   ]);
+  const [activeSubtaskIdx, setActiveSubtaskIdx] = useState(0);
 
   useEffect(() => {
     if (initialData) {
@@ -41,6 +62,16 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
         topic: initialData.topic || "Array & Hashing",
         points: initialData.points || 500,
         status: initialData.status || "Active",
+        timeLimit: initialData.timeLimit
+          ? String(initialData.timeLimit).replace("s", "")
+          : initialData.time_limit
+          ? String(initialData.time_limit)
+          : "2.0",
+        memoryLimit: initialData.memoryLimit
+          ? String(initialData.memoryLimit).replace("MB", "")
+          : initialData.memory_limit
+          ? String(initialData.memory_limit)
+          : "256",
         statement: initialData.statement || initialData.description || "",
         inputFormat: Array.isArray(initialData.inputFormat)
           ? initialData.inputFormat.join("\n")
@@ -65,19 +96,62 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
         setExamples([{ input: "", output: "", explanation: "" }]);
       }
 
-      if (initialData.testCases && initialData.testCases.length > 0) {
-        setTestCases(
-          initialData.testCases.map((tc) => ({
-            input: tc.input || "",
-            expected: tc.expected || "",
-            points: tc.points || 150,
-            isHidden: !!tc.isHidden,
+      if (initialData.subtasks && initialData.subtasks.length > 0) {
+        setSubtasks(
+          initialData.subtasks.map((st, sIdx) => ({
+            id: st.id || sIdx + 1,
+            name: st.name || `Subtask ${sIdx + 1}`,
+            points: Number(st.points) || 100,
+            constraints: st.constraints || "",
+            testCases:
+              st.testCases && st.testCases.length > 0
+                ? st.testCases.map((tc, tIdx) => ({
+                    id: tc.id || tIdx + 1,
+                    input: tc.input || "",
+                    expected: tc.expected || "",
+                    points: Number(tc.points) || 100,
+                    isHidden: !!tc.isHidden,
+                  }))
+                : [{ id: 1, input: "", expected: "", points: 100, isHidden: false }],
           }))
         );
+      } else if (initialData.testCases && initialData.testCases.length > 0) {
+        setSubtasks([
+          {
+            id: 1,
+            name: "Subtask 1 (Mặc định)",
+            points: Number(initialData.points) || 500,
+            constraints: "",
+            testCases: initialData.testCases.map((tc, tIdx) => ({
+              id: tc.id || tIdx + 1,
+              input: tc.input || "",
+              expected: tc.expected || "",
+              points: Number(tc.points) || 100,
+              isHidden: !!tc.isHidden,
+            })),
+          },
+        ]);
       } else {
-        setTestCases([
-          { input: "5 10\n2 3 1 5 4", expected: "3", points: 200, isHidden: false },
-          { input: "3 5\n6 7 8", expected: "0", points: 150, isHidden: true },
+        setSubtasks([
+          {
+            id: 1,
+            name: "Subtask 1",
+            points: 200,
+            constraints: "N <= 100",
+            testCases: [
+              { id: 1, input: "", expected: "", points: 100, isHidden: false },
+              { id: 2, input: "", expected: "", points: 100, isHidden: true },
+            ],
+          },
+          {
+            id: 2,
+            name: "Subtask 2",
+            points: 300,
+            constraints: "N <= 10^5",
+            testCases: [
+              { id: 3, input: "", expected: "", points: 300, isHidden: true },
+            ],
+          },
         ]);
       }
     } else {
@@ -87,16 +161,37 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
         topic: "Array & Hashing",
         points: 500,
         status: "Active",
+        timeLimit: "2.0",
+        memoryLimit: "256",
         statement: "",
         inputFormat: "",
         outputFormat: "",
         constraints: "",
       });
       setExamples([{ input: "", output: "", explanation: "" }]);
-      setTestCases([
-        { input: "", expected: "", points: 200, isHidden: false },
+      setSubtasks([
+        {
+          id: 1,
+          name: "Subtask 1",
+          points: 200,
+          constraints: "N <= 100",
+          testCases: [
+            { id: 1, input: "", expected: "", points: 100, isHidden: false },
+            { id: 2, input: "", expected: "", points: 100, isHidden: true },
+          ],
+        },
+        {
+          id: 2,
+          name: "Subtask 2",
+          points: 300,
+          constraints: "N <= 10^5",
+          testCases: [
+            { id: 3, input: "", expected: "", points: 300, isHidden: true },
+          ],
+        },
       ]);
     }
+    setActiveSubtaskIdx(0);
     setCurrentStep(1);
   }, [initialData, isOpen]);
 
@@ -118,22 +213,94 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
     );
   };
 
-  // Test Case Handlers
-  const handleAddTestCase = () => {
-    setTestCases((prev) => [
-      ...prev,
-      { input: "", expected: "", points: 100, isHidden: false },
-    ]);
+  // Points Calculations
+  const maxProblemPoints = Number(formData.points) || 0;
+  const totalSubtaskPoints = subtasks.reduce(
+    (sum, s) => sum + (Number(s.points) || 0),
+    0
+  );
+  const isOverPoints = totalSubtaskPoints > maxProblemPoints;
+  const isMatchPoints = totalSubtaskPoints === maxProblemPoints;
+
+  // Subtask Handlers
+  const handleAddSubtask = () => {
+    const newNum = subtasks.length + 1;
+    const remainingPoints = Math.max(0, maxProblemPoints - totalSubtaskPoints);
+    const defaultPoints = remainingPoints > 0 ? remainingPoints : 100;
+    const newSt = {
+      id: Date.now(),
+      name: `Subtask ${newNum}`,
+      points: defaultPoints,
+      constraints: "",
+      testCases: [
+        { id: Date.now() + 1, input: "", expected: "", points: defaultPoints, isHidden: false },
+      ],
+    };
+    setSubtasks((prev) => [...prev, newSt]);
+    setActiveSubtaskIdx(subtasks.length);
   };
 
-  const handleRemoveTestCase = (index) => {
-    if (testCases.length <= 1) return;
-    setTestCases((prev) => prev.filter((_, idx) => idx !== index));
+  const handleRemoveSubtask = (idxToRemove) => {
+    if (subtasks.length <= 1) {
+      toast.warning("Bài tập phải có ít nhất 1 Subtask!", "Thông báo");
+      return;
+    }
+    setSubtasks((prev) => prev.filter((_, idx) => idx !== idxToRemove));
+    if (activeSubtaskIdx >= idxToRemove && activeSubtaskIdx > 0) {
+      setActiveSubtaskIdx(activeSubtaskIdx - 1);
+    }
   };
 
-  const handleTestCaseChange = (index, field, value) => {
-    setTestCases((prev) =>
-      prev.map((tc, idx) => (idx === index ? { ...tc, [field]: value } : tc))
+  const handleSubtaskFieldChange = (sIdx, field, value) => {
+    setSubtasks((prev) =>
+      prev.map((st, idx) => (idx === sIdx ? { ...st, [field]: value } : st))
+    );
+  };
+
+  // Test Case in Subtask Handlers
+  const handleAddTestCaseToSubtask = (sIdx) => {
+    setSubtasks((prev) =>
+      prev.map((st, idx) => {
+        if (idx !== sIdx) return st;
+        const newTc = {
+          id: Date.now(),
+          input: "",
+          expected: "",
+          points: Math.round(st.points / (st.testCases.length + 1)) || 50,
+          isHidden: false,
+        };
+        return { ...st, testCases: [...st.testCases, newTc] };
+      })
+    );
+  };
+
+  const handleRemoveTestCaseFromSubtask = (sIdx, tcIdx) => {
+    setSubtasks((prev) =>
+      prev.map((st, idx) => {
+        if (idx !== sIdx) return st;
+        if (st.testCases.length <= 1) {
+          toast.warning("Mỗi Subtask phải có ít nhất 1 Test Case!", "Thông báo");
+          return st;
+        }
+        return {
+          ...st,
+          testCases: st.testCases.filter((_, tIdx) => tIdx !== tcIdx),
+        };
+      })
+    );
+  };
+
+  const handleTestCaseChangeInSubtask = (sIdx, tcIdx, field, value) => {
+    setSubtasks((prev) =>
+      prev.map((st, idx) => {
+        if (idx !== sIdx) return st;
+        return {
+          ...st,
+          testCases: st.testCases.map((tc, tIdx) =>
+            tIdx === tcIdx ? { ...tc, [field]: value } : tc
+          ),
+        };
+      })
     );
   };
 
@@ -163,7 +330,7 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
       return;
     }
 
-    toast.info("Đã chuyển sang Bước 2: Cấu hình Test Cases", "Bước 1 hoàn tất");
+    toast.info("Đã chuyển sang Bước 2: Cấu hình Subtasks & Test Cases", "Bước 1 hoàn tất");
     setCurrentStep(2);
   };
 
@@ -177,21 +344,59 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
       return;
     }
 
-    const hasInvalidTestCase = testCases.some(
-      (tc) => !tc.input.trim() || !tc.expected.trim()
-    );
-
-    if (hasInvalidTestCase) {
-      toast.warning(
-        "Vui lòng nhập đầy đủ Input và Kết quả kỳ vọng cho tất cả Test Cases!",
-        "Thiếu thông tin bắt buộc"
+    // Check condition: Total subtask points cannot exceed problem total points
+    if (totalSubtaskPoints > maxProblemPoints) {
+      toast.error(
+        `Tổng điểm các Subtasks (${totalSubtaskPoints} pt) không được vượt quá tổng điểm bài tập (${maxProblemPoints} pt)! Vui lòng điều chỉnh lại điểm của các Subtask.`,
+        "Vượt quá tổng điểm"
       );
       return;
     }
 
+    // Validate subtasks & testcases
+    for (let sIdx = 0; sIdx < subtasks.length; sIdx++) {
+      const st = subtasks[sIdx];
+      if (!st.name.trim()) {
+        toast.warning(`Vui lòng nhập tên cho Subtask #${sIdx + 1}!`, "Thiếu thông tin Subtask");
+        setActiveSubtaskIdx(sIdx);
+        return;
+      }
+      for (let tIdx = 0; tIdx < st.testCases.length; tIdx++) {
+        const tc = st.testCases[tIdx];
+        if (!tc.input.trim() || !tc.expected.trim()) {
+          toast.warning(
+            `Vui lòng nhập đầy đủ Input và Kết quả kỳ vọng cho Test Case #${tIdx + 1} trong ${st.name}!`,
+            "Thiếu thông tin Test Case"
+          );
+          setActiveSubtaskIdx(sIdx);
+          return;
+        }
+      }
+    }
+
+    // Flatten all test cases for judge execution
+    const flatTestCases = [];
+    subtasks.forEach((st) => {
+      st.testCases.forEach((tc) => {
+        flatTestCases.push({
+          id: flatTestCases.length + 1,
+          label: `Case ${flatTestCases.length + 1} (${st.name})`,
+          input: tc.input,
+          expected: tc.expected,
+          points: Number(tc.points) || 100,
+          isHidden: !!tc.isHidden,
+          subtaskName: st.name,
+        });
+      });
+    });
+
     const formattedData = {
       ...formData,
       points: Number(formData.points) || 500,
+      time_limit: parseFloat(formData.timeLimit) || 2.0,
+      memory_limit: parseInt(formData.memoryLimit) || 256,
+      timeLimit: `${formData.timeLimit || "2.0"}s`,
+      memoryLimit: `${formData.memoryLimit || "256"}MB`,
       inputFormat: formData.inputFormat ? formData.inputFormat.split("\n") : [],
       outputFormat: formData.outputFormat ? formData.outputFormat.split("\n") : [],
       constraints: formData.constraints ? formData.constraints.split("\n") : [],
@@ -202,18 +407,24 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
         output: ex.output,
         explanation: ex.explanation,
       })),
-      testCases: testCases.map((tc, idx) => ({
+      subtasks: subtasks.map((st, idx) => ({
         id: idx + 1,
-        label: `Case ${idx + 1}`,
-        input: tc.input,
-        expected: tc.expected,
-        points: Number(tc.points) || 100,
-        isHidden: tc.isHidden,
+        name: st.name,
+        points: Number(st.points) || 0,
+        constraints: st.constraints || "",
+        testCases: st.testCases.map((tc, tIdx) => ({
+          id: tIdx + 1,
+          input: tc.input,
+          expected: tc.expected,
+          points: Number(tc.points) || 0,
+          isHidden: !!tc.isHidden,
+        })),
       })),
+      testCases: flatTestCases,
     };
 
     toast.success(
-      initialData ? "Đã lưu thay đổi bài tập thành công!" : "Tạo bài tập và cấu hình Test Cases thành công!",
+      initialData ? "Đã lưu thay đổi bài tập & Subtasks thành công!" : "Tạo bài tập và cấu hình Subtasks thành công!",
       "Thành công"
     );
     onSave(formattedData);
@@ -242,7 +453,7 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
                 <span
                   className={`${styles.step_badge} ${currentStep === 2 ? styles.step_badge_active : ""}`}
                 >
-                  Bước 2: Cấu hình Test Cases ({testCases.length})
+                  Bước 2: Cấu hình Subtasks ({subtasks.length})
                 </span>
               </div>
             </div>
@@ -264,7 +475,7 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
               required
             />
 
-            {/* Metadata Row */}
+            {/* Metadata Row 1: Difficulty, Topic, Points */}
             <div className={styles.row_grid_3col}>
               <div className={styles.form_group}>
                 <label className={styles.label}>Mức độ (Difficulty)</label>
@@ -297,13 +508,43 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
               </div>
             </div>
 
-            <div className={styles.form_group}>
-              <label className={styles.label}>Trạng thái (Status)</label>
-              <DropdownMenu
-                options={FORM_STATUS_OPTIONS}
-                value={formData.status}
-                onChange={(val) => setFormData({ ...formData, status: val })}
-              />
+            {/* Metadata Row 2: Status, Time Limit, Memory Limit */}
+            <div className={styles.row_grid_3col}>
+              <div className={styles.form_group}>
+                <label className={styles.label}>Trạng thái (Status)</label>
+                <DropdownMenu
+                  options={FORM_STATUS_OPTIONS}
+                  value={formData.status}
+                  onChange={(val) => setFormData({ ...formData, status: val })}
+                />
+              </div>
+
+              <div className={styles.form_group}>
+                <label className={styles.label}>Thời gian (Time Limit - Giây)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0.1"
+                  className={styles.textarea}
+                  style={{ height: 42, padding: "8px 12px" }}
+                  placeholder="2.0"
+                  value={formData.timeLimit}
+                  onChange={(e) => setFormData({ ...formData, timeLimit: e.target.value })}
+                />
+              </div>
+
+              <div className={styles.form_group}>
+                <label className={styles.label}>Bộ nhớ (Memory Limit - MB)</label>
+                <input
+                  type="number"
+                  min="16"
+                  className={styles.textarea}
+                  style={{ height: 42, padding: "8px 12px" }}
+                  placeholder="256"
+                  value={formData.memoryLimit}
+                  onChange={(e) => setFormData({ ...formData, memoryLimit: e.target.value })}
+                />
+              </div>
             </div>
 
             {/* 2. Mô tả bài toán (Statement) */}
@@ -443,20 +684,43 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
                 Hủy bỏ
               </Button>
               <Button type="submit" variant="primary" rightIcon="ArrowRight">
-                Tiếp tục: Thêm Test Cases
+                Tiếp tục: Cấu hình Subtasks
               </Button>
             </div>
           </form>
         )}
 
-        {/* STEP 2: TEST CASES CONFIGURATION */}
+        {/* STEP 2: SUBTASKS & TEST CASES CONFIGURATION */}
         {currentStep === 2 && (
           <form onSubmit={handleFinalSubmit} className={styles.modal_body}>
+            {/* Header with Title & Add Subtask Button */}
             <div className={styles.example_header_bar} style={{ marginTop: 0, paddingTop: 0, borderTop: "none" }}>
               <div className={styles.section_title_left}>
-                <Icon name="CheckCircle" size={18} style={{ color: "#10b981" }} />
+                <Icon name="Layers" size={18} style={{ color: "#0950c3" }} />
                 <span className={styles.section_title_text}>
-                  Danh sách Test Cases Kiểm Thử Tự Động ({testCases.length})
+                  Cấu hình Subtasks ({subtasks.length})
+                </span>
+                <span
+                  className={`${styles.subtask_total_badge} ${
+                    isOverPoints
+                      ? styles.subtask_total_badge_error
+                      : isMatchPoints
+                      ? styles.subtask_total_badge_success
+                      : styles.subtask_total_badge_warn
+                  }`}
+                  title={
+                    isOverPoints
+                      ? `Vượt quá ${totalSubtaskPoints - maxProblemPoints} pt`
+                      : isMatchPoints
+                      ? "Điểm Subtasks khớp hoàn toàn với bài tập"
+                      : `Còn ${maxProblemPoints - totalSubtaskPoints} pt chưa phân bổ`
+                  }
+                >
+                  <Icon
+                    name={isOverPoints ? "AlertCircle" : "Award"}
+                    size={13}
+                  />
+                  Tổng: {totalSubtaskPoints} / {maxProblemPoints} pt
                 </span>
               </div>
               <Button
@@ -464,92 +728,212 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
                 variant="outline"
                 size="sm"
                 leftIcon="Plus"
-                onClick={handleAddTestCase}
+                onClick={handleAddSubtask}
               >
-                Thêm Test Case Mới
+                Thêm Subtask Mới
               </Button>
             </div>
 
-            <div className={styles.examples_list}>
-              {testCases.map((tc, idx) => (
-                <div key={idx} className={styles.example_card_item}>
-                  <div className={styles.example_card_header}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <span className={styles.example_card_title}>Case #{idx + 1}</span>
-                      {tc.isHidden && (
-                        <span className={styles.hidden_tag}>Test Ẩn (Hidden Case)</span>
-                      )}
-                    </div>
-                    {testCases.length > 1 && (
-                      <button
-                        type="button"
-                        className={styles.remove_btn}
-                        onClick={() => handleRemoveTestCase(idx)}
-                        title="Xóa Test Case này"
-                      >
-                        <Icon name="Trash2" size={14} />
-                        <span>Xóa Test</span>
-                      </button>
-                    )}
-                  </div>
+            {/* Over Points Warning Banner */}
+            {isOverPoints && (
+              <div className={styles.points_warning_banner}>
+                <Icon name="AlertTriangle" size={18} style={{ flexShrink: 0 }} />
+                <span>
+                  <strong>Cảnh báo:</strong> Tổng điểm các Subtask (<strong>{totalSubtaskPoints} pt</strong>) đang vượt quá tổng điểm bài tập (<strong>{maxProblemPoints} pt</strong>). Không thể lưu bài tập cho đến khi bạn điều chỉnh lại điểm Subtask!
+                </span>
+              </div>
+            )}
 
-                  <div className={styles.row_grid}>
-                    <div className={styles.form_group}>
-                      <label className={styles.label}>
-                        Input Dữ Liệu Test <span className={styles.required_mark}>*</span>
-                      </label>
-                      <textarea
-                        className={styles.textarea}
-                        placeholder="Dữ liệu truyền vào stdin..."
-                        value={tc.input}
-                        onChange={(e) => handleTestCaseChange(idx, "input", e.target.value)}
-                        rows={3}
-                        required
-                      />
-                    </div>
-
-                    <div className={styles.form_group}>
-                      <label className={styles.label}>
-                        Kết Quả Kỳ Vọng (Expected Output) <span className={styles.required_mark}>*</span>
-                      </label>
-                      <textarea
-                        className={styles.textarea}
-                        placeholder="Kết quả stdout mong đợi..."
-                        value={tc.expected}
-                        onChange={(e) => handleTestCaseChange(idx, "expected", e.target.value)}
-                        rows={3}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className={styles.row_grid} style={{ marginTop: 8 }}>
-                    <div className={styles.form_group}>
-                      <label className={styles.label}>Điểm cho Test Case này (Points)</label>
-                      <input
-                        type="number"
-                        className={styles.textarea}
-                        style={{ height: 38, padding: "6px 12px" }}
-                        placeholder="100"
-                        value={tc.points || 100}
-                        onChange={(e) => handleTestCaseChange(idx, "points", e.target.value)}
-                      />
-                    </div>
-
-                    <div className={styles.checkbox_row} style={{ marginTop: 24 }}>
-                      <label className={styles.checkbox_label}>
-                        <input
-                          type="checkbox"
-                          checked={tc.isHidden}
-                          onChange={(e) => handleTestCaseChange(idx, "isHidden", e.target.checked)}
-                        />
-                        <span>Đặt làm Test Case Ẩn (Hidden)</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
+            {/* Subtask Tabs Navigation */}
+            <div className={styles.subtask_tabs_container}>
+              {subtasks.map((st, sIdx) => (
+                <button
+                  key={st.id || sIdx}
+                  type="button"
+                  onClick={() => setActiveSubtaskIdx(sIdx)}
+                  className={`${styles.subtask_tab_btn} ${activeSubtaskIdx === sIdx ? styles.subtask_tab_btn_active : ""}`}
+                >
+                  <Icon name="Layers" size={13} />
+                  <span>{st.name || `Subtask ${sIdx + 1}`} ({st.points || 0} pt, {st.testCases?.length || 0} tests)</span>
+                  {subtasks.length > 1 && (
+                    <span
+                      className={styles.subtask_tab_remove}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveSubtask(sIdx);
+                      }}
+                      title="Xóa Subtask này"
+                    >
+                      ×
+                    </span>
+                  )}
+                </button>
               ))}
             </div>
+
+            {/* Active Subtask Details Panel */}
+            {subtasks[activeSubtaskIdx] && (
+              <div className={styles.subtask_card_panel}>
+                <div className={styles.row_grid_3col}>
+                  <div className={styles.form_group}>
+                    <label className={styles.label}>
+                      Tên Subtask <span className={styles.required_mark}>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className={styles.textarea}
+                      style={{ height: 40, padding: "6px 12px" }}
+                      placeholder="Vd: Subtask 1, Subtask 2..."
+                      value={subtasks[activeSubtaskIdx].name}
+                      onChange={(e) => handleSubtaskFieldChange(activeSubtaskIdx, "name", e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className={styles.form_group}>
+                    <label className={styles.label}>
+                      Điểm Subtask (Points) <span className={styles.required_mark}>*</span>
+                    </label>
+                    <input
+                      type="number"
+                      className={styles.textarea}
+                      style={{ height: 40, padding: "6px 12px" }}
+                      placeholder="200"
+                      value={subtasks[activeSubtaskIdx].points}
+                      onChange={(e) => handleSubtaskFieldChange(activeSubtaskIdx, "points", Number(e.target.value))}
+                      required
+                    />
+                  </div>
+
+                  <div className={styles.form_group}>
+                    <label className={styles.label}>Ràng buộc / Giới hạn</label>
+                    <input
+                      type="text"
+                      className={styles.textarea}
+                      style={{ height: 40, padding: "6px 12px" }}
+                      placeholder="Vd: N <= 100 hoặc Thuật toán vét cạn..."
+                      value={subtasks[activeSubtaskIdx].constraints}
+                      onChange={(e) => handleSubtaskFieldChange(activeSubtaskIdx, "constraints", e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Test Cases inside Active Subtask */}
+                <div className={styles.example_header_bar} style={{ marginTop: 6, paddingTop: 10 }}>
+                  <div className={styles.section_title_left}>
+                    <Icon name="CheckCircle" size={16} style={{ color: "#10b981" }} />
+                    <span className={styles.section_title_text}>
+                      Test Cases ({subtasks[activeSubtaskIdx].testCases?.length || 0} tests)
+                    </span>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    leftIcon="Plus"
+                    onClick={() => handleAddTestCaseToSubtask(activeSubtaskIdx)}
+                  >
+                    Thêm Test Case
+                  </Button>
+                </div>
+
+                <div className={styles.examples_list}>
+                  {subtasks[activeSubtaskIdx].testCases?.map((tc, tcIdx) => (
+                    <div key={tc.id || tcIdx} className={styles.tc_card}>
+                      <div className={styles.tc_header}>
+                        <div className={styles.tc_header_left}>
+                          <span className={styles.tc_badge_num}>
+                            <Icon name="Code" size={14} />
+                            Test #{tcIdx + 1}
+                          </span>
+                          {tc.isHidden ? (
+                            <span className={styles.tc_type_tag_hidden}>
+                              <Icon name="Lock" size={12} />
+                              Test Ẩn (Hidden)
+                            </span>
+                          ) : (
+                            <span className={styles.tc_type_tag_public}>
+                              <Icon name="Eye" size={12} />
+                              Công Khai (Public)
+                            </span>
+                          )}
+                        </div>
+                        {subtasks[activeSubtaskIdx].testCases.length > 1 && (
+                          <button
+                            type="button"
+                            className={styles.remove_btn}
+                            onClick={() => handleRemoveTestCaseFromSubtask(activeSubtaskIdx, tcIdx)}
+                            title="Xóa Test Case này"
+                          >
+                            <Icon name="Trash2" size={14} />
+                            <span>Xóa Test</span>
+                          </button>
+                        )}
+                      </div>
+
+                      <div className={styles.tc_body}>
+                        <div className={styles.tc_code_grid}>
+                          <div className={styles.tc_code_box}>
+                            <label className={`${styles.tc_code_label} ${styles.tc_code_label_stdin}`}>
+                              <Icon name="Terminal" size={13} />
+                              INPUT (stdin) <span className={styles.required_mark}>*</span>
+                            </label>
+                            <textarea
+                              className={styles.tc_textarea}
+                              placeholder="Dữ liệu truyền vào stdin..."
+                              value={tc.input}
+                              onChange={(e) => handleTestCaseChangeInSubtask(activeSubtaskIdx, tcIdx, "input", e.target.value)}
+                              rows={3}
+                              required
+                            />
+                          </div>
+
+                          <div className={styles.tc_code_box}>
+                            <label className={`${styles.tc_code_label} ${styles.tc_code_label_stdout}`}>
+                              <Icon name="Play" size={13} />
+                              KẾT QUẢ KỲ VỌNG (Expected stdout) <span className={styles.required_mark}>*</span>
+                            </label>
+                            <textarea
+                              className={styles.tc_textarea}
+                              placeholder="Kết quả stdout mong đợi..."
+                              value={tc.expected}
+                              onChange={(e) => handleTestCaseChangeInSubtask(activeSubtaskIdx, tcIdx, "expected", e.target.value)}
+                              rows={3}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className={styles.tc_footer_row}>
+                          <div className={styles.tc_points_group}>
+                            <span className={styles.tc_points_label}>Điểm test:</span>
+                            <input
+                              type="number"
+                              className={styles.tc_points_input}
+                              placeholder="100"
+                              value={tc.points || 100}
+                              onChange={(e) => handleTestCaseChangeInSubtask(activeSubtaskIdx, tcIdx, "points", Number(e.target.value))}
+                            />
+                            <span className={styles.tc_points_label}>pt</span>
+                          </div>
+
+                          <div className={styles.checkbox_row} style={{ margin: 0 }}>
+                            <label className={styles.checkbox_label}>
+                              <input
+                                type="checkbox"
+                                checked={tc.isHidden}
+                                onChange={(e) => handleTestCaseChangeInSubtask(activeSubtaskIdx, tcIdx, "isHidden", e.target.checked)}
+                              />
+                              <span>Đặt làm Test Case Ẩn (Hidden Case)</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className={styles.modal_footer}>
               <Button
@@ -561,7 +945,7 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
                 Quay lại chỉnh sửa đề bài
               </Button>
               <Button type="submit" variant="primary" leftIcon="Check">
-                {initialData ? "Lưu Bài Tập & Test Cases" : "Hoàn Tất Tạo Bài Tập"}
+                {initialData ? "Lưu Bài Tập & Subtasks" : "Hoàn Tất Tạo Bài Tập"}
               </Button>
             </div>
           </form>

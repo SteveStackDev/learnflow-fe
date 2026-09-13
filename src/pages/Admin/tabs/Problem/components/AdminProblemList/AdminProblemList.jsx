@@ -20,6 +20,7 @@ export default function AdminProblemList({
   onDuplicateProblem,
   onToggleStatus,
   onDeleteProblem,
+  onClearAll,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState("all");
@@ -94,10 +95,27 @@ export default function AdminProblemList({
             Quản lý toàn bộ ngân hàng bài tập thuật toán và chấm điểm tự động của FySet
           </p>
         </div>
-        <Button variant="primary" onClick={onAddProblem} className={styles.add_btn}>
-          <Icon name="Plus" size={18} />
-          <span>Add Problem</span>
-        </Button>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {problems.length > 0 && onClearAll && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClearAll}
+              style={{
+                color: "#ef4444",
+                borderColor: "rgba(239, 68, 68, 0.4)",
+                backgroundColor: "rgba(239, 68, 68, 0.06)",
+              }}
+            >
+              <Icon name="Trash2" size={16} />
+              <span>Xóa Toàn Bộ Bài Tập</span>
+            </Button>
+          )}
+          <Button variant="primary" onClick={onAddProblem} className={styles.add_btn}>
+            <Icon name="Plus" size={18} />
+            <span>Add Problem</span>
+          </Button>
+        </div>
       </div>
 
       {/* 2. Search & Filters Toolbar */}

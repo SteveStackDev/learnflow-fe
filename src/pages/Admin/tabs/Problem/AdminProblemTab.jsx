@@ -1,14 +1,35 @@
-import React, { useState } from "react";
-import { INITIAL_PROBLEMS } from "~/constants/mockAdminProblem";
+import React, { useState, useEffect } from "react";
+import { problemService } from "~/services/problemService";
+import { useToast } from "~/context/ToastContext.jsx";
 import AdminProblemList from "./components/AdminProblemList/AdminProblemList";
 import AdminProblemDetail from "./components/AdminProblemDetail/AdminProblemDetail";
 import AdminProblemModal from "./components/AdminProblemModal/AdminProblemModal";
 
 export default function AdminProblemTab() {
-  const [problems, setProblems] = useState(INITIAL_PROBLEMS);
+  const { toast } = useToast();
+  const [problems, setProblems] = useState([]);
   const [selectedProblemId, setSelectedProblemId] = useState(null); // null = List view, id = Detail view
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProblem, setEditingProblem] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load danh sách bài tập từ SQLite Backend
+  const loadProblems = async () => {
+    try {
+      setIsLoading(true);
+      const data = await problemService.getAdminProblems();
+      setProblems(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.warn("Lỗi tải danh sách bài tập Admin:", err.message);
+      setProblems([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadProblems();
+  }, []);
 
   // View Problem Detail Editor
   const handleViewProblem = (id) => {
@@ -31,82 +52,105 @@ export default function AdminProblemTab() {
     setIsModalOpen(true);
   };
 
-  const handleSaveModal = (formData) => {
-    if (editingProblem) {
-      setProblems(
-        problems.map((p) =>
-          p.id === editingProblem.id ? { ...p, ...formData } : p
-        )
-      );
-    } else {
-      const nextNum = problems.length + 1;
-      const codeStr = nextNum < 10 ? `0${nextNum}` : `${nextNum}`;
-      const newProblem = {
-        id: `prob-${Date.now()}`,
-        code: codeStr,
-        title: formData.title,
-        slug: formData.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-        difficulty: formData.difficulty || "Easy",
-        topic: formData.topic || "Array & Hashing",
-        solved: 0,
-        acceptanceRate: 0,
-        status: formData.status || "Active",
-        description: formData.description || "",
-        supportedLanguages: ["C++", "Java", "Python", "JavaScript"],
-        examples: [],
-        testCases: [],
-      };
-      setProblems([newProblem, ...problems]);
+  const handleSaveModal = async (formData) => {
+    try {
+      if (editingProblem) {
+        await problemService.updateProblem(editingProblem.id, formData);
+        toast.success(`Đã cập nhật bài tập "${formData.title}" thành công!`, "Thành công");
+      } else {
+        await problemService.createProblem(formData);
+        toast.success(`Đã tạo mới bài tập "${formData.title}" vào cơ sở dữ liệu!`, "Thành công");
+      }
+      setIsModalOpen(false);
+      await loadProblems();
+    } catch (err) {
+      toast.error(`Lỗi lưu bài tập: ${err.message}`, "Lỗi lưu dữ liệu");
     }
-    setIsModalOpen(false);
   };
 
   // Save Detail Editor
-  const handleSaveDetail = (updatedProblem) => {
-    setProblems(
-      problems.map((p) => (p.id === updatedProblem.id ? updatedProblem : p))
-    );
-    setSelectedProblemId(null);
+  const handleSaveDetail = async (updatedProblem) => {
+    try {
+      await problemService.updateProblem(updatedProblem.id, updatedProblem);
+      toast.success(`Đã lưu thay đổi cho bài tập "${updatedProblem.title}"`, "Thành công");
+      setSelectedProblemId(null);
+      await loadProblems();
+    } catch (err) {
+      toast.error(`Lỗi cập nhật: ${err.message}`, "Lỗi lưu dữ liệu");
+    }
   };
 
   // Duplicate Problem
-  const handleDuplicateProblem = (prob) => {
-    const copy = {
-      ...prob,
-      id: `prob-${Date.now()}`,
-      code: `${prob.code || "0"}-COPY`,
-      title: `${prob.title} (Copy)`,
-      slug: `${prob.slug}-copy`,
-      solved: 0,
-      status: "Draft",
-    };
-    setProblems([copy, ...problems]);
+  const handleDuplicateProblem = async (prob) => {
+    try {
+      const copyPayload = {
+        ...prob,
+        title: `${prob.title} (Bản sao)`,
+        status: "Draft",
+        points: prob.points || 500,
+        statement: prob.statement || prob.description || "",
+        inputFormat: prob.inputFormat || [],
+        outputFormat: prob.outputFormat || [],
+        constraints: prob.constraints || [],
+        examples: prob.examples || [],
+        subtasks: prob.subtasks || [],
+        testCases: (prob.testCases || []).map((tc) => ({
+          input: tc.input,
+          expected: tc.expected,
+          points: tc.points || 100,
+          isHidden: tc.isHidden || false,
+        })),
+      };
+      await problemService.createProblem(copyPayload);
+      toast.success(`Đã nhân bản bài tập "${prob.title}" thành bản nháp mới!`, "Nhân bản");
+      await loadProblems();
+    } catch (err) {
+      toast.error(`Lỗi nhân bản: ${err.message}`, "Lỗi");
+    }
   };
 
   // Toggle Status (Publish / Draft)
-  const handleToggleStatus = (id) => {
-    setProblems(
-      problems.map((p) => {
-        if (p.id === id) {
-          const nextStatus = p.status === "Active" ? "Draft" : "Active";
-          return { ...p, status: nextStatus };
-        }
-        return p;
-      })
-    );
+  const handleToggleStatus = async (id) => {
+    try {
+      const res = await problemService.toggleStatus(id);
+      toast.info(res.message || "Đã cập nhật trạng thái bài tập", "Trạng thái bài tập");
+      await loadProblems();
+    } catch (err) {
+      toast.error(`Lỗi đổi trạng thái: ${err.message}`, "Lỗi");
+    }
   };
 
   // Delete Problem
-  const handleDeleteProblem = (id) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa bài tập thuật toán này không?")) {
-      setProblems(problems.filter((p) => p.id !== id));
-      if (selectedProblemId === id) {
-        setSelectedProblemId(null);
+  const handleDeleteProblem = async (id) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa bài tập thuật toán này khỏi cơ sở dữ liệu không?")) {
+      try {
+        await problemService.deleteProblem(id);
+        toast.success("Đã xóa bài tập thành công!", "Xóa bài tập");
+        if (selectedProblemId === id) {
+          setSelectedProblemId(null);
+        }
+        await loadProblems();
+      } catch (err) {
+        toast.error(`Lỗi xóa bài tập: ${err.message}`, "Lỗi");
       }
     }
   };
 
-  const currentSelectedProblem = problems.find((p) => p.id === selectedProblemId);
+  // Clear All Problems (Reset DB)
+  const handleClearAll = async () => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa TOÀN BỘ bài tập khỏi cơ sở dữ liệu để làm sạch dữ liệu không?")) {
+      try {
+        await problemService.clearAllProblems();
+        toast.success("Đã xóa toàn bộ bài tập trong cơ sở dữ liệu!", "Reset Database");
+        setSelectedProblemId(null);
+        await loadProblems();
+      } catch (err) {
+        toast.error(`Lỗi làm sạch cơ sở dữ liệu: ${err.message}`, "Lỗi");
+      }
+    }
+  };
+
+  const currentSelectedProblem = problems.find((p) => String(p.id) === String(selectedProblemId));
 
   return (
     <div>
@@ -119,12 +163,14 @@ export default function AdminProblemTab() {
       ) : (
         <AdminProblemList
           problems={problems}
+          isLoading={isLoading}
           onAddProblem={handleOpenAddModal}
           onViewProblem={handleViewProblem}
           onEditProblem={handleOpenEditModal}
           onDuplicateProblem={handleDuplicateProblem}
           onToggleStatus={handleToggleStatus}
           onDeleteProblem={handleDeleteProblem}
+          onClearAll={handleClearAll}
         />
       )}
 

@@ -1,0 +1,107 @@
+/* ==========================================================================
+   AI Learning Analysis Main Page Layout & Styling
+   ========================================================================== */
+
+.page {
+  padding: 36px 32px 72px;
+  min-height: calc(100vh - var(--header-height, 68px));
+  background-color: #ffffff;
+  transition: background-color var(--transition-base, 0.2s ease);
+}
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.top_bar {
+  display: flex;
+  align-items: center;
+}
+
+.back_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.45));
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #1e293b);
+  text-decoration: none;
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.back_btn:hover {
+  background-color: var(--theme-primary-hover-bg, #e0ebff);
+  color: var(--color-primary, #0950c3);
+  border-color: var(--color-primary, #0950c3);
+}
+
+/* 2-Column Responsive Workspace Grid */
+.workspace_grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.42fr) minmax(360px, 1fr);
+  gap: 26px;
+  align-items: flex-start;
+}
+
+.workspace_left {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.workspace_right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+  position: sticky;
+  top: calc(var(--header-height, 68px) + 20px);
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .page {
+  background-color: #0b1120;
+}
+
+:global([data-theme="dark"]) .back_btn {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .back_btn:hover {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: #38bdf8;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .workspace_grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .workspace_right {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 20px 14px 48px;
+  }
+
+  .container {
+    gap: 18px;
+  }
+}

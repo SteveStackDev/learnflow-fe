@@ -1,0 +1,11 @@
+services:
+  judge-server:
+    build:
+      context: ./judgingsystem
+      dockerfile: Dockerfile
+    container_name: fy_judge_server
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped

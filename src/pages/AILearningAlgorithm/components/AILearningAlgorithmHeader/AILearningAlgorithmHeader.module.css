@@ -1,0 +1,138 @@
+/* ==========================================================================
+   AI Learning Algorithm Header Module Styling
+   ========================================================================== */
+
+.header_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Top Navigation Bar */
+.top_nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.back_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.45));
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #1e293b);
+  text-decoration: none;
+  transition: var(--transition-base, all 0.2s ease);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.back_btn:hover {
+  background-color: var(--theme-primary-hover-bg, #e0ebff);
+  color: var(--color-primary, #0950c3);
+  border-color: var(--color-primary, #0950c3);
+  transform: translateY(-1px);
+}
+
+/* AI Status Chip */
+.ai_status_chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--theme-text-muted, #64748b);
+  font-weight: 500;
+}
+
+.green_pulse_dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.ai_status_text strong {
+  color: #10b981;
+  font-weight: 800;
+}
+
+/* Title & Status Badge */
+.title_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.title {
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  letter-spacing: -0.025em;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.status_badge {
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  background-color: #fef3c7;
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 1.02rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .back_btn {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .back_btn:hover {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .status_badge {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.88rem;
+  }
+
+  .top_nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

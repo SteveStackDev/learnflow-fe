@@ -96,6 +96,30 @@ export default function AdminProblemEditorTab({ problemState, setProblemState })
             />
           </div>
         </div>
+
+        <div className={styles.grid_3col} style={{ marginTop: 16 }}>
+          <FormField
+            label="Points (Điểm số)"
+            type="number"
+            placeholder="500"
+            value={problemState.points || 500}
+            onChange={(e) => setProblemState({ ...problemState, points: Number(e.target.value) })}
+          />
+
+          <FormField
+            label="Time Limit (Giới hạn thời gian - s)"
+            placeholder="2.0s"
+            value={problemState.timeLimit || (problemState.time_limit ? `${problemState.time_limit}s` : "2.0s")}
+            onChange={(e) => setProblemState({ ...problemState, timeLimit: e.target.value, time_limit: parseFloat(e.target.value) || 2.0 })}
+          />
+
+          <FormField
+            label="Memory Limit (Giới hạn bộ nhớ - MB)"
+            placeholder="256MB"
+            value={problemState.memoryLimit || (problemState.memory_limit ? `${problemState.memory_limit}MB` : "256MB")}
+            onChange={(e) => setProblemState({ ...problemState, memoryLimit: e.target.value, memory_limit: parseInt(e.target.value) || 256 })}
+          />
+        </div>
       </div>
 
       {/* 2. Problem Statement (Mô tả bài toán) */}

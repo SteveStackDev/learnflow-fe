@@ -1,0 +1,37 @@
+[
+{"query": "vòng lặp chạy dư đúng một lần so với yêu cầu", "error_type": "OFF_BY_ONE"},
+{"query": "vòng lặp bắt đầu từ i = 1 nên bỏ qua phần tử đầu tiên của mảng", "error_type": "OFF_BY_ONE"},
+{"query": "dùng i <= n thay vì i < n khi duyệt n phần tử", "error_type": "OFF_BY_ONE"},
+{"query": "chỉ số mảng bị lệch đúng một vị trí khi truy cập phần tử", "error_type": "OFF_BY_ONE"},
+{"query": "kết quả thừa hoặc thiếu đúng một phần tử do sai một đơn vị trong chỉ số", "error_type": "OFF_BY_ONE"},
+
+{"query": "vòng while chạy vô hạn vì biến điều khiển không được cập nhật", "error_type": "LOOP_CONDITION"},
+{"query": "điều kiện while luôn đúng nên vòng lặp không bao giờ kết thúc", "error_type": "LOOP_CONDITION"},
+{"query": "quên tăng biến i bên trong vòng lặp khiến chương trình chạy vô hạn", "error_type": "LOOP_CONDITION"},
+{"query": "điều kiện dừng của vòng lặp được viết sai khiến vòng lặp không thể thoát", "error_type": "LOOP_CONDITION"},
+{"query": "vòng lặp kết thúc sớm vì điều kiện dừng được kiểm tra không đúng", "error_type": "LOOP_CONDITION"},
+
+{"query": "binary search đặt right = n rồi truy cập phần tử tại chỉ số right", "error_type": "BOUNDARY_ERROR"},
+{"query": "chỉ số truy cập mảng có thể bằng n trong khi chỉ số hợp lệ cuối cùng là n - 1", "error_type": "BOUNDARY_ERROR"},
+{"query": "left có thể bằng -1 nhưng code vẫn truy cập a[left]", "error_type": "BOUNDARY_ERROR"},
+{"query": "khoảng chỉ số của mảng được khai báo từ 0 đến n - 1 nhưng code truy cập ra ngoài khoảng này", "error_type": "BOUNDARY_ERROR"},
+{"query": "con trỏ right vượt quá giới hạn cuối cùng của mảng", "error_type": "BOUNDARY_ERROR"},
+
+{"query": "biến int không thể lưu kết quả có giá trị khoảng 10^18", "error_type": "INTEGER_OVERFLOW"},
+{"query": "tổng các phần tử vượt quá giới hạn của kiểu int", "error_type": "INTEGER_OVERFLOW"},
+{"query": "phép nhân hai số khoảng 10^9 bằng int gây tràn số", "error_type": "INTEGER_OVERFLOW"},
+{"query": "kết quả bị âm bất thường vì phép tính số nguyên bị overflow", "error_type": "INTEGER_OVERFLOW"},
+{"query": "phép nhân trung gian bị overflow trước khi kết quả được gán vào biến long long", "error_type": "INTEGER_OVERFLOW"},
+
+{"query": "bài toán yêu cầu sắp xếp tăng dần nhưng code lại sắp xếp giảm dần", "error_type": "WRONG_SORT_ORDER"},
+{"query": "bài toán yêu cầu thứ tự giảm dần nhưng comparator lại sắp xếp tăng dần", "error_type": "WRONG_SORT_ORDER"},
+{"query": "sort theo thứ tự ngược với thứ tự mà bài toán yêu cầu", "error_type": "WRONG_SORT_ORDER"},
+{"query": "dùng sort tăng dần thay vì sắp xếp các phần tử theo thứ tự giảm dần", "error_type": "WRONG_SORT_ORDER"},
+{"query": "comparator của sort đảo ngược thứ tự các phần tử so với yêu cầu", "error_type": "WRONG_SORT_ORDER"},
+
+{"query": "thuật toán greedy chọn phần tử có giá trị lớn nhất thay vì phần tử có tỷ lệ value trên cost lớn nhất", "error_type": "GREEDY_LOGIC_ERROR"},
+{"query": "greedy chọn hoạt động có thời gian bắt đầu sớm nhất thay vì hoạt động kết thúc sớm nhất", "error_type": "GREEDY_LOGIC_ERROR"},
+{"query": "chiến lược greedy chọn phần tử đầu tiên gặp được thay vì phần tử thỏa tiêu chí tối ưu", "error_type": "GREEDY_LOGIC_ERROR"},
+{"query": "tiêu chí lựa chọn của thuật toán greedy không phù hợp với mục tiêu tối ưu của bài toán", "error_type": "GREEDY_LOGIC_ERROR"},
+{"query": "greedy luôn chọn giá trị lớn nhất nhưng lựa chọn cục bộ này không tạo ra nghiệm tối ưu", "error_type": "GREEDY_LOGIC_ERROR"}
+]
