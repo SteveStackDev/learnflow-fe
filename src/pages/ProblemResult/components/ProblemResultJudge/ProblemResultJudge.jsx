@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router";
 import styles from "./ProblemResultJudge.module.css";
 import Icon from "~/components/Icon/Icon";
-import { defaultSubtasksData } from "~/constants/mockProblemResult";
 
 // Central Status Specification Registry inside Result Component
 const JUDGE_STATUS_MAP = {
@@ -60,109 +59,55 @@ const resolveStatusKey = (status) => {
 };
 
 function ProblemResultJudge({ resultData, initialStatus }) {
-  const [activeStatusKey, setActiveStatusKey] = useState(() =>
-    resolveStatusKey(initialStatus || resultData?.status || resultData?.statusCode)
-  );
-  const [activeSubtaskId, setActiveSubtaskId] = useState("sub-1");
-
+  const activeStatusKey = resolveStatusKey(initialStatus || resultData?.status || resultData?.statusCode);
   const currentStatusSpec = JUDGE_STATUS_MAP[activeStatusKey] || JUDGE_STATUS_MAP.AC;
 
-  // Dynamic Subtasks generator according to selected result status
-  const getSubtasksForStatus = (statusKey) => {
-    const baseSubtasks = resultData?.subtasks || defaultSubtasksData;
+  // Format subtasks directly from database/judge result
+  const rawSubtasks = Array.isArray(resultData?.subtasks) && resultData.subtasks.length > 0
+    ? resultData.subtasks
+    : [];
 
-    if (statusKey === "AC") {
-      return baseSubtasks;
-    }
-    if (statusKey === "WA") {
-      return baseSubtasks.map((sub, idx) => {
-        if (idx === 2) {
-          return {
-            ...sub,
-            earnedScore: 0,
-            status: "WA",
-            tests: sub.tests.map((t, tIdx) =>
-              tIdx === 2 ? { ...t, status: "WA", score: 0 } : t
-            ),
-          };
-        }
-        return sub;
-      });
-    }
-    if (statusKey === "TLE") {
-      return baseSubtasks.map((sub, idx) => {
-        if (idx >= 1) {
-          return {
-            ...sub,
-            earnedScore: 0,
-            status: "TLE",
-            maxTime: "> 2000 ms",
-            tests: sub.tests.map((t) => ({ ...t, status: "TLE", score: 0, runtime: "> 2000 ms" })),
-          };
-        }
-        return sub;
-      });
-    }
-    if (statusKey === "RE") {
-      return baseSubtasks.map((sub, idx) => {
-        if (idx >= 1) {
-          return {
-            ...sub,
-            earnedScore: 0,
-            status: "RE",
-            tests: sub.tests.map((t) => ({ ...t, status: "RE", score: 0 })),
-          };
-        }
-        return sub;
-      });
-    }
-    if (statusKey === "CE") {
-      return baseSubtasks.map((sub) => ({
-        ...sub,
-        earnedScore: 0,
-        status: "CE",
-        tests: sub.tests.map((t) => ({ ...t, status: "CE", score: 0, runtime: "0 ms" })),
-      }));
-    }
-    return baseSubtasks;
-  };
+  const currentSubtasks = rawSubtasks.map((st, idx) => {
+    const tests = (st.testCases || st.tests || []).map((t, tIdx) => {
+      const isAC = t.status === "AC";
+      const maxPts = t.points != null ? Number(t.points) : (t.maxScore != null ? Number(t.maxScore) : 100);
+      const earnedPts = t.score != null ? Number(t.score) : (isAC ? maxPts : 0);
+      return {
+        id: String(t.id || tIdx + 1),
+        label: t.label || `Test ${tIdx + 1}`,
+        status: t.status || (isAC ? "AC" : activeStatusKey),
+        score: earnedPts,
+        maxScore: maxPts,
+        runtime: t.time != null ? (typeof t.time === "number" ? `${Math.round(t.time * 1000)} ms` : `${t.time}`) : (t.runtime || "10 ms"),
+        memory: t.memory || "1.5 MB",
+      };
+    });
 
-  const currentSubtasks = getSubtasksForStatus(activeStatusKey);
+    const maxPts = st.points != null ? Number(st.points) : (st.maxScore != null ? Number(st.maxScore) : tests.reduce((s, t) => s + t.maxScore, 0));
+    const earnedPts = st.earnedScore != null ? Number(st.earnedScore) : (st.score != null ? Number(st.score) : tests.reduce((s, t) => s + t.score, 0));
+    const stStatus = st.status || (earnedPts === maxPts && maxPts > 0 ? "AC" : activeStatusKey);
+
+    return {
+      id: String(st.id || `sub-${idx + 1}`),
+      label: st.name || st.label || `Subtask ${idx + 1}`,
+      title: st.name || st.title || `Subtask ${idx + 1}`,
+      maxScore: maxPts,
+      earnedScore: earnedPts,
+      status: stStatus,
+      maxTime: st.maxTime || "20 ms",
+      maxMemory: st.maxMemory || "2.0 MB",
+      tests,
+    };
+  });
+
+  const [activeSubtaskId, setActiveSubtaskId] = useState(() => currentSubtasks[0]?.id || "sub-1");
   const activeSubtask = currentSubtasks.find((s) => s.id === activeSubtaskId) || currentSubtasks[0];
 
-  const totalEarnedScore = currentSubtasks.reduce((sum, s) => sum + s.earnedScore, 0);
-  const totalPossibleScore = currentSubtasks.reduce((sum, s) => sum + s.maxScore, 0);
+  const totalEarnedScore = resultData?.score != null ? Number(resultData.score) : currentSubtasks.reduce((sum, s) => sum + s.earnedScore, 0);
+  const totalPossibleScore = resultData?.max_score != null ? Number(resultData.max_score) : (currentSubtasks.reduce((sum, s) => sum + s.maxScore, 0) || 100);
 
   return (
     <div className={styles.result_judge_card}>
-      {/* Quick Status Switcher (Interactive Demo) */}
-      <div className={styles.status_switcher_bar}>
-        <span className={styles.switcher_label}>
-          <Icon name="Sliders" size={14} />
-          <span>Thử nghiệm nhanh trạng thái máy chấm:</span>
-        </span>
-        <div className={styles.switcher_buttons}>
-          {Object.keys(JUDGE_STATUS_MAP).map((key) => {
-            const spec = JUDGE_STATUS_MAP[key];
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => {
-                  setActiveStatusKey(key);
-                  setActiveSubtaskId("sub-1");
-                }}
-                className={`${styles.switcher_btn} ${styles[`switcher_btn--${spec.badgeClass}`]} ${
-                  activeStatusKey === key ? styles["switcher_btn--active"] : ""
-                }`}
-              >
-                <span>{key}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       {/* Main Status Banner */}
       <div
         className={`${styles.status_banner} ${styles[`status_banner--${currentStatusSpec.badgeClass}`]}`}
@@ -207,7 +152,7 @@ function ProblemResultJudge({ resultData, initialStatus }) {
             <span>Thời gian chạy lớn nhất</span>
           </div>
           <div className={styles.metric_value}>
-            {activeStatusKey === "TLE" ? "> 2000 ms" : "36 ms"}
+            {activeStatusKey === "TLE" ? "> 2000 ms" : (resultData?.runtime || "36 ms")}
           </div>
           <div className={styles.metric_percentile}>Nhanh hơn 94.2% bài nộp C++20</div>
         </div>

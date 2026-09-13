@@ -1,0 +1,255 @@
+/* ==========================================================================
+   AI Learning Submissions Code Modal Module Styling
+   ========================================================================== */
+
+.modal_overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal_container {
+  width: 100%;
+  max-width: 680px;
+  max-height: 85vh;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.45));
+  border-radius: 16px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Modal Header */
+.modal_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--theme-border, rgba(169, 183, 203, 0.25));
+  gap: 16px;
+}
+
+.header_left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.status_badge--ac {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status_badge--wa {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.modal_title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.modal_meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--theme-text-muted, #64748b);
+  margin-top: 2px;
+}
+
+.header_actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copy_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: var(--theme-chip-bg, #f1f5f9);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  color: var(--theme-text-secondary, #334155);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base, all 0.15s ease);
+}
+
+.copy_btn:hover {
+  background-color: var(--theme-primary-hover-bg, #e0ebff);
+  color: var(--color-primary, #0950c3);
+  border-color: var(--color-primary, #0950c3);
+}
+
+.close_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: none;
+  color: var(--theme-text-muted, #94a3b8);
+  cursor: pointer;
+  transition: var(--transition-base, all 0.15s ease);
+}
+
+.close_btn:hover {
+  background-color: var(--theme-chip-bg, #f1f5f9);
+  color: var(--theme-text-primary, #0f172a);
+}
+
+/* Modal Body */
+.modal_body {
+  padding: 16px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.code_toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: var(--theme-text-muted, #94a3b8);
+}
+
+.lang_pill {
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  color: var(--color-primary, #0950c3);
+  background-color: rgba(9, 80, 195, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.line_count {
+  font-weight: 500;
+}
+
+.code_pre {
+  margin: 0;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-family: var(--font-mono, "JetBrains Mono", Consolas, monospace);
+  font-size: 0.86rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.45));
+}
+
+/* Modal Footer */
+.modal_footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 24px;
+  border-top: 1px solid var(--theme-border, rgba(169, 183, 203, 0.25));
+  background-color: var(--theme-chip-bg, #f8fafc);
+}
+
+.secondary_close_btn {
+  padding: 7px 18px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.5));
+  color: var(--theme-text-secondary, #475569);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base, all 0.15s ease);
+}
+
+.secondary_close_btn:hover {
+  background-color: var(--theme-card-bg, #ffffff);
+  color: var(--theme-text-primary, #0f172a);
+}
+
+/* Dark Theme Overrides */
+:global([data-theme="dark"]) .modal_container {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .code_pre {
+  background-color: #0b1329;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .copy_btn {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .copy_btn:hover {
+  background-color: rgba(56, 189, 248, 0.15);
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .modal_footer {
+  background-color: #0b1120;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .lang_pill {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

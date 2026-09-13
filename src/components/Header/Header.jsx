@@ -16,18 +16,9 @@ const LEARN_DROPDOWN_ITEMS = [
 ];
 
 const PRACTICE_DROPDOWN_ITEMS = [
-  {
-    to: "/problem",
-    title: "Bài tập",
-    desc: "Kho thử thách coding chuẩn phỏng vấn",
-    iconName: "Terminal",
-  },
-  {
-    to: "/contest",
-    title: "Cuộc thi",
-    desc: "Đấu trường thuật toán & thử thách",
-    iconName: "Trophy",
-  },
+  { to: "/problem", title: "Bài tập", desc: "Kho thử thách coding chuẩn phỏng vấn", iconName: "Terminal" },
+  { to: "/contest", title: "Cuộc thi", desc: "Đấu trường thuật toán & thử thách", iconName: "Trophy" },
+  { to: "/ai-learning", title: "AI Learning", desc: "Phân tích lỗi & học tập cá nhân hoá", iconName: "Sparkles" },
 ];
 
 const ACHIEVEMENT_DROPDOWN_ITEMS = [

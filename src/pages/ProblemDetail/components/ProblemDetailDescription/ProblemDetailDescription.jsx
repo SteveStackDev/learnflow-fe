@@ -7,10 +7,17 @@ import { commentService, mockProblemDiscussions } from "~/services/commentServic
 
 function ProblemDetailDescription({ problem, onSelectUser }) {
   const [activeTab, setActiveTab] = useState("desc"); // 'desc' | 'solution' | 'discussion'
-  const [upvoteCount, setUpvoteCount] = useState(problem.upvotes || "15.4K");
-  const [hasVoted, setHasVoted] = useState(false);
+  const [upvoteCount, setUpvoteCount] = useState(problem.upvotes ?? 0);
+  const [downvoteCount, setDownvoteCount] = useState(problem.downvotes ?? 0);
+  const [userVote, setUserVote] = useState(null); // 'up' | 'down' | null
   const [discussions, setDiscussions] = useState(mockProblemDiscussions);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setUpvoteCount(problem.upvotes ?? 0);
+    setDownvoteCount(problem.downvotes ?? 0);
+    setUserVote(null);
+  }, [problem?.id, problem?._id, problem?.code, problem?.upvotes, problem?.downvotes]);
 
   useEffect(() => {
     const pId = problem?.id || problem?._id;
@@ -69,15 +76,29 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
       : problem.author || "FySet DevTeam";
 
   const handleVote = (type) => {
-    if (!hasVoted) {
-      setHasVoted(true);
+    if (userVote === type) {
+      // Hủy bình chọn
+      setUserVote(null);
       if (type === "up") {
-        setUpvoteCount((prev) => (typeof prev === "number" ? prev + 1 : prev));
+        setUpvoteCount((prev) => (typeof prev === "number" ? Math.max(0, prev - 1) : 0));
+      } else {
+        setDownvoteCount((prev) => (typeof prev === "number" ? Math.max(0, prev - 1) : 0));
       }
-      toast.success(
-        `Cảm ơn bạn đã đánh giá ${type === "up" ? "hữu ích" : "chưa hữu ích"} cho bài tập này!`,
-        "Đánh giá",
-      );
+    } else {
+      if (type === "up") {
+        setUpvoteCount((prev) => (typeof prev === "number" ? prev + 1 : 1));
+        if (userVote === "down") {
+          setDownvoteCount((prev) => (typeof prev === "number" ? Math.max(0, prev - 1) : 0));
+        }
+        toast.success("Cảm ơn bạn đã đánh giá hữu ích cho bài tập này!", "Đánh giá");
+      } else {
+        setDownvoteCount((prev) => (typeof prev === "number" ? prev + 1 : 1));
+        if (userVote === "up") {
+          setUpvoteCount((prev) => (typeof prev === "number" ? Math.max(0, prev - 1) : 0));
+        }
+        toast.info("Đã ghi nhận phản hồi của bạn!", "Đánh giá");
+      }
+      setUserVote(type);
     }
   };
 
@@ -124,14 +145,14 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
             {/* Title & Vote Actions Row */}
             <div className={styles.title_header_row}>
               <h1 className={styles.title}>
-                Bài {problem.number || 1}: {problem.title}
+                #{problem.code || problem.number || problem.id}: {problem.title}
               </h1>
 
               <div className={styles.vote_group}>
                 <button
                   type="button"
                   onClick={() => handleVote("up")}
-                  className={styles.vote_btn}
+                  className={`${styles.vote_btn} ${userVote === "up" ? styles.vote_btn_active_up : ""}`}
                   title="Hữu ích"
                 >
                   <Icon name="ThumbsUp" size={14} />
@@ -141,11 +162,11 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
                 <button
                   type="button"
                   onClick={() => handleVote("down")}
-                  className={styles.vote_btn}
+                  className={`${styles.vote_btn} ${userVote === "down" ? styles.vote_btn_active_down : ""}`}
                   title="Chưa hữu ích"
                 >
                   <Icon name="ThumbsDown" size={14} />
-                  <span>{problem.downvotes || 12}</span>
+                  <span>{downvoteCount}</span>
                 </button>
               </div>
             </div>
@@ -268,6 +289,49 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
                     )}
                   </div>
                 ))}
+              </div>
+            )}
+
+            {/* 6. Subtasks Specification (Nếu có) */}
+            {problem.subtasks && Array.isArray(problem.subtasks) && problem.subtasks.length > 0 && (
+              <div className={styles.section_block} style={{ marginTop: 16 }}>
+                <h3 className={styles.section_heading}>
+                  Subtasks & Phân bổ điểm ({problem.subtasks.length} Subtasks)
+                </h3>
+                <div className={styles.subtasks_table_wrapper}>
+                  <table className={styles.subtasks_table}>
+                    <thead>
+                      <tr>
+                        <th>Tên Subtask</th>
+                        <th>Điểm số</th>
+                        <th>Ràng buộc / Chi tiết</th>
+                        <th>Số Test Cases</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {problem.subtasks.map((st, sIdx) => (
+                        <tr key={st.id || sIdx}>
+                          <td>
+                            <strong>{st.name || `Subtask ${sIdx + 1}`}</strong>
+                          </td>
+                          <td>
+                            <span className={styles.subtask_pts}>{st.points || 0} pt</span>
+                          </td>
+                          <td>
+                            {st.constraints ? (
+                              <code>{st.constraints}</code>
+                            ) : (
+                              <span className={styles.subtask_no_constraint}>Không có ràng buộc phụ</span>
+                            )}
+                          </td>
+                          <td>
+                            {st.testCases?.length || 0} test(s)
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
 

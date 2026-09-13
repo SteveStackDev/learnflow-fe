@@ -1,0 +1,229 @@
+/* ==========================================================================
+   AI Learning Submissions AI Mentor Card Module Styling
+   ========================================================================== */
+
+.ai_mentor_card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid rgba(9, 80, 195, 0.2);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 14px rgba(9, 80, 195, 0.04);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.ai_mentor_card:hover {
+  box-shadow: 0 8px 22px rgba(9, 80, 195, 0.08);
+  border-color: rgba(9, 80, 195, 0.35);
+}
+
+/* Card Header */
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header_left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ai_icon_box {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--gradient-primary, linear-gradient(135deg, #0950c3 0%, #0ea5e9 100%));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(9, 80, 195, 0.25);
+}
+
+.header_titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title_badge_wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.summary_tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background-color: rgba(9, 80, 195, 0.1);
+  color: var(--color-primary, #0950c3);
+  border: 1px solid rgba(9, 80, 195, 0.2);
+  line-height: 1;
+}
+
+.update_time {
+  font-size: 0.82rem;
+  color: var(--theme-text-muted, #94a3b8);
+  font-weight: 500;
+}
+
+/* Card Body Narrative */
+.card_body {
+  line-height: 1.65;
+}
+
+.narrative_text {
+  font-size: 0.92rem;
+  color: var(--theme-text-secondary, #334155);
+  margin: 0;
+}
+
+/* Inline Code Chips */
+.code_chip {
+  display: inline-block;
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, Consolas, monospace);
+  font-size: 0.83rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  margin: 0 2px;
+  border-radius: 6px;
+  background-color: var(--theme-chip-bg, #f1f5f9);
+  color: var(--color-primary, #0950c3);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  vertical-align: baseline;
+}
+
+/* Card Footer */
+.card_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--theme-border, rgba(169, 183, 203, 0.25));
+  flex-wrap: wrap;
+}
+
+.reinforced_knowledge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--theme-text-secondary, #475569);
+  flex-wrap: wrap;
+}
+
+.green_dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.knowledge_label {
+  font-weight: 600;
+  color: var(--theme-text-secondary, #475569);
+}
+
+.knowledge_value {
+  font-weight: 700;
+  color: var(--theme-text-primary, #0f172a);
+}
+
+.deep_diagnostic_link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary, #0950c3);
+  text-decoration: none;
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.deep_diagnostic_link:hover {
+  color: var(--color-primary-s10, #0848b0);
+  transform: translateX(2px);
+  text-decoration: underline;
+}
+
+/* Dark Theme Overrides */
+:global([data-theme="dark"]) .ai_mentor_card {
+  background-color: #131c31;
+  border-color: rgba(56, 189, 248, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+:global([data-theme="dark"]) .summary_tag {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+:global([data-theme="dark"]) .narrative_text {
+  color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .code_chip {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #38bdf8;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .reinforced_knowledge {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .knowledge_value {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .deep_diagnostic_link {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .deep_diagnostic_link:hover {
+  color: #7dd3fc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ai_mentor_card {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .card_header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .card_footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

@@ -1,0 +1,397 @@
+/* ==========================================================================
+   AI Learning Analysis AI Diagnosis Panel Module Styling
+   ========================================================================== */
+
+.diagnosis_stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   1. Possible Cause Diagnosis Card
+   ========================================================================== */
+
+.diagnosis_card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 16px;
+  padding: 22px 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.diagnosis_card:hover {
+  border-color: rgba(9, 80, 195, 0.35);
+  box-shadow: 0 6px 18px rgba(9, 80, 195, 0.06);
+}
+
+.eyebrow_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.possible_cause_eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--color-primary, #0950c3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.target_icon {
+  color: var(--color-primary, #0950c3);
+}
+
+.confidence_badge {
+  font-weight: 700;
+  font-size: 0.74rem;
+  padding: 3px 10px;
+}
+
+.diagnosis_title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.suspected_location_chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background-color: rgba(239, 68, 68, 0.09);
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  color: #dc2626;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.card_divider {
+  height: 1px;
+  background-color: var(--theme-border, rgba(169, 183, 203, 0.35));
+  margin: 2px 0;
+}
+
+.section_block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.section_heading {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--theme-text-muted, #64748b);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.section_text {
+  font-size: 0.88rem;
+  color: var(--theme-text-secondary, #334155);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.disclaimer_row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--theme-border, rgba(169, 183, 203, 0.3));
+  color: var(--theme-text-muted, #94a3b8);
+}
+
+.info_icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.disclaimer_text {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================================================
+   2. Concepts to Review Card
+   ========================================================================== */
+
+.concepts_card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.concepts_card:hover {
+  border-color: rgba(9, 80, 195, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.card_title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.concepts_stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.concept_item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background-color: var(--theme-chip-bg, #f1f5f9);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.35));
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.concept_item:hover {
+  background-color: var(--theme-primary-hover-bg, #e0ebff);
+  border-color: rgba(9, 80, 195, 0.3);
+}
+
+.concept_icon {
+  color: var(--color-primary, #0950c3);
+  flex-shrink: 0;
+}
+
+.concept_label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--theme-text-primary, #1e293b);
+}
+
+/* ==========================================================================
+   3. Recommended Learning Card
+   ========================================================================== */
+
+.recommend_card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.recommend_card:hover {
+  border-color: rgba(9, 80, 195, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.card_subtitle {
+  font-size: 0.84rem;
+  color: var(--theme-text-secondary, #64748b);
+  margin: 0;
+}
+
+.recommend_stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recommend_item_btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border-radius: 10px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.45));
+  color: var(--theme-text-primary, #0f172a);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.recommend_item_btn:hover {
+  background-color: var(--theme-primary-hover-bg, #e0ebff);
+  border-color: var(--color-primary, #0950c3);
+  color: var(--color-primary, #0950c3);
+  transform: translateX(2px);
+}
+
+.play_icon {
+  color: var(--color-primary, #0950c3);
+  flex-shrink: 0;
+}
+
+.recommend_title {
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   4. Idle / Loading State Cards
+   ========================================================================== */
+
+.cta_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 36px 24px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+}
+
+.cta_icon_box {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--gradient-primary, linear-gradient(135deg, #0950c3 0%, #0ea5e9 100%));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(9, 80, 195, 0.25);
+}
+
+.cta_title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+.cta_desc {
+  font-size: 0.88rem;
+  color: var(--theme-text-secondary, #64748b);
+  line-height: 1.6;
+  max-width: 360px;
+  margin: 0;
+}
+
+.cta_analyze_btn {
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 10px 24px;
+  margin-top: 4px;
+}
+
+.loading_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  gap: 12px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 18px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(9, 80, 195, 0.2);
+  border-top-color: var(--color-primary, #0950c3);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading_text {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+}
+
+.loading_sub {
+  font-size: 0.84rem;
+  color: var(--theme-text-muted, #64748b);
+  margin: 0;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .diagnosis_card,
+:global([data-theme="dark"]) .concepts_card,
+:global([data-theme="dark"]) .recommend_card,
+:global([data-theme="dark"]) .cta_card,
+:global([data-theme="dark"]) .loading_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .possible_cause_eyebrow,
+:global([data-theme="dark"]) .target_icon,
+:global([data-theme="dark"]) .concept_icon,
+:global([data-theme="dark"]) .play_icon {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .concept_item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .concept_item:hover {
+  background-color: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+:global([data-theme="dark"]) .concept_label {
+  color: #f1f5f9;
+}
+
+:global([data-theme="dark"]) .recommend_item_btn {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+}
+
+:global([data-theme="dark"]) .recommend_item_btn:hover {
+  background-color: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .section_text {
+  color: #cbd5e1;
+}

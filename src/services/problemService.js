@@ -1,105 +1,176 @@
-import api from "./api";
-import { problemDetailData } from "~/constants/mockProblemDetail";
-import { problemData as mockProblemData } from "~/constants/mockProblem";
+/**
+ * FySet Problem Service
+ * Giao tiếp trực tiếp với Django SQLite Backend (/api/judge/problems/)
+ */
 
-const USE_MOCK = true;
+const API_BASE_URL = "/api/judge";
+const FALLBACK_DIRECT_URL = "http://127.0.0.1:8000/api/judge";
 
-// Adapter chuẩn hóa dữ liệu bài tập từ MongoDB sang UI
-export const adaptProblem = (p) => {
-  if (!p) return null;
-
-  return {
-    id: p._id?.toString() || p.id,
-    number: p.number || 1,
-    title: p.title,
-    slug: p.slug,
-    difficulty:
-      p.difficulty === "easy"
-        ? "Dễ"
-        : p.difficulty === "medium"
-        ? "Trung bình"
-        : "Khó",
-    category: p.category || "Thuật toán",
-    tags: p.tags || [],
-    acceptanceRate: p.acceptanceRate ? `${p.acceptanceRate}%` : "68.5%",
-    points: p.points || 100,
-    description: p.description,
-    codeStubs: p.codeStubs || [],
-    author: p.author || "FySet Team",
-    raw: p,
+async function fetchJudgeAPI(endpoint, options = {}) {
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
   };
-};
+
+  try {
+    // 1. Thử gọi qua Vite Proxy
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
+
+    if (res.ok) {
+      return await res.json();
+    }
+
+    // Nếu proxy trả về lỗi 503 (server offline), thử kết nối trực tiếp
+    if (res.status === 503 || res.status === 404) {
+      try {
+        const directRes = await fetch(`${FALLBACK_DIRECT_URL}${endpoint}`, {
+          ...options,
+          headers,
+        });
+        if (directRes.ok) {
+          return await directRes.json();
+        }
+      } catch {
+        // bỏ qua lỗi fallback
+      }
+    }
+
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(errData.error || errData.message || `Lỗi API (${res.status})`);
+  } catch (err) {
+    // 2. Thử gọi thẳng tới port 8000 nếu fetch proxy thất bại hoàn toàn
+    try {
+      const directRes = await fetch(`${FALLBACK_DIRECT_URL}${endpoint}`, {
+        ...options,
+        headers,
+      });
+      if (directRes.ok) {
+        return await directRes.json();
+      }
+    } catch {
+      // bỏ qua
+    }
+
+    console.warn(`[problemService] Không thể kết nối tới máy chủ máy chấm (${endpoint}):`, err.message);
+    throw err;
+  }
+}
 
 export const problemService = {
   /**
-   * Lấy danh sách bài tập (hỗ trợ phân trang, lọc độ khó, category)
+   * Lấy danh sách bài tập đang Active cho người dùng
    */
   getProblems: async (params = {}) => {
-    if (USE_MOCK) {
-      return mockProblemData;
-    }
-
     try {
-      const data = await api.get("/problems", { params });
-      if (Array.isArray(data)) {
-        return data.map(adaptProblem);
-      }
-      return mockProblemData;
-    } catch (error) {
-      console.warn("⚠️ [problemService] Dùng mock bài tập dự phòng:", error.message);
-      return mockProblemData;
+      const searchParams = new URLSearchParams();
+      if (params.search) searchParams.append("search", params.search);
+      if (params.difficulty && params.difficulty !== "all") searchParams.append("difficulty", params.difficulty);
+      if (params.topic && params.topic !== "all") searchParams.append("topic", params.topic);
+
+      const qs = searchParams.toString() ? `?${searchParams.toString()}` : "";
+      const data = await fetchJudgeAPI(`/problems/${qs}`);
+      return Array.isArray(data) ? data : [];
+    } catch {
+      return [];
     }
   },
 
   /**
-   * Lấy chi tiết bài tập theo ID hoặc Slug
+   * Lấy toàn bộ bài tập (Active + Draft + Archived) cho trang Admin
+   */
+  getAdminProblems: async (params = {}) => {
+    try {
+      const searchParams = new URLSearchParams();
+      searchParams.append("all", "true");
+      if (params.search) searchParams.append("search", params.search);
+      if (params.difficulty && params.difficulty !== "all") searchParams.append("difficulty", params.difficulty);
+      if (params.topic && params.topic !== "all") searchParams.append("topic", params.topic);
+
+      const qs = `?${searchParams.toString()}`;
+      const data = await fetchJudgeAPI(`/problems/${qs}`);
+      return Array.isArray(data) ? data : [];
+    } catch {
+      return [];
+    }
+  },
+
+  /**
+   * Lấy thống kê số lượng bài tập thực tế từ Database
+   */
+  getProblemStats: async () => {
+    try {
+      const data = await fetchJudgeAPI("/stats/");
+      return {
+        total: data.total || 0,
+        topicsCount: data.topicsCount || 0,
+        recentCount: data.recentCount || 0,
+      };
+    } catch {
+      return { total: 0, topicsCount: 0, recentCount: 0 };
+    }
+  },
+
+  /**
+   * Lấy chi tiết 1 bài tập theo ID hoặc Slug
    */
   getProblemById: async (idOrSlug) => {
-    if (USE_MOCK) {
-      return problemDetailData;
-    }
-
+    if (!idOrSlug) return null;
     try {
-      const data = await api.get(`/problems/${idOrSlug}`);
-      return adaptProblem(data) || problemDetailData;
-    } catch (error) {
-      console.warn("⚠️ [problemService] Dùng mock chi tiết bài tập:", error.message);
-      return problemDetailData;
+      const data = await fetchJudgeAPI(`/problems/${idOrSlug}/`);
+      return data;
+    } catch (err) {
+      console.warn(`[problemService] Không tìm thấy bài tập: ${idOrSlug}`, err.message);
+      return null;
     }
   },
 
   /**
-   * Nộp bài giải thuật toán (POST /api/v1/submissions)
+   * Tạo bài tập mới kèm Test cases vào Database SQLite
    */
-  submitSolution: async ({ problemId, language, code }) => {
-    if (USE_MOCK) {
-      return {
-        submissionId: `sub-${Date.now()}`,
-        status: "Accepted",
-        runtime: "4ms",
-        memory: "10.2MB",
-        passedCount: 15,
-        totalCount: 15,
-      };
-    }
-
-    return await api.post("/submissions", {
-      problemId,
-      language,
-      code,
+  createProblem: async (formData) => {
+    return await fetchJudgeAPI("/problems/", {
+      method: "POST",
+      body: JSON.stringify(formData),
     });
   },
 
   /**
-   * Lấy lịch sử nộp bài của một bài tập
+   * Cập nhật bài tập đã có
    */
-  getSubmissions: async (problemId) => {
-    if (USE_MOCK) {
-      return [];
-    }
+  updateProblem: async (id, formData) => {
+    return await fetchJudgeAPI(`/problems/${id}/`, {
+      method: "PUT",
+      body: JSON.stringify(formData),
+    });
+  },
 
-    return await api.get("/submissions", {
-      params: { problemId },
+  /**
+   * Xóa bài tập khỏi Database
+   */
+  deleteProblem: async (id) => {
+    return await fetchJudgeAPI(`/problems/${id}/`, {
+      method: "DELETE",
+    });
+  },
+
+  /**
+   * Chuyển đổi trạng thái bài tập Active <-> Draft
+   */
+  toggleStatus: async (id) => {
+    return await fetchJudgeAPI(`/problems/${id}/toggle-status/`, {
+      method: "POST",
+    });
+  },
+
+  /**
+   * Xóa toàn bộ bài tập khỏi Database (Reset dữ liệu sạch)
+   */
+  clearAllProblems: async () => {
+    return await fetchJudgeAPI("/problems/", {
+      method: "DELETE",
     });
   },
 };

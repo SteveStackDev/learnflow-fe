@@ -20,7 +20,7 @@ function ProblemListTable({
   };
 
   const getStatusIcon = (status) => {
-    if (status === "solved") {
+    if (status === "solved" || status === "AC") {
       return (
         <span
           className={`${styles.status_icon} ${styles["status_icon--solved"]}`}
@@ -48,8 +48,8 @@ function ProblemListTable({
   };
 
   const getBadgeClass = (level) => {
-    if (level === "Dễ") return styles["badge--easy"];
-    if (level === "Trung bình") return styles["badge--medium"];
+    if (level === "Dễ" || level === "Easy") return styles["badge--easy"];
+    if (level === "Trung bình" || level === "Medium") return styles["badge--medium"];
     return styles["badge--hard"];
   };
 
@@ -79,7 +79,7 @@ function ProblemListTable({
             {displayedItems.length === 0 ? (
               <tr>
                 <td colSpan="6" style={{ textAlign: "center", padding: "40px 20px" }}>
-                  Không tìm thấy bài tập nào phù hợp với bộ lọc hiện tại.
+                  Chưa có bài tập nào hoặc không tìm thấy bài tập phù hợp.
                 </td>
               </tr>
             ) : (
@@ -91,7 +91,7 @@ function ProblemListTable({
                   style={{ animationDelay: `${index * 85}ms` }}
                 >
                   <td className={styles.td}>{getStatusIcon(item.status)}</td>
-                  <td className={styles.td}>{item.number}</td>
+                  <td className={styles.td}>#{item.code || item.number || item.id}</td>
                   <td className={styles.td}>
                     <Link
                       to={`/problem/${item.slug || item.id}`}
@@ -102,14 +102,16 @@ function ProblemListTable({
                     </Link>
                   </td>
                   <td className={styles.td}>
-                    <span className={`${styles.badge} ${getBadgeClass(item.level)}`}>
-                      {item.level}
+                    <span className={`${styles.badge} ${getBadgeClass(item.level || item.difficulty)}`}>
+                      {item.level || item.difficultyLabel || "Dễ"}
                     </span>
                   </td>
-                  <td className={styles.td}>{item.acceptance}</td>
+                  <td className={styles.td}>
+                    {item.acceptance || item.successRate || `${item.acceptanceRate || 0}%`}
+                  </td>
                   <td className={styles.td}>
                     <div className={styles.tags_wrap}>
-                      {item.tags.map((tag) => (
+                      {(item.tags || [item.topic || "Thuật toán"]).map((tag) => (
                         <span key={tag} className={styles.tag_chip}>
                           {tag}
                         </span>

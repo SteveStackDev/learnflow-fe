@@ -36,6 +36,18 @@ const ProblemList = lazy(() => import("~/pages/ProblemList/ProblemList"));
 const ProblemDetail = lazy(() => import("~/pages/ProblemDetail/ProblemDetail"));
 const ProblemResult = lazy(() => import("~/pages/ProblemResult/ProblemResult"));
 
+// AI Learning Pages
+const AILearning = lazy(() => import("~/pages/AILearning/AILearning"));
+const AILearningAlgorithm = lazy(
+  () => import("~/pages/AILearningAlgorithm/AILearningAlgorithm"),
+);
+const AILearningSubmissions = lazy(
+  () => import("~/pages/AILearningSubmissions/AILearningSubmissions"),
+);
+const AILearningAnalysis = lazy(
+  () => import("~/pages/AILearningAnalysis/AILearningAnalysis"),
+);
+
 // Contest Pages
 const Contest = lazy(() => import("~/pages/Contest/Contest"));
 const ContestList = lazy(() => import("~/pages/ContestList/ContestList"));
@@ -112,16 +124,23 @@ createRoot(document.getElementById("root")).render(
                   <Route path="/problem/:id/submissions" element={<Submissions />} />
                   <Route path="/problem/result" element={<ProblemResult />} />
 
-                  {/* Contest Routes */}
-                  <Route path="/contest" element={<Contest />} />
-                  <Route path="/contest/list" element={<ContestList />} />
-                  <Route path="/contest/info" element={<ContestInfo />} />
-                  <Route path="/contest/:id/info" element={<ContestInfo />} />
-                  <Route path="/contest/detail" element={<ContestDetail />} />
-                  <Route path="/contest/result" element={<ContestResult />} />
-                  <Route path="/contest/:id/result" element={<ContestResult />} />
-                  <Route path="/contest/:id/submissions" element={<Submissions />} />
-                  <Route path="/contest/:id" element={<ContestDetail />} />
+                {/* AI Learning Routes */}
+                <Route path="/ai-learning" element={<AILearning />} />
+                <Route path="/ai-learning/algorithm/:algorithmSlug" element={<AILearningAlgorithm />} />
+                <Route path="/ai-learning/problem/:problemId" element={<AILearningSubmissions />} />
+                <Route path="/ai-learning/submission/:submissionId" element={<AILearningAnalysis />} />
+                <Route path="/ai-learning/:algorithmSlug" element={<AILearningAlgorithm />} />
+
+                {/* Contest Routes */}
+                <Route path="/contest" element={<Contest />} />
+                <Route path="/contest/list" element={<ContestList />} />
+                <Route path="/contest/info" element={<ContestInfo />} />
+                <Route path="/contest/:id/info" element={<ContestInfo />} />
+                <Route path="/contest/detail" element={<ContestDetail />} />
+                <Route path="/contest/result" element={<ContestResult />} />
+                <Route path="/contest/:id/result" element={<ContestResult />} />
+                <Route path="/contest/:id/submissions" element={<Submissions />} />
+                <Route path="/contest/:id" element={<ContestDetail />} />
 
                   {/* Submissions Routes */}
                   <Route path="/submissions" element={<Submissions />} />

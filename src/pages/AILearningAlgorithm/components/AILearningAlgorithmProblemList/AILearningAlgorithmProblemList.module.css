@@ -1,0 +1,237 @@
+/* ==========================================================================
+   AI Learning Algorithm Problem List Module Styling
+   ========================================================================== */
+
+.problem_list_section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* Header & Sort Bar */
+.list_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.list_title_wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.list_title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.count_badge {
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+}
+
+.sort_wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Problems Stack */
+.problems_stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Problem Card */
+.problem_card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.problem_card:hover {
+  border-color: rgba(9, 80, 195, 0.35);
+  box-shadow: 0 8px 20px rgba(9, 80, 195, 0.06);
+  transform: translateY(-1.5px);
+}
+
+.card_main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Title & Badge Row */
+.title_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.problem_title {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  letter-spacing: -0.015em;
+}
+
+.diff_badge {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+/* Tags Row */
+.tags_row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.problem_tag {
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* Possible Weakness Banner */
+.weakness_banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background-color: rgba(245, 158, 11, 0.09);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  color: #92400e;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.target_icon {
+  color: #d97706;
+  flex-shrink: 0;
+}
+
+.weakness_text strong {
+  font-weight: 700;
+  color: #b45309;
+}
+
+/* Right Side: WA/Solved Stats and CTA Button */
+.card_side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.stats_counts {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.wa_count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+.solved_count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--theme-text-muted, #94a3b8);
+}
+
+.solved_count--active {
+  color: #10b981;
+}
+
+.view_link_wrapper {
+  text-decoration: none;
+}
+
+.view_submissions_btn {
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .problem_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .problem_card:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .weakness_banner {
+  background-color: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+}
+
+:global([data-theme="dark"]) .weakness_text strong {
+  color: #fef3c7;
+}
+
+:global([data-theme="dark"]) .wa_count {
+  color: #f87171;
+}
+
+:global([data-theme="dark"]) .solved_count--active {
+  color: #34d399;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .problem_card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+  }
+
+  .card_side {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px dashed var(--theme-border, rgba(169, 183, 203, 0.25));
+  }
+}

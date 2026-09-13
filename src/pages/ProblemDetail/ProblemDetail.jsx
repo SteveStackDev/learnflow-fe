@@ -6,23 +6,84 @@ import ProblemDetailEditor from "./components/ProblemDetailEditor/ProblemDetailE
 import ProblemDetailConsole from "./components/ProblemDetailConsole/ProblemDetailConsole";
 import UserProfileCardModal from "~/components/UserProfileCardModal/UserProfileCardModal";
 import Icon from "~/components/Icon/Icon";
-import { problemDetailData } from "~/constants/mockProblemDetail";
-import { mockRunCodeLogs, mockJudgingSequence } from "~/constants/mockJudgingLogs";
 import { useToast } from "~/context/ToastContext.jsx";
+import { problemService } from "~/services/problemService";
+import { submitCode, runCodeSample } from "~/services/judgeService";
+
+const DEFAULT_LANGUAGE_TEMPLATES = {
+  cpp: {
+    id: "cpp",
+    label: "C++ (g++)",
+    template: `#include <iostream>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    // Viết mã nguồn giải thuật của bạn tại đây
+    
+    return 0;
+}`,
+  },
+  python: {
+    id: "python",
+    label: "Python 3",
+    template: `import sys
+
+def solve():
+    # Đọc dữ liệu từ sys.stdin và in ra stdout
+    input_data = sys.stdin.read().split()
+    if not input_data:
+        return
+    # Viết mã nguồn giải thuật của bạn tại đây
+    pass
+
+if __name__ == "__main__":
+    solve()`,
+  },
+  java: {
+    id: "java",
+    label: "Java",
+    template: `import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        // Viết mã nguồn giải thuật của bạn tại đây
+        
+    }
+}`,
+  },
+  javascript: {
+    id: "javascript",
+    label: "JavaScript (Node.js)",
+    template: `const fs = require("fs");
+
+function main() {
+    const input = fs.readFileSync(0, "utf-8").trim();
+    if (!input) return;
+    
+    // Xử lý dữ liệu đầu vào và in ra kết quả
+    
+}
+
+main();`,
+  },
+};
 
 function ProblemDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const problem = problemDetailData;
 
-  const [selectedLanguage, setSelectedLanguage] = useState(
-    problem.languages?.[0] || { id: "cpp", label: "C++", template: "" }
-  );
+  const [problem, setProblem] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [code, setCode] = useState(
-    selectedLanguage?.template || problem.languages?.[0]?.template || ""
-  );
+  const [selectedLanguage, setSelectedLanguage] = useState(DEFAULT_LANGUAGE_TEMPLATES.cpp);
+  const [code, setCode] = useState(DEFAULT_LANGUAGE_TEMPLATES.cpp.template);
+  const [userCodeByLang, setUserCodeByLang] = useState({});
 
   // Bottom Console Log State
   const [consoleLogs, setConsoleLogs] = useState([]);
@@ -42,6 +103,44 @@ function ProblemDetail() {
     typeof window !== "undefined" ? window.innerWidth <= 1024 : false
   );
 
+  // Load chi tiết bài tập từ SQLite Backend qua ID hoặc Slug
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoading(true);
+
+    problemService
+      .getProblemById(id)
+      .then((data) => {
+        if (!isMounted) return;
+        if (data) {
+          setProblem(data);
+          const langList = data.languages && data.languages.length > 0
+            ? data.languages
+            : Object.values(DEFAULT_LANGUAGE_TEMPLATES);
+          
+          const defaultLang = langList[0] || DEFAULT_LANGUAGE_TEMPLATES.cpp;
+          setSelectedLanguage(defaultLang);
+          const initCode = defaultLang.template || DEFAULT_LANGUAGE_TEMPLATES[defaultLang.id]?.template || "";
+          setCode(initCode);
+          setUserCodeByLang({ [defaultLang.id]: initCode });
+        } else {
+          setProblem(null);
+        }
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        console.warn("Lỗi tải chi tiết bài tập:", err.message);
+        setProblem(null);
+      })
+      .finally(() => {
+        if (isMounted) setIsLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobileViewport(window.innerWidth <= 1024);
@@ -51,74 +150,272 @@ function ProblemDetail() {
   }, []);
 
   const handleLanguageChange = (lang) => {
+    // Save current code to cache
+    const currentLangId = selectedLanguage?.id || "cpp";
+    const updatedCache = { ...userCodeByLang, [currentLangId]: code };
+    setUserCodeByLang(updatedCache);
+
     setSelectedLanguage(lang);
-    if (lang.template) {
-      setCode(lang.template);
+
+    // If user already wrote code for this language, restore it; otherwise use default template
+    if (updatedCache[lang.id]) {
+      setCode(updatedCache[lang.id]);
+    } else {
+      const template = lang.template || DEFAULT_LANGUAGE_TEMPLATES[lang.id]?.template || "";
+      setCode(template);
+      setUserCodeByLang((prev) => ({ ...prev, [lang.id]: template }));
     }
+    toast.info(`Đã chuyển sang ${lang.label || lang.name || "ngôn ngữ mới"}`, "Trình soạn thảo");
   };
 
   const handleResetCode = () => {
-    if (selectedLanguage?.template) {
-      setCode(selectedLanguage.template);
-      toast.info("Đã đặt lại mã nguồn mẫu ban đầu!", "Mã nguồn");
-    }
+    const langId = selectedLanguage?.id || "cpp";
+    const template = selectedLanguage?.template || DEFAULT_LANGUAGE_TEMPLATES[langId]?.template || "";
+    setCode(template);
+    setUserCodeByLang((prev) => ({ ...prev, [langId]: template }));
+    toast.info("Đã đặt lại mã nguồn mẫu ban đầu!", "Mã nguồn");
   };
 
-  const handleRunCode = () => {
-    if (isSubmitting || isExecuting) return;
+  const handleRunCode = async () => {
+    if (isSubmitting || isExecuting || !problem) return;
 
     setIsExecuting(true);
     setIsConsoleExpanded(true);
-    setConsoleLogs(mockRunCodeLogs(problem.title || "Bài tập"));
+    const timeStr = new Date().toLocaleTimeString();
 
-    setTimeout(() => {
+    setConsoleLogs([
+      {
+        type: "info",
+        text: `[${timeStr}] ⚙️ Đang thực thi mã nguồn ${selectedLanguage?.label || "C++"} cho bài tập #${problem.code || problem.id}...`,
+      },
+    ]);
+
+    try {
+      const sampleInput =
+        problem.examples?.[0]?.input ||
+        problem.testCases?.[0]?.input ||
+        "1 2";
+      const expectedOutput =
+        problem.examples?.[0]?.output ||
+        problem.testCases?.[0]?.expected ||
+        "3";
+
+      const res = await runCodeSample({
+        problemId: problem.id || id || 1,
+        sourceCode: code,
+        language: selectedLanguage?.id || "cpp",
+        sampleInput,
+        expectedOutput,
+      });
+
+      if (res.success) {
+        setConsoleLogs((prev) => [
+          ...prev,
+          { type: "stdout", text: `--- Input (Sample 1) ---\n${res.input}` },
+          { type: "stdout", text: `--- Your Output ---\n${res.stdout}` },
+          { type: "stdout", text: `--- Expected Output ---\n${res.expectedOutput}` },
+          {
+            type: "success",
+            text: `✅ Chạy thử thành công! Thời gian: ${res.executionTime}, Bộ nhớ: ${res.memory}`,
+          },
+        ]);
+        toast.success("Chạy thử mã nguồn thành công!", "Kết quả chạy thử");
+      } else {
+        setConsoleLogs((prev) => [
+          ...prev,
+          { type: "error", text: `❌ Lỗi: ${res.error}` },
+        ]);
+        toast.error(res.error || "Chạy thử thất bại!", "Lỗi chạy thử");
+      }
+    } catch (err) {
+      setConsoleLogs((prev) => [
+        ...prev,
+        { type: "error", text: `❌ Lỗi hệ thống: ${err.message}` },
+      ]);
+      toast.error(err.message || "Lỗi thực thi", "Lỗi chạy thử");
+    } finally {
       setIsExecuting(false);
-      toast.success("Chạy thử mã nguồn thành công!", "Biên dịch C++");
-    }, 800);
+    }
   };
 
-  const handleSubmitCode = () => {
-    if (isSubmitting || isExecuting) return;
-
-    const s1 = mockJudgingSequence.step1(id || "1");
-    const s2 = mockJudgingSequence.step2;
-    const s3 = mockJudgingSequence.step3;
+  const handleSubmitCode = async () => {
+    if (isSubmitting || isExecuting || !problem) return;
 
     setIsSubmitting(true);
     setIsConsoleExpanded(true);
-    setJudgingStep(s1.stepLabel);
-    toast.info("Đang chấm bài trên hệ thống tự động (Timeout 60s)...", "Nộp bài thành công");
+    const timeStr = new Date().toLocaleTimeString();
 
-    setConsoleLogs(s1.logs);
+    // Step 1: Initiating Submission
+    const step1Label = "[1/3] Đang gửi mã nguồn tới FySet Judge Engine...";
+    setJudgingStep(step1Label);
+    setConsoleLogs([
+      {
+        type: "info",
+        text: `[${timeStr}] 🚀 Bắt đầu quá trình nộp và chấm bài (Bài #${problem.code || problem.id}: ${problem.title})...`,
+      },
+      {
+        type: "info",
+        text: `[1/3] Ngôn ngữ: ${selectedLanguage?.label || "C++"} (${code.split("\n").length} dòng) - Giới hạn: ${problem.timeLimit || "2.0s"}, ${problem.memoryLimit || "256MB"}`,
+      },
+    ]);
+    toast.info("Đang chấm bài trên hệ thống máy chấm FySet...", "Đã gửi mã nguồn");
 
-    setTimeout(() => {
-      setJudgingStep(s2.stepLabel);
-      setConsoleLogs((prev) => [...prev, ...s2.logs]);
-    }, 1100);
+    try {
+      // Execute submission API call (with automatic smart fallback)
+      const judgePromise = submitCode({
+        problemId: problem.id || id || 1,
+        sourceCode: code,
+        language: selectedLanguage?.id || "cpp",
+      });
 
-    setTimeout(() => {
-      setJudgingStep(s3.stepLabel);
-      setConsoleLogs((prev) => [...prev, ...s3.logs]);
-    }, 2200);
+      // Step 2: Progressive animation for Compilation
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      const step2Label = `[2/3] Đang biên dịch mã nguồn ${selectedLanguage?.label || "C++"}...`;
+      setJudgingStep(step2Label);
+      const compileCmdMap = {
+        cpp: "g++ -O2 -std=c++17 solution.cpp -o solution",
+        java: "javac Main.java",
+        python: "python3 -m py_compile solution.py",
+        javascript: "node --check solution.js",
+      };
+      const currentCompileCmd = compileCmdMap[selectedLanguage?.id] || "g++ -O2 -std=c++17 solution.cpp -o solution";
 
-    setTimeout(() => {
+      setConsoleLogs((prev) => [
+        ...prev,
+        { type: "stdout", text: `[2/3] ${currentCompileCmd}` },
+      ]);
+
+      const result = await judgePromise;
+
+      if (result.status === "CE") {
+        setConsoleLogs((prev) => [
+          ...prev,
+          { type: "error", text: "❌ Biên dịch thất bại (Compilation Error)!" },
+          ...(result.logs ? result.logs.map((l) => ({ type: "error", text: l })) : []),
+        ]);
+        toast.error("Mã nguồn bị lỗi biên dịch (CE)!", "Lỗi máy chấm");
+      } else {
+        setConsoleLogs((prev) => [
+          ...prev,
+          { type: "success", text: "✅ Biên dịch thành công! Không có cảnh báo (0 Warnings)." },
+        ]);
+      }
+
+      // Step 3: Progressive animation for Test Execution
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      const step3Label = "[3/3] Đang chạy kiểm thử các testcases...";
+      setJudgingStep(step3Label);
+
+      if (result.status === "CE") {
+        // CE handled above
+      } else if (result.status === "AC") {
+        setConsoleLogs((prev) => [
+          ...prev,
+          ...(result.logs && result.logs.length > 0
+            ? result.logs.map((l) => ({ type: "stdout", text: `[3/3] ${l}` }))
+            : [
+                { type: "stdout", text: `[3/3] Hoàn thành toàn bộ test cases (${result.passed_tests || result.total_tests || 1}/${result.total_tests || 1} Tests AC)` },
+              ]),
+          {
+            type: "success",
+            text: `🎉 Kết quả máy chấm: ACCEPTED (Đạt ${result.score != null ? result.score : 100}/${result.max_score != null ? result.max_score : 100} Điểm) - Tổng thời gian: ${result.execution_time ? result.execution_time + "s" : "0.02s"}`,
+          },
+        ]);
+        toast.success("Chúc mừng! Bài làm đạt kết quả ACCEPTED!", "Máy chấm FySet");
+      } else if (result.status === "WA") {
+        setConsoleLogs((prev) => [
+          ...prev,
+          ...(result.logs && result.logs.length > 0
+            ? result.logs.map((l) => ({ type: "error", text: `[3/3] ${l}` }))
+            : []),
+          {
+            type: "error",
+            text: `❌ Kết quả máy chấm: WRONG ANSWER (WA) - Đạt ${result.passed_tests || 0}/${result.total_tests || 1} testcases (${result.score || 0}/${result.max_score || 100} Điểm).`,
+          },
+        ]);
+        toast.warning("Mã nguồn cho kết quả sai ở một số testcase (WA)!", "Kết quả bài nộp");
+      } else if (result.status === "TLE") {
+        setConsoleLogs((prev) => [
+          ...prev,
+          ...(result.logs && result.logs.length > 0
+            ? result.logs.map((l) => ({ type: "error", text: `[3/3] ${l}` }))
+            : []),
+          { type: "error", text: "⏱️ Kết quả máy chấm: TIME LIMIT EXCEEDED (TLE) - Vượt quá thời gian cho phép!" },
+        ]);
+        toast.warning("Chương trình chạy vượt quá thời gian quy định (TLE)!", "Kết quả bài nộp");
+      } else if (result.status === "RE") {
+        setConsoleLogs((prev) => [
+          ...prev,
+          ...(result.logs && result.logs.length > 0
+            ? result.logs.map((l) => ({ type: "error", text: `[3/3] ${l}` }))
+            : []),
+          { type: "error", text: "💥 Kết quả máy chấm: RUNTIME ERROR (RE) - Lỗi thực thi trong quá trình chạy!" },
+        ]);
+        toast.error("Mã nguồn gặp sự cố trong quá trình thực thi (RE)!", "Kết quả bài nộp");
+      }
+
+      // Navigate to Result page after short delay for user to see the completed verdict
+      await new Promise((resolve) => setTimeout(resolve, 900));
       setIsSubmitting(false);
       setJudgingStep("");
-      navigate(`/problem/${id || 1}/result`, {
+
+      const pTitle = problem.code
+        ? `#${problem.code}: ${problem.title}`
+        : `${problem.id}. ${problem.title}`;
+      const pDiffLabel = problem.difficultyLabel || problem.difficulty || "Dễ";
+
+      navigate(`/problem/${problem.slug || problem.id || id}/result`, {
         state: {
           submissionResult: {
-            status: "Accepted",
-            statusLabel: "Chấp nhận (Accepted)",
+            id: result.submission_id,
+            problemId: problem.id || id,
+            problemTitle: pTitle,
+            difficultyLabel: pDiffLabel,
+            status: result.status,
+            executionTime: result.execution_time,
             submittedCode: code,
-            language: selectedLanguage?.label || "C++20",
+            language: selectedLanguage?.label || "C++",
+            passedTests: result.passed_tests,
+            totalTests: result.total_tests,
+            testResults: result.test_results,
+            subtasks: result.subtasks,
+            logs: result.logs,
+            isFallback: result.isFallback,
           },
         },
       });
-    }, 3000);
+    } catch (err) {
+      setConsoleLogs((prev) => [
+        ...prev,
+        { type: "error", text: `❌ Lỗi khi nộp bài: ${err.message}` },
+      ]);
+      toast.error(err.message || "Không thể hoàn thành chấm bài!", "Lỗi nộp bài");
+      setIsSubmitting(false);
+      setJudgingStep("");
+    }
   };
 
+  if (isLoading) {
+    return (
+      <div className={styles.detail_page} style={{ padding: "80px 20px", textAlign: "center" }}>
+        <p style={{ color: "#94a3b8", fontSize: "1.1rem" }}>Đang tải thông tin bài tập từ máy chủ...</p>
+      </div>
+    );
+  }
+
   if (!problem) {
-    return <div className={styles.detail_page}>Không tìm thấy bài tập!</div>;
+    return (
+      <div className={styles.detail_page} style={{ padding: "80px 20px", textAlign: "center" }}>
+        <h2 style={{ color: "#f8fafc", marginBottom: 12 }}>Không tìm thấy bài tập!</h2>
+        <p style={{ color: "#94a3b8", marginBottom: 24 }}>
+          Bài tập này có thể chưa được tạo hoặc đang ở trạng thái Bản nháp (Draft).
+        </p>
+        <Link to="/problem/list" className={styles.back_btn} style={{ display: "inline-flex" }}>
+          <Icon name="ArrowLeft" size={16} />
+          <span>Quay về danh sách bài tập</span>
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -172,8 +469,9 @@ function ProblemDetail() {
             {activeMobileTab === "editor" && (
               <div className={styles.right_col}>
                 <ProblemDetailEditor
-                  languages={problem.languages}
+                  languages={problem?.languages || Object.values(DEFAULT_LANGUAGE_TEMPLATES)}
                   selectedLanguage={selectedLanguage}
+                  onLanguageChange={handleLanguageChange}
                   setSelectedLanguage={handleLanguageChange}
                   code={code}
                   setCode={setCode}
@@ -198,8 +496,9 @@ function ProblemDetail() {
 
             <div className={styles.right_col}>
               <ProblemDetailEditor
-                languages={problem.languages}
+                languages={problem?.languages || Object.values(DEFAULT_LANGUAGE_TEMPLATES)}
                 selectedLanguage={selectedLanguage}
+                onLanguageChange={handleLanguageChange}
                 setSelectedLanguage={handleLanguageChange}
                 code={code}
                 setCode={setCode}

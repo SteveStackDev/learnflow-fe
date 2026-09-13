@@ -19,8 +19,14 @@ function ProblemList({
 }) {
   const navigate = useNavigate();
 
-  const handleCardClick = (id) => {
-    navigate(`/problem/${id || "two-sum"}`);
+  const handleCardClick = (item) => {
+    navigate(`/problem/${item.slug || item.id}`);
+  };
+
+  const getBadgeClass = (level) => {
+    if (level === "Dễ" || level === "Easy") return styles["prob-challenges__level-badge--easy"];
+    if (level === "Trung bình" || level === "Medium") return styles["prob-challenges__level-badge--medium"];
+    return styles["prob-challenges__level-badge--hard"];
   };
 
   return (
@@ -30,7 +36,7 @@ function ProblemList({
           <EmptyState
             iconName="Search"
             title="Không tìm thấy bài tập phù hợp"
-            description="Rất tiếc, không có bài tập nào phù hợp với bộ lọc hiện tại của bạn. Thử tìm kiếm bằng từ khóa khác hoặc xóa bộ lọc."
+            description="Hiện tại chưa có bài tập nào hoặc không có bài nào phù hợp với bộ lọc. Hãy thêm bài tập mới từ trang Quản trị hoặc xóa bộ lọc."
             actionLabel="Xóa tất cả bộ lọc"
             onAction={() => {
               setSearchQuery("");
@@ -55,33 +61,29 @@ function ProblemList({
             <div className={styles["prob-challenges__list"]}>
               {displayedItems.map((obj) => (
                 <div
-                  key={obj.id || obj.slug || obj.name || obj.title || obj}
+                  key={obj.id || obj.slug}
                   className={`${styles["prob-challenges__card"]} reveal-card`}
-                  onClick={() => handleCardClick(obj.id)}
+                  onClick={() => handleCardClick(obj)}
                 >
                   <div className={styles["prob-challenges__card-header"]}>
                     <div className={styles["prob-challenges__card-icon"]}>
-                      <Icon name={obj.iconName} size={22} />
+                      <Icon name={obj.iconName || "Code"} size={22} />
                     </div>
                     <span
-                      className={`${styles["prob-challenges__level-badge"]} ${
-                        obj.level === "Dễ"
-                          ? styles["prob-challenges__level-badge--easy"]
-                          : obj.level === "Trung bình"
-                            ? styles["prob-challenges__level-badge--medium"]
-                            : styles["prob-challenges__level-badge--hard"]
-                      }`}
+                      className={`${styles["prob-challenges__level-badge"]} ${getBadgeClass(obj.level || obj.difficulty)}`}
                     >
                       <span className={styles["prob-challenges__badge-dot"]} />
-                      {obj.level}
+                      {obj.level || obj.difficultyLabel || "Dễ"}
                     </span>
                   </div>
 
                   <div className={styles["prob-challenges__card-body"]}>
                     <h3 className={styles["prob-challenges__card-title"]}>{obj.title}</h3>
-                    <p className={styles["prob-challenges__card-desc"]}>{obj.description}</p>
+                    <p className={styles["prob-challenges__card-desc"]}>
+                      {obj.statement || obj.description}
+                    </p>
                     <div className={styles["prob-challenges__tag-group"]}>
-                      {obj.tags.map((item, tIdx) => (
+                      {(obj.tags || [obj.topic || "Thuật toán"]).map((item, tIdx) => (
                         <span key={tIdx} className={styles["prob-challenges__tag-item"]}>
                           {item}
                         </span>
@@ -91,11 +93,11 @@ function ProblemList({
 
                   <div className={styles["prob-challenges__card-actions"]}>
                     <span className={styles["prob-challenges__rate-text"]}>
-                      <Icon name="Clock" size={15} />
-                      Tỷ lệ: {obj.successRate}
+                      <Icon name="Award" size={15} />
+                      {obj.points ? `${obj.points} pts` : "500 pts"}
                     </span>
                     <Link
-                      to={`/problem/${obj.id || "two-sum"}`}
+                      to={`/problem/${obj.slug || obj.id}`}
                       className={styles["prob-challenges__action-btn"]}
                       onClick={(e) => e.stopPropagation()}
                     >

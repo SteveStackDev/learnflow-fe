@@ -1,0 +1,88 @@
+/* ==========================================================================
+   AI Learning Analysis Problem Statement Card Module Styling
+   ========================================================================== */
+
+.statement_card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--theme-card-bg, #ffffff);
+  border: 1px solid var(--theme-border, rgba(169, 183, 203, 0.4));
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-base, all 0.2s ease);
+}
+
+.statement_card:hover {
+  border-color: rgba(9, 80, 195, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.header_toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.header_left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file_icon {
+  color: var(--color-primary, #0950c3);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #0f172a);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.chevron_icon {
+  color: var(--theme-text-muted, #64748b);
+  transition: transform var(--transition-base, 0.2s ease);
+}
+
+.body {
+  padding: 0 20px 20px 20px;
+}
+
+.statement_content {
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--theme-text-secondary, #334155);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* Dark Mode Overrides */
+:global([data-theme="dark"]) .statement_card {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .statement_card:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .file_icon {
+  color: #38bdf8;
+}
+
+:global([data-theme="dark"]) .statement_content {
+  color: #cbd5e1;
+}
