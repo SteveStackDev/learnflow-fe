@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 // Context & Toast
 import { ToastProvider } from "~/context/ToastContext.jsx";
 import { ThemeProvider } from "~/context/ThemeContext.jsx";
-import { AuthProvider } from "./context/authContext";
+import { AuthProvider } from "~/context/authContext";
 import ToastContainer from "~/components/Toast/ToastContainer.jsx";
 
 // Styles
