@@ -87,7 +87,7 @@ function SignUp() {
 
     try {
       setIsSubmitting(true);
-      await authService.register({
+      await authService.signUp({
         username: trimmedUsername,
         email: email.trim(),
         password,
@@ -98,7 +98,7 @@ function SignUp() {
         "Đăng ký tài khoản thành công! Vui lòng kiểm tra email để kích hoạt tài khoản.",
         "Đăng ký thành công",
       );
-      navigate("/sign-in");
+      navigate("/signin");
     } catch (error) {
       if (error.errors) {
         setErrors(error.errors);
@@ -110,6 +110,13 @@ function SignUp() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleSubmitWithGoogle = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    await authService.signInWithGoogle();
   };
 
   return (
@@ -145,6 +152,7 @@ function SignUp() {
           setErrors={setErrors}
           isSubmitting={isSubmitting}
           handleSubmit={handleSubmit}
+          handleSubmitWithGoogle={handleSubmitWithGoogle}
         />
       </div>
     </div>

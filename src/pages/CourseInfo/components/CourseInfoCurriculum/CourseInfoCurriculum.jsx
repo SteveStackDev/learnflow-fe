@@ -3,81 +3,92 @@ import { Card } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import styles from "./CourseInfoCurriculum.module.css";
 
-export default function CourseInfoCurriculum({ modules = [] }) {
-  const defaultModules = [
-    {
-      id: "mod-1",
-      title: "Chương 1: Giới thiệu & Môi trường phát triển",
-      lessonsCount: 6,
-      duration: "45 phút",
-      lessons: [
-        { id: "l-1", title: "1. Tổng quan về ReactJS & Ecosystem", duration: "10:15" },
-        { id: "l-2", title: "2. Cài đặt Node.js & Vite", duration: "08:30" },
-        { id: "l-3", title: "3. Cấu trúc thư mục dự án React", duration: "12:00" },
-      ],
-    },
-    {
-      id: "mod-2",
-      title: "Chương 2: JSX, Component & Props",
-      lessonsCount: 12,
-      duration: "2 giờ 15 phút",
-      lessons: [
-        { id: "l-4", title: "4. JSX Syntax & Cú pháp lồng ghép", duration: "15:20" },
-        { id: "l-5", title: "5. Functional Components vs Class Components", duration: "14:10" },
-        { id: "l-6", title: "6. Truyền dữ liệu với Props", duration: "18:45" },
-      ],
-    },
-    {
-      id: "mod-3",
-      title: "Chương 3: State & React Hooks cơ bản",
-      lessonsCount: 15,
-      duration: "3 giờ 40 phút",
-      lessons: [
-        { id: "l-7", title: "7. Quản lý trạng thái với useState", duration: "20:10" },
-        { id: "l-8", title: "8. Xử lý sự kiện (Event Handling)", duration: "16:30" },
-        { id: "l-9", title: "9. Side Effect với useEffect", duration: "25:00" },
-      ],
-    },
-  ];
-
-  const list = modules.length > 0 ? modules : defaultModules;
-  const [openModuleId, setOpenModuleId] = useState(list[0]?.id || "mod-1");
+export default function CourseInfoCurriculum({ curriculum }) {
+  const [openModuleId, setOpenModuleId] = useState(curriculum[0]?.chapterId || "mod-1");
 
   const toggleModule = (id) => {
     setOpenModuleId((prev) => (prev === id ? null : id));
   };
 
+  function formatMsToHHMMSS(ms) {
+    if (!ms || ms < 0) return "00:00:00";
+
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const paddedHours = String(hours).padStart(2, "0");
+    const paddedMinutes = String(minutes).padStart(2, "0");
+    const paddedSeconds = String(seconds).padStart(2, "0");
+
+    if (paddedHours === "00") {
+      return `${paddedMinutes}:${paddedSeconds}`;
+    } else {
+      return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+    }
+  }
+
   return (
     <Card className={styles.container}>
       <div className={styles.header_row}>
         <h2 className={styles.title}>Nội dung khóa học</h2>
-        <span className={styles.summary_text}>3 chương • 33 bài học • 6 giờ 40 phút</span>
+        <span className={styles.summary_text}>
+          {curriculum.length} chương •{" "}
+          {curriculum.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.lessons.length;
+          }, 0)}{" "}
+          bài học •{" "}
+          {formatMsToHHMMSS(
+            curriculum
+              .map((mod) => {
+                let courseTotalDuration = 0;
+                let chapterTotalDuration = mod.lessons.reduce((accumulator, currentValue) => {
+                  return accumulator + currentValue.duration;
+                }, 0);
+
+                courseTotalDuration += chapterTotalDuration;
+
+                return courseTotalDuration;
+              })
+              .reduce((accumulator, currentValue) => {
+                return accumulator + currentValue;
+              }, 0),
+          )}
+        </span>
       </div>
 
       <div className={styles.modules_list}>
-        {list.map((mod) => {
-          const isOpen = openModuleId === mod.id;
+        {curriculum.map((mod) => {
+          const isOpen = openModuleId === mod.chapterId;
+          const chapterTotalDuration = formatMsToHHMMSS(
+            mod.lessons.reduce((accumulator, currentValue) => {
+              return accumulator + currentValue.duration;
+            }, 0),
+          );
           return (
-            <div key={mod.id} className={styles.module_item}>
-              <div className={styles.module_header} onClick={() => toggleModule(mod.id)}>
+            <div key={mod.chapterId} className={styles.module_item}>
+              <div className={styles.module_header} onClick={() => toggleModule(mod.chapterId)}>
                 <div className={styles.module_title_wrap}>
                   <Icon name={isOpen ? "ChevronDown" : "ChevronRight"} size={18} />
                   <span className={styles.module_title}>{mod.title}</span>
                 </div>
                 <span className={styles.module_meta}>
-                  {mod.lessonsCount} bài • {mod.duration}
+                  {mod.lessons.length} bài • {chapterTotalDuration}
                 </span>
               </div>
 
               {isOpen && (
                 <div className={styles.lessons_list}>
                   {mod.lessons.map((les) => (
-                    <div key={les.id} className={styles.lesson_row}>
+                    <div key={les.lessonId} className={styles.lesson_row}>
                       <div className={styles.lesson_left}>
                         <Icon name="PlayCircle" size={16} color="#0950c3" />
                         <span>{les.title}</span>
                       </div>
-                      <span className={styles.lesson_duration}>{les.duration}</span>
+                      <span className={styles.lesson_duration}>
+                        {formatMsToHHMMSS(les.duration)}
+                      </span>
                     </div>
                   ))}
                 </div>

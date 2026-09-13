@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { useTheme } from "~/context/ThemeContext.jsx";
+import { useState, useEffect, useContext } from "react";
+import { ThemeContext } from "~/context/ThemeContext";
 import { useToast } from "~/context/ToastContext.jsx";
 import Icon from "~/components/Icon/Icon";
 import styles from "./SettingAppearance.module.css";
 
 function SettingAppearance() {
-  const { theme, changeTheme } = useTheme();
+  const { theme, changeTheme } = useContext(ThemeContext);
   const { toast } = useToast();
   const [language, setLanguage] = useState(
     () => localStorage.getItem("fySet_lang") || document.documentElement.lang || "vi",

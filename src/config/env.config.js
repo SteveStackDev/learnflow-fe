@@ -3,9 +3,7 @@
  */
 
 const getEnv = (key, defaultValue = "") => {
-  return import.meta.env[key] !== undefined
-    ? import.meta.env[key]
-    : defaultValue;
+  return import.meta.env[key] !== undefined ? import.meta.env[key] : defaultValue;
 };
 
 export const envConfig = {

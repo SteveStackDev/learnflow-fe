@@ -37,7 +37,7 @@ function Course() {
 
   // Nạp danh sách khóa học từ courseService
   useEffect(() => {
-    courseService.getCourses().then((data) => {
+    courseService.getAllCourses().then((data) => {
       if (Array.isArray(data) && data.length > 0) {
         setCoursesList(data);
       }

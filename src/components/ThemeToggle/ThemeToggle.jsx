@@ -1,9 +1,10 @@
-import { useTheme } from "~/context/ThemeContext.jsx";
+import { useContext } from "react";
+import { ThemeContext } from "~/context/ThemeContext";
 import Icon from "~/components/Icon/Icon";
 import styles from "./ThemeToggle.module.css";
 
 function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <div className={styles["theme-toggle__wrapper"]}>

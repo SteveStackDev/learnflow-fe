@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Styles
 import styles from "./Home.module.css";
 
@@ -18,6 +18,7 @@ import HomeContact from "./components/HomeContact/HomeContact";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 import { useToast } from "~/context/ToastContext.jsx";
+import { authService } from "~/services";
 
 function Home() {
   const [contactName, setContactName] = useState("");
@@ -28,6 +29,21 @@ function Home() {
   const { toast } = useToast();
 
   useScrollReveal();
+
+  useEffect(() => {
+    async function fetchUserData() {
+      const user = authService.getMe();
+
+      if (user.name || user.username) {
+        toast.success(
+          `Chào mừng ${user.name || user.username || "bạn"} trở lại!`,
+          "Đăng nhập thành công",
+        );
+      }
+    }
+
+    fetchUserData();
+  }, []);
 
   const handleContactSubmit = (e) => {
     e.preventDefault();

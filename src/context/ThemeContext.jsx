@@ -1,20 +1,8 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 
-const ThemeContext = createContext(null);
+export const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
-  // Tự động dọn dẹp các key localStorage cũ không cần thiết
-  if (typeof window !== "undefined") {
-    try {
-      localStorage.removeItem("learnflow_theme");
-      localStorage.removeItem("learnflow_user");
-      localStorage.removeItem("learnflow_token");
-      localStorage.removeItem("fyset_token");
-    } catch {
-      // bỏ qua lỗi nếu có
-    }
-  }
-
   const [theme, setTheme] = useState(() => {
     return (
       document.documentElement.getAttribute("data-theme") ||
@@ -48,33 +36,4 @@ export function ThemeProvider({ children }) {
       {children}
     </ThemeContext.Provider>
   );
-}
-
-export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    const current =
-      typeof document !== "undefined"
-        ? document.documentElement.getAttribute("data-theme") ||
-          localStorage.getItem("fyset_theme") ||
-          "light"
-        : "light";
-    return {
-      theme: current,
-      toggleTheme: () => {
-        const next = current === "light" ? "dark" : "light";
-        if (typeof document !== "undefined") {
-          document.documentElement.setAttribute("data-theme", next);
-          localStorage.setItem("fyset_theme", next);
-        }
-      },
-      changeTheme: (newTheme) => {
-        if (typeof document !== "undefined") {
-          document.documentElement.setAttribute("data-theme", newTheme);
-          localStorage.setItem("fyset_theme", newTheme);
-        }
-      },
-    };
-  }
-  return context;
 }

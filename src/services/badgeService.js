@@ -1,8 +1,6 @@
 import api from "./api";
 import { badgeData as mockBadgeData } from "~/constants/mockBadge";
 
-const USE_MOCK = true;
-
 // Adapter chuẩn hóa dữ liệu danh hiệu từ MongoDB sang UI
 export const adaptBadge = (badge) => {
   if (!badge) return null;
@@ -14,50 +12,25 @@ export const adaptBadge = (badge) => {
     iconUrl:
       badge.thumbnail ||
       "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=120&auto=format&fit=crop&q=80",
-    category: badge.category || "learning",
-    rarity: badge.rarity || "common",
+    category: badge.category,
+    rarity: badge.rarity,
     pointsReward: badge.pointsReward || 50,
     criteria: badge.criteria || {},
-    earnedCount: badge.stats?.earnedCount || 0,
+    earnedCount: badge.stats.earnedCount,
+    tabs: [],
     raw: badge,
   };
 };
 
 export const badgeService = {
-  /**
-   * Lấy danh sách tất cả các danh hiệu có thể mở khóa
-   */
-  getBadges: async (params = {}) => {
-    if (USE_MOCK) {
-      return mockBadgeData;
-    }
-
+  getAllBadges: async () => {
     try {
-      const data = await api.get("/badges", { params });
-      if (Array.isArray(data)) {
-        return data.map(adaptBadge);
-      }
-      return mockBadgeData;
+      const data = await api.get("/badge/all");
+      console.log(data.map(adaptBadge));
+      return data.map(adaptBadge);
     } catch (error) {
       console.warn("⚠️ [badgeService] Dùng mock danh hiệu dự phòng:", error.message);
       return mockBadgeData;
-    }
-  },
-
-  /**
-   * Lấy danh sách danh hiệu của người dùng hiện tại
-   */
-  getMyBadges: async () => {
-    if (USE_MOCK) {
-      return mockBadgeData?.myBadges || [];
-    }
-
-    try {
-      const data = await api.get("/badges/my-badges");
-      return data;
-    } catch (error) {
-      console.warn("⚠️ [badgeService] Dùng mock danh hiệu cá nhân:", error.message);
-      return mockBadgeData?.myBadges || [];
     }
   },
 };

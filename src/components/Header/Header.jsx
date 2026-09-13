@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { AuthContext } from "~/context/authContext";
 import { NavLink, Link, useLocation, useNavigate } from "react-router";
 import styles from "./Header.module.css";
 import Icon from "~/components/Icon/Icon";
-import { authService } from "~/services/authService";
 
 // Navigation Constants
 const NAV_LINKS = [
@@ -16,20 +16,45 @@ const LEARN_DROPDOWN_ITEMS = [
 ];
 
 const PRACTICE_DROPDOWN_ITEMS = [
-  { to: "/problem", title: "Bài tập", desc: "Kho thử thách coding chuẩn phỏng vấn", iconName: "Terminal" },
-  { to: "/contest", title: "Cuộc thi", desc: "Đấu trường thuật toán & thử thách", iconName: "Trophy" },
+  {
+    to: "/problem",
+    title: "Bài tập",
+    desc: "Kho thử thách coding chuẩn phỏng vấn",
+    iconName: "Terminal",
+  },
+  {
+    to: "/contest",
+    title: "Cuộc thi",
+    desc: "Đấu trường thuật toán & thử thách",
+    iconName: "Trophy",
+  },
 ];
 
 const ACHIEVEMENT_DROPDOWN_ITEMS = [
-  { to: "/leaderboard", title: "Bảng xếp hạng", desc: "Top học viên & bảng vinh danh", iconName: "Trophy" },
+  {
+    to: "/leaderboard",
+    title: "Bảng xếp hạng",
+    desc: "Top học viên & bảng vinh danh",
+    iconName: "Trophy",
+  },
   { to: "/badge", title: "Danh hiệu", desc: "Hệ thống huy hiệu & thành tích", iconName: "Award" },
 ];
 
 const OTHER_DROPDOWN_ITEMS = [
   { to: "/pricing", title: "Bảng giá", desc: "Các gói dịch vụ & ưu đãi", iconName: "Tag" },
   { to: "/contact", title: "Liên hệ", desc: "Hỗ trợ & giải đáp thắc mắc", iconName: "Mail" },
-  { to: "/blog", title: "Bài viết", desc: "Góc chia sẻ kiến thức & Tin tức Tech", iconName: "BookOpen" },
-  { to: "/chat", title: "Trò chuyện", desc: "Trợ lý AI & Nhắn tin cộng đồng", iconName: "MessageSquare" },
+  {
+    to: "/blog",
+    title: "Bài viết",
+    desc: "Góc chia sẻ kiến thức & Tin tức Tech",
+    iconName: "BookOpen",
+  },
+  {
+    to: "/chat",
+    title: "Trò chuyện",
+    desc: "Trợ lý AI & Nhắn tin cộng đồng",
+    iconName: "MessageSquare",
+  },
 ];
 
 export function Header() {
@@ -37,14 +62,7 @@ export function Header() {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const [currentUser, setCurrentUser] = useState(() => {
-    try {
-      const saved = localStorage.getItem("fySet_user");
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
+  const { user, getUser, deleteUser, updateUser } = useContext(AuthContext);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -53,27 +71,26 @@ export function Header() {
 
   const isLearnActive = ["/roadmap", "/course"].includes(location.pathname);
   const isPracticeActive = ["/problem", "/contest"].includes(location.pathname);
-  const isAchievementActive = ["/leaderboard", "/badge", "/achievement"].includes(location.pathname);
-  const isOtherActive = ["/pricing", "/contact", "/pricing/checkout", "/checkout", "/blog"].includes(location.pathname);
+  const isAchievementActive = ["/leaderboard", "/badge", "/achievement"].includes(
+    location.pathname,
+  );
+  const isOtherActive = [
+    "/pricing",
+    "/contact",
+    "/pricing/checkout",
+    "/checkout",
+    "/blog",
+  ].includes(location.pathname);
 
-  // Sync Auth State across Tabs and Custom Events
   useEffect(() => {
-    const handleAuthChange = () => {
-      try {
-        const saved = localStorage.getItem("fySet_user");
-        setCurrentUser(saved ? JSON.parse(saved) : null);
-      } catch {
-        setCurrentUser(null);
-      }
-    };
+    async function fetchData() {
+      const user = await getUser();
 
-    window.addEventListener("fySet_auth_change", handleAuthChange);
-    window.addEventListener("storage", handleAuthChange);
+      if (!user || user.status === "failed") return updateUser({});
+      updateUser(user);
+    }
 
-    return () => {
-      window.removeEventListener("fySet_auth_change", handleAuthChange);
-      window.removeEventListener("storage", handleAuthChange);
-    };
+    fetchData();
   }, []);
 
   // Close User Menu on Outside Click
@@ -105,8 +122,7 @@ export function Header() {
   };
 
   const handleLogout = async () => {
-    await authService.logout();
-    setCurrentUser(null);
+    deleteUser();
     closeMenu();
     navigate("/signin");
   };
@@ -152,7 +168,7 @@ export function Header() {
     </div>
   );
 
-  const userAvatar = currentUser?.avatar || "https://ui-avatars.com/api/?name=" + encodeURIComponent(currentUser?.name || "User");
+  const userAvatar = user.avatar;
 
   return (
     <header className={styles.header}>
@@ -173,7 +189,6 @@ export function Header() {
           <nav className={styles.header__nav}>
             {renderNavLink(NAV_LINKS[0])} {/* Trang chủ */}
             {renderNavLink(NAV_LINKS[1])} {/* Giới thiệu */}
-
             {/* Learn Dropdown */}
             <div
               className={styles.header__dropdown_wrapper}
@@ -183,20 +198,21 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === "learn" ? null : "learn")}
-                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${isLearnActive ? styles["header__link--active"] : ""
-                  }`}
+                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${
+                  isLearnActive ? styles["header__link--active"] : ""
+                }`}
               >
                 <span>Learn</span>
                 <Icon
                   name="ChevronDown"
                   size={14}
-                  className={`${styles.header__chevron} ${activeDropdown === "learn" ? styles["header__chevron--open"] : ""
-                    }`}
+                  className={`${styles.header__chevron} ${
+                    activeDropdown === "learn" ? styles["header__chevron--open"] : ""
+                  }`}
                 />
               </button>
               {activeDropdown === "learn" && renderDropdownMenu(LEARN_DROPDOWN_ITEMS)}
             </div>
-
             {/* Practice Dropdown */}
             <div
               className={styles.header__dropdown_wrapper}
@@ -206,20 +222,21 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === "practice" ? null : "practice")}
-                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${isPracticeActive ? styles["header__link--active"] : ""
-                  }`}
+                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${
+                  isPracticeActive ? styles["header__link--active"] : ""
+                }`}
               >
                 <span>Practice</span>
                 <Icon
                   name="ChevronDown"
                   size={14}
-                  className={`${styles.header__chevron} ${activeDropdown === "practice" ? styles["header__chevron--open"] : ""
-                    }`}
+                  className={`${styles.header__chevron} ${
+                    activeDropdown === "practice" ? styles["header__chevron--open"] : ""
+                  }`}
                 />
               </button>
               {activeDropdown === "practice" && renderDropdownMenu(PRACTICE_DROPDOWN_ITEMS)}
             </div>
-
             {/* Achievement Dropdown */}
             <div
               className={styles.header__dropdown_wrapper}
@@ -228,21 +245,24 @@ export function Header() {
             >
               <button
                 type="button"
-                onClick={() => setActiveDropdown(activeDropdown === "achievement" ? null : "achievement")}
-                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${isAchievementActive ? styles["header__link--active"] : ""
-                  }`}
+                onClick={() =>
+                  setActiveDropdown(activeDropdown === "achievement" ? null : "achievement")
+                }
+                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${
+                  isAchievementActive ? styles["header__link--active"] : ""
+                }`}
               >
                 <span>Achievement</span>
                 <Icon
                   name="ChevronDown"
                   size={14}
-                  className={`${styles.header__chevron} ${activeDropdown === "achievement" ? styles["header__chevron--open"] : ""
-                    }`}
+                  className={`${styles.header__chevron} ${
+                    activeDropdown === "achievement" ? styles["header__chevron--open"] : ""
+                  }`}
                 />
               </button>
               {activeDropdown === "achievement" && renderDropdownMenu(ACHIEVEMENT_DROPDOWN_ITEMS)}
             </div>
-
             {/* Other Dropdown */}
             <div
               className={styles.header__dropdown_wrapper}
@@ -252,15 +272,17 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === "other" ? null : "other")}
-                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${isOtherActive ? styles["header__link--active"] : ""
-                  }`}
+                className={`${styles.header__link} ${styles.header__dropdown_trigger} ${
+                  isOtherActive ? styles["header__link--active"] : ""
+                }`}
               >
                 <span>Other</span>
                 <Icon
                   name="ChevronDown"
                   size={14}
-                  className={`${styles.header__chevron} ${activeDropdown === "other" ? styles["header__chevron--open"] : ""
-                    }`}
+                  className={`${styles.header__chevron} ${
+                    activeDropdown === "other" ? styles["header__chevron--open"] : ""
+                  }`}
                 />
               </button>
               {activeDropdown === "other" && renderDropdownMenu(OTHER_DROPDOWN_ITEMS)}
@@ -269,7 +291,7 @@ export function Header() {
 
           {/* Desktop Right Actions: Auth buttons OR User Menu */}
           <div className={styles.header__actions}>
-            {currentUser ? (
+            {Object.keys(user).length > 0 ? (
               <div className={styles.header__user_menu_wrapper} ref={userMenuRef}>
                 <button
                   type="button"
@@ -277,16 +299,16 @@ export function Header() {
                   className={styles.header__user_btn}
                   aria-label="User Menu"
                 >
-                  <img src={userAvatar} alt={currentUser.name} className={styles.header__user_avatar} />
-                  <span className={styles.header__user_name}>{currentUser.name}</span>
+                  <img src={userAvatar} alt={user.name} className={styles.header__user_avatar} />
+                  <span className={styles.header__user_name}>{user.name}</span>
                   <Icon name="ChevronDown" size={14} />
                 </button>
 
                 {isUserMenuOpen && (
                   <div className={styles.header__user_dropdown}>
                     <div className={styles.header__user_header}>
-                      <div className={styles.header__user_fullname}>{currentUser.name}</div>
-                      <div className={styles.header__user_email}>{currentUser.email}</div>
+                      <div className={styles.header__user_fullname}>{user.name}</div>
+                      <div className={styles.header__user_email}>{user.email}</div>
                     </div>
 
                     <div className={styles.header__user_divider} />
@@ -303,7 +325,11 @@ export function Header() {
 
                     <div className={styles.header__user_divider} />
 
-                    <button type="button" onClick={handleLogout} className={`${styles.header__user_item} ${styles["header__user_item--danger"]}`}>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className={`${styles.header__user_item} ${styles["header__user_item--danger"]}`}
+                    >
                       <Icon name="LogOut" size={16} />
                       <span>Đăng xuất</span>
                     </button>
@@ -312,10 +338,16 @@ export function Header() {
               </div>
             ) : (
               <>
-                <Link to="/signin" className={`${styles.header__btn} ${styles["header__btn--outlined"]}`}>
+                <Link
+                  to="/signin"
+                  className={`${styles.header__btn} ${styles["header__btn--outlined"]}`}
+                >
                   Đăng nhập
                 </Link>
-                <Link to="/signup" className={`${styles.header__btn} ${styles["header__btn--contained"]}`}>
+                <Link
+                  to="/signup"
+                  className={`${styles.header__btn} ${styles["header__btn--contained"]}`}
+                >
                   Đăng ký ngay
                 </Link>
               </>
@@ -352,7 +384,8 @@ export function Header() {
                     to={item.to}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${isActive ? styles["header__mobile-link--active"] : ""
+                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
+                        isActive ? styles["header__mobile-link--active"] : ""
                       }`
                     }
                   >
@@ -372,7 +405,8 @@ export function Header() {
                     to={item.to}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${isActive ? styles["header__mobile-link--active"] : ""
+                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
+                        isActive ? styles["header__mobile-link--active"] : ""
                       }`
                     }
                   >
@@ -392,7 +426,8 @@ export function Header() {
                     to={item.to}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${isActive ? styles["header__mobile-link--active"] : ""
+                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
+                        isActive ? styles["header__mobile-link--active"] : ""
                       }`
                     }
                   >
@@ -412,7 +447,8 @@ export function Header() {
                     to={item.to}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${isActive ? styles["header__mobile-link--active"] : ""
+                      `${styles["header__mobile-link"]} ${styles["header__mobile-link--sub"]} ${
+                        isActive ? styles["header__mobile-link--active"] : ""
                       }`
                     }
                   >
@@ -424,13 +460,13 @@ export function Header() {
 
             {/* Mobile Actions */}
             <div className={styles["header__mobile-actions"]}>
-              {currentUser ? (
+              {Object.keys(user).length > 0 ? (
                 <div className={styles.header__mobile_user_box}>
                   <div className={styles.header__mobile_user_info}>
-                    <img src={userAvatar} alt={currentUser.name} className={styles.header__user_avatar} />
+                    <img src={userAvatar} alt={user.name} className={styles.header__user_avatar} />
                     <div>
-                      <div className={styles.header__user_fullname}>{currentUser.name}</div>
-                      <div className={styles.header__user_email}>{currentUser.email}</div>
+                      <div className={styles.header__user_fullname}>{user.name}</div>
+                      <div className={styles.header__user_email}>{user.email}</div>
                     </div>
                   </div>
                   <Link

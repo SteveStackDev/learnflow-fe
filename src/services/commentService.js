@@ -27,8 +27,7 @@ export const adaptComment = (comment) => {
   if (!comment) return null;
 
   const author = comment.authorId;
-  const authorName =
-    author?.username || author?.name || "Lập trình viên FySet";
+  const authorName = author?.username || author?.name || "Lập trình viên FySet";
   const authorAvatar =
     author?.avatar?.url ||
     author?.avatar ||
@@ -68,10 +67,7 @@ export const commentService = {
       }
       return mockProblemDiscussions;
     } catch (error) {
-      console.warn(
-        "⚠️ [commentService] Dùng mock thảo luận dự phòng:",
-        error.message,
-      );
+      console.warn("⚠️ [commentService] Dùng mock thảo luận dự phòng:", error.message);
       return mockProblemDiscussions;
     }
   },

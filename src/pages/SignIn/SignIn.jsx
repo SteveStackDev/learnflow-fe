@@ -37,15 +37,14 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
-    const inputVal = email.trim();
 
-    if (!inputVal) {
+    if (!email) {
       newErrors.email = "Vui lòng nhập Email hoặc Username!";
-    } else if (inputVal.includes("@")) {
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputVal)) {
+    } else if (email.includes("@")) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         newErrors.email = "Email không đúng định dạng (ví dụ: name@domain.com)";
       }
-    } else if (inputVal.length < 3) {
+    } else if (email.length < 3) {
       newErrors.email = "Username phải chứa ít nhất 3 ký tự!";
     }
 
@@ -65,7 +64,7 @@ function SignIn() {
 
     try {
       setIsSubmitting(true);
-      const user = await authService.login({ identifier: inputVal, password });
+      const user = await authService.signIn({ email, password });
       toast.success(
         `Chào mừng ${user.name || user.username || "bạn"} trở lại!`,
         "Đăng nhập thành công",
@@ -75,6 +74,7 @@ function SignIn() {
       if (error.errors) {
         setErrors(error.errors);
       }
+      console.log(error);
       toast.error(
         error.message || "Đăng nhập thất bại, vui lòng kiểm tra lại thông tin!",
         "Đăng nhập thất bại",
@@ -82,6 +82,13 @@ function SignIn() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleSubmitWithGoogle = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    await authService.signInWithGoogle();
   };
 
   // Typewriter effect state
@@ -137,6 +144,7 @@ function SignIn() {
           setErrors={setErrors}
           isSubmitting={isSubmitting}
           handleSubmit={handleSubmit}
+          handleSubmitWithGoogle={handleSubmitWithGoogle}
           greetingPhrases={GREETING_PHRASES}
           phraseIndex={phraseIndex}
           charIndex={charIndex}
