@@ -32,9 +32,9 @@ function Home() {
 
   useEffect(() => {
     async function fetchUserData() {
-      const user = authService.getMe();
+      const user = await authService.getMe();
 
-      if (user.name || user.username) {
+      if (user && (user.name || user.username)) {
         toast.success(
           `Chào mừng ${user.name || user.username || "bạn"} trở lại!`,
           "Đăng nhập thành công",
@@ -43,7 +43,7 @@ function Home() {
     }
 
     fetchUserData();
-  }, []);
+  }, [toast]);
 
   const handleContactSubmit = (e) => {
     e.preventDefault();

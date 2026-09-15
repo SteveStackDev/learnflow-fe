@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 
-// Data & Services
-import { badgeData } from "../../constants/mockBadge";
+// Services
 import { badgeService } from "~/services/badgeService";
 
 // Page Container CSS Module
@@ -17,6 +16,8 @@ import BadgeFaq from "./components/BadgeFaq/BadgeFaq";
 
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
+
+const TABS = ["Tất cả huy hiệu", "Đã đạt được", "Chưa đạt được"];
 
 function Badge() {
   const [badgesList, setBadgesList] = useState([]);
@@ -41,7 +42,6 @@ function Badge() {
   useEffect(() => {
     badgeService.getAllBadges().then((data) => {
       if (Array.isArray(data) && data.length > 0) {
-        console.log(data);
         setBadgesList(data);
       } else if (Array.isArray(data?.items)) {
         setBadgesList(data.items);
@@ -58,19 +58,23 @@ function Badge() {
 
   // Filter Logic
   const filteredAndSortedItems = useMemo(() => {
-    return badgesList.filter((item) => {
-      const matchesSearch =
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const selectedTab = badgeData.tabs[activeTab];
-      const matchesTab =
-        activeTab === 0 ||
-        selectedTab === "Tất cả" ||
-        selectedTab === "Tất cả huy hiệu" ||
-        ((selectedTab === "Đã đạt được" || selectedTab === "Đã nhận") &&
-          item.status === "received") ||
-        ((selectedTab === "Chưa đạt được" || selectedTab === "Chưa nhận") &&
-          item.status === "locked");
+    return (badgesList || []).filter((item) => {
+      if (!item) return false;
+      const name = (item.name || item.title || "").toLowerCase();
+      const description = (item.description || "").toLowerCase();
+      const q = (searchQuery || "").toLowerCase();
+      const matchesSearch = name.includes(q) || description.includes(q);
+
+      const isEarned =
+        item.status === "received" || item.status === "unlocked" || Boolean(item.isEarned);
+
+      let matchesTab = true;
+      if (activeTab === 1) {
+        matchesTab = isEarned;
+      } else if (activeTab === 2) {
+        matchesTab = !isEarned;
+      }
+
       return matchesSearch && matchesTab;
     });
   }, [badgesList, searchQuery, activeTab]);
@@ -87,8 +91,12 @@ function Badge() {
     return filteredAndSortedItems.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredAndSortedItems, currentPage, itemsPerPage]);
 
-  const receivedCount = badgeData.items.filter((i) => i.status === "received").length;
-  const progressPercent = ((receivedCount / badgeData.items.length) * 100).toFixed(1);
+  const totalCount = badgesList.length;
+  const receivedCount = badgesList.filter(
+    (i) => i.status === "received" || i.status === "unlocked" || Boolean(i.isEarned),
+  ).length;
+  const progressPercent =
+    totalCount > 0 ? ((receivedCount / totalCount) * 100).toFixed(1) : "0.0";
 
   const handleResetSearch = () => {
     setSearchQuery("");
@@ -108,7 +116,7 @@ function Badge() {
 
       {/* 2. Overview Stats Section */}
       <BadgeStats
-        totalCount={badgeData.items.length}
+        totalCount={totalCount}
         receivedCount={receivedCount}
         progressPercent={progressPercent}
       />
@@ -117,7 +125,7 @@ function Badge() {
       <BadgeFilter
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        tabs={badgeData.tabs}
+        tabs={TABS}
         activeTab={activeTab}
         onTabChange={handleTabChange}
       />
@@ -133,10 +141,10 @@ function Badge() {
       />
 
       {/* 5. Guide Section */}
-      <BadgeGuide guides={badgeData.guides} />
+      <BadgeGuide />
 
       {/* 6. FAQ Section */}
-      <BadgeFaq faqs={badgeData.faqs} />
+      <BadgeFaq />
     </div>
   );
 }

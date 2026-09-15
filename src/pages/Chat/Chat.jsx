@@ -11,7 +11,9 @@ import ChatSidebar from "./components/ChatSidebar/ChatSidebar";
 import ChatHeader from "./components/ChatHeader/ChatHeader";
 import ChatMessages from "./components/ChatMessages/ChatMessages";
 import ChatFooter from "./components/ChatFooter/ChatFooter";
+import CreateChatModal from "./components/CreateChatModal/CreateChatModal";
 import UserProfileCardModal from "~/components/UserProfileCardModal/UserProfileCardModal";
+import { PremiumBlur } from "~/components/ui";
 import styles from "./Chat.module.css";
 
 export default function Chat() {
@@ -20,6 +22,7 @@ export default function Chat() {
   const [replyingTo, setReplyingTo] = useState(null);
   const [showMobileChat, setShowMobileChat] = useState(false);
   const [selectedUserForModal, setSelectedUserForModal] = useState(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   // Lấy thông tin user hiện tại từ localStorage
   const currentUserId = (() => {
@@ -160,59 +163,85 @@ export default function Chat() {
     setReplyingTo(null);
   };
 
+  const handleCreateConversation = (newConv) => {
+    setConversations((prev) => [newConv, ...prev]);
+    setActiveChatId(newConv.id);
+    setShowMobileChat(true);
+    joinConversationRoom(newConv.id);
+  };
+
   return (
-    <div className={styles.chat_page}>
-      <div
-        className={`${styles.chat_container} ${
-          showMobileChat ? styles.show_mobile_chat : styles.show_mobile_sidebar
-        }`}
-      >
-        {/* Component 1: Left Conversations Sidebar Wrapper */}
-        <div className={styles.sidebar_wrapper}>
-          <ChatSidebar
-            conversations={conversations}
-            activeChatId={activeChatId}
-            onSelectChat={handleSelectChat}
-          />
+    <PremiumBlur
+      isLocked={true}
+      badgeText="TIN NHẮN & HỌC NHÓM"
+      title="Tính Năng Trò Chuyện & Nhóm Học Tập Sắp Mở"
+      description="Hệ thống nhắn tin thời gian thực, trao đổi cùng AI Mentor và tạo nhóm học tập đang trong quá trình thử nghiệm cuối cùng."
+      primaryButtonText="Trải nghiệm AI Learning"
+      primaryButtonLink="/ai-learning"
+      secondaryButtonText="Về trang chủ"
+      secondaryButtonLink="/"
+    >
+      <div className={styles.chat_page}>
+        <div
+          className={`${styles.chat_container} ${
+            showMobileChat ? styles.show_mobile_chat : styles.show_mobile_sidebar
+          }`}
+        >
+          {/* Component 1: Left Conversations Sidebar Wrapper */}
+          <div className={styles.sidebar_wrapper}>
+            <ChatSidebar
+              conversations={conversations}
+              activeChatId={activeChatId}
+              onSelectChat={handleSelectChat}
+              onOpenCreateModal={() => setIsCreateModalOpen(true)}
+            />
+          </div>
+
+          {/* Right Main Chat Panel */}
+          <main className={styles.chat_main}>
+            {/* Component 2: Top Active Chat Header with Mobile Back Button */}
+            <ChatHeader
+              activeChat={activeChat}
+              onBackToSidebar={() => setShowMobileChat(false)}
+              onSelectUser={(u) => setSelectedUserForModal(u)}
+            />
+
+            {/* Component 3: Scrollable Message Bubbles View */}
+            <ChatMessages
+              messages={activeChat?.messages}
+              activeChat={activeChat}
+              onSelectReply={(msg) =>
+                setReplyingTo({
+                  id: msg.id,
+                  text: msg.text,
+                  senderName: msg.sender === "me" ? "Bạn" : activeChat?.name || "Người dùng",
+                })
+              }
+            />
+
+            {/* Component 4: Pinned Bottom ChatInput Footer with Reply Bar */}
+            <ChatFooter
+              onSendMessage={handleSendMessage}
+              replyingTo={replyingTo}
+              onCancelReply={() => setReplyingTo(null)}
+            />
+          </main>
         </div>
 
-        {/* Right Main Chat Panel */}
-        <main className={styles.chat_main}>
-          {/* Component 2: Top Active Chat Header with Mobile Back Button */}
-          <ChatHeader
-            activeChat={activeChat}
-            onBackToSidebar={() => setShowMobileChat(false)}
-            onSelectUser={(u) => setSelectedUserForModal(u)}
-          />
+        {/* Create Group / New Chat Modal */}
+        <CreateChatModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onCreateChat={handleCreateConversation}
+        />
 
-          {/* Component 3: Scrollable Message Bubbles View */}
-          <ChatMessages
-            messages={activeChat?.messages}
-            activeChat={activeChat}
-            onSelectReply={(msg) =>
-              setReplyingTo({
-                id: msg.id,
-                text: msg.text,
-                senderName: msg.sender === "me" ? "Bạn" : activeChat?.name || "Người dùng",
-              })
-            }
-          />
-
-          {/* Component 4: Pinned Bottom ChatInput Footer with Reply Bar */}
-          <ChatFooter
-            onSendMessage={handleSendMessage}
-            replyingTo={replyingTo}
-            onCancelReply={() => setReplyingTo(null)}
-          />
-        </main>
+        {/* User Profile Quick Card Modal */}
+        <UserProfileCardModal
+          isOpen={!!selectedUserForModal}
+          onClose={() => setSelectedUserForModal(null)}
+          user={selectedUserForModal}
+        />
       </div>
-
-      {/* User Profile Quick Card Modal */}
-      <UserProfileCardModal
-        isOpen={!!selectedUserForModal}
-        onClose={() => setSelectedUserForModal(null)}
-        user={selectedUserForModal}
-      />
-    </div>
+    </PremiumBlur>
   );
 }

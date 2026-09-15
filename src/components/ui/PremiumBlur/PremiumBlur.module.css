@@ -1,0 +1,301 @@
+/* PremiumBlur Full Page Wrapper Styles */
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* 1. Background Content Layer (Blurred & Disabled) */
+.blurred_content {
+  width: 100%;
+  min-height: 100vh;
+  pointer-events: none !important;
+  user-select: none !important;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.blurred_content--sm {
+  filter: blur(3px) brightness(0.96);
+  opacity: 0.92;
+}
+
+.blurred_content--md {
+  filter: blur(5px) brightness(0.92);
+  opacity: 0.88;
+}
+
+.blurred_content--lg {
+  filter: blur(9px) brightness(0.86);
+  opacity: 0.78;
+}
+
+/* 2. Frosted Glass Overlay Layer (Ultra-Clear & Transparent) */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 60;
+  background: radial-gradient(circle at 50% 40%, rgba(10, 16, 30, 0.2) 0%, rgba(10, 16, 30, 0.45) 100%);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+:global([data-theme="light"]) .overlay {
+  background: radial-gradient(circle at 50% 40%, rgba(245, 248, 255, 0.2) 0%, rgba(230, 238, 250, 0.45) 100%);
+}
+
+/* 3. Ambient Glow Lighting Orbs */
+.glow_orb_1 {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(9, 80, 195, 0.28) 0%, rgba(14, 165, 233, 0.1) 50%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  border-radius: 50%;
+  animation: pulseGlow 5s ease-in-out infinite alternate;
+}
+
+.glow_orb_2 {
+  position: absolute;
+  top: 55%;
+  left: 52%;
+  transform: translate(-50%, -50%);
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.05) 50%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  border-radius: 50%;
+  animation: pulseGlow 6s ease-in-out 1s infinite alternate-reverse;
+}
+
+/* 4. Center Floating Pro Lock Card */
+.card {
+  position: relative;
+  z-index: 10;
+  max-width: 540px;
+  width: 100%;
+  padding: 42px 36px;
+  text-align: center;
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
+  box-shadow:
+    0 24px 60px -12px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  animation: cardFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+:global([data-theme="light"]) .card {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(9, 80, 195, 0.16);
+  box-shadow:
+    0 24px 60px -12px rgba(9, 80, 195, 0.15),
+    0 0 0 1px rgba(9, 80, 195, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.85);
+}
+
+/* 5. Glowing Icon Header */
+.icon_wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.icon_glow {
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(circle, rgba(9, 80, 195, 0.5) 0%, rgba(245, 158, 11, 0.3) 60%, transparent 80%);
+  border-radius: 50%;
+  filter: blur(14px);
+}
+
+.icon_box {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(9, 80, 195, 0.9) 0%, rgba(0, 58, 149, 0.95) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 10px 25px -4px rgba(9, 80, 195, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+/* 6. Pill Badge Tag */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  margin-bottom: 16px;
+}
+
+.badge_dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+  animation: pulseDot 2s infinite;
+}
+
+.badge_text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f59e0b;
+}
+
+/* 7. Typography */
+.title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: #ffffff;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.02em;
+}
+
+:global([data-theme="light"]) .title {
+  color: #0f172a;
+}
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0 0 28px 0;
+}
+
+:global([data-theme="light"]) .description {
+  color: #475569;
+}
+
+/* 8. Action Buttons */
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.primary_btn {
+  flex: 1;
+  min-width: 170px;
+}
+
+.secondary_btn {
+  flex: 1;
+  min-width: 150px;
+}
+
+/* Variant Accents */
+.wrapper--coming-soon .icon_box {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+  box-shadow: 0 10px 25px -4px rgba(139, 92, 246, 0.5);
+}
+
+.wrapper--coming-soon .badge {
+  background: rgba(139, 92, 246, 0.12);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.wrapper--coming-soon .badge_dot {
+  background: #a78bfa;
+  box-shadow: 0 0 8px #a78bfa;
+}
+
+.wrapper--coming-soon .badge_text {
+  color: #a78bfa;
+}
+
+.wrapper--security .icon_box {
+  background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+  box-shadow: 0 10px 25px -4px rgba(16, 185, 129, 0.5);
+}
+
+/* Keyframe Animations */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .card {
+    padding: 32px 20px;
+    border-radius: 22px;
+  }
+
+  .title {
+    font-size: 1.35rem;
+  }
+
+  .description {
+    font-size: 0.88rem;
+    margin-bottom: 22px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .primary_btn,
+  .secondary_btn {
+    width: 100%;
+    min-width: 100%;
+  }
+}

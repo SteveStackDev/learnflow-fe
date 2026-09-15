@@ -8,6 +8,7 @@ import Icon from "~/components/Icon/Icon";
 const NAV_LINKS = [
   { to: "/", label: "Trang chủ", end: true },
   { to: "/about", label: "Giới thiệu" },
+  { to: "/ai-learning", label: "AI Learning" },
 ];
 
 const LEARN_DROPDOWN_ITEMS = [
@@ -27,12 +28,6 @@ const PRACTICE_DROPDOWN_ITEMS = [
     title: "Cuộc thi",
     desc: "Đấu trường thuật toán & thử thách",
     iconName: "Trophy",
-  },
-  {
-    to: "/ai-learning",
-    title: "AI Learning",
-    desc: "Phân tích lỗi & học tập cá nhân hoá",
-    iconName: "Sparkles",
   },
 ];
 
@@ -97,7 +92,7 @@ export function Header() {
     }
 
     fetchData();
-  }, []);
+  }, [getUser, updateUser]);
 
   // Close User Menu on Outside Click
   useEffect(() => {
@@ -243,6 +238,8 @@ export function Header() {
               </button>
               {activeDropdown === "practice" && renderDropdownMenu(PRACTICE_DROPDOWN_ITEMS)}
             </div>
+            {/* AI Learning Main Nav Link */}
+            {renderNavLink(NAV_LINKS[2])}
             {/* Achievement Dropdown */}
             <div
               className={styles.header__dropdown_wrapper}
@@ -420,6 +417,9 @@ export function Header() {
                   </NavLink>
                 ))}
               </div>
+
+              {/* Mobile AI Learning Main Link */}
+              {renderNavLink({ ...NAV_LINKS[2], isMobile: true })}
 
               {/* Mobile Achievement Group */}
               <div className={styles["header__mobile-group"]}>

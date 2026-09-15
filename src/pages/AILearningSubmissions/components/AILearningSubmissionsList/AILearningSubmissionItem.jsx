@@ -16,17 +16,15 @@ function AILearningSubmissionItem({ submission, onViewCode }) {
   return (
     <Card
       hoverable
-      className={`${styles.submission_card} ${
-        isAC ? styles["submission_card--ac"] : ""
-      } reveal-card`}
+      className={`${styles.submission_card} ${isAC ? styles["submission_card--ac"] : ""
+        } reveal-card`}
     >
       {/* Left Status Icon & Main Information */}
       <div className={styles.card_left}>
         {/* Circle Status Icon */}
         <div
-          className={`${styles.status_circle} ${
-            isAC ? styles["status_circle--ac"] : styles["status_circle--wa"]
-          }`}
+          className={`${styles.status_circle} ${isAC ? styles["status_circle--ac"] : styles["status_circle--wa"]
+            }`}
         >
           {isAC ? (
             <Icon name="Check" size={16} />
@@ -40,9 +38,8 @@ function AILearningSubmissionItem({ submission, onViewCode }) {
           {/* Status Title & Pill Tag */}
           <div className={styles.status_title_row}>
             <span
-              className={`${styles.status_name} ${
-                isAC ? styles["status_name--ac"] : styles["status_name--wa"]
-              }`}
+              className={`${styles.status_name} ${isAC ? styles["status_name--ac"] : styles["status_name--wa"]
+                }`}
             >
               {submission.statusLabel || (isAC ? "AC - Accepted" : "WA - Wrong Answer")}
             </span>

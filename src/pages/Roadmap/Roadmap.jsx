@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-// Data & Services
-import { roadmapData } from "../../constants/mockRoadMap";
+// Services
 import { roadmapService } from "~/services/roadmapService";
 
 // Styles
@@ -17,9 +16,11 @@ import RoadmapFaq from "./components/RoadmapFaq/RoadmapFaq";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
+const TABS = ["Phổ biến", "Mới nhất", "Nhiều học viên nhất"];
+
 const LEVEL_OPTIONS = [
   { id: "all", label: "Tất cả trình độ" },
-  { id: "beginner", label: "Mới bắt đầu (Beginner)" },
+  { id: "beginner", label: "Người mới bắt đầu (Beginner)" },
   { id: "intermediate", label: "Trung cấp (Intermediate)" },
   { id: "advanced", label: "Nâng cao (Advanced)" },
 ];
@@ -31,9 +32,7 @@ function Roadmap() {
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState(LEVEL_OPTIONS[0]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const dropdownRef = useRef(null);
 
   useScrollReveal();
 
@@ -53,46 +52,55 @@ function Roadmap() {
     setCurrentPage(1);
   };
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // Filter & Sort Logic
+  // Filter & Sort Logic matching roadmapService structure
   const filteredAndSortedItems = useMemo(() => {
     const list = (roadmapsList || []).filter((item) => {
-      const matchesSearch =
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesLevel = selectedLevel.id === "all" || item.level === selectedLevel.id;
+      const title = (item.title || "").toLowerCase();
+      const desc = (item.description || "").toLowerCase();
+      const query = (searchQuery || "").toLowerCase();
+
+      // Check topics/tags matching
+      const rawTags =
+        Array.isArray(item.topics) && item.topics.length > 0
+          ? item.topics
+          : Array.isArray(item.tags) && item.tags.length > 0
+            ? item.tags
+            : [];
+      const matchesTopic = rawTags.some((t) => {
+        const tagStr = typeof t === "string" ? t : t.name || t.title || "";
+        return tagStr.toLowerCase().includes(query);
+      });
+
+      const matchesSearch = title.includes(query) || desc.includes(query) || matchesTopic;
+
+      let matchesLevel = true;
+      if (selectedLevel.id !== "all") {
+        const diff = (item.difficulty || "").toLowerCase();
+        const lvl = (item.level || item.raw?.level || "").toLowerCase();
+
+        if (selectedLevel.id === "beginner") {
+          matchesLevel = diff.includes("mới") || lvl === "beginner";
+        } else if (selectedLevel.id === "intermediate") {
+          matchesLevel = diff.includes("trung") || lvl === "intermediate";
+        } else if (selectedLevel.id === "advanced") {
+          matchesLevel = diff.includes("nâng") || lvl === "advanced";
+        }
+      }
+
       return matchesSearch && matchesLevel;
     });
 
     return [...list].sort((a, b) => {
       if (activeTab === 1) {
-        // Mới nhất: Thẻ MỚI lên trước, sau đó xếp theo ngày tạo từ MỚI NHẤT -> CŨ NHẤT
-        const isAMoi = a.statusLabel === "MỚI";
-        const isBMoi = b.statusLabel === "MỚI";
-        if (isAMoi && !isBMoi) return -1;
-        if (isBMoi && !isAMoi) return 1;
-        return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+        // Mới nhất: theo ngày tạo
+        const dateA = new Date(a.raw?.createdAt || a.createdAt || 0).getTime();
+        const dateB = new Date(b.raw?.createdAt || b.createdAt || 0).getTime();
+        return dateB - dateA;
       }
-      if (activeTab === 2) {
-        // Nhiều lượt xem nhất: Sắp xếp lượt xem từ CAO NHẤT -> THẤP NHẤT
-        return (b.viewsNum || 0) - (a.viewsNum || 0);
-      }
-      // Phổ biến (activeTab === 0): Thẻ HOT lên trước, sau đó sắp xếp lượt xem từ CAO NHẤT -> THẤP NHẤT
-      const isAHot = a.statusLabel === "HOT";
-      const isBHot = b.statusLabel === "HOT";
-      if (isAHot && !isBHot) return -1;
-      if (isBHot && !isAHot) return 1;
-      return (b.viewsNum || 0) - (a.viewsNum || 0);
+      // Phổ biến & Nhiều học viên nhất: xếp theo enrolledCount / viewsNum
+      const countA = a.enrolledCount ?? a.viewsNum ?? 0;
+      const countB = b.enrolledCount ?? b.viewsNum ?? 0;
+      return countB - countA;
     });
   }, [roadmapsList, searchQuery, activeTab, selectedLevel]);
 
@@ -127,15 +135,12 @@ function Roadmap() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         totalCount={filteredAndSortedItems.length}
-        tabs={roadmapData.tabs}
+        tabs={TABS}
         activeTab={activeTab}
         handleTabChange={handleTabChange}
         LEVEL_OPTIONS={LEVEL_OPTIONS}
         selectedLevel={selectedLevel}
         setSelectedLevel={setSelectedLevel}
-        isDropdownOpen={isDropdownOpen}
-        setIsDropdownOpen={setIsDropdownOpen}
-        dropdownRef={dropdownRef}
       />
 
       {/* 4. Roadmap Cards Grid Section */}
@@ -152,10 +157,10 @@ function Roadmap() {
       />
 
       {/* 4.5 Orientation Suggestion Section */}
-      <RoadmapSuggestions suggestions={roadmapData.suggestions} />
+      <RoadmapSuggestions />
 
       {/* 5. FAQ Section */}
-      <RoadmapFaq faqs={roadmapData.faqs} />
+      <RoadmapFaq />
     </div>
   );
 }

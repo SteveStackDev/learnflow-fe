@@ -8,6 +8,7 @@ const CONTACT_TYPE_OPTIONS = [
   { value: "tech", label: "Hỗ trợ kỹ thuật" },
   { value: "billing", label: "Hóa đơn & Thanh toán" },
   { value: "course", label: "Tư vấn lộ trình học" },
+  { value: "other", label: "Khác" },
 ];
 
 function ContactMain({ info = [] }) {
@@ -82,9 +83,8 @@ function ContactMain({ info = [] }) {
                     value={fullname}
                     onChange={(e) => setFullname(e.target.value)}
                     placeholder="Nguyễn Văn A"
-                    className={`${styles["contact-main__form-input"]} ${
-                      errors.fullname ? styles["contact-main__form-input--error"] : ""
-                    }`}
+                    className={`${styles["contact-main__form-input"]} ${errors.fullname ? styles["contact-main__form-input--error"] : ""
+                      }`}
                   />
                   {errors.fullname && (
                     <span className={styles["contact-main__error-text"]}>
@@ -106,9 +106,8 @@ function ContactMain({ info = [] }) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="example@fyset.edu.vn"
-                    className={`${styles["contact-main__form-input"]} ${
-                      errors.email ? styles["contact-main__form-input--error"] : ""
-                    }`}
+                    className={`${styles["contact-main__form-input"]} ${errors.email ? styles["contact-main__form-input--error"] : ""
+                      }`}
                   />
                   {errors.email && (
                     <span className={styles["contact-main__error-text"]}>
@@ -132,9 +131,8 @@ function ContactMain({ info = [] }) {
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     placeholder="Ví dụ: Cần hỗ trợ về bài tập..."
-                    className={`${styles["contact-main__form-input"]} ${
-                      errors.subject ? styles["contact-main__form-input--error"] : ""
-                    }`}
+                    className={`${styles["contact-main__form-input"]} ${errors.subject ? styles["contact-main__form-input--error"] : ""
+                      }`}
                   />
                   {errors.subject && (
                     <span className={styles["contact-main__error-text"]}>
@@ -169,9 +167,8 @@ function ContactMain({ info = [] }) {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Mô tả chi tiết thắc mắc hoặc yêu cầu của bạn..."
-                className={`${styles["contact-main__form-input"]} ${styles["contact-main__form-input--textarea"]} ${
-                  errors.message ? styles["contact-main__form-input--error"] : ""
-                }`}
+                className={`${styles["contact-main__form-input"]} ${styles["contact-main__form-input--textarea"]} ${errors.message ? styles["contact-main__form-input--error"] : ""
+                  }`}
               />
               {errors.message && (
                 <span className={styles["contact-main__error-text"]}>

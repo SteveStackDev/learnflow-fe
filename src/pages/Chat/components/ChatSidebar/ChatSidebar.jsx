@@ -13,6 +13,7 @@ export default function ChatSidebar({
   conversations = [],
   activeChatId,
   onSelectChat,
+  onOpenCreateModal,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
@@ -32,6 +33,24 @@ export default function ChatSidebar({
 
   return (
     <aside className={styles.sidebar}>
+      {/* Sidebar Top Header */}
+      <div className={styles.sidebar_header}>
+        <div className={styles.sidebar_title_wrap}>
+          <h2 className={styles.sidebar_title}>Đoạn chat</h2>
+          <span className={styles.conv_count_badge}>{conversations.length}</span>
+        </div>
+        <button
+          type="button"
+          onClick={onOpenCreateModal}
+          className={styles.create_chat_btn}
+          title="Tạo nhóm hoặc gửi tin nhắn mới"
+          aria-label="Tạo nhóm hoặc gửi tin nhắn mới"
+        >
+          <Icon name="Plus" size={16} />
+          <span className={styles.create_chat_btn_text}>Tạo mới</span>
+        </button>
+      </div>
+
       {/* Search Bar */}
       <div className={styles.search_container}>
         <div className={styles.search_wrapper}>

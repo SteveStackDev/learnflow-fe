@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./CourseSyllabusSidebar.module.css";
@@ -24,13 +23,6 @@ export function CourseSyllabusSidebar({
       ...prev,
       [chId]: !prev[chId],
     }));
-  };
-
-  const handleAiMentorClick = () => {
-    toast.info(
-      "AI Mentor sẵn sàng hỗ trợ giải đáp thắc mắc về bài học!",
-      "FySet AI Mentor",
-    );
   };
 
   return (
@@ -141,18 +133,6 @@ export function CourseSyllabusSidebar({
             </div>
           );
         })}
-      </div>
-
-      {/* 3. Ask AI Mentor Floating Card */}
-      <div className={styles.ai_mentor_card}>
-        <Button
-          variant="contained"
-          leftIcon="Bot"
-          onClick={handleAiMentorClick}
-          className={styles.ai_btn}
-        >
-          Ask AI Mentor
-        </Button>
       </div>
     </aside>
   );

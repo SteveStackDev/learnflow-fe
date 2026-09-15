@@ -3,6 +3,9 @@ import { useState, useEffect, useRef, useMemo } from "react";
 // Data
 import { leaderboardData } from "../../constants/mockLeaderBoard";
 
+// UI Components
+import { PremiumBlur } from "~/components/ui";
+
 // Styles
 import styles from "./Leaderboard.module.css";
 
@@ -85,71 +88,85 @@ function Leaderboard() {
   }, [filteredAndSortedItems, currentPage]);
 
   return (
-    <div className={styles.leaderboardpage}>
-      {/* Ambient Background Glow Orbs */}
-      <div className={styles["leaderboardpage__orb-1"]} />
-      <div className={styles["leaderboardpage__orb-2"]} />
-      <div className={styles["leaderboardpage__orb-3"]} />
-      <div className={styles["leaderboardpage__orb-4"]} />
+    <PremiumBlur
+      isLocked={true}
+      badgeText="ĐANG PHÁT TRIỂN"
+      title="Tính Năng Bảng Xếp Hạng Sắp Ra Mắt"
+      description="Hệ thống điểm kinh nghiệm và bảng xếp hạng thành tích học viên theo tuần/tháng đang được nâng cấp để chuẩn bị cho mùa giải mới."
+      primaryButtonText="Luyện tập thuật toán"
+      primaryButtonLink="/problem"
+      secondaryButtonText="Về trang chủ"
+      secondaryButtonLink="/"
+    >
+      <div className={styles.leaderboardpage}>
+        {/* Ambient Background Glow Orbs */}
+        <div className={styles["leaderboardpage__orb-1"]} />
+        <div className={styles["leaderboardpage__orb-2"]} />
+        <div className={styles["leaderboardpage__orb-3"]} />
+        <div className={styles["leaderboardpage__orb-4"]} />
 
-      {/* 1. Hero Section */}
-      <LeaderboardHero />
+        {/* 1. Hero Section */}
+        <LeaderboardHero />
 
-      {/* 2. Top 3 Podium Section */}
-      <LeaderboardPodium podium={leaderboardData.podium} />
+        {/* 2. Top 3 Podium Section */}
+        <LeaderboardPodium podium={leaderboardData.podium} />
 
-      {/* 3. Filter & Search Section */}
-      <LeaderboardFilter
-        tabs={leaderboardData.tabs}
-        activeTab={activeTab}
-        handleTabChange={handleTabChange}
-        timeOptions={TIME_OPTIONS}
-        selectedTime={selectedTime}
-        setSelectedTime={setSelectedTime}
-        isTimeDropdownOpen={isTimeDropdownOpen}
-        setIsTimeDropdownOpen={setIsTimeDropdownOpen}
-        timeDropdownRef={timeDropdownRef}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
+        {/* 3. Filter & Search Section */}
+        <LeaderboardFilter
+          tabs={leaderboardData.tabs}
+          activeTab={activeTab}
+          handleTabChange={handleTabChange}
+          timeOptions={TIME_OPTIONS}
+          selectedTime={selectedTime}
+          setSelectedTime={setSelectedTime}
+          isTimeDropdownOpen={isTimeDropdownOpen}
+          setIsTimeDropdownOpen={setIsTimeDropdownOpen}
+          timeDropdownRef={timeDropdownRef}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
 
-      {/* 4. Ranking Table Section */}
-      <LeaderboardTable
-        filteredAndSortedItems={filteredAndSortedItems}
-        displayedItems={displayedItems}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPages={totalPages}
-        setSearchQuery={setSearchQuery}
-        setActiveTab={setActiveTab}
-        onSelectUser={(item) =>
-          setSelectedUserForModal({
-            id: item.id || "user-01",
-            username: item.name || "Alex Tran",
-            handle: item.name ? item.name.toLowerCase().replace(/\s+/g, "_") : "alex_t",
-            avatar: item.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-            coverImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
-            status: "online",
-            statusMessage: "Đã đạt điểm cao trong...",
-            userTitle: "Anh hùng bàn phím",
-            bio: "Ko có j khó sợ lòng ko bền =))",
-          })
-        }
-      />
+        {/* 4. Ranking Table Section */}
+        <LeaderboardTable
+          filteredAndSortedItems={filteredAndSortedItems}
+          displayedItems={displayedItems}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+          setSearchQuery={setSearchQuery}
+          setActiveTab={setActiveTab}
+          onSelectUser={(item) =>
+            setSelectedUserForModal({
+              id: item.id || "user-01",
+              username: item.name || "Alex Tran",
+              handle: item.name ? item.name.toLowerCase().replace(/\s+/g, "_") : "alex_t",
+              avatar:
+                item.avatarUrl ||
+                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
+              coverImage:
+                "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
+              status: "online",
+              statusMessage: "Đã đạt điểm cao trong...",
+              userTitle: "Anh hùng bàn phím",
+              bio: "Ko có j khó sợ lòng ko bền =))",
+            })
+          }
+        />
 
-      {/* 5. Guide Section */}
-      <LeaderboardGuide guides={leaderboardData.guides} />
+        {/* 5. Guide Section */}
+        <LeaderboardGuide guides={leaderboardData.guides} />
 
-      {/* 6. FAQ Section */}
-      <LeaderboardFaq faqs={leaderboardData.faqs} />
+        {/* 6. FAQ Section */}
+        <LeaderboardFaq faqs={leaderboardData.faqs} />
 
-      {/* Quick Profile Popover Card Modal (Image 2) */}
-      <UserProfileCardModal
-        isOpen={!!selectedUserForModal}
-        onClose={() => setSelectedUserForModal(null)}
-        user={selectedUserForModal}
-      />
-    </div>
+        {/* Quick Profile Popover Card Modal (Image 2) */}
+        <UserProfileCardModal
+          isOpen={!!selectedUserForModal}
+          onClose={() => setSelectedUserForModal(null)}
+          user={selectedUserForModal}
+        />
+      </div>
+    </PremiumBlur>
   );
 }
 

@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useCallback } from "react";
 import { authService } from "~/services";
 
 export const AuthContext = createContext({});
@@ -13,35 +13,40 @@ export function AuthProvider({ children }) {
     }
   });
 
-  const getUser = async () => {
+  const getUser = useCallback(async () => {
     const userLocalStorage = localStorage.getItem("fyset_user");
 
     if (!userLocalStorage) {
-      const user = await authService.getMe();
-      if (!user) return {};
-      return user;
+      const u = await authService.getMe();
+      if (!u) return {};
+      return u;
     }
 
-    if (Object.keys(JSON.parse(userLocalStorage)).length > 0) {
-      return user;
-    } else {
-      const user = await authService.getMe();
-      if (!user) return {};
-      return user;
+    try {
+      const parsed = JSON.parse(userLocalStorage);
+      if (Object.keys(parsed).length > 0) {
+        return parsed;
+      }
+    } catch {
+      // fallback
     }
-  };
 
-  const updateUser = (user) => {
-    localStorage.setItem("fyset_user", JSON.stringify(user));
-    setUser(user);
-  };
+    const u = await authService.getMe();
+    if (!u) return {};
+    return u;
+  }, []);
 
-  const deleteUser = () => {
+  const updateUser = useCallback((newUser) => {
+    localStorage.setItem("fyset_user", JSON.stringify(newUser));
+    setUser(newUser);
+  }, []);
+
+  const deleteUser = useCallback(() => {
     authService.signOut().then(() => {
       localStorage.removeItem("fyset_user");
       setUser({});
     });
-  };
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, getUser, deleteUser, updateUser }}>
