@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useMemo } from "react";
 
 const ToastContext = createContext(null);
 
@@ -27,14 +27,17 @@ export function ToastProvider({ children }) {
     [removeToast],
   );
 
-  const toast = {
-    show: showToast,
-    success: (message, title = "Thành công") => showToast({ type: "success", title, message }),
-    error: (message, title = "Lỗi") => showToast({ type: "error", title, message }),
-    warning: (message, title = "Cảnh báo") => showToast({ type: "warning", title, message }),
-    info: (message, title = "Thông báo") => showToast({ type: "info", title, message }),
-    remove: removeToast,
-  };
+  const toast = useMemo(
+    () => ({
+      show: showToast,
+      success: (message, title = "Thành công") => showToast({ type: "success", title, message }),
+      error: (message, title = "Lỗi") => showToast({ type: "error", title, message }),
+      warning: (message, title = "Cảnh báo") => showToast({ type: "warning", title, message }),
+      info: (message, title = "Thông báo") => showToast({ type: "info", title, message }),
+      remove: removeToast,
+    }),
+    [showToast, removeToast],
+  );
 
   return (
     <ToastContext.Provider value={{ toasts, showToast, removeToast, toast }}>

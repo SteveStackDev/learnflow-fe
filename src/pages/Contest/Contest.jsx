@@ -1,8 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 
-// Data & Services
+// Data
 import { contestData } from "../../constants/mockContest";
-import { contestService } from "~/services/contestService";
+
+// UI Components
+import { PremiumBlur } from "~/components/ui";
 
 // Styles
 import styles from "./Contest.module.css";
@@ -27,17 +29,6 @@ function Contest() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useScrollReveal();
-
-  // Nạp danh sách cuộc thi từ contestService
-  useEffect(() => {
-    contestService.getContests().then((data) => {
-      if (Array.isArray(data) && data.length > 0) {
-        setContestsList(data);
-      } else if (Array.isArray(data?.items)) {
-        setContestsList(data.items);
-      }
-    });
-  }, []);
 
   const handleTabChange = (index) => {
     setActiveTab(index);
@@ -79,45 +70,56 @@ function Contest() {
   }, [filteredAndSortedItems, currentPage]);
 
   return (
-    <div className={styles.contestpage}>
-      {/* Ambient Background Glow Orbs */}
-      <div className={styles["contestpage__orb-1"]} />
-      <div className={styles["contestpage__orb-2"]} />
-      <div className={styles["contestpage__orb-3"]} />
-      <div className={styles["contestpage__orb-4"]} />
+    <PremiumBlur
+      isLocked={true}
+      badgeText="ĐẤU TRƯỜNG CONTEST"
+      title="Đấu Trường Lập Trình Contest Sắp Khởi Tranh"
+      description="Các kỳ thi lập trình thi đấu và bảng xếp hạng trực tiếp đang được chuẩn bị. Hãy luyện tập kỹ năng giải thuật ngay hôm nay!"
+      primaryButtonText="Luyện tập bài tập"
+      primaryButtonLink="/problem"
+      secondaryButtonText="Về trang chủ"
+      secondaryButtonLink="/"
+    >
+      <div className={styles.contestpage}>
+        {/* Ambient Background Glow Orbs */}
+        <div className={styles["contestpage__orb-1"]} />
+        <div className={styles["contestpage__orb-2"]} />
+        <div className={styles["contestpage__orb-3"]} />
+        <div className={styles["contestpage__orb-4"]} />
 
-      {/* 1. Hero Section */}
-      <ContestHero />
+        {/* 1. Hero Section */}
+        <ContestHero />
 
-      {/* 2. Overview Stats Section */}
-      <ContestStats stats={contestData.stats} totalContests={filteredAndSortedItems.length} />
+        {/* 2. Overview Stats Section */}
+        <ContestStats stats={contestData.stats} totalContests={filteredAndSortedItems.length} />
 
-      {/* 3. Search & Filter Bar Section */}
-      <ContestFilter
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        tabs={contestData.tabs}
-        activeTab={activeTab}
-        handleTabChange={handleTabChange}
-      />
+        {/* 3. Search & Filter Bar Section */}
+        <ContestFilter
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          tabs={contestData.tabs}
+          activeTab={activeTab}
+          handleTabChange={handleTabChange}
+        />
 
-      {/* 4. Contests Cards Grid Section */}
-      <ContestGrid
-        filteredAndSortedItems={filteredAndSortedItems}
-        displayedItems={displayedItems}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPages={totalPages}
-        setSearchQuery={setSearchQuery}
-        setActiveTab={setActiveTab}
-      />
+        {/* 4. Contests Cards Grid Section */}
+        <ContestGrid
+          filteredAndSortedItems={filteredAndSortedItems}
+          displayedItems={displayedItems}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+          setSearchQuery={setSearchQuery}
+          setActiveTab={setActiveTab}
+        />
 
-      {/* 5. Benefits Section */}
-      <ContestWhy benefits={contestData.benefits} />
+        {/* 5. Benefits Section */}
+        <ContestWhy benefits={contestData.benefits} />
 
-      {/* 6. FAQ Section */}
-      <ContestFaq faqs={contestData.faqs} />
-    </div>
+        {/* 6. FAQ Section */}
+        <ContestFaq faqs={contestData.faqs} />
+      </div>
+    </PremiumBlur>
   );
 }
 

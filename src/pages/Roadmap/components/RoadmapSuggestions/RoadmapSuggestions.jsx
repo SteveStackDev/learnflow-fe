@@ -3,8 +3,37 @@ import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import styles from "./RoadmapSuggestions.module.css";
 
-function RoadmapSuggestions({ suggestions }) {
+const DEFAULT_SUGGESTIONS = [
+  {
+    id: "roadmap-sugg-1",
+    title: "Giao diện & Trải nghiệm",
+    description: "Yêu thích cái đẹp, sự tỉ mỉ và mong muốn tạo ra sản phẩm chạm đến người dùng.",
+    iconName: "Eye",
+  },
+  {
+    id: "roadmap-sugg-2",
+    title: "Logic & Hệ thống",
+    description:
+      "Đam mê giải quyết các bài toán hóc búa, tối ưu hóa hiệu suất và xây dựng kiến trúc.",
+    iconName: "Code",
+  },
+  {
+    id: "roadmap-sugg-3",
+    title: "Dữ liệu",
+    description: "Tìm kiếm những sự thật ẩn giấu trong các con số và dự đoán tương lai bằng AI.",
+    iconName: "Database",
+  },
+  {
+    id: "roadmap-sugg-4",
+    title: "Toàn diện",
+    description: "Mong muốn làm chủ cả Frontend lẫn Backend để tự tay xây dựng sản phẩm từ A-Z.",
+    iconName: "Layers",
+  },
+];
+
+function RoadmapSuggestions({ suggestions = DEFAULT_SUGGESTIONS }) {
   const navigate = useNavigate();
+  const list = suggestions && suggestions.length > 0 ? suggestions : DEFAULT_SUGGESTIONS;
 
   return (
     <section className={styles["roadmap-suggestions"]}>
@@ -20,7 +49,7 @@ function RoadmapSuggestions({ suggestions }) {
         </div>
 
         <div className={styles["roadmap-suggestions__list"]}>
-          {suggestions.map((obj) => (
+          {list.map((obj) => (
             <div
               key={obj.id}
               className={`${styles["roadmap-suggestions__card"]} reveal-card`}

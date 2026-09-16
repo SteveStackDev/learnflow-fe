@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-// Data & Services
-import { courseData } from "../../constants/mockCourse";
+// Services
 import { courseService } from "~/services/courseService";
 
 // Import CSS Modules
@@ -16,6 +15,8 @@ import CourseFaq from "./components/CourseFaq/CourseFaq";
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
 
+const CATEGORIES = ["Tất cả", "Frontend", "Backend", "Competitive Programming"];
+
 const SORT_OPTIONS = [
   { id: "popular", label: "Sắp xếp: Phổ biến nhất" },
   { id: "latest", label: "Sắp xếp: Mới nhất" },
@@ -25,7 +26,7 @@ const SORT_OPTIONS = [
 const ITEMS_PER_PAGE = 4; // 1 clean row of 4 cards!
 
 function Course() {
-  const [coursesList, setCoursesList] = useState(courseData.items || []);
+  const [coursesList, setCoursesList] = useState([]);
   const [activeCategoryTab, setActiveCategoryTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
@@ -35,7 +36,7 @@ function Course() {
 
   useScrollReveal();
 
-  // Nạp danh sách khóa học từ courseService
+  // Nạp danh sách khóa học thật từ courseService
   useEffect(() => {
     courseService.getAllCourses().then((data) => {
       if (Array.isArray(data) && data.length > 0) {
@@ -62,19 +63,30 @@ function Course() {
 
   // Filter & Sort Logic
   const filteredAndSortedItems = useMemo(() => {
-    const categories = courseData.categoryTabs || courseData.categories || ["Tất cả"];
+    const selectedTab = CATEGORIES[activeCategoryTab] || "Tất cả";
+
     return (coursesList || [])
       .filter((item) => {
-        const matchesSearch =
-          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchQuery.toLowerCase());
-        const selectedTab = categories[activeCategoryTab] || "Tất cả";
-        const matchesCategory =
-          activeCategoryTab === 0 ||
-          selectedTab === "Tất cả" ||
-          selectedTab === "Tất cả khóa học" ||
-          item.category === selectedTab ||
-          item.level === selectedTab;
+        const title = (item.title || "").toLowerCase();
+        const description = (item.description || "").toLowerCase();
+        const query = (searchQuery || "").toLowerCase();
+        const matchesSearch = title.includes(query) || description.includes(query);
+
+        let matchesCategory = true;
+        if (selectedTab === "Frontend") {
+          matchesCategory =
+            item.category?.toLowerCase() === "frontend" ||
+            /react|javascript|html|css|vue|angular/i.test(title);
+        } else if (selectedTab === "Backend") {
+          matchesCategory =
+            item.category?.toLowerCase() === "backend" ||
+            /node|express|terminal|ubuntu|devops|server|sql|docker/i.test(title);
+        } else if (selectedTab === "Competitive Programming") {
+          matchesCategory =
+            item.category?.toLowerCase() === "competitive programming" ||
+            /thuật toán|giải thuật|cấu trúc dữ liệu|algorithm/i.test(title);
+        }
+
         return matchesSearch && matchesCategory;
       })
       .sort((a, b) => {
@@ -84,7 +96,7 @@ function Course() {
         if (selectedSort.id === "rating") {
           return (b.rating || 0) - (a.rating || 0);
         }
-        return (b.studentsNum || 0) - (a.studentsNum || 0);
+        return (b.studentsNum || b.studentsCount || 0) - (a.studentsNum || a.studentsCount || 0);
       });
   }, [coursesList, searchQuery, activeCategoryTab, selectedSort]);
 
@@ -122,7 +134,7 @@ function Course() {
         filteredCount={filteredAndSortedItems.length}
         activeCategoryTab={activeCategoryTab}
         handleCategoryChange={handleCategoryChange}
-        categories={courseData.categories}
+        categories={CATEGORIES}
       />
 
       <CourseGrid
@@ -135,9 +147,9 @@ function Course() {
         setActiveCategoryTab={setActiveCategoryTab}
       />
 
-      <CourseReasons benefits={courseData.benefits} />
+      <CourseReasons />
 
-      <CourseFaq faqs={courseData.faqs} />
+      <CourseFaq />
     </div>
   );
 }

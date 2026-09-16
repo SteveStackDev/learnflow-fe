@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { Pagination } from "~/components/ui";
+import heroUrl from "~/assets/images/Home/hero.webp";
 import styles from "./RoadmapGrid.module.css";
 
 function RoadmapGrid({
@@ -16,6 +17,7 @@ function RoadmapGrid({
   LEVEL_OPTIONS,
 }) {
   const navigate = useNavigate();
+
   return (
     <section className={styles["roadmap-cards"]}>
       <div className={styles["roadmap-cards__container"]}>
@@ -45,66 +47,94 @@ function RoadmapGrid({
             </button>
 
             <div className={styles["roadmap-cards__list"]}>
-              {displayedItems.map((card) => (
-                <div
-                  key={card.id}
-                  className={`${styles["roadmap-cards__card"]} reveal-card`}
-                  onClick={() => navigate(`/roadmap/${card.id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {card.statusLabel && (
-                    <span
-                      className={`${styles["roadmap-cards__card-badge"]} ${
-                        card.statusLabel === "HOT"
-                          ? styles["roadmap-cards__card-badge--hot"]
-                          : styles["roadmap-cards__card-badge--new"]
-                      }`}
-                    >
-                      {card.statusLabel}
-                    </span>
-                  )}
-                  <div className={styles["roadmap-cards__card-media-wrap"]}>
-                    <img
-                      className={styles["roadmap-cards__card-media"]}
-                      src={card.banner}
-                      alt={`Biểu tượng lộ trình học ${card.title}`}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <div className={styles["roadmap-cards__card-content"]}>
-                    <div className={styles["roadmap-cards__card-header"]}>
-                      <h3 className={styles["roadmap-cards__card-title"]}>{card.title}</h3>
-                      <span className={styles["roadmap-cards__views-count"]}>
-                        <Icon name="Eye" size={14} />
-                        {card.viewsNum ? card.viewsNum.toLocaleString("vi-VN") : "0"} lượt xem
-                      </span>
-                    </div>
-                    <p className={styles["roadmap-cards__card-desc"]}>{card.description}</p>
+              {displayedItems.map((card) => {
+                const targetId = card.slug || card.id;
+                const statusLabel = card.statusLabel || card.raw?.statusLabel || "";
+                const bannerSrc = card.banner || card.thumbnail || card.imageUrl || heroUrl;
+                const rawTags =
+                  Array.isArray(card.topics) && card.topics.length > 0
+                    ? card.topics
+                    : Array.isArray(card.tags) && card.tags.length > 0
+                      ? card.tags
+                      : [];
+                const tagsList = rawTags
+                  .map((t) => (typeof t === "string" ? t : t.name || t.title || ""))
+                  .filter(Boolean);
 
-                    <div className={styles["roadmap-cards__card-tags"]}>
-                      {(card.tags ? card.tags : []).map((item) => (
-                        <span key={item} className={styles["roadmap-cards__tag-chip"]}>
-                          {item}
+                const countDisplay = card.enrolledCount
+                  ? `${card.enrolledCount.toLocaleString("vi-VN")} học viên`
+                  : card.viewsNum
+                    ? `${card.viewsNum.toLocaleString("vi-VN")} lượt xem`
+                    : "120 học viên";
+
+                return (
+                  <div
+                    key={card.id || targetId}
+                    className={`${styles["roadmap-cards__card"]} reveal-card`}
+                    onClick={() => navigate(`/roadmap/${targetId}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {statusLabel && (
+                      <span
+                        className={`${styles["roadmap-cards__card-badge"]} ${
+                          statusLabel === "HOT"
+                            ? styles["roadmap-cards__card-badge--hot"]
+                            : styles["roadmap-cards__card-badge--new"]
+                        }`}
+                      >
+                        {statusLabel}
+                      </span>
+                    )}
+
+                    <div className={styles["roadmap-cards__card-media-wrap"]}>
+                      <img
+                        className={styles["roadmap-cards__card-media"]}
+                        src={bannerSrc}
+                        alt={`Biểu tượng lộ trình học ${card.title || "lập trình"}`}
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = heroUrl;
+                        }}
+                      />
+                    </div>
+
+                    <div className={styles["roadmap-cards__card-content"]}>
+                      <div className={styles["roadmap-cards__card-header"]}>
+                        <h3 className={styles["roadmap-cards__card-title"]}>{card.title}</h3>
+                        <span className={styles["roadmap-cards__views-count"]}>
+                          <Icon name={card.enrolledCount ? "Users" : "Eye"} size={14} />
+                          {countDisplay}
                         </span>
-                      ))}
+                      </div>
+                      <p className={styles["roadmap-cards__card-desc"]}>{card.description}</p>
+
+                      <div className={styles["roadmap-cards__card-tags"]}>
+                        {tagsList.map((item, idx) => (
+                          <span key={`${item}-${idx}`} className={styles["roadmap-cards__tag-chip"]}>
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className={styles["roadmap-cards__card-actions"]}>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/roadmap/${targetId}`);
+                        }}
+                        className={styles["roadmap-cards__card-btn"]}
+                      >
+                        <span>Khám phá lộ trình</span>
+                        <span className={styles["roadmap-cards__card-btn-arrow"]}>→</span>
+                      </button>
                     </div>
                   </div>
-                  <div className={styles["roadmap-cards__card-actions"]}>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/roadmap/${card.id}`);
-                      }}
-                      className={styles["roadmap-cards__card-btn"]}
-                    >
-                      <span>Khám phá lộ trình</span>
-                      <span className={styles["roadmap-cards__card-btn-arrow"]}>→</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <button

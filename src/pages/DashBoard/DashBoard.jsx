@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import { dashboardData } from "~/constants/mockDashBoard";
-import { userService } from "~/services/userService";
 
 // Sub-Components
 import DashboardCard from "./components/DashboardCard/DashboardCard";
@@ -39,19 +38,8 @@ export default function DashBoard() {
     }
   });
 
-  const [onlineFriends, setOnlineFriends] = useState(
-    dashboardData.onlineFriends || [],
-  );
+  const [onlineFriends] = useState(dashboardData.onlineFriends || []);
   const [selectedUserForModal, setSelectedUserForModal] = useState(null);
-
-  // Tải danh sách bạn bè từ userService
-  useEffect(() => {
-    userService.getFriends().then((friends) => {
-      if (Array.isArray(friends) && friends.length > 0) {
-        setOnlineFriends(friends);
-      }
-    });
-  }, []);
 
   const greetingPrefix = getTimeBasedGreeting();
   const userName =
@@ -60,7 +48,13 @@ export default function DashBoard() {
     dashboardData?.student?.name ||
     "Học viên";
 
-  const stats = userService.getUserStats(currentUser);
+  const stats = {
+    dailyStreak: currentUser?.dailyStreak || 5,
+    pomodoroStreak: currentUser?.pomodoroStreak || 3,
+    focusHours: currentUser?.focusHours || "42.5h",
+    xp: currentUser?.experiencePoints || currentUser?.xp || 1250,
+    rating: currentUser?.rating || 1520,
+  };
   const studentInfo = {
     ...(dashboardData?.student || {}),
     name: userName,

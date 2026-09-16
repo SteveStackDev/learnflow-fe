@@ -6,7 +6,6 @@ import styles from "./CourseTabContent.module.css";
 const TABS = [
   { id: "overview", label: "Tổng quan", icon: "Compass" },
   { id: "notes", label: "Ghi chú", icon: "FileText" },
-  { id: "resources", label: "Tài liệu", icon: "Download" },
   { id: "discussion", label: "Thảo luận", icon: "MessageSquare" },
 ];
 
@@ -69,29 +68,6 @@ export function CourseTabContent({ lesson }) {
                 <div key={idx} className={styles.note_item}>
                   <span className={styles.note_timestamp}>{note.timestamp}</span>
                   <span className={styles.note_text}>{note.text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === "resources" && (
-          <div className={styles.resources_panel}>
-            <h3 className={styles.panel_title}>Tài liệu đính kèm</h3>
-            <div className={styles.resources_list}>
-              {lesson.resources.map((res, idx) => (
-                <div key={idx} className={styles.resource_card}>
-                  <div className={styles.resource_icon}>
-                    <Icon name="FileText" size={20} />
-                  </div>
-                  <div className={styles.resource_info}>
-                    <span className={styles.resource_name}>{res.name}</span>
-                    <span className={styles.resource_size}>{res.size}</span>
-                  </div>
-                  <button type="button" className={styles.download_btn}>
-                    <Icon name="Download" size={16} />
-                    <span>Tải về</span>
-                  </button>
                 </div>
               ))}
             </div>

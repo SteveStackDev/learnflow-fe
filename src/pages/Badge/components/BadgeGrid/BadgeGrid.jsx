@@ -13,6 +13,7 @@ function BadgeGrid({
   onResetSearch,
 }) {
   const navigate = useNavigate();
+
   return (
     <section className={styles["badge-grid"]}>
       <div className={styles["badge-grid__container"]}>
@@ -38,59 +39,69 @@ function BadgeGrid({
             </button>
 
             <div className={styles["badge-grid__list"]}>
-              {displayedItems.map((obj, index) => (
-                <div
-                  key={obj.id}
-                  onClick={() => navigate(`/badge/${obj.id}`)}
-                  style={{ cursor: "pointer", transitionDelay: `${index * 100}ms` }}
-                  className={`${styles["badge-grid__card"]} reveal-card ${
-                    obj.status === "locked" ? styles["badge-grid__card--locked"] : ""
-                  }`}
-                >
-                  <div className={styles["badge-grid__card-header"]}>
-                    <span
-                      className={`${styles["badge-grid__status-chip"]} ${
-                        obj.status === "received"
-                          ? styles["badge-grid__status-chip--received"]
-                          : styles["badge-grid__status-chip--locked"]
-                      }`}
-                    >
-                      Chưa nhận
-                    </span>
-                  </div>
+              {displayedItems.map((obj, index) => {
+                const isEarned =
+                  obj.status === "received" ||
+                  obj.status === "unlocked" ||
+                  Boolean(obj.isEarned);
 
-                  <div className={styles["badge-grid__card-body"]}>
-                    <div
-                      className={`${styles["badge-grid__card-icon"]} ${
-                        obj.status === "received"
-                          ? styles["badge-grid__card-icon--active"]
-                          : styles["badge-grid__card-icon--disabled"]
-                      }`}
-                    >
-                      <Icon name={obj.icon} size={24} />
+                const badgeName = obj.name || obj.title || "Danh hiệu FySet";
+                const iconName = obj.icon || obj.iconName || "Award";
+
+                return (
+                  <div
+                    key={obj.id}
+                    onClick={() => navigate(`/badge/${obj.id}`)}
+                    style={{ cursor: "pointer", transitionDelay: `${index * 80}ms` }}
+                    className={`${styles["badge-grid__card"]} reveal-card ${
+                      !isEarned ? styles["badge-grid__card--locked"] : ""
+                    }`}
+                  >
+                    <div className={styles["badge-grid__card-header"]}>
+                      <span
+                        className={`${styles["badge-grid__status-chip"]} ${
+                          isEarned
+                            ? styles["badge-grid__status-chip--received"]
+                            : styles["badge-grid__status-chip--locked"]
+                        }`}
+                      >
+                        {isEarned ? "Đã nhận" : "Chưa nhận"}
+                      </span>
                     </div>
-                    <h3 className={styles["badge-grid__card-title"]}>{obj.name}</h3>
-                    <p className={styles["badge-grid__card-desc"]}>{obj.description}</p>
-                  </div>
 
-                  <div className={styles["badge-grid__card-actions"]}>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/badge/${obj.id}`);
-                      }}
-                      className={`${styles["badge-grid__btn"]} ${
-                        obj.status === "received"
-                          ? styles["badge-grid__btn--contained"]
-                          : styles["badge-grid__btn--disabled"]
-                      }`}
-                    >
-                      Chưa đạt điều kiện
-                    </button>
+                    <div className={styles["badge-grid__card-body"]}>
+                      <div
+                        className={`${styles["badge-grid__card-icon"]} ${
+                          isEarned
+                            ? styles["badge-grid__card-icon--active"]
+                            : styles["badge-grid__card-icon--disabled"]
+                        }`}
+                      >
+                        <Icon name={iconName} size={24} />
+                      </div>
+                      <h3 className={styles["badge-grid__card-title"]}>{badgeName}</h3>
+                      <p className={styles["badge-grid__card-desc"]}>{obj.description}</p>
+                    </div>
+
+                    <div className={styles["badge-grid__card-actions"]}>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/badge/${obj.id}`);
+                        }}
+                        className={`${styles["badge-grid__btn"]} ${
+                          isEarned
+                            ? styles["badge-grid__btn--contained"]
+                            : styles["badge-grid__btn--disabled"]
+                        }`}
+                      >
+                        {isEarned ? "Xem chi tiết" : "Chưa đạt điều kiện"}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <button

@@ -1,9 +1,8 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { Pagination } from "~/components/ui";
+import React, { useState, useMemo } from "react";
+import { Pagination, PremiumBlur } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import mockBlogData from "~/constants/mockBlog";
-import { blogService } from "~/services/blogService";
 
 // Sub-components
 import BlogHeroHeader from "./components/BlogHeroHeader/BlogHeroHeader";
@@ -30,17 +29,6 @@ export default function Blog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUserForModal, setSelectedUserForModal] = useState(null);
-
-  // Nạp danh sách bài viết từ blogService
-  useEffect(() => {
-    blogService.getBlogs().then((data) => {
-      if (Array.isArray(data) && data.length > 0) {
-        setPosts(data);
-      } else if (Array.isArray(data?.posts)) {
-        setPosts(data.posts);
-      }
-    });
-  }, []);
 
   // Filter posts based on Category, SearchTerm, and ActiveHashtag
   const filteredPosts = useMemo(() => {
@@ -86,12 +74,7 @@ export default function Blog() {
   // Scroll reveal animation for Blog elements
   useScrollReveal(".reveal-card", [paginatedPosts, activeCategory, viewMode, currentPage]);
 
-  const handleCreatePostSubmit = async (newPost) => {
-    try {
-      await blogService.createBlog(newPost);
-    } catch (err) {
-      console.warn("Lỗi đăng bài blog:", err.message);
-    }
+  const handleCreatePostSubmit = (newPost) => {
     setPosts((prev) => [newPost, ...prev]);
     toast.success(
       "Xuất bản bài viết thành công! Bài viết đã xuất hiện trên trang Blog.",
@@ -113,112 +96,123 @@ export default function Blog() {
   };
 
   return (
-    <div className={styles.blog_page}>
-      <div className={styles.blog_container}>
-        {/* 1. Hero Header with Search & Create Post CTA */}
-        <BlogHeroHeader
-          searchTerm={searchTerm}
-          onSearchChange={(val) => {
-            setSearchTerm(val);
-            setCurrentPage(1);
-          }}
-          onCreatePostClick={() => setIsModalOpen(true)}
-        />
+    <PremiumBlur
+      isLocked={true}
+      badgeText="CỘNG ĐỒNG BÀI VIẾT"
+      title="Kênh Chia Sẻ Bài Viết Sắp Ra Mắt"
+      description="Nơi cộng đồng lập trình viên chia sẻ kiến thức công nghệ, kinh nghiệm phỏng vấn và mẹo giải thuật đang trong giai đoạn thử nghiệm."
+      primaryButtonText="Khám phá lộ trình"
+      primaryButtonLink="/roadmap"
+      secondaryButtonText="Về trang chủ"
+      secondaryButtonLink="/"
+    >
+      <div className={styles.blog_page}>
+        <div className={styles.blog_container}>
+          {/* 1. Hero Header with Search & Create Post CTA */}
+          <BlogHeroHeader
+            searchTerm={searchTerm}
+            onSearchChange={(val) => {
+              setSearchTerm(val);
+              setCurrentPage(1);
+            }}
+            onCreatePostClick={() => setIsModalOpen(true)}
+          />
 
-        {/* 2. Top X-Style Trending Topics Bar */}
-        <BlogTrendingTopics
-          topics={mockBlogData.trendingTopics}
-          activeHashtag={activeHashtag}
-          onSelectHashtag={handleSelectHashtag}
-        />
+          {/* 2. Top X-Style Trending Topics Bar */}
+          <BlogTrendingTopics
+            topics={mockBlogData.trendingTopics}
+            activeHashtag={activeHashtag}
+            onSelectHashtag={handleSelectHashtag}
+          />
 
-        {/* 3. Hot Articles Carousel (Persists during category filter/sort) */}
-        <BlogFeaturedPost
-          posts={displayFeaturedPosts}
-          onSelectUser={(u) => setSelectedUserForModal(u)}
-        />
+          {/* 3. Hot Articles Carousel (Persists during category filter/sort) */}
+          <BlogFeaturedPost
+            posts={displayFeaturedPosts}
+            onSelectUser={(u) => setSelectedUserForModal(u)}
+          />
 
-        {/* 4. Filter Bar & View Mode Toggle */}
-        <BlogFilterBar
-          activeCategory={activeCategory}
-          onSelectCategory={handleSelectCategory}
-          viewMode={viewMode}
-          onViewModeChange={setViewMode}
-        />
+          {/* 4. Filter Bar & View Mode Toggle */}
+          <BlogFilterBar
+            activeCategory={activeCategory}
+            onSelectCategory={handleSelectCategory}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+          />
 
-        {/* 5. Main 2-Column Layout */}
-        <div className={styles.main_layout}>
-          {/* Feed Column */}
-          <main className={styles.feed_column}>
-            <h2 className={styles.section_heading}>
-              {activeHashtag
-                ? `Bài viết thuộc chủ đề ${activeHashtag}`
-                : "Bài viết mới nhất"}
-            </h2>
+          {/* 5. Main 2-Column Layout */}
+          <div className={styles.main_layout}>
+            {/* Feed Column */}
+            <main className={styles.feed_column}>
+              <h2 className={styles.section_heading}>
+                {activeHashtag
+                  ? `Bài viết thuộc chủ đề ${activeHashtag}`
+                  : "Bài viết mới nhất"}
+              </h2>
 
-            {paginatedPosts.length > 0 ? (
-              <div
-                className={
-                  viewMode === "grid" ? styles.posts_grid : styles.posts_list
-                }
-              >
-                {paginatedPosts.map((post) => (
-                  <BlogPostCard
-                    key={post.id}
-                    post={post}
-                    viewMode={viewMode}
-                    onSelectUser={(u) => setSelectedUserForModal(u)}
+              {paginatedPosts.length > 0 ? (
+                <div
+                  className={
+                    viewMode === "grid" ? styles.posts_grid : styles.posts_list
+                  }
+                >
+                  {paginatedPosts.map((post) => (
+                    <BlogPostCard
+                      key={post.id}
+                      post={post}
+                      viewMode={viewMode}
+                      onSelectUser={(u) => setSelectedUserForModal(u)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.empty_box}>
+                  <h3 className={styles.empty_title}>
+                    Không tìm thấy bài viết phù hợp
+                  </h3>
+                  <p className={styles.empty_desc}>
+                    Thử thay đổi từ khóa tìm kiếm hoặc chọn danh mục khác.
+                  </p>
+                </div>
+              )}
+
+              {/* Reusable Pagination Component */}
+              {totalPages > 1 && (
+                <div className={styles.pagination_wrapper}>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
                   />
-                ))}
-              </div>
-            ) : (
-              <div className={styles.empty_box}>
-                <h3 className={styles.empty_title}>
-                  Không tìm thấy bài viết phù hợp
-                </h3>
-                <p className={styles.empty_desc}>
-                  Thử thay đổi từ khóa tìm kiếm hoặc chọn danh mục khác.
-                </p>
-              </div>
-            )}
+                </div>
+              )}
+            </main>
 
-            {/* Reusable Pagination Component */}
-            {totalPages > 1 && (
-              <div className={styles.pagination_wrapper}>
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                />
-              </div>
-            )}
-          </main>
-
-          {/* Right Sidebar */}
-          <aside>
-            <BlogSidebar
-              popularArticles={mockBlogData.popularArticles}
-              topAuthors={mockBlogData.topAuthors}
-              onCreatePostClick={() => setIsModalOpen(true)}
-              onSelectUser={(u) => setSelectedUserForModal(u)}
-            />
-          </aside>
+            {/* Right Sidebar */}
+            <aside>
+              <BlogSidebar
+                popularArticles={mockBlogData.popularArticles}
+                topAuthors={mockBlogData.topAuthors}
+                onCreatePostClick={() => setIsModalOpen(true)}
+                onSelectUser={(u) => setSelectedUserForModal(u)}
+              />
+            </aside>
+          </div>
         </div>
+
+        {/* Interactive Modal for Creating New Blog Posts */}
+        <CreatePostModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleCreatePostSubmit}
+        />
+
+        {/* Quick Profile Popover Card Modal (Image 2) */}
+        <UserProfileCardModal
+          isOpen={!!selectedUserForModal}
+          onClose={() => setSelectedUserForModal(null)}
+          user={selectedUserForModal}
+        />
       </div>
-
-      {/* Interactive Modal for Creating New Blog Posts */}
-      <CreatePostModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleCreatePostSubmit}
-      />
-
-      {/* Quick Profile Popover Card Modal (Image 2) */}
-      <UserProfileCardModal
-        isOpen={!!selectedUserForModal}
-        onClose={() => setSelectedUserForModal(null)}
-        user={selectedUserForModal}
-      />
-    </div>
+    </PremiumBlur>
   );
 }

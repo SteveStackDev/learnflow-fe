@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
-import { userService } from "~/services/userService";
 import styles from "./UserProfileCardModal.module.css";
 
 export function UserProfileCardModal({ isOpen, onClose, user }) {
@@ -19,9 +18,8 @@ export function UserProfileCardModal({ isOpen, onClose, user }) {
     navigate(`/profile/${user.id || "user-01"}`);
   };
 
-  const handleToggleFollow = async (e) => {
+  const handleToggleFollow = (e) => {
     e.stopPropagation();
-    const targetId = user.id || user._id;
 
     if (friendshipState === "none") {
       setFriendshipState("pending");
@@ -29,11 +27,6 @@ export function UserProfileCardModal({ isOpen, onClose, user }) {
         `Đã gửi lời mời kết bạn tới ${user.username || user.name}!`,
         "Kết bạn",
       );
-      try {
-        await userService.sendFriendRequest(targetId);
-      } catch (err) {
-        console.warn("Lỗi gửi lời mời kết bạn:", err.message);
-      }
     } else if (friendshipState === "pending") {
       setFriendshipState("none");
       toast.info(
