@@ -3,7 +3,25 @@ import styles from "./ProblemDetailDescription.module.css";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import { ScrollArea, ChatInput } from "~/components/ui";
-import { commentService, mockProblemDiscussions } from "~/services/commentService";
+
+const mockProblemDiscussions = [
+  {
+    id: "c-1",
+    name: "Elena Rostova",
+    avatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+    time: "2 giờ trước",
+    text: "Bài này giải thuật Greedy sắp xếp tăng dần mảng a[i] là tối ưu nhất nha mọi người!",
+  },
+  {
+    id: "c-2",
+    name: "Michael Steve",
+    avatar:
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+    time: "5 giờ trước",
+    text: "Lưu ý trường hợp T lớn (10^12) nên dùng kiểu long long trong C++ nhé.",
+  },
+];
 
 function ProblemDetailDescription({ problem, onSelectUser }) {
   const [activeTab, setActiveTab] = useState("desc"); // 'desc' | 'solution' | 'discussion'
@@ -19,20 +37,7 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
     setUserVote(null);
   }, [problem?.id, problem?._id, problem?.code, problem?.upvotes, problem?.downvotes]);
 
-  useEffect(() => {
-    const pId = problem?.id || problem?._id;
-    if (pId) {
-      commentService
-        .getComments({ targetType: "Problem", targetId: pId })
-        .then((res) => {
-          if (Array.isArray(res) && res.length > 0) {
-            setDiscussions(res);
-          }
-        });
-    }
-  }, [problem?.id, problem?._id]);
-
-  const handleSendDiscussion = async ({ text, attachment }) => {
+  const handleSendDiscussion = ({ text, attachment }) => {
     if (!text && !attachment) return;
 
     let savedUser = null;
@@ -57,17 +62,6 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
 
     setDiscussions((prev) => [newComment, ...prev]);
     toast.success("Đã gửi thảo luận bài tập thành công!", "Thảo luận");
-
-    const pId = problem?.id || problem?._id || "problem-1";
-    try {
-      await commentService.createComment({
-        targetType: "Problem",
-        targetId: pId,
-        content: text,
-      });
-    } catch (err) {
-      console.warn("Lỗi đồng bộ thảo luận:", err.message);
-    }
   };
 
   const authorName =

@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 
-// Data & Services
+// Data
 import { contestData } from "../../constants/mockContest";
-import { contestService } from "~/services/contestService";
 
 // UI Components
 import { PremiumBlur } from "~/components/ui";
@@ -30,17 +29,6 @@ function Contest() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useScrollReveal();
-
-  // Nạp danh sách cuộc thi từ contestService
-  useEffect(() => {
-    contestService.getContests().then((data) => {
-      if (Array.isArray(data) && data.length > 0) {
-        setContestsList(data);
-      } else if (Array.isArray(data?.items)) {
-        setContestsList(data.items);
-      }
-    });
-  }, []);
 
   const handleTabChange = (index) => {
     setActiveTab(index);

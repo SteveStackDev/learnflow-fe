@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, useMemo } from "react";
-// Services
-import { roadmapService } from "~/services/roadmapService";
+import { useState, useEffect, useMemo } from "react";
+// Data
+import { roadmapData } from "~/constants/mockRoadMap";
 
 // Styles
 import styles from "./Roadmap.module.css";
@@ -28,7 +28,7 @@ const LEVEL_OPTIONS = [
 const ITEMS_PER_PAGE = 4; // 1 clean row of 4 cards!
 
 function Roadmap() {
-  const [roadmapsList, setRoadmapsList] = useState([]);
+  const [roadmapsList, setRoadmapsList] = useState(roadmapData.items || []);
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState(LEVEL_OPTIONS[0]);
@@ -36,23 +36,12 @@ function Roadmap() {
 
   useScrollReveal();
 
-  // Nạp danh sách lộ trình từ roadmapService
-  useEffect(() => {
-    roadmapService.getRoadmaps().then((data) => {
-      if (Array.isArray(data) && data.length > 0) {
-        setRoadmapsList(data);
-      } else if (Array.isArray(data?.items)) {
-        setRoadmapsList(data.items);
-      }
-    });
-  }, []);
-
   const handleTabChange = (index) => {
     setActiveTab(index);
     setCurrentPage(1);
   };
 
-  // Filter & Sort Logic matching roadmapService structure
+  // Filter & Sort Logic for roadmap items
   const filteredAndSortedItems = useMemo(() => {
     const list = (roadmapsList || []).filter((item) => {
       const title = (item.title || "").toLowerCase();

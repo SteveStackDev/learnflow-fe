@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Icon from "~/components/Icon/Icon";
 import { Button, FormField, Badge, ScrollArea } from "~/components/ui";
 import { EmptyState } from "~/components/EmptyState/EmptyState";
-import { userService } from "~/services/userService";
+import { dashboardData } from "~/constants/mockDashBoard";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./CreateChatModal.module.css";
 
@@ -28,17 +28,9 @@ export default function CreateChatModal({ isOpen, onClose, onCreateChat }) {
   useEffect(() => {
     if (isOpen) {
       setLoadingFriends(true);
-      userService
-        .getFriends()
-        .then((data) => {
-          if (Array.isArray(data)) {
-            setFriendsList(data);
-          }
-          setLoadingFriends(false);
-        })
-        .catch(() => {
-          setLoadingFriends(false);
-        });
+      const friends = dashboardData.onlineFriends || [];
+      setFriendsList(friends);
+      setLoadingFriends(false);
     } else {
       // Reset form state khi đóng modal
       setGroupName("");

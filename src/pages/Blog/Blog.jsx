@@ -1,9 +1,8 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { Pagination, PremiumBlur } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import mockBlogData from "~/constants/mockBlog";
-import { blogService } from "~/services/blogService";
 
 // Sub-components
 import BlogHeroHeader from "./components/BlogHeroHeader/BlogHeroHeader";
@@ -30,17 +29,6 @@ export default function Blog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUserForModal, setSelectedUserForModal] = useState(null);
-
-  // Nạp danh sách bài viết từ blogService
-  useEffect(() => {
-    blogService.getBlogs().then((data) => {
-      if (Array.isArray(data) && data.length > 0) {
-        setPosts(data);
-      } else if (Array.isArray(data?.posts)) {
-        setPosts(data.posts);
-      }
-    });
-  }, []);
 
   // Filter posts based on Category, SearchTerm, and ActiveHashtag
   const filteredPosts = useMemo(() => {
@@ -86,12 +74,7 @@ export default function Blog() {
   // Scroll reveal animation for Blog elements
   useScrollReveal(".reveal-card", [paginatedPosts, activeCategory, viewMode, currentPage]);
 
-  const handleCreatePostSubmit = async (newPost) => {
-    try {
-      await blogService.createBlog(newPost);
-    } catch (err) {
-      console.warn("Lỗi đăng bài blog:", err.message);
-    }
+  const handleCreatePostSubmit = (newPost) => {
     setPosts((prev) => [newPost, ...prev]);
     toast.success(
       "Xuất bản bài viết thành công! Bài viết đã xuất hiện trên trang Blog.",

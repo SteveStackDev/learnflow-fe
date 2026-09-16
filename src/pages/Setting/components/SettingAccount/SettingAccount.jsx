@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
-import { userService } from "~/services/userService";
 import Icon from "~/components/Icon/Icon";
 import styles from "./SettingAccount.module.css";
 
@@ -47,8 +46,7 @@ function SettingAccount({ userData }) {
 
     setIsUploadingAvatar(true);
     try {
-      const res = await userService.updateAvatar(file);
-      const newUrl = res?.data?.avatar?.url || res?.url || URL.createObjectURL(file);
+      const newUrl = URL.createObjectURL(file);
       setAvatarUrl(newUrl);
 
       // Đồng bộ vào localStorage để Header và Dashboard nhận ảnh mới
