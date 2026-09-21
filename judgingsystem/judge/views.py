@@ -25,6 +25,8 @@ def ensure_sqlite_columns():
             if problem_cols:
                 if "subtasks" not in problem_cols:
                     cursor.execute("ALTER TABLE judge_problem ADD COLUMN subtasks JSON DEFAULT '[]';")
+                if "image_description" not in problem_cols:
+                    cursor.execute("ALTER TABLE judge_problem ADD COLUMN image_description TEXT DEFAULT '';")
                 if "hints" not in problem_cols:
                     cursor.execute("ALTER TABLE judge_problem ADD COLUMN hints TEXT DEFAULT '';")
                 if "author_name" not in problem_cols:
@@ -155,12 +157,11 @@ def format_problem_response(problem, include_testcases=True):
 
     return {
         "id": problem.id,
-        "code": problem.code or f"{problem.id:02d}",
-        "number": int(problem.code) if problem.code.isdigit() else problem.id,
         "title": problem.title,
-        "slug": problem.slug,
         "statement": problem.statement,
         "description": problem.statement,
+        "imageDescription": getattr(problem, "image_description", "") or "",
+        "image_description": getattr(problem, "image_description", "") or "",
         "inputFormat": input_fmt,
         "outputFormat": output_fmt,
         "input_description": problem.input_description,
@@ -201,7 +202,7 @@ def format_problem_response(problem, include_testcases=True):
 def problem_list_create(request):
     """
     GET: Lấy danh sách bài tập (có hỗ trợ filter)
-    POST: Tạo bài tập mới kèm subtasks & test cases
+    POST: Tạo bài tập mới kèm subtasks (chứa embedded testCases)
     """
     if request.method == "GET":
         all_problems = request.GET.get("all", "false").lower() == "true"
@@ -220,7 +221,7 @@ def problem_list_create(request):
             queryset = queryset.filter(topic__icontains=topic)
 
         if search:
-            queryset = queryset.filter(title__icontains=search) | queryset.filter(code__icontains=search)
+            queryset = queryset.filter(title__icontains=search)
 
         data = [format_problem_response(p, include_testcases=False) for p in queryset]
         return JsonResponse(data, safe=False)
@@ -235,24 +236,6 @@ def problem_list_create(request):
             title = data.get("title", "").strip()
             if not title:
                 return JsonResponse({"error": "Tiêu đề bài tập không được để trống!"}, status=400)
-
-            slug = data.get("slug", "").strip()
-            if not slug:
-                slug = slugify(title)
-
-            # Đảm bảo slug là duy nhất
-            base_slug = slug
-            counter = 1
-            while Problem.objects.filter(slug=slug).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
-
-            # Auto compute code if missing
-            code_str = data.get("code", "").strip()
-            if not code_str:
-                last_problem = Problem.objects.order_by("-id").first()
-                next_num = (last_problem.id + 1) if last_problem else 1
-                code_str = f"{next_num:02d}"
 
             difficulty = data.get("difficulty", "easy").lower()
             topic = data.get("topic", "Array & Hashing")
@@ -301,12 +284,13 @@ def problem_list_create(request):
                     if isinstance(st_tests, list):
                         test_cases.extend(st_tests)
 
+            image_description = data.get("imageDescription") or data.get("image_description") or ""
+
             with transaction.atomic():
                 problem = Problem.objects.create(
-                    code=code_str,
                     title=title,
-                    slug=slug,
                     statement=statement,
+                    image_description=image_description,
                     input_description=input_format,
                     output_description=output_format,
                     constraints=constraints,
@@ -321,7 +305,7 @@ def problem_list_create(request):
                     memory_limit=memory_limit,
                 )
 
-                # Create testcases
+                # Create testcases nếu có
                 for index, tc in enumerate(test_cases):
                     input_data = tc.get("input", "")
                     expected_output = tc.get("expected", "")
@@ -349,17 +333,14 @@ def problem_list_create(request):
 @csrf_exempt
 def problem_detail_update_delete(request, id_or_slug):
     """
-    GET: Lấy chi tiết bài tập theo ID hoặc Slug
+    GET: Lấy chi tiết bài tập theo ID
     PUT/PATCH: Cập nhật bài tập
     DELETE: Xóa bài tập
     """
     try:
-        if id_or_slug.isdigit():
-            problem = Problem.objects.get(id=int(id_or_slug))
-        else:
-            problem = Problem.objects.filter(slug=id_or_slug).first()
-            if not problem:
-                problem = Problem.objects.filter(code=id_or_slug).first()
+        problem = None
+        if str(id_or_slug).isdigit():
+            problem = Problem.objects.filter(id=int(id_or_slug)).first()
 
         if not problem:
             return JsonResponse({"error": "Không tìm thấy bài tập!"}, status=404)
@@ -383,6 +364,10 @@ def problem_detail_update_delete(request, id_or_slug):
                 problem.statement = data["statement"]
             if "description" in data and not data.get("statement"):
                 problem.statement = data["description"]
+            if "imageDescription" in data:
+                problem.image_description = data["imageDescription"]
+            elif "image_description" in data:
+                problem.image_description = data["image_description"]
             if "time_limit" in data or "timeLimit" in data:
                 raw_time_limit = data.get("time_limit") if data.get("time_limit") is not None else data.get("timeLimit")
                 if isinstance(raw_time_limit, str):
