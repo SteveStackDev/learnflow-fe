@@ -169,8 +169,8 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
             <div className={styles.meta_row}>
               {(() => {
                 const diffVal = String(problem.difficulty || problem.level || problem.difficultyLabel || "").toLowerCase();
-                let diffText = problem.difficultyLabel || problem.level || "Dễ";
-                let diffClass = styles["level_badge--easy"];
+                let diffText;
+                let diffClass;
 
                 if (diffVal === "hard" || diffVal === "khó") {
                   diffText = "Khó";

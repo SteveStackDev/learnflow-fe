@@ -70,10 +70,10 @@ export function Header() {
   const timeoutRef = useRef(null);
   const userMenuRef = useRef(null);
 
-  const isLearnActive = ["/roadmap", "/course"].includes(location.pathname);
-  const isPracticeActive = ["/problem", "/contest"].includes(location.pathname);
-  const isAchievementActive = ["/leaderboard", "/badge", "/achievement"].includes(
-    location.pathname,
+  const isLearnActive = location.pathname.startsWith("/roadmap") || location.pathname.startsWith("/course");
+  const isPracticeActive = location.pathname.startsWith("/problem") || location.pathname.startsWith("/contest");
+  const isAchievementActive = ["/leaderboard", "/badge", "/achievement"].some((p) =>
+    location.pathname.startsWith(p),
   );
   const isOtherActive = [
     "/pricing",
@@ -81,7 +81,7 @@ export function Header() {
     "/pricing/checkout",
     "/checkout",
     "/blog",
-  ].includes(location.pathname);
+  ].some((p) => location.pathname.startsWith(p));
 
   useEffect(() => {
     async function fetchData() {

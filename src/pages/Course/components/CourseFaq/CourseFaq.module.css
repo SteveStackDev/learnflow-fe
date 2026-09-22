@@ -68,7 +68,7 @@
   list-style: none;
 }
 
-.course-faq__accordion-summary::-webkit-details-marker {
+.course-faq__accordion-summary::marker {
   display: none;
 }
 

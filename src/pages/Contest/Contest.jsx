@@ -23,7 +23,7 @@ import useScrollReveal from "~/hooks/useScrollReveal";
 const ITEMS_PER_PAGE = 3; // 1 clean row of 3 cards!
 
 function Contest() {
-  const [contestsList, setContestsList] = useState(contestData.items || []);
+  const [contestsList] = useState(contestData.items || []);
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
