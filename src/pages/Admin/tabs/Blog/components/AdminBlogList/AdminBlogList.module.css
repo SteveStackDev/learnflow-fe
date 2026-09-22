@@ -237,10 +237,9 @@
   font-weight: 700;
   color: var(--theme-text-primary, #0f172a);
   transition: color 0.2s ease;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   max-width: 340px;
 }
 

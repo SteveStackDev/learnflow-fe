@@ -68,7 +68,7 @@
   list-style: none;
 }
 
-.price-faq__accordion-summary::-webkit-details-marker {
+.price-faq__accordion-summary::marker {
   display: none;
 }
 

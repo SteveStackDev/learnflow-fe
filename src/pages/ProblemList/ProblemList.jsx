@@ -9,7 +9,7 @@ import ProblemListHero from "./components/ProblemListHero/ProblemListHero";
 import ProblemListToolbar from "./components/ProblemListToolbar/ProblemListToolbar";
 import ProblemListTable from "./components/ProblemListTable/ProblemListTable";
 
-const DEFAULT_FILTERS = {
+const BASE_FILTERS = {
   difficulties: [
     { id: "all", label: "Tất cả độ khó" },
     { id: "easy", label: "Dễ" },
@@ -45,21 +45,45 @@ function ProblemList() {
 
   const [rawProblems, setRawProblems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDifficulty, setSelectedDifficulty] = useState(DEFAULT_FILTERS.difficulties[0]);
-  const [selectedTopic, setSelectedTopic] = useState(DEFAULT_FILTERS.topics[0]);
-  const [selectedLanguage, setSelectedLanguage] = useState(DEFAULT_FILTERS.languages[0]);
-  const [selectedStatus, setSelectedStatus] = useState(DEFAULT_FILTERS.statuses[0]);
+  const [selectedDifficulty, setSelectedDifficulty] = useState(BASE_FILTERS.difficulties[0]);
+  const [selectedTopic, setSelectedTopic] = useState(BASE_FILTERS.topics[0]);
+  const [selectedLanguage, setSelectedLanguage] = useState(BASE_FILTERS.languages[0]);
+  const [selectedStatus, setSelectedStatus] = useState(BASE_FILTERS.statuses[0]);
 
   // Dropdown open state: 'diff' | 'topic' | 'lang' | 'status' | null
   const [openDropdown, setOpenDropdown] = useState(null);
   const toolbarRef = useRef(null);
 
-  // Load danh sách bài tập từ SQLite Backend
+  // Load danh sách bài tập trực tiếp từ SQLite Database (Backend Docker)
   useEffect(() => {
+    let isMounted = true;
     problemService.getProblems().then((data) => {
-      setRawProblems(Array.isArray(data) ? data : []);
+      if (isMounted) {
+        setRawProblems(Array.isArray(data) ? data : []);
+      }
     });
+    return () => {
+      isMounted = false;
+    };
   }, []);
+
+  // Tự động tổng hợp danh sách topics thực tế có trong Database
+  const dynamicFilters = useMemo(() => {
+    const existingTopicIds = new Set(BASE_FILTERS.topics.map((t) => t.id));
+    const extraTopics = [];
+
+    rawProblems.forEach((p) => {
+      if (p.topic && !existingTopicIds.has(p.topic)) {
+        existingTopicIds.add(p.topic);
+        extraTopics.push({ id: p.topic, label: p.topic });
+      }
+    });
+
+    return {
+      ...BASE_FILTERS,
+      topics: [...BASE_FILTERS.topics, ...extraTopics],
+    };
+  }, [rawProblems]);
 
   // Close dropdowns on click outside
   useEffect(() => {
@@ -74,10 +98,10 @@ function ProblemList() {
 
   const resetFilters = () => {
     setSearchQuery("");
-    setSelectedDifficulty(DEFAULT_FILTERS.difficulties[0]);
-    setSelectedTopic(DEFAULT_FILTERS.topics[0]);
-    setSelectedLanguage(DEFAULT_FILTERS.languages[0]);
-    setSelectedStatus(DEFAULT_FILTERS.statuses[0]);
+    setSelectedDifficulty(BASE_FILTERS.difficulties[0]);
+    setSelectedTopic(BASE_FILTERS.topics[0]);
+    setSelectedLanguage(BASE_FILTERS.languages[0]);
+    setSelectedStatus(BASE_FILTERS.statuses[0]);
     setOpenDropdown(null);
     toast.info("Đã đặt lại tất cả bộ lọc tìm kiếm", "Bộ lọc bài tập");
   };
@@ -133,8 +157,8 @@ function ProblemList() {
   }, [filteredItems, currentPage]);
 
   const heroData = {
-    title: "Ngân Hàng Bài Tập Thuật Toán",
-    description: "Hàng trăm thử thách thuật toán từ cơ bản đến nâng cao được cập nhật và kiểm thử tự động.",
+    title: "Kho Bài Tập Luyện Code Chuẩn Phỏng Vấn",
+    description: "Hơn 300+ bài tập thuật toán từ cơ bản đến nâng cao được cập nhật và kiểm thử tự động trên hệ thống FySet Judge.",
   };
 
   return (
@@ -148,7 +172,7 @@ function ProblemList() {
 
       {/* 2. Filter Toolbar Component */}
       <ProblemListToolbar
-        filtersData={DEFAULT_FILTERS}
+        filtersData={dynamicFilters}
         selectedDifficulty={selectedDifficulty}
         setSelectedDifficulty={setSelectedDifficulty}
         selectedTopic={selectedTopic}

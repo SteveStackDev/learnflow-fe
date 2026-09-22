@@ -213,10 +213,9 @@
 .subject_text {
   font-weight: 700;
   color: var(--theme-text-primary, #0f172a);
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   max-width: 300px;
 }
 

@@ -79,8 +79,8 @@
 
 .signup-info__title--highlight {
   background: linear-gradient(135deg, #0950c3 0%, #0284c7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
 .signup-info__desc {

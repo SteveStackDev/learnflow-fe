@@ -71,7 +71,7 @@
   user-select: none;
 }
 
-.badge-faq__accordion-summary::-webkit-details-marker {
+.badge-faq__accordion-summary::marker {
   display: none;
 }
 

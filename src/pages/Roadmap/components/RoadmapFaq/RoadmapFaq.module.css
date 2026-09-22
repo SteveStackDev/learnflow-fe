@@ -69,7 +69,7 @@
   list-style: none;
 }
 
-.roadmap-faq__accordion-summary::-webkit-details-marker {
+.roadmap-faq__accordion-summary::marker {
   display: none;
 }
 

@@ -274,7 +274,9 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
   const handleClearDraft = () => {
     try {
       localStorage.removeItem(DRAFT_STORAGE_KEY);
-    } catch (err) {}
+    } catch {
+      // bỏ qua lỗi nếu có
+    }
 
     setFormData({
       title: "",
@@ -624,7 +626,9 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
     if (!initialData) {
       try {
         localStorage.removeItem(DRAFT_STORAGE_KEY);
-      } catch (err) {}
+      } catch {
+        // bỏ qua lỗi nếu có
+      }
       setHasDraft(false);
     }
 

@@ -324,10 +324,10 @@
 }
 
 .comment_text {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  display: block;
+  line-clamp: 2;
   overflow: hidden;
+  text-overflow: ellipsis;
   max-width: 320px;
   font-size: 0.875rem;
   line-height: 1.5;
