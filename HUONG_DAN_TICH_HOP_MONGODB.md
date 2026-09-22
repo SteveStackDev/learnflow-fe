@@ -25,14 +25,13 @@ graph TD
 
 Dưới đây là cấu trúc các Collection chuẩn để lưu trữ bài tập, test case và lịch sử nộp bài trong MongoDB:
 
-### 📁 Collection 1: `problems` (Danh sách bài tập)
+### 📁 Collection 1: `problems` (Tích hợp trọn gói Subtasks & Test Cases - Chuẩn Phương Án A)
 ```json
 {
-  "_id": { "$oid": "66da91e102f9a12bc8000001" },
-  "code": "01",
+  "_id": "01",
   "title": "A + B Problem",
-  "slug": "a-plus-b",
   "statement": "Cho hai số nguyên A và B. Hãy tính tổng của chúng.",
+  "imageDescription": "",
   "inputDescription": "Một dòng duy nhất chứa hai số nguyên A và B cách nhau bởi dấu cách.",
   "outputDescription": "In ra một số nguyên duy nhất là tổng A + B.",
   "constraints": ["1 <= A, B <= 1000", "Thời gian chạy: <= 1.0s", "Bộ nhớ: <= 256MB"],
@@ -54,41 +53,67 @@ Dưới đây là cấu trúc các Collection chuẩn để lưu trữ bài tậ
   "subtasks": [
     {
       "id": 1,
-      "name": "Subtask 1",
-      "points": 500,
-      "constraints": "N <= 1000",
-      "testCaseIds": ["66da91e102f9a12bc8000011", "66da91e102f9a12bc8000012"]
+      "name": "Subtask 1 (Nhỏ)",
+      "points": 200,
+      "constraints": "1 <= A, B <= 100",
+      "testCases": [
+        {
+          "id": 1,
+          "input": "2 3\n",
+          "expected": "5\n",
+          "points": 100,
+          "isHidden": false
+        },
+        {
+          "id": 2,
+          "input": "10 20\n",
+          "expected": "30\n",
+          "points": 100,
+          "isHidden": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Subtask 2 (Lớn)",
+      "points": 300,
+      "constraints": "1 <= A, B <= 1000",
+      "testCases": [
+        {
+          "id": 3,
+          "input": "500 500\n",
+          "expected": "1000\n",
+          "points": 150,
+          "isHidden": true
+        },
+        {
+          "id": 4,
+          "input": "999 1\n",
+          "expected": "1000\n",
+          "points": 150,
+          "isHidden": true
+        }
+      ]
     }
   ],
-  "createdAt": { "$date": "2026-09-06T10:00:00.000Z" },
-  "updatedAt": { "$date": "2026-09-06T10:00:00.000Z" }
+  "createdAt": { "$date": "2026-09-06T10:00:00Z" },
+  "updatedAt": { "$date": "2026-09-06T10:00:00Z" }
 }
 ```
 
----
-
-### 📁 Collection 2: `testcases` (Bộ dữ liệu Test Case)
-```json
-{
-  "_id": { "$oid": "66da91e102f9a12bc8000011" },
-  "problemId": { "$oid": "66da91e102f9a12bc8000001" },
-  "subtaskId": 1,
-  "inputData": "30 6\n",
-  "expectedOutput": "36\n",
-  "points": 100,
-  "isHidden": false,
-  "order": 1
-}
-```
+> **Ưu điểm của mô hình Phương Án A (Embedded Test Cases):**
+> 1. **Bỏ hoàn toàn `slug` và `code`**: Sử dụng trực tiếp `_id: "01"` làm mã định danh duy nhất.
+> 2. **Có trường `imageDescription`**: Đường dẫn URL hoặc chuỗi base64 ảnh minh họa cho các bài toán hình học / đồ thị.
+> 3. **Nhúng trực tiếp `testCases` vào `subtasks`**: Khi truy vấn lấy bài tập để chấm, chỉ cần 1 query duy nhất là có đủ cả đề bài, luật subtask và test cases. Không cần tạo thêm bảng/collection `testcases` riêng!
 
 ---
 
-### 📁 Collection 3: `submissions` (Lịch sử nộp bài & Kết quả chấm)
+### 📁 Collection 2: `submissions` (Lịch sử nộp bài & Kết quả chấm)
 ```json
 {
   "_id": { "$oid": "66da91e102f9a12bc8000099" },
   "userId": { "$oid": "66da91e102f9a12bc8000055" },
-  "problemId": { "$oid": "66da91e102f9a12bc8000001" },
+  "problemId": "01",
   "sourceCode": "#include <iostream>\nusing namespace std;\nint main() { long long a, b; if (cin >> a >> b) cout << a + b; return 0; }",
   "language": "cpp",
   "status": "AC",
@@ -99,16 +124,26 @@ Dưới đây là cấu trúc các Collection chuẩn để lưu trữ bài tậ
   "subtaskResults": [
     {
       "subtaskId": 1,
-      "name": "Subtask 1",
-      "pointsEarned": 500,
+      "name": "Subtask 1 (Nhỏ)",
+      "pointsEarned": 200,
       "status": "AC",
       "testResults": [
         { "testId": 1, "status": "AC", "time": 0.012, "memory": 18.2 },
         { "testId": 2, "status": "AC", "time": 0.015, "memory": 18.4 }
       ]
+    },
+    {
+      "subtaskId": 2,
+      "name": "Subtask 2 (Lớn)",
+      "pointsEarned": 300,
+      "status": "AC",
+      "testResults": [
+        { "testId": 3, "status": "AC", "time": 0.014, "memory": 18.3 },
+        { "testId": 4, "status": "AC", "time": 0.015, "memory": 18.4 }
+      ]
     }
   ],
-  "createdAt": { "$date": "2026-09-06T12:00:00.000Z" }
+  "createdAt": { "$date": "2026-09-06T12:00:00Z" }
 }
 ```
 
@@ -198,7 +233,7 @@ mongoengine.connect(host=MONGODB_URI)
 | :--- | :--- | :---: |
 | **Frontend** | Gọi qua API JSON, không phụ thuộc vào loại DB | ✅ Sẵn sàng |
 | **Judge Engine** | Đã đóng gói trong Docker, có đủ C++, Java, Python, Node.js | ✅ Sẵn sàng |
-| **MongoDB Schema** | 3 Collections: `problems`, `testcases`, `submissions` | 📝 Có sẵn mẫu |
+| **MongoDB Schema** | 2 Collections: `problems` (nhúng trọn gói subtasks & testcases), `submissions` | 📝 Đã chuẩn hóa |
 | **API Chấm bài** | `POST /api/judge/submit/` | ✅ Chạy 100% |
 | **API Trạng thái** | `GET /api/judge/system-status/` | ✅ Chạy 100% |
 

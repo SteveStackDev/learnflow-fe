@@ -61,10 +61,10 @@ export default function AdminProblemEditorTab({ problemState, setProblemState })
           />
 
           <FormField
-            label="URL Slug"
-            placeholder="e.g. cong-trinh-xay-dung"
-            value={problemState.slug || ""}
-            onChange={(e) => setProblemState({ ...problemState, slug: e.target.value })}
+            label="Image Description (URL / Đường dẫn ảnh)"
+            placeholder="e.g. https://... hoặc /assets/problems/diagram.png"
+            value={problemState.imageDescription || ""}
+            onChange={(e) => setProblemState({ ...problemState, imageDescription: e.target.value })}
           />
         </div>
 

@@ -9,9 +9,21 @@ import {
 } from "~/constants/mockAdminProblem";
 import styles from "./AdminProblemModal.module.css";
 
+const DRAFT_STORAGE_KEY = "fyset_admin_problem_draft_v1";
+
+// Helper chia đều điểm số nguyên chuẩn xác không bao giờ bị lệch tổng
+function distributePoints(totalPoints, count) {
+  if (count <= 0) return [];
+  const numPoints = Math.max(0, Math.floor(Number(totalPoints) || 0));
+  const base = Math.floor(numPoints / count);
+  const remainder = numPoints % count;
+  return Array.from({ length: count }, (_, idx) => base + (idx < remainder ? 1 : 0));
+}
+
 export default function AdminProblemModal({ isOpen, onClose, onSave, initialData }) {
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1); // 1: Problem Details | 2: Test Cases
+  const [hasDraft, setHasDraft] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -22,6 +34,7 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
     timeLimit: "2.0",
     memoryLimit: "256",
     statement: "",
+    imageDescription: "",
     inputFormat: "",
     outputFormat: "",
     constraints: "",
@@ -54,8 +67,12 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
   ]);
   const [activeSubtaskIdx, setActiveSubtaskIdx] = useState(0);
 
+  // 1. Khôi phục dữ liệu từ initialData (nếu sửa) hoặc từ localStorage Draft (nếu tạo mới)
   useEffect(() => {
+    if (!isOpen) return;
+
     if (initialData) {
+      setHasDraft(false);
       setFormData({
         title: initialData.title || "",
         difficulty: initialData.difficulty || "Easy",
@@ -73,6 +90,7 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
           ? String(initialData.memory_limit)
           : "256",
         statement: initialData.statement || initialData.description || "",
+        imageDescription: initialData.imageDescription || initialData.image_description || "",
         inputFormat: Array.isArray(initialData.inputFormat)
           ? initialData.inputFormat.join("\n")
           : initialData.inputFormat || "",
@@ -155,45 +173,148 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
         ]);
       }
     } else {
-      setFormData({
-        title: "",
-        difficulty: "Easy",
-        topic: "Array & Hashing",
-        points: 500,
-        status: "Active",
-        timeLimit: "2.0",
-        memoryLimit: "256",
-        statement: "",
-        inputFormat: "",
-        outputFormat: "",
-        constraints: "",
-      });
-      setExamples([{ input: "", output: "", explanation: "" }]);
-      setSubtasks([
-        {
-          id: 1,
-          name: "Subtask 1",
-          points: 200,
-          constraints: "N <= 100",
-          testCases: [
-            { id: 1, input: "", expected: "", points: 100, isHidden: false },
-            { id: 2, input: "", expected: "", points: 100, isHidden: true },
-          ],
-        },
-        {
-          id: 2,
-          name: "Subtask 2",
-          points: 300,
-          constraints: "N <= 10^5",
-          testCases: [
-            { id: 3, input: "", expected: "", points: 300, isHidden: true },
-          ],
-        },
-      ]);
+      // Đang tạo bài mới -> Thử nạp từ bản nháp đã lưu
+      let draftRestored = false;
+      try {
+        const savedDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
+        if (savedDraft) {
+          const parsed = JSON.parse(savedDraft);
+          if (parsed && parsed.formData) {
+            setFormData(parsed.formData);
+            if (parsed.examples && parsed.examples.length > 0) {
+              setExamples(parsed.examples);
+            }
+            if (parsed.subtasks && parsed.subtasks.length > 0) {
+              setSubtasks(parsed.subtasks);
+            }
+            setHasDraft(true);
+            draftRestored = true;
+          }
+        }
+      } catch (err) {
+        console.warn("[AdminProblemModal] Lỗi đọc draft từ localStorage:", err);
+      }
+
+      if (!draftRestored) {
+        setFormData({
+          title: "",
+          difficulty: "Easy",
+          topic: "Array & Hashing",
+          points: 500,
+          status: "Active",
+          timeLimit: "2.0",
+          memoryLimit: "256",
+          statement: "",
+          imageDescription: "",
+          inputFormat: "",
+          outputFormat: "",
+          constraints: "",
+        });
+        setExamples([{ input: "", output: "", explanation: "" }]);
+        setSubtasks([
+          {
+            id: 1,
+            name: "Subtask 1",
+            points: 200,
+            constraints: "N <= 100",
+            testCases: [
+              { id: 1, input: "", expected: "", points: 100, isHidden: false },
+              { id: 2, input: "", expected: "", points: 100, isHidden: true },
+            ],
+          },
+          {
+            id: 2,
+            name: "Subtask 2",
+            points: 300,
+            constraints: "N <= 10^5",
+            testCases: [
+              { id: 3, input: "", expected: "", points: 300, isHidden: true },
+            ],
+          },
+        ]);
+        setHasDraft(false);
+      }
     }
     setActiveSubtaskIdx(0);
     setCurrentStep(1);
   }, [initialData, isOpen]);
+
+  // 2. Tự động lưu bản nháp vào localStorage mỗi khi người dùng nhập dữ liệu
+  useEffect(() => {
+    if (!isOpen || initialData) return;
+
+    const hasContent = Boolean(
+      (formData.title && formData.title.trim()) ||
+      (formData.statement && formData.statement.trim()) ||
+      (formData.imageDescription && formData.imageDescription.trim()) ||
+      (formData.inputFormat && formData.inputFormat.trim()) ||
+      (formData.outputFormat && formData.outputFormat.trim()) ||
+      (formData.constraints && formData.constraints.trim()) ||
+      examples.some((e) => e.input || e.output || e.explanation) ||
+      subtasks.some((s) => s.testCases && s.testCases.some((t) => t.input || t.expected))
+    );
+
+    if (hasContent) {
+      try {
+        const payload = {
+          formData,
+          examples,
+          subtasks,
+          savedAt: Date.now(),
+        };
+        localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(payload));
+        setHasDraft(true);
+      } catch (err) {
+        console.warn("[AdminProblemModal] Lỗi auto-save draft:", err);
+      }
+    }
+  }, [formData, examples, subtasks, isOpen, initialData]);
+
+  // Xóa bản nháp và làm mới toàn bộ form
+  const handleClearDraft = () => {
+    try {
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+    } catch (err) {}
+
+    setFormData({
+      title: "",
+      difficulty: "Easy",
+      topic: "Array & Hashing",
+      points: 500,
+      status: "Active",
+      timeLimit: "2.0",
+      memoryLimit: "256",
+      statement: "",
+      imageDescription: "",
+      inputFormat: "",
+      outputFormat: "",
+      constraints: "",
+    });
+    setExamples([{ input: "", output: "", explanation: "" }]);
+    setSubtasks([
+      {
+        id: 1,
+        name: "Subtask 1",
+        points: 200,
+        constraints: "N <= 100",
+        testCases: [
+          { id: 1, input: "", expected: "", points: 100, isHidden: false },
+          { id: 2, input: "", expected: "", points: 100, isHidden: true },
+        ],
+      },
+      {
+        id: 2,
+        name: "Subtask 2",
+        points: 300,
+        constraints: "N <= 10^5",
+        testCases: [
+          { id: 3, input: "", expected: "", points: 300, isHidden: true },
+        ],
+      },
+    ]);
+    setHasDraft(false);
+    toast.info("Đã xóa bản nháp và làm mới form điền!", "Làm mới form");
+  };
 
   if (!isOpen) return null;
 
@@ -253,23 +374,50 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
 
   const handleSubtaskFieldChange = (sIdx, field, value) => {
     setSubtasks((prev) =>
-      prev.map((st, idx) => (idx === sIdx ? { ...st, [field]: value } : st))
+      prev.map((st, idx) => {
+        if (idx !== sIdx) return st;
+        if (field === "points") {
+          const newPts = Math.max(0, Number(value) || 0);
+          const tcCount = st.testCases?.length || 0;
+          if (tcCount > 0) {
+            const distributed = distributePoints(newPts, tcCount);
+            const updatedTests = st.testCases.map((tc, tcIdx) => ({
+              ...tc,
+              points: distributed[tcIdx] ?? 0,
+            }));
+            return { ...st, points: value, testCases: updatedTests };
+          }
+          return { ...st, points: value };
+        }
+        return { ...st, [field]: value };
+      })
     );
   };
 
-  // Test Case in Subtask Handlers
+  // Test Case in Subtask Handlers - Tự động chia lại điểm theo thời gian thực
   const handleAddTestCaseToSubtask = (sIdx) => {
     setSubtasks((prev) =>
       prev.map((st, idx) => {
         if (idx !== sIdx) return st;
-        const newTc = {
-          id: Date.now(),
-          input: "",
-          expected: "",
-          points: Math.round(st.points / (st.testCases.length + 1)) || 50,
-          isHidden: false,
-        };
-        return { ...st, testCases: [...st.testCases, newTc] };
+        const currentTests = st.testCases || [];
+        const newCount = currentTests.length + 1;
+        const totalPts = Math.max(0, Number(st.points) || 0);
+        const distributed = distributePoints(totalPts, newCount);
+
+        const updatedTests = [
+          ...currentTests.map((tc, tcIdx) => ({
+            ...tc,
+            points: distributed[tcIdx] ?? 0,
+          })),
+          {
+            id: Date.now(),
+            input: "",
+            expected: "",
+            points: distributed[newCount - 1] ?? 0,
+            isHidden: false,
+          },
+        ];
+        return { ...st, testCases: updatedTests };
       })
     );
   };
@@ -282,10 +430,14 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
           toast.warning("Mỗi Subtask phải có ít nhất 1 Test Case!", "Thông báo");
           return st;
         }
-        return {
-          ...st,
-          testCases: st.testCases.filter((_, tIdx) => tIdx !== tcIdx),
-        };
+        const remaining = st.testCases.filter((_, tIdx) => tIdx !== tcIdx);
+        const totalPts = Math.max(0, Number(st.points) || 0);
+        const distributed = distributePoints(totalPts, remaining.length);
+        const updatedTests = remaining.map((tc, rIdx) => ({
+          ...tc,
+          points: distributed[rIdx] ?? 0,
+        }));
+        return { ...st, testCases: updatedTests };
       })
     );
   };
@@ -294,14 +446,60 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
     setSubtasks((prev) =>
       prev.map((st, idx) => {
         if (idx !== sIdx) return st;
-        return {
-          ...st,
-          testCases: st.testCases.map((tc, tIdx) =>
-            tIdx === tcIdx ? { ...tc, [field]: value } : tc
-          ),
-        };
+        const updatedTests = st.testCases.map((tc, tIdx) =>
+          tIdx === tcIdx ? { ...tc, [field]: value } : tc
+        );
+        if (field === "points") {
+          // Tính lại tổng điểm subtask theo thời gian thực khi sửa điểm từng test
+          const sumTestPoints = updatedTests.reduce(
+            (sum, tc) => sum + (Number(tc.points) || 0),
+            0
+          );
+          return { ...st, points: sumTestPoints, testCases: updatedTests };
+        }
+        return { ...st, testCases: updatedTests };
       })
     );
+  };
+
+  // Nút hỗ trợ: Tự động chia đều điểm test trong 1 Subtask
+  const handleAutoDistributeTestPoints = (sIdx) => {
+    setSubtasks((prev) =>
+      prev.map((st, idx) => {
+        if (idx !== sIdx) return st;
+        const count = st.testCases?.length || 0;
+        if (count === 0) return st;
+        const distributed = distributePoints(Number(st.points) || 0, count);
+        const updatedTests = st.testCases.map((tc, tcIdx) => ({
+          ...tc,
+          points: distributed[tcIdx] ?? 0,
+        }));
+        return { ...st, testCases: updatedTests };
+      })
+    );
+    toast.success("Đã tự động chia đều điểm cho các Test Cases trong Subtask!", "Chia điểm thành công");
+  };
+
+  // Nút hỗ trợ: Tự động chia đều điểm bài tập cho tất cả các Subtasks
+  const handleAutoDistributeAllSubtasks = () => {
+    const sCount = subtasks.length;
+    if (sCount === 0) return;
+    const maxPts = Number(formData.points) || 500;
+    const distributedSubtaskPts = distributePoints(maxPts, sCount);
+
+    setSubtasks((prev) =>
+      prev.map((st, sIdx) => {
+        const stPts = distributedSubtaskPts[sIdx] ?? 0;
+        const tcCount = st.testCases?.length || 0;
+        const distributedTc = distributePoints(stPts, tcCount);
+        const updatedTests = st.testCases.map((tc, tcIdx) => ({
+          ...tc,
+          points: distributedTc[tcIdx] ?? 0,
+        }));
+        return { ...st, points: stPts, testCases: updatedTests };
+      })
+    );
+    toast.success("Đã chia đều điểm bài tập cho toàn bộ các Subtasks!", "Chia điểm thành công");
   };
 
   // Validate Step 1
@@ -423,6 +621,13 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
       testCases: flatTestCases,
     };
 
+    if (!initialData) {
+      try {
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+      } catch (err) {}
+      setHasDraft(false);
+    }
+
     toast.success(
       initialData ? "Đã lưu thay đổi bài tập & Subtasks thành công!" : "Tạo bài tập và cấu hình Subtasks thành công!",
       "Thành công"
@@ -462,6 +667,31 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
             <Icon name="X" size={18} />
           </button>
         </div>
+
+        {/* Auto-save Draft Bar (Chỉ hiển thị khi đang tạo bài mới) */}
+        {!initialData && (
+          <div className={styles.draft_bar}>
+            <div className={styles.draft_info}>
+              <Icon name="Save" size={14} />
+              <span>
+                {hasDraft
+                  ? "Tự động lưu bản nháp: Dữ liệu vẫn được giữ nguyên khi bạn thoát ra ngoài"
+                  : "Hệ thống tự động lưu bản nháp khi bạn điền form"}
+              </span>
+            </div>
+            {hasDraft && (
+              <button
+                type="button"
+                className={styles.draft_clear_btn}
+                onClick={handleClearDraft}
+                title="Xóa dữ liệu nháp và làm mới form"
+              >
+                <Icon name="Trash2" size={12} />
+                <span>Xóa bản nháp</span>
+              </button>
+            )}
+          </div>
+        )}
 
         {/* STEP 1: PROBLEM DETAILS & EXAMPLES */}
         {currentStep === 1 && (
@@ -723,15 +953,29 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
                   Tổng: {totalSubtaskPoints} / {maxProblemPoints} pt
                 </span>
               </div>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                leftIcon="Plus"
-                onClick={handleAddSubtask}
-              >
-                Thêm Subtask Mới
-              </Button>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                {subtasks.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    leftIcon="Sliders"
+                    onClick={handleAutoDistributeAllSubtasks}
+                    title="Tự động chia đều tổng điểm bài tập cho các Subtasks"
+                  >
+                    Chia đều điểm Subtasks
+                  </Button>
+                )}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  leftIcon="Plus"
+                  onClick={handleAddSubtask}
+                >
+                  Thêm Subtask Mới
+                </Button>
+              </div>
             </div>
 
             {/* Over Points Warning Banner */}
@@ -826,15 +1070,29 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
                       Test Cases ({subtasks[activeSubtaskIdx].testCases?.length || 0} tests)
                     </span>
                   </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    leftIcon="Plus"
-                    onClick={() => handleAddTestCaseToSubtask(activeSubtaskIdx)}
-                  >
-                    Thêm Test Case
-                  </Button>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    {subtasks[activeSubtaskIdx].testCases?.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        leftIcon="RefreshCw"
+                        onClick={() => handleAutoDistributeTestPoints(activeSubtaskIdx)}
+                        title="Tự động chia đều điểm Subtask cho các test cases"
+                      >
+                        Chia đều điểm Test
+                      </Button>
+                    )}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      leftIcon="Plus"
+                      onClick={() => handleAddTestCaseToSubtask(activeSubtaskIdx)}
+                    >
+                      Thêm Test Case
+                    </Button>
+                  </div>
                 </div>
 
                 <div className={styles.examples_list}>
@@ -911,7 +1169,7 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
                               type="number"
                               className={styles.tc_points_input}
                               placeholder="100"
-                              value={tc.points || 100}
+                              value={tc.points !== undefined && tc.points !== null ? tc.points : 0}
                               onChange={(e) => handleTestCaseChangeInSubtask(activeSubtaskIdx, tcIdx, "points", Number(e.target.value))}
                             />
                             <span className={styles.tc_points_label}>pt</span>

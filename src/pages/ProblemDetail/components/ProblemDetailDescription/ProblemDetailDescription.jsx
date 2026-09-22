@@ -167,7 +167,28 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
 
             {/* Metadata Badges Row */}
             <div className={styles.meta_row}>
-              <span className={styles.level_badge}>{problem.level || problem.difficultyLabel || "Dễ"}</span>
+              {(() => {
+                const diffVal = String(problem.difficulty || problem.level || problem.difficultyLabel || "").toLowerCase();
+                let diffText = problem.difficultyLabel || problem.level || "Dễ";
+                let diffClass = styles["level_badge--easy"];
+
+                if (diffVal === "hard" || diffVal === "khó") {
+                  diffText = "Khó";
+                  diffClass = styles["level_badge--hard"];
+                } else if (diffVal === "medium" || diffVal === "trung bình") {
+                  diffText = "Trung bình";
+                  diffClass = styles["level_badge--medium"];
+                } else {
+                  diffText = "Dễ";
+                  diffClass = styles["level_badge--easy"];
+                }
+
+                return (
+                  <span className={`${styles.level_badge} ${diffClass}`}>
+                    {diffText}
+                  </span>
+                );
+              })()}
 
               {/* Time Limit */}
               <span className={styles.limit_badge} title="Giới hạn thời gian chạy">
@@ -198,6 +219,20 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
 
             {/* 1. Problem Statement (Mô tả bài toán) */}
             <div className={styles.statement}>{problem.statement || problem.description}</div>
+
+            {/* Illustration Image (Nếu bài toán có hình ảnh minh họa) */}
+            {(problem.imageDescription || problem.image_description) && (
+              <div className={styles.image_wrapper}>
+                <img
+                  src={problem.imageDescription || problem.image_description}
+                  alt="Minh họa bài toán"
+                  className={styles.illustration_img}
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              </div>
+            )}
 
             {problem.statementNotes &&
               problem.statementNotes.map((note, idx) => (

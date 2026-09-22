@@ -43,5 +43,6 @@ COPY . /app/
 # Mở cổng 8000
 EXPOSE 8000
 
-# Chạy Django server lắng nghe tất cả các IP
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+# Chạy migrate và khởi động Django server lắng nghe tất cả các IP
+CMD ["sh", "-c", "python3 manage.py migrate --noinput && python3 manage.py runserver 0.0.0.0:8000"]
+

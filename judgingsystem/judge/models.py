@@ -2,9 +2,8 @@ from django.db import models
 
 
 class Problem(models.Model):
-    code = models.CharField(max_length=20, blank=True, default="")
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
+    image_description = models.TextField(blank=True, default="")
 
     statement = models.TextField()
 
@@ -47,7 +46,7 @@ class Problem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"#{self.code or self.id} {self.title}"
+        return f"#{self.id} {self.title}"
 
 
 class TestCase(models.Model):
