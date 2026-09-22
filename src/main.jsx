@@ -31,7 +31,6 @@ const Leaderboard = lazy(() => import("~/pages/Leaderboard/Leaderboard"));
 const Course = lazy(() => import("~/pages/Course/Course"));
 const CourseInfo = lazy(() => import("~/pages/CourseInfo/CourseInfo"));
 const CourseDetailSubpage = lazy(() => import("~/pages/CourseDetail/CourseDetail"));
-const Problem = lazy(() => import("~/pages/Problem/Problem"));
 const ProblemList = lazy(() => import("~/pages/ProblemList/ProblemList"));
 const ProblemDetail = lazy(() => import("~/pages/ProblemDetail/ProblemDetail"));
 const ProblemResult = lazy(() => import("~/pages/ProblemResult/ProblemResult"));
@@ -70,7 +69,7 @@ const NotFound = lazy(() => import("~/pages/NotFound/NotFound"));
 if (typeof window !== "undefined") {
   const preloadPrimaryRoutes = () => {
     import("~/pages/Course/Course");
-    import("~/pages/Problem/Problem");
+    import("~/pages/ProblemList/ProblemList");
     import("~/pages/Contest/Contest");
     import("~/pages/Badge/Badge");
     import("~/pages/Roadmap/Roadmap");
@@ -113,7 +112,7 @@ createRoot(document.getElementById("root")).render(
                   <Route path="/course/:id/info" element={<CourseInfo />} />
                   <Route path="/course/detail" element={<CourseDetailSubpage />} />
                   <Route path="/course/:id" element={<CourseDetailSubpage />} />
-                  <Route path="/problem" element={<Problem />} />
+                  <Route path="/problem" element={<ProblemList />} />
                   <Route path="/problem/list" element={<ProblemList />} />
                   <Route path="/problem/:id" element={<ProblemDetail />} />
                   <Route path="/problem/:id/result" element={<ProblemResult />} />

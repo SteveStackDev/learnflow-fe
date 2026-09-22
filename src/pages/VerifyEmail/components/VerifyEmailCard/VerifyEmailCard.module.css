@@ -8,7 +8,6 @@
   text-align: center;
   box-shadow: var(--theme-shadow);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   display: flex;
   flex-direction: column;
   align-items: center;

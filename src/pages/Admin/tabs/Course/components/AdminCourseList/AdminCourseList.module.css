@@ -294,11 +294,9 @@
 .course_sub {
   font-size: 0.775rem;
   color: var(--theme-text-secondary, #64748b);
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cat_text,

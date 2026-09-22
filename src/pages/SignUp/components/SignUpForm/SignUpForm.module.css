@@ -74,8 +74,8 @@
 
 .signup-form__title--highlight {
   background: linear-gradient(135deg, #0950c3 0%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
   display: inline-block;
   white-space: nowrap;
 }

@@ -69,7 +69,7 @@
   list-style: none;
 }
 
-.contest-faq__accordion-summary::-webkit-details-marker {
+.contest-faq__accordion-summary::marker {
   display: none;
 }
 
