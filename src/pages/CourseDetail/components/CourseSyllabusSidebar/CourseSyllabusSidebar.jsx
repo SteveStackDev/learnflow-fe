@@ -1,22 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./CourseSyllabusSidebar.module.css";
 
+const formatDuration = (ms) => {
+  if (!ms || isNaN(ms)) return "00:00";
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  }
+  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+};
+
 export function CourseSyllabusSidebar({
-  courseData,
+  course = {},
+  curriculum = [],
   activeLessonId,
   onSelectLesson,
+  progression = 0,
 }) {
   const { toast } = useToast();
 
-  const [openChapters, setOpenChapters] = useState(() => {
-    const map = {};
-    courseData.chapters.forEach((ch) => {
-      map[ch.id] = ch.defaultOpen ?? true;
-    });
-    return map;
-  });
+  // Khởi tạo state đóng/mở chapter
+  const [openChapters, setOpenChapters] = useState({});
+
+  // Cập nhật state openChapters: Mặc định mở chapter đầu tiên (index === 0)
+  useEffect(() => {
+    if (curriculum && curriculum.length > 0) {
+      const map = {};
+      curriculum.forEach((ch, index) => {
+        const id = ch.chapterId || ch.id;
+        map[id] = index === 0;
+      });
+      setOpenChapters(map);
+    }
+  }, [curriculum]);
 
   const toggleChapter = (chId) => {
     setOpenChapters((prev) => ({
@@ -24,6 +46,18 @@ export function CourseSyllabusSidebar({
       [chId]: !prev[chId],
     }));
   };
+
+  // --- TÍNH TOÁN SỐ BÀI HỌC DỰA TRÊN CURRICULUM THỰC TẾ ---
+  const allLessons = curriculum.flatMap((chapter) => chapter.lessons || []);
+  const totalLessons = allLessons.length || course?.stats?.lessons || 0;
+
+  // Đếm số bài có status là completed hoặc isCompleted = true
+  const completedLessons = allLessons.filter(
+    (les) => les.isCompleted || les.status === "completed",
+  ).length;
+
+  // Lấy giá trị % progression truyền từ DB vào (làm tròn số nguyên)
+  const percent = Math.round(progression);
 
   return (
     <aside className={styles.sidebar}>
@@ -34,68 +68,68 @@ export function CourseSyllabusSidebar({
             <Icon name="Book" size={16} />
           </div>
           <div className={styles.title_wrap}>
-            <h3 className={styles.course_title}>{courseData.title}</h3>
-            <span className={styles.chapter_subtitle}>
-              {courseData.currentChapterTitle}
-            </span>
+            <h3 className={styles.course_title}>{course.title}</h3>
+            {course.currentChapterTitle && (
+              <span className={styles.chapter_subtitle}>{course.currentChapterTitle}</span>
+            )}
           </div>
         </div>
 
         <div className={styles.progress_stats_row}>
-          <span className={styles.percent_text}>
-            {courseData.progressPercent}% hoàn thành
-          </span>
+          <span className={styles.percent_text}>{percent}% hoàn thành</span>
           <span className={styles.count_text}>
-            {courseData.completedLessons}/{courseData.totalLessons} bài
+            {completedLessons}/{totalLessons} bài
           </span>
         </div>
 
+        {/* Thanh Progress Bar chạy animation theo % */}
         <div className={styles.progress_track}>
           <div
             className={styles.progress_fill}
-            style={{ width: `${courseData.progressPercent}%` }}
+            style={{ width: `${Math.min(100, Math.max(0, percent))}%` }}
           />
         </div>
       </div>
 
-      {/* 2. Accordion Chapters List */}
+      {/* 2. Accordion Chapters List (Giữ nguyên 100% gốc) */}
       <div className={styles.accordion_list}>
-        {courseData.chapters.map((chapter) => {
-          const isOpen = openChapters[chapter.id];
+        {curriculum.map((chapter) => {
+          const chId = chapter.chapterId || chapter.id;
+          const isOpen = !!openChapters[chId];
+          const lessons = chapter.lessons || [];
+          const chapterTotalMs = lessons.reduce((acc, les) => acc + (les.duration || 0), 0);
 
           return (
-            <div key={chapter.id} className={styles.chapter_item}>
+            <div key={chId} className={styles.chapter_item}>
               <button
                 type="button"
-                onClick={() => toggleChapter(chapter.id)}
+                onClick={() => toggleChapter(chId)}
                 className={styles.chapter_header}
               >
                 <div className={styles.chapter_header_left}>
                   <h4 className={styles.chapter_title}>{chapter.title}</h4>
                   <span className={styles.chapter_meta}>
-                    {chapter.lessonCount} bài học • {chapter.totalDuration}
+                    {lessons.length} bài học • {formatDuration(chapterTotalMs)}
                   </span>
                 </div>
 
                 <span className={styles.chevron_icon}>
-                  <Icon
-                    name={isOpen ? "ChevronUp" : "ChevronDown"}
-                    size={16}
-                  />
+                  <Icon name={isOpen ? "ChevronUp" : "ChevronDown"} size={16} />
                 </span>
               </button>
 
               {/* Lessons Sub-list */}
               {isOpen && (
                 <div className={styles.lessons_list}>
-                  {chapter.lessons.map((les) => {
-                    const isActive = les.id === activeLessonId;
-                    const isCompleted = les.status === "completed";
-                    const isLocked = les.status === "locked";
+                  {lessons.map((les) => {
+                    const lessonId = les.lessonId || les.id;
+                    const isActive = lessonId === activeLessonId;
+                    const isCompleted = les.isCompleted || les.status === "completed";
+                    const isLocked = les.isLocked || les.status === "locked";
 
                     return (
                       <div
-                        key={les.id}
+                        key={lessonId}
                         onClick={() => {
                           if (isLocked) {
                             toast.warning(
@@ -104,10 +138,11 @@ export function CourseSyllabusSidebar({
                             );
                             return;
                           }
-                          onSelectLesson(les.id);
+                          onSelectLesson(lessonId);
                         }}
-                        className={`${styles.lesson_row} ${isActive ? styles["lesson_row--active"] : ""
-                          } ${isLocked ? styles["lesson_row--locked"] : ""}`}
+                        className={`${styles.lesson_row} ${
+                          isActive ? styles["lesson_row--active"] : ""
+                        } ${isLocked ? styles["lesson_row--locked"] : ""}`}
                       >
                         <div className={styles.lesson_status_icon}>
                           {isCompleted ? (
@@ -123,7 +158,9 @@ export function CourseSyllabusSidebar({
 
                         <div className={styles.lesson_info}>
                           <span className={styles.lesson_title}>{les.title}</span>
-                          <span className={styles.lesson_duration}>{les.duration}</span>
+                          <span className={styles.lesson_duration}>
+                            {formatDuration(les.duration)}
+                          </span>
                         </div>
                       </div>
                     );

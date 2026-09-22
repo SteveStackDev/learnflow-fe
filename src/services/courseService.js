@@ -75,6 +75,51 @@ export const courseService = {
       return courseData?.items || [];
     }
   },
-};
+  // 4. Lấy tiến độ
+  getUserProgression: async (courseId) => {
+    try {
+      const data = await api.get("/user/course/progression/" + courseId);
+      return data;
+    } catch (error) {
+      console.error("Lỗi khi getUserProgression:", error);
+      return { progression: 0, curriculum: [], lastAccessedLessonId: null };
+    }
+  },
 
+  // 5. Save Course
+  saveCourse: async (courseId) => {
+    try {
+      const data = await api.post("/user/course/save", { courseId });
+      return data;
+    } catch (error) {
+      console.error("Lỗi khi saveCourse:", error);
+      throw error;
+    }
+  },
+
+  // 6. Update Progression
+  updateProgression: async (lessonId) => {
+    try {
+      const data = await api.post("/user/course/update-progression", { lessonId });
+      return data;
+    } catch (error) {
+      console.error("Lỗi khi updateProgression:", error);
+      throw error;
+    }
+  },
+
+  saveCourseNote: async ({ courseId, lessonId, note }) => {
+    const response = await api.post("/user/course/note/save", {
+      courseId,
+      lessonId,
+      note,
+    });
+    return response.data;
+  },
+
+  deleteCourseNote: async ({ courseId, lessonId, note }) => {
+    const response = await api.post("/user/course/note/delete", { courseId, lessonId, note });
+    return response.data;
+  },
+};
 export default courseService;

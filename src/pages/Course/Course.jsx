@@ -74,17 +74,11 @@ function Course() {
 
         let matchesCategory = true;
         if (selectedTab === "Frontend") {
-          matchesCategory =
-            item.category?.toLowerCase() === "frontend" ||
-            /react|javascript|html|css|vue|angular/i.test(title);
+          matchesCategory = item.category?.toLowerCase() === "frontend";
         } else if (selectedTab === "Backend") {
-          matchesCategory =
-            item.category?.toLowerCase() === "backend" ||
-            /node|express|terminal|ubuntu|devops|server|sql|docker/i.test(title);
+          matchesCategory = item.category?.toLowerCase() === "backend";
         } else if (selectedTab === "Competitive Programming") {
-          matchesCategory =
-            item.category?.toLowerCase() === "competitive programming" ||
-            /thuật toán|giải thuật|cấu trúc dữ liệu|algorithm/i.test(title);
+          matchesCategory = item.category?.toLowerCase() === "competitive programming";
         }
 
         return matchesSearch && matchesCategory;

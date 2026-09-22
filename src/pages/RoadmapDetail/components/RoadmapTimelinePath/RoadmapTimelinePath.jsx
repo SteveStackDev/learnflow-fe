@@ -5,7 +5,7 @@ import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./RoadmapTimelinePath.module.css";
 
-export function RoadmapTimelinePath({ timelinePath }) {
+export function RoadmapTimelinePath({ roadmap }) {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -19,10 +19,10 @@ export function RoadmapTimelinePath({ timelinePath }) {
       <h2 className={styles.section_title}>Lộ trình học tập chi tiết</h2>
 
       <div className={styles.timeline_track}>
-        {timelinePath.map((step, index) => {
+        {roadmap.map((step, index) => {
           const isCompleted = step.status === "completed";
-          const isInProgress = step.status === "in-progress";
-          const isLocked = step.status === "locked";
+          const isInProgress = step.status === "in_progress";
+          const isIncompleted = step.status === "incompleted";
 
           return (
             <div key={step.id} className={styles.timeline_row}>
@@ -33,16 +33,16 @@ export function RoadmapTimelinePath({ timelinePath }) {
                     isCompleted
                       ? styles["status_node--completed"]
                       : isInProgress
-                      ? styles["status_node--active"]
-                      : styles["status_node--locked"]
+                        ? styles["status_node--active"]
+                        : styles["status_node--locked"]
                   }`}
                 >
                   {isCompleted && <Icon name="CheckCircle" size={20} />}
                   {isInProgress && <Icon name="Play" size={16} />}
-                  {isLocked && <Icon name="Lock" size={18} />}
+                  {isIncompleted && <Icon name="Lock" size={18} />}
                 </div>
 
-                {index < timelinePath.length - 1 && (
+                {index < roadmap.length - 1 && (
                   <div
                     className={`${styles.vertical_line} ${
                       isCompleted ? styles["vertical_line--completed"] : ""
@@ -55,10 +55,10 @@ export function RoadmapTimelinePath({ timelinePath }) {
               <Card
                 className={`${styles.step_card} ${
                   isInProgress ? styles["step_card--active"] : ""
-                } ${isLocked ? styles["step_card--locked"] : ""}`}
+                } ${isIncompleted ? styles["step_card--locked"] : ""}`}
               >
                 <div className={styles.step_header}>
-                  <h3 className={styles.step_title}>{step.title}</h3>
+                  <h3 className={styles.step_title}>{step.stepName}</h3>
                   <Badge
                     variant={isCompleted ? "success" : isInProgress ? "warning" : "neutral"}
                     size="sm"
@@ -67,7 +67,7 @@ export function RoadmapTimelinePath({ timelinePath }) {
                   </Badge>
                 </div>
 
-                <p className={styles.step_desc}>{step.description}</p>
+                <p className={styles.step_desc}>{step.stepDescription}</p>
 
                 {/* Skill Chips */}
                 {step.tags && step.tags.length > 0 && (
@@ -83,10 +83,7 @@ export function RoadmapTimelinePath({ timelinePath }) {
                 {/* Action button if in-progress */}
                 {isInProgress && (
                   <div className={styles.action_row}>
-                    <Button
-                      variant="contained"
-                      onClick={() => handleContinue(step.title)}
-                    >
+                    <Button variant="contained" onClick={() => handleContinue(step.stepName)}>
                       {step.actionLabel || "Tiếp tục học mốc này"}
                     </Button>
                   </div>

@@ -77,6 +77,7 @@
   overflow: hidden;
 }
 
+
 .progress_fill {
   height: 100%;
   background: linear-gradient(90deg, #0950c3 0%, #2563eb 100%);

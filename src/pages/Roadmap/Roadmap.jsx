@@ -15,6 +15,7 @@ import RoadmapFaq from "./components/RoadmapFaq/RoadmapFaq";
 
 // Hooks
 import useScrollReveal from "~/hooks/useScrollReveal";
+import roadmapService from "~/services/roadmapService";
 
 const TABS = ["Phổ biến", "Mới nhất", "Nhiều học viên nhất"];
 
@@ -35,6 +36,17 @@ function Roadmap() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useScrollReveal();
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await roadmapService.getAllRoadmaps();
+      if (data && data.length > 0) {
+        setRoadmapsList(data);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const handleTabChange = (index) => {
     setActiveTab(index);

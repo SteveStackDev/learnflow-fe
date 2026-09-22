@@ -1,8 +1,19 @@
 import React from "react";
+import ReactPlayer from "react-player";
 import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
-import heroImgUrl from "~/assets/images/Home/hero.webp";
 import styles from "./CourseInfoHero.module.css";
+
+const getEmbedUrl = (url) => {
+  if (!url) return "";
+  // Tách ID từ link dạng https://youtu.be/0SJE9dYdpps hoặc link watch?v=...
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+
+  return match && match[2].length === 11
+    ? `https://www.youtube-nocookie.com/embed/${match[2]}`
+    : url;
+};
 
 export default function CourseInfoHero({ course, onPlayPreview }) {
   const navigate = useNavigate();
@@ -46,16 +57,19 @@ export default function CourseInfoHero({ course, onPlayPreview }) {
 
       {/* Video Preview Banner */}
       <div className={styles.video_preview_wrap} onClick={onPlayPreview}>
-        <img
-          src={heroImgUrl}
-          alt={`Xem trước khóa học ${course.title}`}
-          className={styles.preview_img}
+        <ReactPlayer
+          src={getEmbedUrl(course.promoVideoUrl)}
+          width="100%"
+          height="100%"
+          controls={true}
+          config={{
+            youtube: {
+              playerVars: {
+                host: "https://www.youtube-nocookie.com",
+              },
+            },
+          }}
         />
-        <div className={styles.play_overlay}>
-          <div className={styles.play_btn} title="Xem video giới thiệu">
-            <Icon name="Play" size={28} />
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "~/context/AuthContext";
 import { Link } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
@@ -7,6 +8,7 @@ import styles from "./Footer.module.css";
 function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const { toast } = useToast();
+  const { user } = useContext(AuthContext);
 
   const handleComingSoon = (featureName) => {
     toast.info(
@@ -31,32 +33,36 @@ function Footer() {
   return (
     <footer className={styles.footer}>
       {/* Floating CTA Banner */}
-      <div className={`${styles.footer__container} ${styles["footer__container--cta"]}`}>
-        <div className={styles.footer__cta}>
-          <div className={styles["footer__cta-content"]}>
-            <h3 className={styles["footer__cta-title"]}>
-              Sẵn sàng bắt đầu hành trình học lập trình cùng FySet?
-            </h3>
-            <p className={styles["footer__cta-description"]}>
-              Hàng nghìn bài tập, lộ trình học rõ ràng và cộng đồng luôn đồng hành cùng bạn.
-            </p>
-          </div>
-          <div className={styles["footer__cta-actions"]}>
-            <Link
-              to="/signup"
-              className={`${styles.footer__btn} ${styles["footer__btn--primary"]}`}
-            >
-              Đăng ký miễn phí
-            </Link>
-            <Link
-              to="/roadmap"
-              className={`${styles.footer__btn} ${styles["footer__btn--secondary"]}`}
-            >
-              Khám phá lộ trình
-            </Link>
+      {user ? (
+        <div className={`${styles.footer__container} ${styles["footer__container--cta"]}`}></div>
+      ) : (
+        <div className={`${styles.footer__container} ${styles["footer__container--cta"]}`}>
+          <div className={styles.footer__cta}>
+            <div className={styles["footer__cta-content"]}>
+              <h3 className={styles["footer__cta-title"]}>
+                Sẵn sàng bắt đầu hành trình học lập trình cùng FySet?
+              </h3>
+              <p className={styles["footer__cta-description"]}>
+                Hàng nghìn bài tập, lộ trình học rõ ràng và cộng đồng luôn đồng hành cùng bạn.
+              </p>
+            </div>
+            <div className={styles["footer__cta-actions"]}>
+              <Link
+                to="/signup"
+                className={`${styles.footer__btn} ${styles["footer__btn--primary"]}`}
+              >
+                Đăng ký miễn phí
+              </Link>
+              <Link
+                to="/roadmap"
+                className={`${styles.footer__btn} ${styles["footer__btn--secondary"]}`}
+              >
+                Khám phá lộ trình
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main Footer Links */}
       <div className={`${styles.footer__container} ${styles["footer__container--main"]}`}>

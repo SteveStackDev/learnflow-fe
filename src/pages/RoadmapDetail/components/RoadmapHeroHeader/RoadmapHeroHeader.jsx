@@ -4,6 +4,7 @@ import { Button, Badge, Card } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./RoadmapHeroHeader.module.css";
+import roadmapService from "~/services/roadmapService";
 
 export function RoadmapHeroHeader({ roadmapData }) {
   const navigate = useNavigate();
@@ -11,13 +12,13 @@ export function RoadmapHeroHeader({ roadmapData }) {
   const [isSaved, setIsSaved] = useState(false);
 
   // Logic kiểm tra người dùng đã học lộ trình này chưa
-  const hasStarted = roadmapData.timelinePath?.some(
-    (step) => step.status === "completed" || step.status === "in-progress",
+  const hasStarted = roadmapData.roadmap?.some(
+    (step) => step.status === "completed" || step.status === "in_progress",
   );
 
   const handleStartOrContinue = () => {
     if (hasStarted) {
-      const activeStep = roadmapData.timelinePath?.find((s) => s.status === "in-progress");
+      const activeStep = roadmapData.roadmap?.find((s) => s.status === "in_progress");
       toast.success(
         `Đang chuyển sang bài học thuộc mốc "${activeStep ? activeStep.title : "Lộ trình"}"...`,
         "Tiếp tục học tập",
@@ -31,11 +32,15 @@ export function RoadmapHeroHeader({ roadmapData }) {
     navigate("/course/detail");
   };
 
-  const handleToggleSave = () => {
+  const handleToggleSave = async () => {
     const nextState = !isSaved;
+    await roadmapService.saveRoadmap(roadmapData._id);
     setIsSaved(nextState);
     if (nextState) {
-      toast.success(`Đã lưu lộ trình "${roadmapData.title}" vào danh sách yêu thích!`, "Đã lưu lộ trình");
+      toast.success(
+        `Đã lưu lộ trình "${roadmapData.title}" vào danh sách yêu thích!`,
+        "Đã lưu lộ trình",
+      );
     } else {
       toast.info(`Đã bỏ lưu lộ trình "${roadmapData.title}"`, "Bỏ lưu lộ trình");
     }
@@ -47,7 +52,7 @@ export function RoadmapHeroHeader({ roadmapData }) {
         {/* Badge Chip */}
         <div style={{ marginBottom: "16px" }}>
           <Badge variant="primary" icon="Compass">
-            {roadmapData.badge}
+            {roadmapData.title}
           </Badge>
         </div>
 
@@ -59,27 +64,29 @@ export function RoadmapHeroHeader({ roadmapData }) {
         <div className={styles.meta_row}>
           <span className={styles.meta_item}>
             <Icon name="BarChart" size={16} className={styles["meta_icon--chart"]} />
-            <span>Độ khó: <strong>{roadmapData.difficulty}</strong></span>
+            <span>
+              Độ khó: <strong>{roadmapData.level}</strong>
+            </span>
           </span>
           <span className={styles.dot_separator}>•</span>
           <span className={styles.meta_item}>
             <Icon name="Clock" size={16} className={styles["meta_icon--clock"]} />
-            <span>Thời gian: <strong>{roadmapData.estTime}</strong></span>
+            <span>
+              Thời gian: <strong>{roadmapData.duration}</strong>
+            </span>
           </span>
           <span className={styles.dot_separator}>•</span>
           <span className={styles.meta_item}>
             <Icon name="Users" size={16} className={styles["meta_icon--users"]} />
-            <span>Học viên: <strong>{roadmapData.learners}</strong></span>
+            <span>
+              Học viên: <strong>{roadmapData.enrolledCount}</strong>
+            </span>
           </span>
         </div>
 
         {/* Action Buttons Row */}
         <div className={styles.action_row}>
-          <Button
-            variant="contained"
-            rightIcon="ArrowRight"
-            onClick={handleStartOrContinue}
-          >
+          <Button variant="contained" rightIcon="ArrowRight" onClick={handleStartOrContinue}>
             {hasStarted ? "Tiếp tục học tập" : "Bắt đầu lộ trình"}
           </Button>
 

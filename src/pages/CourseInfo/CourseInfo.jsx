@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Button } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import CourseInfoHero from "./components/CourseInfoHero/CourseInfoHero";
@@ -19,17 +18,28 @@ export default function CourseInfo() {
   const [course, setCourse] = useState(null);
   const [curriculum, setCurriculum] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // State: enrolled status (false = chưa học | true = đã học)
+  // State: enrolled status
   const [isEnrolled, setIsEnrolled] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const course = await courseService.getCourse(id);
-      const curriculum = await courseService.getCurriculum(id);
-      setCurriculum(curriculum);
-      setCourse(course);
+      const courseRes = await courseService.getCourse(id);
+      const curriculumRes = await courseService.getCurriculum(id);
+      const data = await courseService.getUserProgression(id);
+      if (
+        data.curriculum.length === 0 &&
+        data.lastAccessedLessonId === null &&
+        data.progression === 0
+      ) {
+        setIsEnrolled(false);
+      } else {
+        setIsEnrolled(true);
+      }
+      setCurriculum(curriculumRes);
+      setCourse(courseRes);
       setLoading(false);
     }
 
@@ -38,13 +48,26 @@ export default function CourseInfo() {
     }
   }, [id]);
 
-  const handleActionClick = () => {
+  const handleActionClick = async () => {
+    if (isSubmitting) return;
+
     if (!isEnrolled) {
-      toast.success("Bắt đầu tham gia bài học đầu tiên!", "Khóa học");
+      try {
+        setIsSubmitting(true);
+        // Gọi API lưu tiến độ khóa học cho user
+        await courseService.saveCourse(id);
+        setIsEnrolled(true);
+        toast.success("Đăng ký thành công! Đang chuyển tới bài học...", "Khóa học");
+        navigate(`/course/${id}`);
+      } catch (error) {
+        toast.error("Không thể đăng ký khóa học. Vui lòng thử lại!", error.message);
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
-      toast.info("Đang chuyển tới bài học tiếp theo...", "Khóa học");
+      toast.info("Đang chuyển tới bài học...", "Khóa học");
+      navigate(`/course/${id}`);
     }
-    navigate(`/course/${id}`);
   };
 
   if (loading) {
@@ -57,30 +80,8 @@ export default function CourseInfo() {
 
   return (
     <div className={styles.page_wrapper}>
-      {/* Demo Enrollment Status Switch Bar */}
-      <div className={styles.demo_status_bar}>
-        <span>💡 **Chế độ xem Demo Trạng Thái Học Viên:**</span>
-        <div className={styles.status_switch_group}>
-          <Button
-            size="sm"
-            variant={!isEnrolled ? "contained" : "outlined"}
-            onClick={() => setIsEnrolled(false)}
-          >
-            🆕 Chưa học (Bắt đầu học)
-          </Button>
-          <Button
-            size="sm"
-            variant={isEnrolled ? "contained" : "outlined"}
-            onClick={() => setIsEnrolled(true)}
-          >
-            ✅ Đã học (Tiếp tục học)
-          </Button>
-        </div>
-      </div>
-
       {/* Main 2-Column Layout */}
       <div className={styles.grid_layout}>
-        {/* Left Column: Hero, What you will learn, Curriculum */}
         <main className={styles.main_content}>
           <CourseInfoHero
             course={course}
@@ -90,12 +91,12 @@ export default function CourseInfo() {
           <CourseInfoCurriculum curriculum={curriculum} />
         </main>
 
-        {/* Right Column: Sticky Sidebar Card */}
         <aside className={styles.right_col}>
           <CourseInfoSidebar
             curriculum={curriculum}
             isEnrolled={isEnrolled}
             onActionClick={handleActionClick}
+            isSubmitting={isSubmitting}
           />
         </aside>
       </div>

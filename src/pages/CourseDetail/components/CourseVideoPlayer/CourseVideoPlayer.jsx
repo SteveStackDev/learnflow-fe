@@ -1,115 +1,66 @@
-import React, { useState } from "react";
-import Icon from "~/components/Icon/Icon";
+import React, { useRef, useImperativeHandle, forwardRef } from "react";
+import ReactPlayer from "react-player";
 import styles from "./CourseVideoPlayer.module.css";
 
-export function CourseVideoPlayer({ lesson, onTogglePlay }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [speed, setSpeed] = useState("1.25x");
-  const [isSpeedOpen, setIsSpeedOpen] = useState(false);
+export const CourseVideoPlayer = forwardRef(({ lesson, onVideoEnded }, ref) => {
+  const playerRef = useRef(null);
 
-  const togglePlay = () => {
-    setIsPlaying((prev) => !prev);
-    if (onTogglePlay) onTogglePlay(!isPlaying);
+  // Expose hàm lấy thời gian hiện tại & hàm tua video ra bên ngoài component cha
+  useImperativeHandle(ref, () => ({
+    getCurrentTime: () => {
+      if (playerRef.current) {
+        return playerRef.current.getCurrentTime(); // Trả về số giây (seconds)
+      }
+      return 0;
+    },
+    seekTo: (seconds) => {
+      if (playerRef.current) {
+        playerRef.current.seekTo(seconds, "seconds");
+      }
+    },
+  }));
+
+  const getEmbedUrl = (url) => {
+    if (!url) return "";
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    return match && match[2].length === 11
+      ? `https://www.youtube-nocookie.com/embed/${match[2]}`
+      : url;
   };
+
+  const videoSrc = lesson?.videoUrl || lesson?.promoVideoUrl || lesson?.url || "";
 
   return (
     <div className={styles.video_card}>
-      {/* Video Display Screen */}
       <div className={styles.video_screen}>
-        <img
-          src={lesson.videoPosterUrl}
-          alt={lesson.lessonTitle}
-          className={styles.video_poster}
-        />
-        <div className={styles.screen_overlay} />
-
-        {/* Center Big Play Button */}
-        <button
-          type="button"
-          onClick={togglePlay}
-          className={styles.center_play_btn}
-          aria-label={isPlaying ? "Pause video" : "Play video"}
-        >
-          <Icon name={isPlaying ? "Pause" : "Play"} size={36} />
-        </button>
-
-        {/* Top Header Overlay info */}
-        <div className={styles.video_top_info}>
-          <span className={styles.badge_tag}>FySet Space</span>
-          <span className={styles.lesson_code_tag}>{lesson.lessonTitle}</span>
-        </div>
-      </div>
-
-      {/* Video Control Bar */}
-      <div className={styles.control_bar}>
-        <div className={styles.control_left}>
-          <button
-            type="button"
-            onClick={togglePlay}
-            className={styles.ctrl_btn}
-            title={isPlaying ? "Tạm dừng" : "Phát"}
-          >
-            <Icon name={isPlaying ? "Pause" : "Play"} size={18} />
-          </button>
-
-          <button type="button" className={styles.ctrl_btn} title="Tua lùi 10s">
-            <Icon name="RotateCcw" size={16} />
-          </button>
-
-          <span className={styles.time_display}>
-            {lesson.currentTime} / {lesson.videoDuration}
-          </span>
-        </div>
-
-        {/* Progress Slider Track */}
-        <div className={styles.progress_track}>
-          <div className={styles.progress_fill} style={{ width: "44%" }} />
-          <div className={styles.progress_handle} style={{ left: "44%" }} />
-        </div>
-
-        <div className={styles.control_right}>
-          {/* Playback Speed selector */}
-          <div className={styles.speed_wrapper}>
-            <button
-              type="button"
-              onClick={() => setIsSpeedOpen((prev) => !prev)}
-              className={styles.speed_btn}
-            >
-              <span>{speed}</span>
-            </button>
-
-            {isSpeedOpen && (
-              <div className={styles.speed_dropdown}>
-                {["0.75x", "1.0x", "1.25x", "1.5x", "2.0x"].map((val) => (
-                  <button
-                    key={val}
-                    type="button"
-                    onClick={() => {
-                      setSpeed(val);
-                      setIsSpeedOpen(false);
-                    }}
-                    className={`${styles.speed_option} ${
-                      speed === val ? styles["speed_option--active"] : ""
-                    }`}
-                  >
-                    {val}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <button type="button" className={styles.ctrl_btn} title="Cài đặt">
-            <Icon name="Settings" size={18} />
-          </button>
-
-          <button type="button" className={styles.ctrl_btn} title="Toàn màn hình">
-            <Icon name="Maximize" size={18} />
-          </button>
-        </div>
+        {videoSrc ? (
+          <ReactPlayer
+            ref={playerRef}
+            src={getEmbedUrl(videoSrc)}
+            width="100%"
+            height="100%"
+            controls={true}
+            config={{
+              youtube: {
+                playerVars: {
+                  host: "https://www.youtube-nocookie.com",
+                },
+              },
+            }}
+            onEnded={() => {
+              if (onVideoEnded) {
+                onVideoEnded();
+              }
+            }}
+          />
+        ) : (
+          <div className={styles.no_video}>Không tìm thấy đường dẫn video</div>
+        )}
       </div>
     </div>
   );
-}
+});
 
 export default CourseVideoPlayer;

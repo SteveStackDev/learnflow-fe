@@ -49,23 +49,21 @@ function RoadmapGrid({
             <div className={styles["roadmap-cards__list"]}>
               {displayedItems.map((card) => {
                 const targetId = card.slug || card.id;
-                const statusLabel = card.statusLabel || card.raw?.statusLabel || "";
                 const bannerSrc = card.banner || card.thumbnail || card.imageUrl || heroUrl;
-                const rawTags =
-                  Array.isArray(card.topics) && card.topics.length > 0
-                    ? card.topics
-                    : Array.isArray(card.tags) && card.tags.length > 0
-                      ? card.tags
-                      : [];
+                const rawLabels =
+                  Array.isArray(card.labels) && card.labels.length > 0 ? card.labels : [];
+                const labelsList = rawLabels
+                  .map((l) => (typeof l === "string" ? l : l.name || l.title || ""))
+                  .filter(Boolean);
+                console.log(labelsList);
+                const rawTags = Array.isArray(card.tags) && card.tags.length > 0 ? card.tags : [];
                 const tagsList = rawTags
                   .map((t) => (typeof t === "string" ? t : t.name || t.title || ""))
                   .filter(Boolean);
 
-                const countDisplay = card.enrolledCount
-                  ? `${card.enrolledCount.toLocaleString("vi-VN")} học viên`
-                  : card.viewsNum
-                    ? `${card.viewsNum.toLocaleString("vi-VN")} lượt xem`
-                    : "120 học viên";
+                const countDisplay = card.enrolledCount.toString()
+                  ? `${card.enrolledCount} học viên`
+                  : "0 học viên";
 
                 return (
                   <div
@@ -74,17 +72,18 @@ function RoadmapGrid({
                     onClick={() => navigate(`/roadmap/${targetId}`)}
                     style={{ cursor: "pointer" }}
                   >
-                    {statusLabel && (
+                    {labelsList.map((item, idx) => (
                       <span
+                        key={`${item}-${idx}`}
                         className={`${styles["roadmap-cards__card-badge"]} ${
-                          statusLabel === "HOT"
+                          item === "HOT"
                             ? styles["roadmap-cards__card-badge--hot"]
                             : styles["roadmap-cards__card-badge--new"]
                         }`}
                       >
-                        {statusLabel}
+                        {item}
                       </span>
-                    )}
+                    ))}
 
                     <div className={styles["roadmap-cards__card-media-wrap"]}>
                       <img
@@ -112,7 +111,10 @@ function RoadmapGrid({
 
                       <div className={styles["roadmap-cards__card-tags"]}>
                         {tagsList.map((item, idx) => (
-                          <span key={`${item}-${idx}`} className={styles["roadmap-cards__tag-chip"]}>
+                          <span
+                            key={`${item}-${idx}`}
+                            className={styles["roadmap-cards__tag-chip"]}
+                          >
                             {item}
                           </span>
                         ))}

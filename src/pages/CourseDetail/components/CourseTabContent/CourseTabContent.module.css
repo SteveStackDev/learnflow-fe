@@ -147,6 +147,117 @@
   color: #334155;
 }
 
+/* Note Input Box Style */
+.note_input_container {
+  position: relative;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.4);
+  border-radius: 12px;
+  padding: 8px 12px;
+  transition: all 0.25s ease;
+}
+
+.note_input_container:focus-within {
+  border-color: #0950c3;
+  box-shadow: 0 0 0 2px rgba(9, 80, 195, 0.15);
+}
+
+.note_textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: none;
+  padding-right: 42px;
+}
+
+.note_textarea::placeholder {
+  color: #64748b;
+}
+
+.note_send_btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background-color: #0950c3;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.note_send_btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.note_send_btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* Support Dark Theme */
+:global([data-theme="dark"]) .note_input_container {
+  background-color: #131c31;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme="dark"]) .note_textarea {
+  color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .note_send_btn {
+  background-color: #38bdf8;
+  color: #0f172a;
+}
+
+/* Tùy chỉnh vị trí để nút xóa hiển thị tinh tế ở góc phải item */
+.note_item {
+  position: relative;
+  justify-content: space-between;
+}
+
+.note_text {
+  flex: 1;
+  padding-right: 12px;
+}
+
+.note_delete_btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+}
+
+.note_delete_btn:hover {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+  opacity: 1;
+}
+
+:global([data-theme="dark"]) .note_delete_btn:hover {
+  color: #f87171;
+  background-color: rgba(248, 113, 113, 0.15);
+}
+
 .resource_card {
   display: flex;
   align-items: center;
