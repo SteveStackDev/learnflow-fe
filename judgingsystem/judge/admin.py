@@ -15,8 +15,7 @@ class ProblemAdmin(admin.ModelAdmin):
     )
 
     list_filter = ("difficulty",)
-    search_fields = ("title", "slug")
-    prepopulated_fields = {"slug": ("title",)}
+    search_fields = ("title",)
 
 
 @admin.register(TestCase)

@@ -56,12 +56,15 @@ def ensure_sqlite_columns():
                 if "logs" not in sub_cols:
                     cursor.execute("ALTER TABLE judge_submission ADD COLUMN logs JSON DEFAULT '[]';")
 
-    except Exception as e:
-        print("[FySet Auto-Migrate Notice]:", e)
+    except Exception:
+        pass
 
 
-# Tự động thực thi khi module được load
-ensure_sqlite_columns()
+# Tự động thực thi an toàn khi module được load
+try:
+    ensure_sqlite_columns()
+except Exception:
+    pass
 
 
 def format_problem_response(problem, include_testcases=True):
@@ -501,6 +504,7 @@ def problem_stats(request):
 def submit_code(request):
     """
     POST: Nộp bài và chấm tự động theo Subtasks & Test Cases cho C++, Python, Java, JS
+    Hỗ trợ cả bài tập lưu trong SQLite và bài tập lưu trong MongoDB (truyền testCases/subtasks động)
     """
     if request.method != "POST":
         return JsonResponse(
@@ -514,6 +518,19 @@ def submit_code(request):
         problem_id = data.get("problem_id")
         source_code = data.get("source_code")
         language = data.get("language", "cpp")
+        subtasks = data.get("subtasks") or []
+        test_cases = data.get("test_cases") or data.get("testCases") or []
+        examples = data.get("examples") or []
+
+        try:
+            time_limit = float(data.get("time_limit") or data.get("timeLimit") or 2.0)
+        except (ValueError, TypeError):
+            time_limit = 2.0
+
+        try:
+            memory_limit = int(data.get("memory_limit") or data.get("memoryLimit") or 256)
+        except (ValueError, TypeError):
+            memory_limit = 256
 
         if not problem_id or not source_code:
             return JsonResponse(
@@ -521,25 +538,34 @@ def submit_code(request):
                 status=400,
             )
 
-        problem = Problem.objects.get(id=problem_id)
+        # 1. Thử tìm bài tập trong SQLite Database
+        problem = None
+        if str(problem_id).isdigit():
+            problem = Problem.objects.filter(id=int(problem_id)).first()
 
-        submission = Submission.objects.create(
-            problem=problem,
+        if problem:
+            submission = Submission.objects.create(
+                problem=problem,
+                source_code=source_code,
+                language=language,
+                status="RUNNING",
+            )
+            judge_result = JudgeService.judge_submission(submission)
+            return JsonResponse(judge_result)
+
+        # 2. Nếu không có trong SQLite (bài tập từ MongoDB), chấm trực tiếp qua Judge Engine
+        judge_result = JudgeService.judge_custom(
             source_code=source_code,
             language=language,
-            status="RUNNING",
+            problem_id=str(problem_id),
+            subtasks=subtasks,
+            test_cases=test_cases,
+            examples=examples,
+            time_limit=time_limit,
+            memory_limit=memory_limit,
         )
-
-        # Chạy máy chấm tự động
-        judge_result = JudgeService.judge_submission(submission)
 
         return JsonResponse(judge_result)
-
-    except Problem.DoesNotExist:
-        return JsonResponse(
-            {"error": "Không tìm thấy bài tập!"},
-            status=404,
-        )
 
     except json.JSONDecodeError:
         return JsonResponse(

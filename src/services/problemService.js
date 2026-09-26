@@ -1,69 +1,80 @@
+import api from "./api";
+
 /**
- * FySet Problem Service
- * Giao tiếp trực tiếp với Django SQLite Backend (/api/judge/problems/)
+ * Adapter: Chuyển đổi dữ liệu từ MongoDB Mongoose Model sang định dạng chuẩn UI của FySet Frontend
  */
+export const adaptProblem = (problem) => {
+  if (!problem) return null;
 
-const API_BASE_URL = "/api/judge";
-const FALLBACK_DIRECT_URL = "http://127.0.0.1:8000/api/judge";
-
-async function fetchJudgeAPI(endpoint, options = {}) {
-  const headers = {
-    "Content-Type": "application/json",
-    ...(options.headers || {}),
-  };
-
-  try {
-    // 1. Thử gọi qua Vite Proxy
-    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-      ...options,
-      headers,
-    });
-
-    if (res.ok) {
-      return await res.json();
-    }
-
-    // Nếu proxy trả về lỗi 503 (server offline), thử kết nối trực tiếp
-    if (res.status === 503 || res.status === 404) {
-      try {
-        const directRes = await fetch(`${FALLBACK_DIRECT_URL}${endpoint}`, {
-          ...options,
-          headers,
-        });
-        if (directRes.ok) {
-          return await directRes.json();
-        }
-      } catch {
-        // bỏ qua lỗi fallback
-      }
-    }
-
-    const errData = await res.json().catch(() => ({}));
-    throw new Error(errData.error || errData.message || `Lỗi API (${res.status})`);
-  } catch (err) {
-    // 2. Thử gọi thẳng tới port 8000 nếu fetch proxy thất bại hoàn toàn
-    try {
-      const directRes = await fetch(`${FALLBACK_DIRECT_URL}${endpoint}`, {
-        ...options,
-        headers,
-      });
-      if (directRes.ok) {
-        return await directRes.json();
-      }
-    } catch {
-      // bỏ qua
-    }
-
-    console.warn(`[problemService] Không thể kết nối tới máy chủ máy chấm (${endpoint}):`, err.message);
-    throw err;
+  const rawDiff = String(problem.difficulty || problem.level || problem.difficultyLabel || "Easy").toLowerCase();
+  let diffLabel = "Dễ";
+  let diffKey = "easy";
+  if (rawDiff === "hard" || rawDiff === "khó") {
+    diffLabel = "Khó";
+    diffKey = "hard";
+  } else if (rawDiff === "medium" || rawDiff === "trung bình") {
+    diffLabel = "Trung bình";
+    diffKey = "medium";
   }
-}
+
+  const id = problem._id?.toString() || problem.id || String(problem.number || "");
+  const code = problem.code || (problem._id ? String(problem._id).slice(-4).toUpperCase() : (problem.id || "001"));
+
+  // Đảm bảo topic & tags
+  const topic = problem.topic || "Thuật toán";
+  const tags = Array.isArray(problem.tags) && problem.tags.length > 0
+    ? problem.tags
+    : [topic];
+
+  // Định dạng timeLimit và memoryLimit
+  const timeLimit = problem.timeLimit
+    ? (typeof problem.timeLimit === "number" ? `${problem.timeLimit}s` : problem.timeLimit)
+    : "1.0s";
+
+  const memoryLimit = problem.memoryLimit
+    ? (typeof problem.memoryLimit === "number" ? `${problem.memoryLimit}MB` : problem.memoryLimit)
+    : "256MB";
+
+  return {
+    ...problem,
+    id,
+    _id: problem._id,
+    code,
+    number: problem.number || code,
+    slug: problem.slug || id,
+    title: problem.title || "Bài tập thuật toán",
+    difficulty: diffKey,
+    difficultyLabel: diffLabel,
+    level: diffLabel,
+    topic,
+    tags,
+    points: problem.points || 100,
+    statement: problem.statement || problem.description || "",
+    description: problem.statement || problem.description || "",
+    imageDescription: problem.imageDescription || problem.image_description || "",
+    inputFormat: problem.inputFormat || problem.input_format || "",
+    outputFormat: problem.outputFormat || problem.output_format || "",
+    constraints: problem.constraints || [],
+    examples: problem.examples || [],
+    subtasks: problem.subtasks || [],
+    testCases: problem.testCases || problem.testcases || [],
+    timeLimit,
+    memoryLimit,
+    status: problem.status || "Active",
+    acceptance: problem.acceptance || (problem.acceptanceRate != null ? `${problem.acceptanceRate}%` : "85%"),
+    acceptanceRate: problem.acceptanceRate != null ? problem.acceptanceRate : 85,
+    author: problem.author || "FySet Mentor",
+    upvotes: problem.upvotes || 0,
+    downvotes: problem.downvotes || 0,
+    languages: problem.languages || [],
+  };
+};
 
 export const problemService = {
   /**
-   * Lấy danh sách bài tập đang Active cho người dùng
+   * 1. Lấy toàn bộ danh sách bài tập từ MongoDB Backend (/api/v1/problem/all)
    */
-  getProblems: async (params = {}) => {
+  getAllProblems: async (params = {}) => {
     try {
       const searchParams = new URLSearchParams();
       if (params.search) searchParams.append("search", params.search);
@@ -71,107 +82,128 @@ export const problemService = {
       if (params.topic && params.topic !== "all") searchParams.append("topic", params.topic);
 
       const qs = searchParams.toString() ? `?${searchParams.toString()}` : "";
-      const data = await fetchJudgeAPI(`/problems/${qs}`);
-      return Array.isArray(data) ? data : [];
-    } catch {
+      
+      let data;
+      try {
+        data = await api.get(`/problem/all${qs}`);
+      } catch (err) {
+        // Fallback endpoint nếu backend cấu hình /problem
+        if (err?.status === 404) {
+          data = await api.get(`/problem${qs}`);
+        } else {
+          throw err;
+        }
+      }
+
+      const list = Array.isArray(data) ? data : (data?.problems || data?.data || []);
+      return list.map(adaptProblem);
+    } catch (error) {
+      console.warn("⚠️ [problemService] Lỗi khi tải danh sách bài tập từ Backend:", error.message || error);
       return [];
     }
   },
 
   /**
-   * Lấy toàn bộ bài tập (Active + Draft + Archived) cho trang Admin
+   * Alias tương thích cho getProblems
    */
-  getAdminProblems: async (params = {}) => {
-    try {
-      const searchParams = new URLSearchParams();
-      searchParams.append("all", "true");
-      if (params.search) searchParams.append("search", params.search);
-      if (params.difficulty && params.difficulty !== "all") searchParams.append("difficulty", params.difficulty);
-      if (params.topic && params.topic !== "all") searchParams.append("topic", params.topic);
-
-      const qs = `?${searchParams.toString()}`;
-      const data = await fetchJudgeAPI(`/problems/${qs}`);
-      return Array.isArray(data) ? data : [];
-    } catch {
-      return [];
-    }
+  getProblems: async (params = {}) => {
+    return await problemService.getAllProblems(params);
   },
 
   /**
-   * Lấy thống kê số lượng bài tập thực tế từ Database
-   */
-  getProblemStats: async () => {
-    try {
-      const data = await fetchJudgeAPI("/stats/");
-      return {
-        total: data.total || 0,
-        topicsCount: data.topicsCount || 0,
-        recentCount: data.recentCount || 0,
-      };
-    } catch {
-      return { total: 0, topicsCount: 0, recentCount: 0 };
-    }
-  },
-
-  /**
-   * Lấy chi tiết 1 bài tập theo ID hoặc Slug
+   * 2. Lấy chi tiết 1 bài tập theo ID hoặc Slug từ MongoDB (/api/v1/problem/:id)
    */
   getProblemById: async (idOrSlug) => {
     if (!idOrSlug) return null;
     try {
-      const data = await fetchJudgeAPI(`/problems/${idOrSlug}/`);
-      return data;
-    } catch (err) {
-      console.warn(`[problemService] Không tìm thấy bài tập: ${idOrSlug}`, err.message);
+      const data = await api.get(`/problem/${idOrSlug}`);
+      // Nếu Backend dùng .find() trả về mảng 1 phần tử
+      const rawProblem = Array.isArray(data) ? data[0] : (data?.problem || data);
+      if (!rawProblem) return null;
+      return adaptProblem(rawProblem);
+    } catch (error) {
+      console.warn(`⚠️ [problemService] Không thể tải chi tiết bài tập #${idOrSlug}:`, error.message || error);
       return null;
     }
   },
 
   /**
-   * Tạo bài tập mới kèm Test cases vào Database SQLite
+   * Alias tương thích cho getProblem
+   */
+  getProblem: async (idOrSlug) => {
+    return await problemService.getProblemById(idOrSlug);
+  },
+
+  /**
+   * 3. Lấy danh sách bài tập / lịch sử bài nộp của User (/api/v1/problem/user)
+   */
+  getUserProblems: async () => {
+    try {
+      let data;
+      try {
+        data = await api.get("/problem/user/all");
+      } catch (err) {
+        if (err?.status === 404) {
+          data = await api.get("/problem/user");
+        } else {
+          throw err;
+        }
+      }
+      return Array.isArray(data) ? data : (data?.problems || data?.submissions || []);
+    } catch (error) {
+      console.warn("⚠️ [problemService] Lỗi khi lấy bài tập của user:", error.message || error);
+      return [];
+    }
+  },
+
+  /**
+   * 4. Lưu bài tập / bài nộp của User vào MongoDB (/api/v1/problem/save)
+   */
+  saveProblem: async (payload) => {
+    try {
+      let data;
+      try {
+        data = await api.post("/problem/save", payload);
+      } catch (err) {
+        if (err?.status === 404) {
+          data = await api.post("/problem", payload);
+        } else {
+          throw err;
+        }
+      }
+      return data;
+    } catch (error) {
+      console.error("❌ [problemService] Lỗi khi lưu bài tập:", error.message || error);
+      throw error;
+    }
+  },
+
+  /**
+   * Lấy toàn bộ bài tập cho trang Admin
+   */
+  getAdminProblems: async (params = {}) => {
+    return await problemService.getAllProblems(params);
+  },
+
+  /**
+   * Tạo bài tập mới (Dành cho Admin)
    */
   createProblem: async (formData) => {
-    return await fetchJudgeAPI("/problems/", {
-      method: "POST",
-      body: JSON.stringify(formData),
-    });
+    return await api.post("/problem", formData);
   },
 
   /**
-   * Cập nhật bài tập đã có
+   * Cập nhật bài tập (Dành cho Admin)
    */
   updateProblem: async (id, formData) => {
-    return await fetchJudgeAPI(`/problems/${id}/`, {
-      method: "PUT",
-      body: JSON.stringify(formData),
-    });
+    return await api.put(`/problem/${id}`, formData);
   },
 
   /**
-   * Xóa bài tập khỏi Database
+   * Xóa bài tập (Dành cho Admin)
    */
   deleteProblem: async (id) => {
-    return await fetchJudgeAPI(`/problems/${id}/`, {
-      method: "DELETE",
-    });
-  },
-
-  /**
-   * Chuyển đổi trạng thái bài tập Active <-> Draft
-   */
-  toggleStatus: async (id) => {
-    return await fetchJudgeAPI(`/problems/${id}/toggle-status/`, {
-      method: "POST",
-    });
-  },
-
-  /**
-   * Xóa toàn bộ bài tập khỏi Database (Reset dữ liệu sạch)
-   */
-  clearAllProblems: async () => {
-    return await fetchJudgeAPI("/problems/", {
-      method: "DELETE",
-    });
+    return await api.delete(`/problem/${id}`);
   },
 };
 

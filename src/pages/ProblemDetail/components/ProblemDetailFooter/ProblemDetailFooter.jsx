@@ -19,12 +19,19 @@ function ProblemDetailFooter({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    let detectedLang = null;
+    if (ext === "py") detectedLang = "python";
+    else if (ext === "cpp" || ext === "cc" || ext === "cxx" || ext === "hpp" || ext === "h") detectedLang = "cpp";
+    else if (ext === "c") detectedLang = "c";
+    else if (ext === "java") detectedLang = "java";
+    else if (ext === "js" || ext === "ts" || ext === "jsx" || ext === "mjs") detectedLang = "javascript";
+
     const reader = new FileReader();
     reader.onload = (event) => {
       const content = event.target?.result;
       if (typeof content === "string" && onFileUpload) {
-        onFileUpload(content);
-        toast.success(`Đã tải lên tệp "${file.name}" thành công!`, "Tải file lên");
+        onFileUpload(content, detectedLang, file.name);
       }
     };
     reader.readAsText(file);
@@ -39,12 +46,12 @@ function ProblemDetailFooter({
       </div>
 
       <div className={styles.actions_right}>
-        {/* Hidden File Input */}
+        {/* Hidden File Input supporting all source code formats */}
         <input
           type="file"
           ref={fileInputRef}
           onChange={handleFileChange}
-          accept=".py,.cpp,.c,.java,.js,.ts,.txt"
+          accept=".py,.cpp,.c,.cc,.cxx,.java,.js,.ts,.txt"
           style={{ display: "none" }}
         />
 
@@ -53,7 +60,7 @@ function ProblemDetailFooter({
           leftIcon="Upload"
           disabled={isDisabled}
           onClick={() => fileInputRef.current?.click()}
-          title="Tải tệp mã nguồn từ máy tính"
+          title="Tải tệp mã nguồn từ máy tính (.cpp, .py, .java, .js, .c)"
         >
           Tải file lên
         </Button>

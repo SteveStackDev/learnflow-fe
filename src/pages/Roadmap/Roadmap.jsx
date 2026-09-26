@@ -29,7 +29,7 @@ const LEVEL_OPTIONS = [
 const ITEMS_PER_PAGE = 4; // 1 clean row of 4 cards!
 
 function Roadmap() {
-  const [roadmapsList] = useState(roadmapData.items || []);
+  const [roadmapsList, setRoadmapsList] = useState(roadmapData.items || []);
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState(LEVEL_OPTIONS[0]);

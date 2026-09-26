@@ -26,6 +26,17 @@ int main() {
     return 0;
 }`,
   },
+  c: {
+    id: "c",
+    label: "C (gcc)",
+    template: `#include <stdio.h>
+
+int main() {
+    // Viết mã nguồn giải thuật của bạn tại đây
+    
+    return 0;
+}`,
+  },
   python: {
     id: "python",
     label: "Python 3",
@@ -44,7 +55,7 @@ if __name__ == "__main__":
   },
   java: {
     id: "java",
-    label: "Java",
+    label: "Java (OpenJDK 17)",
     template: `import java.util.Scanner;
 
 public class Main {
@@ -176,6 +187,25 @@ function ProblemDetail() {
     toast.info("Đã đặt lại mã nguồn mẫu ban đầu!", "Mã nguồn");
   };
 
+  const handleFileUpload = (fileContent, detectedLangId, fileName) => {
+    setCode(fileContent);
+    const allLangs = problem?.languages && problem.languages.length > 0
+      ? problem.languages
+      : Object.values(DEFAULT_LANGUAGE_TEMPLATES);
+
+    if (detectedLangId) {
+      const targetLang = allLangs.find((l) => l.id === detectedLangId) || DEFAULT_LANGUAGE_TEMPLATES[detectedLangId];
+      if (targetLang) {
+        setSelectedLanguage(targetLang);
+        setUserCodeByLang((prev) => ({ ...prev, [targetLang.id]: fileContent }));
+      }
+    } else {
+      const currentLangId = selectedLanguage?.id || "cpp";
+      setUserCodeByLang((prev) => ({ ...prev, [currentLangId]: fileContent }));
+    }
+    toast.success(`Đã nạp tệp "${fileName || "mã nguồn"}" vào trình soạn thảo!`, "Tải file lên");
+  };
+
   const handleRunCode = async () => {
     if (isSubmitting || isExecuting || !problem) return;
 
@@ -263,9 +293,14 @@ function ProblemDetail() {
     try {
       // Execute submission API call (with automatic smart fallback)
       const judgePromise = submitCode({
-        problemId: problem.id || id || 1,
+        problemId: problem._id || problem.id || id || "1",
         sourceCode: code,
         language: selectedLanguage?.id || "cpp",
+        subtasks: problem.subtasks || [],
+        testCases: problem.testCases || [],
+        examples: problem.examples || [],
+        timeLimit: problem.timeLimit || 2.0,
+        memoryLimit: problem.memoryLimit || 256,
       });
 
       // Step 2: Progressive animation for Compilation
@@ -274,6 +309,7 @@ function ProblemDetail() {
       setJudgingStep(step2Label);
       const compileCmdMap = {
         cpp: "g++ -O2 -std=c++17 solution.cpp -o solution",
+        c: "gcc -O2 solution.c -o solution -lm",
         java: "javac Main.java",
         python: "python3 -m py_compile solution.py",
         javascript: "node --check solution.js",
@@ -480,7 +516,7 @@ function ProblemDetail() {
                   onSubmitCode={handleSubmitCode}
                   isSubmitting={isSubmitting}
                   isExecuting={isExecuting}
-                  onFileUpload={(fileContent) => setCode(fileContent)}
+                  onFileUpload={handleFileUpload}
                 />
               </div>
             )}
@@ -507,7 +543,7 @@ function ProblemDetail() {
                 onSubmitCode={handleSubmitCode}
                 isSubmitting={isSubmitting}
                 isExecuting={isExecuting}
-                onFileUpload={(fileContent) => setCode(fileContent)}
+                onFileUpload={handleFileUpload}
               />
             </div>
           </>

@@ -71,8 +71,9 @@ function ProblemDetailEditor({
 
   const defaultLanguages = [
     { id: "cpp", label: "C++ (g++)" },
+    { id: "c", label: "C (gcc)" },
     { id: "python", label: "Python 3" },
-    { id: "java", label: "Java" },
+    { id: "java", label: "Java (OpenJDK 17)" },
     { id: "javascript", label: "JavaScript (Node.js)" },
   ];
 
