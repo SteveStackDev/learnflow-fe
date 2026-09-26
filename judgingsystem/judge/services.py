@@ -285,6 +285,84 @@ class JudgeService:
                         }
 
                 # ----------------------------------------------------
+                # C (gcc)
+                # ----------------------------------------------------
+                elif lang in ("c", "gcc"):
+                    source_file = temp_dir / "solution.c"
+                    exec_file = temp_dir / ("solution.exe" if os.name == "nt" else "solution")
+                    source_file.write_text(code, encoding="utf-8")
+
+                    compiler = shutil.which("gcc") or shutil.which("gcc.exe") or find_cpp_compiler()
+
+                    if compiler:
+                        compile_res = subprocess.run(
+                            [compiler, "-O2", str(source_file), "-o", str(exec_file), "-lm"],
+                            capture_output=True,
+                            text=True,
+                            timeout=15,
+                            cwd=str(temp_dir),
+                        )
+
+                        if compile_res.returncode != 0:
+                            return {
+                                "status": "CE",
+                                "stdout": "",
+                                "stderr": compile_res.stderr.strip() or "C Compilation Error",
+                                "execution_time": 0.0,
+                                "is_correct": False,
+                            }
+
+                        start_time = time.perf_counter()
+                        try:
+                            run_res = subprocess.run(
+                                [str(exec_file)],
+                                input=input_data,
+                                capture_output=True,
+                                text=True,
+                                timeout=time_limit,
+                                cwd=str(temp_dir),
+                            )
+                            exec_time = time.perf_counter() - start_time
+
+                            if run_res.returncode != 0:
+                                return {
+                                    "status": "RE",
+                                    "stdout": run_res.stdout,
+                                    "stderr": run_res.stderr.strip() or f"Process exited with code {run_res.returncode}",
+                                    "execution_time": round(exec_time, 3),
+                                    "is_correct": False,
+                                }
+
+                            norm_out = normalize_output(run_res.stdout)
+                            norm_exp = normalize_output(expected_output)
+                            is_ac = norm_out == norm_exp
+
+                            return {
+                                "status": "AC" if is_ac else "WA",
+                                "stdout": run_res.stdout.strip(),
+                                "stderr": run_res.stderr.strip() if not is_ac else "",
+                                "execution_time": round(exec_time, 3),
+                                "is_correct": is_ac,
+                            }
+
+                        except subprocess.TimeoutExpired:
+                            return {
+                                "status": "TLE",
+                                "stdout": "",
+                                "stderr": f"Time Limit Exceeded (> {time_limit}s)",
+                                "execution_time": float(time_limit),
+                                "is_correct": False,
+                            }
+                    else:
+                        return {
+                            "status": "CE",
+                            "stdout": "",
+                            "stderr": "Lỗi biên dịch: Không tìm thấy trình biên dịch C (gcc) trên máy chủ.",
+                            "execution_time": 0.0,
+                            "is_correct": False,
+                        }
+
+                # ----------------------------------------------------
                 # JAVASCRIPT (Node.js)
                 # ----------------------------------------------------
                 elif lang in ("javascript", "js", "node"):
@@ -445,7 +523,7 @@ class JudgeService:
     def judge_submission(cls, submission: Submission) -> Dict[str, Any]:
         """
         Judges a submission comprehensively against all test cases and subtasks of the problem.
-        Calculates earned points, subtask scoreboards, and updates the Submission record.
+        Calculates earned points, subtask scoreboards, and updates the Submission record in DB.
         """
         problem = submission.problem
         time_limit = getattr(problem, "time_limit", 2.0) or 2.0
@@ -456,27 +534,109 @@ class JudgeService:
         db_test_cases = list(problem.testcases.all().order_by("order", "id"))
         raw_subtasks = problem.subtasks if isinstance(problem.subtasks, list) and len(problem.subtasks) > 0 else []
 
-        # Build Subtask mapping
+        test_cases_formatted = [
+            {
+                "id": tc.id,
+                "input": tc.input_data,
+                "expected": tc.expected_output,
+                "points": tc.points,
+                "isHidden": tc.is_hidden,
+            }
+            for tc in db_test_cases
+        ]
+
+        judge_result = cls.judge_custom(
+            source_code=submission.source_code,
+            language=submission.language,
+            problem_id=problem.id,
+            subtasks=raw_subtasks,
+            test_cases=test_cases_formatted if not raw_subtasks else None,
+            time_limit=time_limit,
+            memory_limit=memory_limit,
+            max_points=max_problem_points,
+        )
+
+        # Update Submission in Database
+        submission.status = judge_result["status"]
+        submission.score = judge_result["score"]
+        submission.max_score = judge_result["max_score"]
+        submission.passed_tests = judge_result["passed_tests"]
+        submission.total_tests = judge_result["total_tests"]
+        submission.execution_time = judge_result["execution_time"]
+        submission.memory_used = judge_result["memory_used"]
+        submission.test_results = judge_result["test_results"]
+        submission.subtasks_result = judge_result["subtasks"]
+        submission.logs = judge_result["logs"]
+        submission.save()
+
+        judge_result["submission_id"] = submission.id
+        return judge_result
+
+    @classmethod
+    def judge_custom(
+        cls,
+        source_code: str,
+        language: str,
+        problem_id: Any = "1",
+        subtasks: List[Dict[str, Any]] = None,
+        test_cases: List[Dict[str, Any]] = None,
+        examples: List[Dict[str, Any]] = None,
+        time_limit: float = 2.0,
+        memory_limit: int = 256,
+        max_points: int = 500,
+    ) -> Dict[str, Any]:
+        """
+        Judges code directly against provided subtasks / testcases / examples (MongoDB compatible)
+        without requiring a SQLite Problem foreign key.
+        """
         subtasks_list = []
-        if raw_subtasks:
-            subtasks_list = raw_subtasks
-        else:
+        if subtasks and isinstance(subtasks, list) and len(subtasks) > 0:
+            subtasks_list = subtasks
+        elif test_cases and isinstance(test_cases, list) and len(test_cases) > 0:
             subtasks_list = [
                 {
                     "id": 1,
                     "name": "Subtask 1 (Toàn bộ Test Cases)",
-                    "points": max_problem_points,
-                    "constraints": problem.constraints or "Ràng buộc chuẩn",
+                    "points": max_points,
+                    "constraints": "Ràng buộc chuẩn",
+                    "testCases": test_cases,
+                }
+            ]
+        elif examples and isinstance(examples, list) and len(examples) > 0:
+            subtasks_list = [
+                {
+                    "id": 1,
+                    "name": "Subtask 1 (Test Mẫu)",
+                    "points": max_points,
+                    "constraints": "Ví dụ mẫu",
                     "testCases": [
                         {
-                            "id": tc.id,
-                            "input": tc.input_data,
-                            "expected": tc.expected_output,
-                            "points": tc.points,
-                            "isHidden": tc.is_hidden,
+                            "id": ex.get("id", i + 1),
+                            "input": ex.get("input", ""),
+                            "expected": ex.get("output", ex.get("expected", "")),
+                            "points": int(max_points / max(1, len(examples))),
+                            "isHidden": False,
                         }
-                        for tc in db_test_cases
-                    ]
+                        for i, ex in enumerate(examples)
+                    ],
+                }
+            ]
+        else:
+            subtasks_list = [
+                {
+                    "id": 1,
+                    "name": "Subtask 1 (Kiểm thử thực thi)",
+                    "points": max_points,
+                    "constraints": "Mặc định",
+                    "testCases": [
+                        {
+                            "id": 1,
+                            "input": "",
+                            "expected": "",
+                            "points": max_points,
+                            "isHidden": False,
+                        }
+                    ],
                 }
             ]
 
@@ -494,23 +654,10 @@ class JudgeService:
         has_re = False
         has_wa = False
 
-        # Evaluate by Subtasks
         for s_idx, st in enumerate(subtasks_list):
             st_name = st.get("name") or f"Subtask {s_idx + 1}"
-            st_points = int(st.get("points") or 0)
+            st_points = int(st.get("points") or (max_points if len(subtasks_list) == 1 else 100))
             st_tests = st.get("testCases") or []
-
-            if not st_tests and s_idx == 0:
-                st_tests = [
-                    {
-                        "id": tc.id,
-                        "input": tc.input_data,
-                        "expected": tc.expected_output,
-                        "points": tc.points,
-                        "isHidden": tc.is_hidden,
-                    }
-                    for tc in db_test_cases
-                ]
 
             st_all_ac = True
             st_max_time = 0.0
@@ -521,13 +668,12 @@ class JudgeService:
                 total_tests_count += 1
                 tc_input = tc_item.get("input", "")
                 tc_expected = tc_item.get("expected", "")
-                tc_points = tc_item.get("points", 100)
+                tc_points = int(tc_item.get("points", 100))
                 tc_hidden = tc_item.get("isHidden", False)
 
-                # Run test
                 run_res = cls.execute_code_single_test(
-                    source_code=submission.source_code,
-                    language=submission.language,
+                    source_code=source_code,
+                    language=language,
                     input_data=tc_input,
                     expected_output=tc_expected,
                     time_limit=time_limit,
@@ -579,7 +725,6 @@ class JudgeService:
                 if run_res.get("stderr"):
                     logs.append(f"[{st_name} - Test #{t_idx + 1}] {run_res['stderr']}")
 
-            # Calculate Subtask earned score
             earned_st_score = st_points if st_all_ac else 0
             total_earned_score += earned_st_score
 
@@ -595,10 +740,9 @@ class JudgeService:
                 "tests": st_tests_results,
             })
 
-        # Determine overall verdict
         if has_ce:
             overall_verdict = "CE"
-        elif total_earned_score == max_problem_points and passed_tests_count == total_tests_count:
+        elif total_earned_score >= max_points or (total_tests_count > 0 and passed_tests_count == total_tests_count):
             overall_verdict = "AC"
         elif has_tle and passed_tests_count == 0:
             overall_verdict = "TLE"
@@ -607,25 +751,12 @@ class JudgeService:
         else:
             overall_verdict = "WA"
 
-        # Update Submission in Database
-        submission.status = overall_verdict
-        submission.score = total_earned_score
-        submission.max_score = max_problem_points
-        submission.passed_tests = passed_tests_count
-        submission.total_tests = total_tests_count
-        submission.execution_time = round(total_execution_time, 3)
-        submission.memory_used = 4.2
-        submission.test_results = test_results
-        submission.subtasks_result = subtasks_result
-        submission.logs = logs
-        submission.save()
-
         return {
-            "submission_id": submission.id,
-            "problem_id": problem.id,
+            "submission_id": f"sub_{int(time.time() * 1000)}",
+            "problem_id": problem_id,
             "status": overall_verdict,
             "score": total_earned_score,
-            "max_score": max_problem_points,
+            "max_score": max_points,
             "passed_tests": passed_tests_count,
             "total_tests": total_tests_count,
             "execution_time": round(total_execution_time, 3),

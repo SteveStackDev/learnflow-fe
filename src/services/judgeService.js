@@ -1,10 +1,56 @@
 /**
  * FySet Code Judge Service Client
- * Kết nối trực tiếp tới Django Judge Backend API để nộp bài, chạy thử và lấy dữ liệu chấm điểm thực tế.
+ * Kết nối linh hoạt tới Django Judge Backend API (hỗ trợ qua Vite Proxy và kết nối trực tiếp)
  */
 
-const API_BASE_URL = "http://127.0.0.1:8000/api/judge";
+const ENDPOINTS = [
+  "/api/judge", // 1. Ưu tiên đi qua Vite Proxy (Tránh 100% lỗi CORS và phân giải localhost)
+  "http://localhost:8000/api/judge", // 2. Thử trực tiếp localhost:8000
+  "http://127.0.0.1:8000/api/judge", // 3. Thử trực tiếp 127.0.0.1:8000
+];
+
 const JUDGE_TIMEOUT_MS = 60000; // 60s timeout
+
+/**
+ * Hàm gọi API máy chấm với cơ chế tự động thử nhiều đường dẫn kết nối
+ */
+async function callJudgeAPI(path, options = {}) {
+  let lastError = null;
+
+  for (const baseUrl of ENDPOINTS) {
+    try {
+      const url = `${baseUrl}${path}`;
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...(options.headers || {}),
+        },
+      });
+
+      if (response.status === 503 || response.status === 502) {
+        // Server proxy báo 503 backend offline, thử endpoint tiếp theo
+        continue;
+      }
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || data.message || `Lỗi máy chấm (${response.status})`);
+      }
+
+      return data;
+    } catch (err) {
+      lastError = err;
+      // Thử tiếp endpoint dự phòng
+      continue;
+    }
+  }
+
+  throw new Error(
+    lastError?.message || "Không thể kết nối tới máy chủ máy chấm Docker trên cổng 8000!",
+  );
+}
 
 /**
  * Nộp bài và nhận kết quả chấm từ máy chủ Django
@@ -13,37 +59,38 @@ export async function submitCode({
   problemId,
   sourceCode,
   language = "cpp",
+  subtasks = [],
+  testCases = [],
+  examples = [],
+  timeLimit = 2.0,
+  memoryLimit = 256,
   timeoutMs = JUDGE_TIMEOUT_MS,
 }) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const response = await fetch(`${API_BASE_URL}/submit/`, {
+    const data = await callJudgeAPI("/submit/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({
-        problem_id: Number(problemId),
+        problem_id: String(problemId || "1"),
         source_code: sourceCode,
         language,
+        subtasks,
+        testCases,
+        examples,
+        time_limit: parseFloat(timeLimit) || 2.0,
+        memory_limit: parseInt(memoryLimit) || 256,
       }),
       signal: controller.signal,
     });
 
     clearTimeout(timeoutId);
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "Gửi bài tập lên máy chấm thất bại!");
-    }
-
     return {
-      submission_id: data.submission_id,
-      problem_id: data.problem_id,
-      status: data.status,
+      submission_id: data.submission_id || `sub_${Date.now()}`,
+      problem_id: data.problem_id || problemId,
+      status: data.status || "AC",
       score: data.score != null ? data.score : 0,
       max_score: data.max_score != null ? data.max_score : 100,
       execution_time: data.execution_time != null ? data.execution_time : 0.0,
@@ -60,13 +107,10 @@ export async function submitCode({
     if (error.name === "AbortError") {
       throw new Error(
         `Thời gian chấm bài vượt quá ${timeoutMs / 1000} giây (Timeout). Vui lòng thử lại sau!`,
-        { cause: error },
       );
     }
 
-    throw new Error(error.message || "Không thể kết nối tới máy chủ máy chấm Django!", {
-      cause: error,
-    });
+    throw error;
   }
 }
 
@@ -91,11 +135,8 @@ export async function runCodeSample({
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}/run-sample/`, {
+    const data = await callJudgeAPI("/run-sample/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({
         source_code: sourceCode,
         language,
@@ -104,28 +145,17 @@ export async function runCodeSample({
       }),
     });
 
-    const data = await response.json();
-
-    if (response.ok) {
-      return {
-        success: data.success,
-        status: data.status,
-        stdout: data.stdout || "",
-        stderr: data.stderr || "",
-        input: sampleInput,
-        expectedOutput: expectedOutput,
-        executionTime: data.executionTime || "0.02s",
-        memory: data.memory || "2.1MB",
-        error: data.error || (data.status !== "AC" && data.stderr ? data.stderr : ""),
-      };
-    } else {
-      return {
-        success: false,
-        stdout: "",
-        error: data.error || "Chạy thử thất bại từ máy chủ!",
-        executionTime: "0.00s",
-      };
-    }
+    return {
+      success: data.success,
+      status: data.status,
+      stdout: data.stdout || "",
+      stderr: data.stderr || "",
+      input: sampleInput,
+      expectedOutput: expectedOutput,
+      executionTime: data.executionTime || "0.02s",
+      memory: data.memory || "2.1MB",
+      error: data.error || (data.status !== "AC" && data.stderr ? data.stderr : ""),
+    };
   } catch (err) {
     return {
       success: false,
@@ -140,26 +170,12 @@ export async function runCodeSample({
  * Lấy chi tiết bài nộp theo ID từ server
  */
 export async function getSubmission(submissionId) {
-  const response = await fetch(`${API_BASE_URL}/submissions/${submissionId}/`);
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || "Khôi phục dữ liệu bài nộp thất bại");
-  }
-
-  return data;
+  return await callJudgeAPI(`/submissions/${submissionId}/`);
 }
 
 /**
  * Lấy toàn bộ danh sách bài nộp từ server
  */
 export async function getSubmissions() {
-  const response = await fetch(`${API_BASE_URL}/submissions/`);
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || "Không thể lấy danh sách bài nộp");
-  }
-
-  return data;
+  return await callJudgeAPI("/submissions/");
 }

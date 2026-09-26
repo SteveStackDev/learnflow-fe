@@ -11,9 +11,10 @@ function ProblemListTable({
   setCurrentPage,
   totalPages,
   itemsPerPage,
+  isLoading = false,
 }) {
   const navigate = useNavigate();
-  useScrollReveal(".reveal-card", [displayedItems, currentPage]);
+  useScrollReveal(".reveal-card", [displayedItems, currentPage, isLoading]);
 
   const handleRowClick = (item) => {
     navigate(`/problem/${item.slug || item.id}`);
@@ -76,9 +77,18 @@ function ProblemListTable({
             </tr>
           </thead>
           <tbody>
-            {displayedItems.length === 0 ? (
+            {isLoading ? (
               <tr>
-                <td colSpan="6" style={{ textAlign: "center", padding: "40px 20px" }}>
+                <td colSpan="6" style={{ textAlign: "center", padding: "50px 20px" }}>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 10, color: "#94a3b8" }}>
+                    <Icon name="Loader2" size={20} className="animate-spin" />
+                    <span>Đang tải danh sách bài tập từ máy chủ...</span>
+                  </div>
+                </td>
+              </tr>
+            ) : displayedItems.length === 0 ? (
+              <tr>
+                <td colSpan="6" style={{ textAlign: "center", padding: "40px 20px", color: "#94a3b8" }}>
                   Chưa có bài tập nào hoặc không tìm thấy bài tập phù hợp.
                 </td>
               </tr>

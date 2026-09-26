@@ -81,6 +81,7 @@ class Submission(models.Model):
 
     LANGUAGE_CHOICES = [
         ("cpp", "C++"),
+        ("c", "C"),
         ("python", "Python 3"),
         ("java", "Java"),
         ("javascript", "JavaScript"),

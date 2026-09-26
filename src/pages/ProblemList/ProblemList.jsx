@@ -44,6 +44,7 @@ function ProblemList() {
   useScrollReveal();
 
   const [rawProblems, setRawProblems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState(BASE_FILTERS.difficulties[0]);
   const [selectedTopic, setSelectedTopic] = useState(BASE_FILTERS.topics[0]);
@@ -54,14 +55,26 @@ function ProblemList() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const toolbarRef = useRef(null);
 
-  // Load danh sách bài tập trực tiếp từ SQLite Database (Backend Docker)
+  // Load danh sách bài tập trực tiếp từ MongoDB Backend
   useEffect(() => {
     let isMounted = true;
-    problemService.getProblems().then((data) => {
-      if (isMounted) {
-        setRawProblems(Array.isArray(data) ? data : []);
-      }
-    });
+    setIsLoading(true);
+    problemService
+      .getProblems()
+      .then((data) => {
+        if (isMounted) {
+          setRawProblems(Array.isArray(data) ? data : []);
+        }
+      })
+      .catch((err) => {
+        console.warn("Lỗi tải danh sách bài tập:", err);
+      })
+      .finally(() => {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      });
+
     return () => {
       isMounted = false;
     };
@@ -195,6 +208,7 @@ function ProblemList() {
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
         itemsPerPage={itemsPerPage}
+        isLoading={isLoading}
       />
     </div>
   );

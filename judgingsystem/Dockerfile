@@ -7,10 +7,6 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # Cài đặt trọn bộ tất cả các trình biên dịch & runtime cần thiết:
-# - python3, python3-pip: Python runtime
-# - build-essential, g++, gcc: Trình biên dịch C / C++
-# - openjdk-17-jdk-headless: Trình biên dịch javac & máy ảo java 17
-# - nodejs, npm: Trình thực thi JavaScript
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
@@ -43,6 +39,5 @@ COPY . /app/
 # Mở cổng 8000
 EXPOSE 8000
 
-# Chạy migrate và khởi động Django server lắng nghe tất cả các IP
-CMD ["sh", "-c", "python3 manage.py migrate --noinput && python3 manage.py runserver 0.0.0.0:8000"]
-
+# Khởi động Django server lắng nghe tất cả các IP (dùng --noreload để tránh crash thread trong Docker)
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000", "--noreload"]

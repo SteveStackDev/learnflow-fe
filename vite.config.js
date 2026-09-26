@@ -59,7 +59,7 @@ export default defineConfig({
       clientFiles: [
         "./src/pages/Home/Home.jsx",
         "./src/pages/Course/Course.jsx",
-        "./src/pages/Problem/Problem.jsx",
+        "./src/pages/ProblemList/ProblemList.jsx",
         "./src/pages/Contest/Contest.jsx",
         "./src/pages/Badge/Badge.jsx",
         "./src/pages/Roadmap/Roadmap.jsx",
