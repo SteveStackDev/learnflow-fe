@@ -44,7 +44,7 @@ export const authService = {
   },
 
   signInWithGoogle: async () => {
-    window.location.href = "http://localhost:3000/api/v1/auth/google";
+    window.location.href = "https://fyset-be.onrender.com/api/v1/auth/google";
 
     const data = await api.get("/auth/get-me");
 
