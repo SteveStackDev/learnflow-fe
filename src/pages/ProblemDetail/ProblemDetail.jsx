@@ -7,6 +7,7 @@ import ProblemDetailConsole from "./components/ProblemDetailConsole/ProblemDetai
 import UserProfileCardModal from "~/components/UserProfileCardModal/UserProfileCardModal";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
+import { useAuth } from "~/context/AuthContext.jsx";
 import { problemService } from "~/services/problemService";
 import { submitCode, runCodeSample } from "~/services/judgeService";
 
@@ -88,9 +89,18 @@ function ProblemDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast.warning("Vui lòng đăng nhập để xem chi tiết bài tập!", "Yêu cầu đăng nhập");
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate, toast]);
 
   const [problem, setProblem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
 
   const [selectedLanguage, setSelectedLanguage] = useState(DEFAULT_LANGUAGE_TEMPLATES.cpp);
   const [code, setCode] = useState(DEFAULT_LANGUAGE_TEMPLATES.cpp.template);

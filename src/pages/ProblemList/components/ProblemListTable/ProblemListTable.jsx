@@ -1,8 +1,10 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import styles from "./ProblemListTable.module.css";
 import Icon from "~/components/Icon/Icon";
 import { Pagination, ScrollArea } from "~/components/ui";
 import useScrollReveal from "~/hooks/useScrollReveal";
+import { useAuth } from "~/context/AuthContext.jsx";
+import { useToast } from "~/context/ToastContext.jsx";
 
 function ProblemListTable({
   displayedItems,
@@ -14,11 +16,25 @@ function ProblemListTable({
   isLoading = false,
 }) {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
   useScrollReveal(".reveal-card", [displayedItems, currentPage, isLoading]);
 
   const handleRowClick = (item) => {
+    if (!isAuthenticated) {
+      toast.warning("Vui lòng đăng nhập để xem chi tiết bài tập!", "Yêu cầu đăng nhập");
+      navigate("/signin");
+      return;
+    }
     navigate(`/problem/${item.slug || item.id}`);
   };
+
+  const handleLinkClick = (e, item) => {
+    e.stopPropagation();
+    e.preventDefault();
+    handleRowClick(item);
+  };
+
 
   const getStatusIcon = (status) => {
     if (status === "solved" || status === "AC") {
@@ -103,13 +119,13 @@ function ProblemListTable({
                   <td className={styles.td}>{getStatusIcon(item.status)}</td>
                   <td className={styles.td}>#{item.code || item.number || item.id}</td>
                   <td className={styles.td}>
-                    <Link
-                      to={`/problem/${item.slug || item.id}`}
+                    <a
+                      href={`/problem/${item.slug || item.id}`}
                       className={styles.title_link}
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => handleLinkClick(e, item)}
                     >
                       {item.title}
-                    </Link>
+                    </a>
                   </td>
                   <td className={styles.td}>
                     <span className={`${styles.badge} ${getBadgeClass(item.level || item.difficulty)}`}>

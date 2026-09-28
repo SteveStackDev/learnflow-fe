@@ -14,6 +14,7 @@ import ThemeToggle from "~/components/ThemeToggle/ThemeToggle";
 
 // Context
 import { useToast } from "~/context/ToastContext.jsx";
+import { useAuth } from "~/context/AuthContext.jsx";
 import { authService } from "~/services/authService";
 
 const GREETING_PHRASES = [
@@ -31,6 +32,7 @@ function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { toast } = useToast();
+  const { updateUser } = useAuth();
   const navigate = useNavigate();
 
   // Hàm xử lý Đăng nhập qua authService
@@ -65,12 +67,16 @@ function SignIn() {
     try {
       setIsSubmitting(true);
       const user = await authService.signIn({ email, password });
+      if (user) {
+        updateUser(user);
+      }
       toast.success(
-        `Chào mừng ${user.name || user.username || "bạn"} trở lại!`,
+        `Chào mừng ${user?.name || user?.username || "bạn"} trở lại!`,
         "Đăng nhập thành công",
       );
       navigate("/");
     } catch (error) {
+
       if (error.errors) {
         setErrors(error.errors);
       }

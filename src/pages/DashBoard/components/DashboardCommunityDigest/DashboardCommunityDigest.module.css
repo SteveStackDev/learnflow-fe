@@ -168,12 +168,22 @@
   background: rgba(56, 189, 248, 0.15);
 }
 
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .blog_title {
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--theme-text-primary, #0f172a);
   text-decoration: none;
   line-height: 1.35;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 :global([data-theme="dark"]) .blog_title {
@@ -194,6 +204,7 @@
   gap: 12px;
   font-size: 0.75rem;
   color: var(--theme-text-secondary, #64748b);
+  flex-wrap: wrap;
 }
 
 .stat {
@@ -209,6 +220,8 @@
   color: var(--theme-text-primary, #0f172a);
   margin: 0;
   line-height: 1.35;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 :global([data-theme="dark"]) .disc_title {
@@ -221,6 +234,8 @@
   justify-content: space-between;
   font-size: 0.75rem;
   color: var(--theme-text-secondary, #64748b);
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .disc_author {
@@ -233,7 +248,17 @@
 }
 
 @media (max-width: 768px) {
+  .digest_card {
+    padding: 18px 16px;
+  }
   .digest_grid {
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 480px) {
+  .digest_card {
+    padding: 14px 12px;
+  }
+}
+

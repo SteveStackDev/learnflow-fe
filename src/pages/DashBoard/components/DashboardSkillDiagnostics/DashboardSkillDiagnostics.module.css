@@ -209,6 +209,14 @@
   color: #94a3b8;
 }
 
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .recommendation_pill {
   display: flex;
   align-items: flex-start;
@@ -221,6 +229,8 @@
   color: var(--color-primary, #0950c3);
   font-weight: 600;
   line-height: 1.45;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 :global([data-theme="dark"]) .recommendation_pill {
@@ -235,7 +245,17 @@
 }
 
 @media (max-width: 768px) {
+  .diagnostics_card {
+    padding: 18px 16px;
+  }
   .grid_layout {
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 480px) {
+  .diagnostics_card {
+    padding: 14px 12px;
+  }
+}
+

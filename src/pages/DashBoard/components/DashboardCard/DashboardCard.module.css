@@ -255,17 +255,42 @@
 /* Responsive adjustments */
 @media (max-width: 640px) {
   .dashboard_card {
-    padding: 20px;
+    padding: 18px 16px;
+    margin-bottom: 24px;
+    border-radius: 16px;
+  }
+
+  .dashboard_card__top {
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .dashboard_card__name {
-    font-size: 1.25rem;
+    font-size: clamp(1.1rem, 4vw, 1.35rem);
+    word-break: break-word;
+  }
+
+  .dashboard_card__identity {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .dashboard_card__meta_list {
+    gap: 16px;
+    flex-wrap: wrap;
+    width: 100%;
   }
 
   .dashboard_card__bottom {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+    width: 100%;
+  }
+
+  .dashboard_card__icon_row {
+    flex-wrap: wrap;
+    gap: 6px;
   }
 }
 
@@ -275,3 +300,4 @@
     0 16px 40px rgba(0, 0, 0, 0.5),
     inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
+

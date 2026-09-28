@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { AuthContext } from "~/context/AuthContext";
+import { useToast } from "~/context/ToastContext.jsx";
 import { NavLink, Link, useLocation, useNavigate } from "react-router";
 import styles from "./Header.module.css";
 import Icon from "~/components/Icon/Icon";
+
 
 // Navigation Constants
 const NAV_LINKS = [
@@ -64,6 +66,7 @@ export function Header() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const { user, getUser, deleteUser, updateUser } = useContext(AuthContext);
+  const { toast } = useToast();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -87,7 +90,9 @@ export function Header() {
     async function fetchData() {
       const user = await getUser();
 
-      if (!user || user.status === "failed") return updateUser({});
+      if (!user || user.status === "failed" || Object.keys(user).length === 0) {
+        return updateUser({});
+      }
       updateUser(user);
     }
 
@@ -123,10 +128,12 @@ export function Header() {
   };
 
   const handleLogout = async () => {
-    deleteUser();
+    await deleteUser();
     closeMenu();
+    toast.success("Đã đăng xuất tài khoản thành công!", "Đăng xuất");
     navigate("/signin");
   };
+
 
   // Helper render Top Nav Link
   const renderNavLink = ({ to, label, end, isMobile = false }) => (

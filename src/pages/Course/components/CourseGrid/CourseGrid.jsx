@@ -2,6 +2,8 @@ import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import EmptyState from "~/components/EmptyState/EmptyState";
 import { Pagination } from "~/components/ui";
+import { useAuth } from "~/context/AuthContext.jsx";
+import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./CourseGrid.module.css";
 
 function CourseGrid({
@@ -14,11 +16,23 @@ function CourseGrid({
   setActiveCategoryTab,
 }) {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
 
-  async function handleViewCourseInfo(e, id) {
-    e.stopPropagation();
+  const handleNavigateToCourse = (id) => {
+    if (!isAuthenticated) {
+      toast.warning("Vui lòng đăng nhập để xem chi tiết khóa học!", "Yêu cầu đăng nhập");
+      navigate("/signin");
+      return;
+    }
     navigate(`/course/${id}/info`);
+  };
+
+  function handleViewCourseInfo(e, id) {
+    e.stopPropagation();
+    handleNavigateToCourse(id);
   }
+
 
   return (
     <section className={styles["course-grid"]}>
@@ -52,7 +66,7 @@ function CourseGrid({
                 <div
                   key={obj.id}
                   className={`${styles["course-grid__card"]} reveal-card`}
-                  onClick={() => navigate(`/course/${obj.id}/info`)}
+                  onClick={() => handleNavigateToCourse(obj.id)}
                   style={{ cursor: "pointer" }}
                 >
                   <div className={styles["course-grid__card-media-wrap"]}>
