@@ -46,8 +46,12 @@ export const authService = {
     return;
   },
 
-  signInWithGoogle: () => {
-    window.location.href = "http://localhost:3000/api/v1/auth/google";
+  signInWithGoogle: async () => {
+    window.location.href = "https://fyset-be.onrender.com/api/v1/auth/google";
+
+    const data = await api.get("/auth/get-me");
+
+    return data;
   },
 
   getMe: async () => {
