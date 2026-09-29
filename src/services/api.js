@@ -3,7 +3,6 @@ import axios from "axios";
 export const api = axios.create({
   baseURL: "https://fyset-be.onrender.com/api/v1",
   withCredentials: true,
-  credentials: "include",
   headers: {
     "Content-Type": "application/json",
   },
