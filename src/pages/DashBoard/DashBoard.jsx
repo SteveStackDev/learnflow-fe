@@ -1,6 +1,8 @@
 import { useState } from "react";
 import useScrollReveal from "~/hooks/useScrollReveal";
+import { useAuth } from "~/context/AuthContext.jsx";
 import { dashboardData } from "~/constants/mockDashBoard";
+import { WidgetBlurWrapper } from "~/components/ui";
 
 // Sub-Components
 import DashboardCard from "./components/DashboardCard/DashboardCard";
@@ -28,15 +30,7 @@ function getTimeBasedGreeting() {
 
 export default function DashBoard() {
   useScrollReveal();
-
-  const [currentUser] = useState(() => {
-    try {
-      const saved = localStorage.getItem("fySet_user");
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
+  const { user: currentUser } = useAuth();
 
   const [onlineFriends] = useState(dashboardData.onlineFriends || []);
   const [selectedUserForModal, setSelectedUserForModal] = useState(null);
@@ -89,8 +83,16 @@ export default function DashBoard() {
             {/* 1. Hero Action Banner (AI Powered) */}
             <DashboardHeroBanner heroBanner={dashboardData.heroBanner} />
 
-            {/* 2. AI Skill Diagnostics & Radar */}
-            <DashboardSkillDiagnostics skillDiagnostics={dashboardData.skillDiagnostics} />
+            {/* 2. AI Skill Diagnostics & Radar (With Blur Effect) */}
+            <WidgetBlurWrapper
+              badge="SẮP RA MẮT"
+              icon="Sparkles"
+              tagColor="blue"
+              title="AI Skill Diagnostics & Radar"
+              description="Hệ thống AI chuẩn đoán kỹ năng & đề xuất bài tập tự động đang được hoàn thiện và sẽ sớm khả dụng!"
+            >
+              <DashboardSkillDiagnostics skillDiagnostics={dashboardData.skillDiagnostics} />
+            </WidgetBlurWrapper>
 
             {/* 3. Learning Roadmap & Capstone Progress */}
             <DashboardLearningRoadmap
@@ -98,12 +100,20 @@ export default function DashBoard() {
               capstoneProject={dashboardData.capstoneProject}
             />
 
-            {/* 4. Community Digest & Blog Highlights */}
-            <DashboardCommunityDigest
-              blogHighlights={dashboardData.blogHighlights}
-              hotDiscussions={dashboardData.hotDiscussions}
-              onSelectUser={(u) => setSelectedUserForModal(u)}
-            />
+            {/* 4. Community Digest & Blog Highlights (With Blur Effect) */}
+            <WidgetBlurWrapper
+              badge="SẮP RA MẮT"
+              icon="MessageSquare"
+              tagColor="purple"
+              title="Community Digest & Diễn Đàn"
+              description="Khu vực kết nối cộng đồng, chia sẻ kinh nghiệm và thảo luận kỹ thuật sẽ sớm mở cửa cho toàn bộ học viên!"
+            >
+              <DashboardCommunityDigest
+                blogHighlights={dashboardData.blogHighlights}
+                hotDiscussions={dashboardData.hotDiscussions}
+                onSelectUser={(u) => setSelectedUserForModal(u)}
+              />
+            </WidgetBlurWrapper>
           </main>
 
           {/* Interactive Right Panel (Column 3 - Sticky) */}
@@ -120,20 +130,38 @@ export default function DashBoard() {
             {/* 3. Upcoming Events & Deadlines Countdown */}
             <DashboardUpcomingEvents upcomingEvents={dashboardData.upcomingEvents} />
 
-            {/* 4. Online Friends & Direct Messaging */}
-            <DashboardOnlineFriends
-              onlineFriends={onlineFriends}
-              onSelectUser={(u) => setSelectedUserForModal(u)}
-            />
+            {/* 4. Online Friends & Direct Messaging (With Blur Effect) */}
+            <WidgetBlurWrapper
+              badge="SẮP RA MẮT"
+              icon="Users"
+              tagColor="green"
+              title="Bạn Bè Trực Tuyến & Nhắn Tin"
+              description="Tính năng học nhóm cùng bạn bè và trò chuyện trực tiếp (Direct Messaging) đang được phát triển!"
+            >
+              <DashboardOnlineFriends
+                onlineFriends={onlineFriends}
+                onSelectUser={(u) => setSelectedUserForModal(u)}
+              />
+            </WidgetBlurWrapper>
 
-            {/* 5. Leaderboard Mini XP Weekly */}
-            <DashboardMiniLeaderboard
-              leaderboard={dashboardData.miniLeaderboard}
-              onSelectUser={(u) => setSelectedUserForModal(u)}
-            />
+            {/* 5. Leaderboard Mini XP Weekly (With Blur Effect) */}
+            <WidgetBlurWrapper
+              badge="SẮP RA MẮT"
+              icon="Trophy"
+              tagColor="amber"
+              title="Top XP Bứt Phá Tuần"
+              description="Bảng xếp hạng học viên xuất sắc và vinh danh thành tích tuần đang được cập nhật!"
+            >
+              <DashboardMiniLeaderboard
+                leaderboard={dashboardData.miniLeaderboard}
+                onSelectUser={(u) => setSelectedUserForModal(u)}
+              />
+            </WidgetBlurWrapper>
           </aside>
         </div>
       </div>
+
+
 
       {/* User Profile Quick Card Modal */}
       <UserProfileCardModal

@@ -1,9 +1,13 @@
 /* Dashboard Page Layout */
 .dashboard_page {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   background-color: var(--theme-page-bg, #f8fafc);
+  box-sizing: border-box;
 }
 
 .dashboard_container {
@@ -12,6 +16,7 @@
   max-width: 1360px;
   margin: 0 auto;
   padding: 32px 24px 60px 24px;
+  box-sizing: border-box;
 }
 
 /* Dynamic Greeting Header */
@@ -21,13 +26,17 @@
 
 .greeting_title {
   font-family: var(--font-family-main, "Be Vietnam Pro", sans-serif);
-  font-size: 1.75rem;
+  font-size: clamp(1.25rem, 4.5vw, 1.75rem);
   font-weight: 800;
   color: var(--theme-text-primary, #191b22);
   margin: 0 0 6px 0;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.3;
 }
 
 .greeting_wave {
@@ -64,9 +73,12 @@
 }
 
 .greeting_subtitle {
-  font-size: 0.95rem;
+  font-size: clamp(0.825rem, 2.5vw, 0.95rem);
   color: var(--theme-text-secondary, #64748b);
   margin: 0;
+  line-height: 1.45;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* 3-Column Grid Layout (Main Content + Sticky Interactive Right Panel) */
@@ -76,6 +88,8 @@
   gap: 24px;
   margin-top: 24px;
   align-items: start;
+  width: 100%;
+  min-width: 0;
 }
 
 /* Main Content Column (Column 2 - Scrollable) */
@@ -84,6 +98,7 @@
   flex-direction: column;
   gap: 24px;
   min-width: 0;
+  width: 100%;
 }
 
 /* Interactive Right Panel (Column 3 - Sticky) */
@@ -93,6 +108,8 @@
   gap: 20px;
   position: sticky;
   top: 84px;
+  min-width: 0;
+  width: 100%;
 }
 
 :global([data-theme="dark"]) .dashboard_page {
@@ -111,8 +128,31 @@
 @media (max-width: 1084px) {
   .three_column_layout {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
   .right_panel_col {
     position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard_container {
+    padding: 18px 14px 48px 14px;
+  }
+  .greeting_header {
+    margin-bottom: 18px;
+  }
+  .main_content_col {
+    gap: 18px;
+  }
+  .three_column_layout {
+    margin-top: 18px;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard_container {
+    padding: 14px 10px 36px 10px;
   }
 }

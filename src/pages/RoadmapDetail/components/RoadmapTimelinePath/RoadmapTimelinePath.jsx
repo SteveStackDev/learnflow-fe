@@ -2,17 +2,25 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { Button, Badge, Card } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
+import { useAuth } from "~/context/AuthContext.jsx";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./RoadmapTimelinePath.module.css";
 
 export function RoadmapTimelinePath({ roadmap }) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
 
   const handleContinue = (stepTitle) => {
+    if (!isAuthenticated) {
+      toast.warning("Vui lòng đăng nhập để bắt đầu bài học!", "Yêu cầu đăng nhập");
+      navigate("/signin");
+      return;
+    }
     toast.success(`Đang chuyển sang bài học thuộc mốc "${stepTitle}"...`, "Học tiếp mốc này");
     navigate("/course/detail");
   };
+
 
   return (
     <div className={styles.path_section}>

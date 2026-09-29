@@ -1,24 +1,35 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import { Button, Badge, Card } from "~/components/ui";
+import { useAuth } from "~/context/AuthContext.jsx";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./RoadmapSidebar.module.css";
 
 export function RoadmapSidebar({ technologies, recommendedCourses, recommendedProblems }) {
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  console.log(recommendedCourses);
+  const { isAuthenticated } = useAuth();
 
   const handleStartCourse = (title) => {
+    if (!isAuthenticated) {
+      toast.warning("Vui lòng đăng nhập để xem chi tiết khóa học!", "Yêu cầu đăng nhập");
+      navigate("/signin");
+      return;
+    }
     toast.info(`Chuyển sang xem khóa học "${title}"...`, "Khóa học gợi ý");
     navigate("/course/info");
   };
 
   const handleSolveProblem = (title) => {
+    if (!isAuthenticated) {
+      toast.warning("Vui lòng đăng nhập để xem chi tiết bài tập!", "Yêu cầu đăng nhập");
+      navigate("/signin");
+      return;
+    }
     toast.info(`Chuyển sang giải bài tập "${title}"...`, "Bài tập thử thách");
     navigate("/problem/detail");
   };
+
 
   return (
     <aside className={styles.sidebar}>

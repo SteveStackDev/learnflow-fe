@@ -165,3 +165,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 480px) {
+  .goal_card {
+    padding: 14px 12px;
+  }
+}
+

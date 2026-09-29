@@ -194,6 +194,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -210,6 +211,7 @@
   font-weight: 800;
   color: var(--theme-text-primary, #0f172a);
   margin: 0;
+  word-break: break-word;
 }
 
 :global([data-theme="dark"]) .capstone_title {
@@ -246,17 +248,21 @@
   height: 38px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .feedback_content {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
+  flex: 1;
 }
 
 .mentor_meta {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -281,8 +287,33 @@
   color: var(--theme-text-secondary, #475569);
   margin: 0;
   line-height: 1.45;
+  word-break: break-word;
 }
 
 :global([data-theme="dark"]) .feedback_text {
   color: #cbd5e1;
 }
+
+@media (max-width: 768px) {
+  .roadmap_card {
+    padding: 18px 16px;
+  }
+  .card_header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .courses_grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .roadmap_card {
+    padding: 14px 12px;
+  }
+  .mentor_feedback_row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+

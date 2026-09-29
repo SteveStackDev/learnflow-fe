@@ -38,8 +38,11 @@ export const authService = {
   },
 
   signOut: async () => {
-    await api.post("/auth/sign-out");
-
+    try {
+      await api.post("/auth/sign-out");
+    } catch (err) {
+      console.warn("Sign out request error:", err);
+    }
     return;
   },
 
@@ -52,10 +55,22 @@ export const authService = {
   },
 
   getMe: async () => {
-    const data = await api.get("/auth/get-me");
+    try {
+      const data = await api.get("/auth/get-me");
+      if (!data || Object.keys(data).length === 0) return null;
 
-    return data;
+      const formattedData = {
+        ...data,
+        name: data.name || data.username,
+        avatar: typeof data.avatar === "object" ? data.avatar?.url : data.avatar,
+      };
+
+      return formattedData;
+    } catch {
+      return null;
+    }
   },
 };
 
 export default authService;
+

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Button } from "~/components/ui";
+import { useAuth } from "~/context/AuthContext.jsx";
+import { useToast } from "~/context/ToastContext.jsx";
 import CourseVideoPlayer from "./components/CourseVideoPlayer/CourseVideoPlayer";
 import CourseTabContent from "./components/CourseTabContent/CourseTabContent";
 import CourseActionBar from "./components/CourseActionBar/CourseActionBar";
@@ -11,7 +13,16 @@ import { courseService } from "~/services";
 export function CourseDetail() {
   const navigate = useNavigate();
   const params = useParams();
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
   const courseId = params.id;
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast.warning("Vui lòng đăng nhập để xem chi tiết khóa học!", "Yêu cầu đăng nhập");
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate, toast]);
 
   const [course, setCourse] = useState({});
   const [curriculum, setCurriculum] = useState([]);
@@ -21,6 +32,7 @@ export function CourseDetail() {
 
   // State theo dõi trạng thái xem xong video hiện tại
   const [isVideoEnded, setIsVideoEnded] = useState(false);
+
 
   // Hàm load & đồng bộ dữ liệu giữa Course gốc và Progression trong DB
   const fetchCourseData = useCallback(

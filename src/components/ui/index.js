@@ -8,3 +8,5 @@ export { ChatInput } from "./ChatInput/ChatInput";
 export { ScrollArea } from "./ScrollArea/ScrollArea";
 export { DropdownMenu } from "./DropdownMenu/DropdownMenu";
 export { PremiumBlur } from "./PremiumBlur/PremiumBlur";
+export { WidgetBlurWrapper } from "./WidgetBlurWrapper/WidgetBlurWrapper";
+

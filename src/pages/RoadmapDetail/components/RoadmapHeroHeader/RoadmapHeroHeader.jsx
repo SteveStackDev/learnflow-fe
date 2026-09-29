@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Button, Badge, Card } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
+import { useAuth } from "~/context/AuthContext.jsx";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./RoadmapHeroHeader.module.css";
 import roadmapService from "~/services/roadmapService";
@@ -9,6 +10,7 @@ import roadmapService from "~/services/roadmapService";
 export function RoadmapHeroHeader({ roadmapData }) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
   const [isSaved, setIsSaved] = useState(false);
 
   // Logic kiểm tra người dùng đã học lộ trình này chưa
@@ -17,6 +19,12 @@ export function RoadmapHeroHeader({ roadmapData }) {
   );
 
   const handleStartOrContinue = () => {
+    if (!isAuthenticated) {
+      toast.warning("Vui lòng đăng nhập để bắt đầu lộ trình học!", "Yêu cầu đăng nhập");
+      navigate("/signin");
+      return;
+    }
+
     if (hasStarted) {
       const activeStep = roadmapData.roadmap?.find((s) => s.status === "in_progress");
       toast.success(
@@ -33,18 +41,29 @@ export function RoadmapHeroHeader({ roadmapData }) {
   };
 
   const handleToggleSave = async () => {
+    if (!isAuthenticated) {
+      toast.warning("Vui lòng đăng nhập để lưu lộ trình học tập!", "Yêu cầu đăng nhập");
+      navigate("/signin");
+      return;
+    }
+
     const nextState = !isSaved;
-    await roadmapService.saveRoadmap(roadmapData._id);
-    setIsSaved(nextState);
-    if (nextState) {
-      toast.success(
-        `Đã lưu lộ trình "${roadmapData.title}" vào danh sách yêu thích!`,
-        "Đã lưu lộ trình",
-      );
-    } else {
-      toast.info(`Đã bỏ lưu lộ trình "${roadmapData.title}"`, "Bỏ lưu lộ trình");
+    try {
+      await roadmapService.saveRoadmap(roadmapData._id);
+      setIsSaved(nextState);
+      if (nextState) {
+        toast.success(
+          `Đã lưu lộ trình "${roadmapData.title}" vào danh sách yêu thích!`,
+          "Đã lưu lộ trình",
+        );
+      } else {
+        toast.info(`Đã bỏ lưu lộ trình "${roadmapData.title}"`, "Bỏ lưu lộ trình");
+      }
+    } catch {
+      toast.error("Không thể lưu lộ trình. Vui lòng thử lại!", "Lỗi");
     }
   };
+
 
   return (
     <Card className={styles.hero_card}>
