@@ -4,6 +4,7 @@
  */
 
 const ENDPOINTS = [
+  "https://fyset-judge.onrender.com/api/judge",
   "/api/judge", // 1. Ưu tiên đi qua Vite Proxy (Tránh 100% lỗi CORS và phân giải localhost)
   "http://localhost:8000/api/judge", // 2. Thử trực tiếp localhost:8000
   "http://127.0.0.1:8000/api/judge", // 3. Thử trực tiếp 127.0.0.1:8000
