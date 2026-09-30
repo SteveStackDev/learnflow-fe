@@ -92,6 +92,15 @@
   min-width: 0;
 }
 
+/* New Widgets Grid (single-column stacked) */
+.widgets_grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+  width: 100%;
+}
+
 /* Main Content Column (Column 2 - Scrollable) */
 .main_content_col {
   display: flex;
