@@ -1,64 +1,8 @@
 ﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
-import { problemService, adaptUserProblem } from "~/services/problemService";
+import { problemService } from "~/services/problemService";
 import styles from "./DashboardSolvedProblems.module.css";
-
-const RAW_MOCK_PROBLEMS = [
-  {
-    id: "p1",
-    slug: "two-sum",
-    code: "001",
-    title: "Two Sum",
-    difficulty: "easy",
-    topic: "Array & Hashing",
-    userStatus: "solved",
-    acceptanceRate: 92,
-  },
-  {
-    id: "p2",
-    slug: "longest-substring",
-    code: "003",
-    title: "Longest Substring Without Repeating Characters",
-    difficulty: "medium",
-    topic: "String",
-    userStatus: "attempted",
-    acceptanceRate: 68,
-  },
-  {
-    id: "p3",
-    slug: "median-of-two-sorted-arrays",
-    code: "004",
-    title: "Median of Two Sorted Arrays",
-    difficulty: "hard",
-    topic: "Array & Hashing",
-    userStatus: "solved",
-    acceptanceRate: 44,
-  },
-  {
-    id: "p4",
-    slug: "valid-parentheses",
-    code: "020",
-    title: "Valid Parentheses",
-    difficulty: "easy",
-    topic: "String",
-    userStatus: "solved",
-    acceptanceRate: 85,
-  },
-  {
-    id: "p5",
-    slug: "maximum-subarray",
-    code: "053",
-    title: "Maximum Subarray",
-    difficulty: "medium",
-    topic: "Dynamic Programming",
-    userStatus: "attempted",
-    acceptanceRate: 73,
-  },
-];
-
-// Map qua adapter để Mock có cùng cấu trúc với Real API Data
-const MOCK_PROBLEMS = RAW_MOCK_PROBLEMS.map(adaptUserProblem);
 
 const STATUS_CONFIG = {
   solved: { icon: "CheckCircle", label: "Đã giải", cls: "solved" },
@@ -89,11 +33,11 @@ export default function DashboardSolvedProblems() {
       .getUserProblems()
       .then((data) => {
         if (!isMounted) return;
-        const list = Array.isArray(data) ? data.slice(0, 8) : [];
-        setProblems(list.length > 0 ? list : MOCK_PROBLEMS);
+        setProblems(Array.isArray(data) ? data.slice(0, 8) : []);
       })
-      .catch(() => {
-        if (isMounted) setProblems(MOCK_PROBLEMS);
+      .catch((err) => {
+        console.error("Failed to load user problems:", err);
+        if (isMounted) setProblems([]);
       })
       .finally(() => {
         if (isMounted) setIsLoading(false);
@@ -102,27 +46,22 @@ export default function DashboardSolvedProblems() {
     return () => { isMounted = false; };
   }, []);
 
-  const handleRowClick = (problem) => {
-    const targetId = problem?.problemId?._id || problem?.problemId?.id || problem?.id;
-    if (targetId) {
-      navigate(`/problem/${targetId}`);
-    }
+  const handleRowClick = (item) => {
+    const targetId = item?.problemId?._id || item?.problemId?.id || item?.id;
+    if (targetId) navigate(`/problem/${targetId}`);
   };
 
-  const getStatus = (problem) => {
-    const s = problem?.userStatus || problem?.status || "unsolved";
+  const getStatus = (item) => {
+    const s = item?.userStatus || item?.status || "unsolved";
     return STATUS_CONFIG[s] || STATUS_CONFIG.unsolved;
   };
 
-  const getDiff = (problem) => {
-    const d = problem?.problemId?.difficulty || problem?.difficulty || "easy";
+  const getDiff = (item) => {
+    const d = item?.problemId?.difficulty || item?.difficulty || "easy";
     return DIFF_CONFIG[d] || DIFF_CONFIG.easy;
   };
 
-  const solvedCount = problems.filter((p) => {
-    const s = p?.userStatus || p?.status || "";
-    return s === "solved" || s === "AC";
-  }).length;
+  const solvedCount = problems.filter((p) => p?.userStatus === "solved").length;
 
   return (
     <section className={styles.widget}>
@@ -187,7 +126,7 @@ export default function DashboardSolvedProblems() {
               problems.map((item, idx) => {
                 const statusCfg = getStatus(item);
                 const diffCfg = getDiff(item);
-                const problemDetail = item.problemId || {};
+                const problemDetail = item?.problemId || {};
 
                 return (
                   <tr
@@ -202,12 +141,12 @@ export default function DashboardSolvedProblems() {
                       </span>
                     </td>
                     <td className={styles.td}>
-                      <span className={styles.code_num}>#{problemDetail.code || item.code || idx + 1}</span>
+                      <span className={styles.code_num}>#{problemDetail.code || "---"}</span>
                     </td>
                     <td className={styles.td}>
-                      <span className={styles.problem_title}>{problemDetail.title || item.title || "Bài tập"}</span>
-                      {(problemDetail.topic || item.topic) && (
-                        <span className={styles.topic_tag}>{problemDetail.topic || item.topic}</span>
+                      <span className={styles.problem_title}>{problemDetail.title || "Bài tập"}</span>
+                      {problemDetail.topic && (
+                        <span className={styles.topic_tag}>{problemDetail.topic}</span>
                       )}
                     </td>
                     <td className={styles.td}>
@@ -217,7 +156,7 @@ export default function DashboardSolvedProblems() {
                     </td>
                     <td className={styles.td}>
                       <span className={styles.acceptance}>
-                        {problemDetail.acceptance || item.acceptance || (item.acceptanceRate != null ? `${item.acceptanceRate}%` : "--")}
+                        {problemDetail.acceptance ? problemDetail.acceptance : `${problemDetail.acceptanceRate || 0}%`}
                       </span>
                     </td>
                   </tr>

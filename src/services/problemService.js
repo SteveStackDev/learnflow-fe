@@ -3,7 +3,7 @@ import api from "./api";
 export const adaptProblem = (problem) => {
   if (!problem) return null;
 
-  const rawDiff = String(problem.difficulty || problem.level || problem.difficultyLabel || "easy").toLowerCase();
+  const rawDiff = String(problem.difficulty || problem.level || "easy").toLowerCase();
   let diffLabel = "Dễ";
   let diffKey = "easy";
   if (rawDiff === "hard" || rawDiff === "khó") {
@@ -14,9 +14,8 @@ export const adaptProblem = (problem) => {
     diffKey = "medium";
   }
 
-  const id = problem._id?.toString() || problem.id || String(problem.number || "");
-  const code = problem.code || (problem._id ? String(problem._id).slice(-4).toUpperCase() : (problem.id || "001"));
-  const topic = problem.topic || "Thuật toán";
+  const id = problem._id?.toString() || problem.id || "";
+  const code = problem.code || (problem._id ? String(problem._id).slice(-4).toUpperCase() : "---");
 
   return {
     ...problem,
@@ -27,23 +26,20 @@ export const adaptProblem = (problem) => {
     difficulty: diffKey,
     difficultyLabel: diffLabel,
     level: diffLabel,
-    topic,
-    acceptance: problem.acceptance || (problem.acceptanceRate != null ? `${problem.acceptanceRate}%` : "85%"),
-    acceptanceRate: problem.acceptanceRate != null ? problem.acceptanceRate : 85,
+    topic: problem.topic || "Thuật toán",
+    acceptance: problem.acceptance || (problem.acceptanceRate != null ? `${problem.acceptanceRate}%` : "0%"),
+    acceptanceRate: problem.acceptanceRate ?? 0,
   };
 };
 
-// Adapter chuẩn hóa dành riêng cho Bài nộp / Bài tập của User
 export const adaptUserProblem = (item) => {
   if (!item) return null;
 
-  // Nếu là item từ userProblem (có relation problemId)
   const problemDetail = item.problemId ? adaptProblem(item.problemId) : adaptProblem(item);
 
-  // Chuẩn hóa status: "AC" / "solved" -> "solved", "attempted" / "WA" -> "attempted"
-  const rawStatus = (item.status || item.userStatus || "").toUpperCase();
+  const rawStatus = (item.status || "").toUpperCase();
   let userStatus = "unsolved";
-  if (["SOLVED", "AC", "ACCEPTED", "100"].includes(rawStatus) || item.score === item.maxScore) {
+  if (["SOLVED", "AC", "ACCEPTED"].includes(rawStatus) || (item.score != null && item.score === item.maxScore)) {
     userStatus = "solved";
   } else if (["ATTEMPTED", "WA", "WRONG", "IN_PROGRESS"].includes(rawStatus) || (item.score > 0 && item.score < item.maxScore)) {
     userStatus = "attempted";
@@ -53,18 +49,17 @@ export const adaptUserProblem = (item) => {
     id: item._id?.toString() || item.id,
     userStatus,
     score: item.score || 0,
-    maxScore: item.maxScore || 100,
+    maxScore: item.maxScore || 0,
     createdAt: item.createdAt,
-    // Trả về object problemId chuẩn hóa
     problemId: {
       ...problemDetail,
-      _id: problemDetail.id || item.problemId?._id || item.id,
+      _id: problemDetail?.id || item.problemId?._id || item.id,
     },
-    code: problemDetail.code,
-    title: problemDetail.title,
-    difficulty: problemDetail.difficulty,
-    topic: problemDetail.topic,
-    acceptanceRate: problemDetail.acceptanceRate,
+    code: problemDetail?.code || "---",
+    title: problemDetail?.title || "Chưa có tên bài tập",
+    difficulty: problemDetail?.difficulty || "easy",
+    topic: problemDetail?.topic || "",
+    acceptanceRate: problemDetail?.acceptanceRate || 0,
   };
 };
 
@@ -83,7 +78,7 @@ export const problemService = {
 
       return list.map(adaptProblem);
     } catch (error) {
-      console.warn("⚠️ [problemService] Lỗi khi tải danh sách bài tập:", error.message || error);
+      console.error("Lỗi khi lấy tất cả bài tập:", error);
       return [];
     }
   },
@@ -100,7 +95,7 @@ export const problemService = {
       const problem = Array.isArray(rawData) ? rawData[0] : (rawData?.data || rawData);
       return adaptProblem(problem);
     } catch (error) {
-      console.warn(`⚠️ [problemService] Lỗi khi tải chi tiết bài tập #${idOrSlug}:`, error.message || error);
+      console.error(`Lỗi khi lấy chi tiết bài tập #${idOrSlug}:`, error);
       return null;
     }
   },
@@ -117,19 +112,14 @@ export const problemService = {
 
       return list.map(adaptUserProblem);
     } catch (error) {
-      console.warn("⚠️ [problemService] Lỗi khi lấy bài tập của user:", error.message || error);
+      console.error("Lỗi khi lấy danh sách bài tập của user:", error);
       return [];
     }
   },
 
   saveProblem: async (payload) => {
-    try {
-      const response = await api.post("/problem/save", payload);
-      return response?.data || response;
-    } catch (error) {
-      console.error("❌ [problemService] Lỗi khi lưu bài tập:", error.message || error);
-      throw error;
-    }
+    const response = await api.post("/problem/save", payload);
+    return response?.data || response;
   },
 };
 
