@@ -71,8 +71,10 @@ export default function DashboardEnrolledCourses() {
   }, []);
 
   const handleClick = (course) => {
-    const id = course.courseId._id;
-    navigate(`/course/${id}`);
+    const id = course?.courseId?.id || course?.courseId?._id || course?.id;
+    if (id) {
+      navigate(`/course/${id}`);
+    }
   };
 
   const getInitials = (title = "") =>
@@ -127,82 +129,81 @@ export default function DashboardEnrolledCourses() {
               Khám phá Khoá học
             </button>
           </div>
-        ) : (
-          courses.map((course, idx) => {
-            const pct = Math.min(100, Math.max(0, course.progression || 0));
-            const prog = PROGRESS_COLOR(pct);
-            const levelGrad = LEVEL_GRADIENT[course.courseId.level] || LEVEL_GRADIENT["Cơ bản"];
-            return (
-              <div
-                key={course.id || course._id || idx}
-                className={styles.course_card}
-                onClick={() => handleClick(course)}
-                style={{ animationDelay: `${idx * 80}ms` }}
-              >
-                {/* Thumbnail */}
-                <div className={styles.course_thumb}>
-                  {course.courseId.imageUrl || course.courseId.thumbnail ? (
-                    <img
-                      src={course.courseId.imageUrl || course.courseId.thumbnail}
-                      alt={course.courseId.title}
-                      className={styles.thumb_img}
-                    />
-                  ) : (
-                    <div className={styles.thumb_placeholder}>
-                      <span className={styles.thumb_initials}>
-                        {getInitials(course.courseId.title)}
-                      </span>
-                    </div>
-                  )}
-                  <span
-                    className={styles.level_dot}
-                    style={{ background: levelGrad }}
-                    title={course.courseId.level}
+        ) : (courses.map((course, idx) => {
+          const courseInfo = course.courseId || {};
+          const pct = Math.min(100, Math.max(0, course.progression || 0));
+          const prog = PROGRESS_COLOR(pct);
+          const levelGrad = LEVEL_GRADIENT[courseInfo.level] || LEVEL_GRADIENT["Cơ bản"];
+
+          return (
+            <div
+              key={course.id || course._id || idx}
+              className={styles.course_card}
+              onClick={() => handleClick(course)}
+              style={{ animationDelay: `${idx * 80}ms` }}
+            >
+              {/* Thumbnail */}
+              <div className={styles.course_thumb}>
+                {courseInfo.imageUrl || courseInfo.thumbnail ? (
+                  <img
+                    src={courseInfo.imageUrl || courseInfo.thumbnail}
+                    alt={courseInfo.title || "Course"}
+                    className={styles.thumb_img}
                   />
-                </div>
-
-                {/* Info */}
-                <div className={styles.course_info}>
-                  <p className={styles.course_title}>{course.courseId.title}</p>
-                  <p className={styles.course_instructor}>
-                    <Icon name="User" size={11} />
-                    {course.instructor || "FySet Mentor"}
-                    {course.lessonsCount ? (
-                      <>
-                        <span className={styles.dot_sep}>·</span>
-                        <Icon name="BookOpen" size={11} />
-                        {course.lessonsCount} bài
-                      </>
-                    ) : null}
-                  </p>
-
-                  {/* Progress Bar */}
-                  <div className={styles.progress_wrap}>
-                    <div className={styles.progress_track}>
-                      <div
-                        className={styles.progress_fill}
-                        style={{ width: `${pct}%`, background: prog.bg }}
-                      />
-                    </div>
-                    <span className={styles.progress_label}>
-                      {pct === 100 ? (
-                        <span className={styles.completed_tag}>
-                          <Icon name="CheckCircle" size={11} /> Hoàn thành
-                        </span>
-                      ) : (
-                        `${pct}%`
-                      )}
+                ) : (
+                  <div className={styles.thumb_placeholder}>
+                    <span className={styles.thumb_initials}>
+                      {getInitials(courseInfo.title || "Khóa học")}
                     </span>
                   </div>
-                </div>
+                )}
+                <span
+                  className={styles.level_dot}
+                  style={{ background: levelGrad }}
+                  title={courseInfo.level || "Cơ bản"}
+                />
+              </div>
 
-                <div className={styles.chevron}>
-                  <Icon name="ChevronRight" size={16} />
+              {/* Info */}
+              <div className={styles.course_info}>
+                <p className={styles.course_title}>{courseInfo.title || "Khóa học chưa đặt tên"}</p>
+                <p className={styles.course_instructor}>
+                  <Icon name="User" size={11} />
+                  {course.instructor || courseInfo.instructor || "FySet Mentor"}
+                  {(course.lessonsCount || courseInfo.lessonsCount) ? (
+                    <>
+                      <span className={styles.dot_sep}>·</span>
+                      <Icon name="BookOpen" size={11} />
+                      {course.lessonsCount || courseInfo.lessonsCount} bài
+                    </>
+                  ) : null}
+                </p>
+
+                {/* Progress Bar */}
+                <div className={styles.progress_wrap}>
+                  <div className={styles.progress_track}>
+                    <div
+                      className={styles.progress_fill}
+                      style={{ width: `${pct}%`, background: prog.bg }}
+                    />
+                  </div>
+                  <span className={styles.progress_label}>
+                    {pct === 100 ? (
+                      <span className={styles.completed_tag}>
+                        <Icon name="CheckCircle" size={11} /> Hoàn thành
+                      </span>
+                    ) : (
+                      `${pct}%`
+                    )}
+                  </span>
                 </div>
               </div>
-            );
-          })
-        )}
+              <div className={styles.chevron}>
+                <Icon name="ChevronRight" size={16} />
+              </div>
+            </div>
+          );
+        }))}
       </div>
     </section>
   );

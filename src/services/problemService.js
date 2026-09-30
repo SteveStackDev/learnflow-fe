@@ -1,12 +1,9 @@
 import api from "./api";
 
-/**
- * Adapter: Chuyển đổi dữ liệu từ MongoDB Mongoose Model sang định dạng chuẩn UI của FySet Frontend
- */
 export const adaptProblem = (problem) => {
   if (!problem) return null;
 
-  const rawDiff = String(problem.difficulty || problem.level || problem.difficultyLabel || "Easy").toLowerCase();
+  const rawDiff = String(problem.difficulty || problem.level || problem.difficultyLabel || "easy").toLowerCase();
   let diffLabel = "Dễ";
   let diffKey = "easy";
   if (rawDiff === "hard" || rawDiff === "khó") {
@@ -19,61 +16,59 @@ export const adaptProblem = (problem) => {
 
   const id = problem._id?.toString() || problem.id || String(problem.number || "");
   const code = problem.code || (problem._id ? String(problem._id).slice(-4).toUpperCase() : (problem.id || "001"));
-
-  // Đảm bảo topic & tags
   const topic = problem.topic || "Thuật toán";
-  const tags = Array.isArray(problem.tags) && problem.tags.length > 0
-    ? problem.tags
-    : [topic];
-
-  // Định dạng timeLimit và memoryLimit
-  const timeLimit = problem.timeLimit
-    ? (typeof problem.timeLimit === "number" ? `${problem.timeLimit}s` : problem.timeLimit)
-    : "1.0s";
-
-  const memoryLimit = problem.memoryLimit
-    ? (typeof problem.memoryLimit === "number" ? `${problem.memoryLimit}MB` : problem.memoryLimit)
-    : "256MB";
 
   return {
     ...problem,
     id,
-    _id: problem._id,
+    _id: problem._id || id,
     code,
-    number: problem.number || code,
-    slug: problem.slug || id,
     title: problem.title || "Bài tập thuật toán",
     difficulty: diffKey,
     difficultyLabel: diffLabel,
     level: diffLabel,
     topic,
-    tags,
-    points: problem.points || 100,
-    statement: problem.statement || problem.description || "",
-    description: problem.statement || problem.description || "",
-    imageDescription: problem.imageDescription || problem.image_description || "",
-    inputFormat: problem.inputFormat || problem.input_format || "",
-    outputFormat: problem.outputFormat || problem.output_format || "",
-    constraints: problem.constraints || [],
-    examples: problem.examples || [],
-    subtasks: problem.subtasks || [],
-    testCases: problem.testCases || problem.testcases || [],
-    timeLimit,
-    memoryLimit,
-    status: problem.status || "Active",
     acceptance: problem.acceptance || (problem.acceptanceRate != null ? `${problem.acceptanceRate}%` : "85%"),
     acceptanceRate: problem.acceptanceRate != null ? problem.acceptanceRate : 85,
-    author: problem.author || "FySet Mentor",
-    upvotes: problem.upvotes || 0,
-    downvotes: problem.downvotes || 0,
-    languages: problem.languages || [],
+  };
+};
+
+// Adapter chuẩn hóa dành riêng cho Bài nộp / Bài tập của User
+export const adaptUserProblem = (item) => {
+  if (!item) return null;
+
+  // Nếu là item từ userProblem (có relation problemId)
+  const problemDetail = item.problemId ? adaptProblem(item.problemId) : adaptProblem(item);
+
+  // Chuẩn hóa status: "AC" / "solved" -> "solved", "attempted" / "WA" -> "attempted"
+  const rawStatus = (item.status || item.userStatus || "").toUpperCase();
+  let userStatus = "unsolved";
+  if (["SOLVED", "AC", "ACCEPTED", "100"].includes(rawStatus) || item.score === item.maxScore) {
+    userStatus = "solved";
+  } else if (["ATTEMPTED", "WA", "WRONG", "IN_PROGRESS"].includes(rawStatus) || (item.score > 0 && item.score < item.maxScore)) {
+    userStatus = "attempted";
+  }
+
+  return {
+    id: item._id?.toString() || item.id,
+    userStatus,
+    score: item.score || 0,
+    maxScore: item.maxScore || 100,
+    createdAt: item.createdAt,
+    // Trả về object problemId chuẩn hóa
+    problemId: {
+      ...problemDetail,
+      _id: problemDetail.id || item.problemId?._id || item.id,
+    },
+    code: problemDetail.code,
+    title: problemDetail.title,
+    difficulty: problemDetail.difficulty,
+    topic: problemDetail.topic,
+    acceptanceRate: problemDetail.acceptanceRate,
   };
 };
 
 export const problemService = {
-  /**
-   * 1. Lấy toàn bộ danh sách bài tập từ MongoDB Backend (/api/v1/problem/all)
-   */
   getAllProblems: async (params = {}) => {
     try {
       const searchParams = new URLSearchParams();
@@ -82,128 +77,59 @@ export const problemService = {
       if (params.topic && params.topic !== "all") searchParams.append("topic", params.topic);
 
       const qs = searchParams.toString() ? `?${searchParams.toString()}` : "";
-      
-      let data;
-      try {
-        data = await api.get(`/problem/all${qs}`);
-      } catch (err) {
-        // Fallback endpoint nếu backend cấu hình /problem
-        if (err?.status === 404) {
-          data = await api.get(`/problem${qs}`);
-        } else {
-          throw err;
-        }
-      }
+      const response = await api.get(`/problem/all${qs}`);
+      const rawData = response?.data || response;
+      const list = Array.isArray(rawData) ? rawData : (rawData?.data || []);
 
-      const list = Array.isArray(data) ? data : (data?.problems || data?.data || []);
       return list.map(adaptProblem);
     } catch (error) {
-      console.warn("⚠️ [problemService] Lỗi khi tải danh sách bài tập từ Backend:", error.message || error);
+      console.warn("⚠️ [problemService] Lỗi khi tải danh sách bài tập:", error.message || error);
       return [];
     }
   },
 
-  /**
-   * Alias tương thích cho getProblems
-   */
   getProblems: async (params = {}) => {
     return await problemService.getAllProblems(params);
   },
 
-  /**
-   * 2. Lấy chi tiết 1 bài tập theo ID hoặc Slug từ MongoDB (/api/v1/problem/:id)
-   */
   getProblemById: async (idOrSlug) => {
     if (!idOrSlug) return null;
     try {
-      const data = await api.get(`/problem/${idOrSlug}`);
-      // Nếu Backend dùng .find() trả về mảng 1 phần tử
-      const rawProblem = Array.isArray(data) ? data[0] : (data?.problem || data);
-      if (!rawProblem) return null;
-      return adaptProblem(rawProblem);
+      const response = await api.get(`/problem/${idOrSlug}`);
+      const rawData = response?.data || response;
+      const problem = Array.isArray(rawData) ? rawData[0] : (rawData?.data || rawData);
+      return adaptProblem(problem);
     } catch (error) {
-      console.warn(`⚠️ [problemService] Không thể tải chi tiết bài tập #${idOrSlug}:`, error.message || error);
+      console.warn(`⚠️ [problemService] Lỗi khi tải chi tiết bài tập #${idOrSlug}:`, error.message || error);
       return null;
     }
   },
 
-  /**
-   * Alias tương thích cho getProblem
-   */
   getProblem: async (idOrSlug) => {
     return await problemService.getProblemById(idOrSlug);
   },
 
-  /**
-   * 3. Lấy danh sách bài tập / lịch sử bài nộp của User (/api/v1/problem/user)
-   */
   getUserProblems: async () => {
     try {
-      let data;
-      try {
-        data = await api.get("/problem/user");
-      } catch (err) {
-        if (err?.status === 404) {
-          data = await api.get("/problem/user");
-        } else {
-          throw err;
-        }
-      }
-      return Array.isArray(data) ? data : (data?.problems || data?.submissions || []);
+      const response = await api.get("/problem/user");
+      const rawData = response?.data || response;
+      const list = Array.isArray(rawData) ? rawData : (rawData?.data || []);
+
+      return list.map(adaptUserProblem);
     } catch (error) {
       console.warn("⚠️ [problemService] Lỗi khi lấy bài tập của user:", error.message || error);
       return [];
     }
   },
 
-  /**
-   * 4. Lưu bài tập / bài nộp của User vào MongoDB (/api/v1/problem/save)
-   */
   saveProblem: async (payload) => {
     try {
-      let data;
-      try {
-        data = await api.post("/problem/save", payload);
-      } catch (err) {
-        if (err?.status === 404) {
-          data = await api.post("/problem", payload);
-        } else {
-          throw err;
-        }
-      }
-      return data;
+      const response = await api.post("/problem/save", payload);
+      return response?.data || response;
     } catch (error) {
       console.error("❌ [problemService] Lỗi khi lưu bài tập:", error.message || error);
       throw error;
     }
-  },
-
-  /**
-   * Lấy toàn bộ bài tập cho trang Admin
-   */
-  getAdminProblems: async (params = {}) => {
-    return await problemService.getAllProblems(params);
-  },
-
-  /**
-   * Tạo bài tập mới (Dành cho Admin)
-   */
-  createProblem: async (formData) => {
-    return await api.post("/problem", formData);
-  },
-
-  /**
-   * Cập nhật bài tập (Dành cho Admin)
-   */
-  updateProblem: async (id, formData) => {
-    return await api.put(`/problem/${id}`, formData);
-  },
-
-  /**
-   * Xóa bài tập (Dành cho Admin)
-   */
-  deleteProblem: async (id) => {
-    return await api.delete(`/problem/${id}`);
   },
 };
 

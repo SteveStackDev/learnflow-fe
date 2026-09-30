@@ -1,16 +1,15 @@
 ﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
-import { problemService } from "~/services/problemService";
+import { problemService, adaptUserProblem } from "~/services/problemService";
 import styles from "./DashboardSolvedProblems.module.css";
 
-const MOCK_PROBLEMS = [
+const RAW_MOCK_PROBLEMS = [
   {
     id: "p1",
     slug: "two-sum",
     code: "001",
     title: "Two Sum",
-    level: "Dễ",
     difficulty: "easy",
     topic: "Array & Hashing",
     userStatus: "solved",
@@ -21,7 +20,6 @@ const MOCK_PROBLEMS = [
     slug: "longest-substring",
     code: "003",
     title: "Longest Substring Without Repeating Characters",
-    level: "Trung bình",
     difficulty: "medium",
     topic: "String",
     userStatus: "attempted",
@@ -32,7 +30,6 @@ const MOCK_PROBLEMS = [
     slug: "median-of-two-sorted-arrays",
     code: "004",
     title: "Median of Two Sorted Arrays",
-    level: "Khó",
     difficulty: "hard",
     topic: "Array & Hashing",
     userStatus: "solved",
@@ -43,7 +40,6 @@ const MOCK_PROBLEMS = [
     slug: "valid-parentheses",
     code: "020",
     title: "Valid Parentheses",
-    level: "Dễ",
     difficulty: "easy",
     topic: "String",
     userStatus: "solved",
@@ -54,13 +50,15 @@ const MOCK_PROBLEMS = [
     slug: "maximum-subarray",
     code: "053",
     title: "Maximum Subarray",
-    level: "Trung bình",
     difficulty: "medium",
     topic: "Dynamic Programming",
     userStatus: "attempted",
     acceptanceRate: 73,
   },
 ];
+
+// Map qua adapter để Mock có cùng cấu trúc với Real API Data
+const MOCK_PROBLEMS = RAW_MOCK_PROBLEMS.map(adaptUserProblem);
 
 const STATUS_CONFIG = {
   solved: { icon: "CheckCircle", label: "Đã giải", cls: "solved" },
@@ -105,21 +103,24 @@ export default function DashboardSolvedProblems() {
   }, []);
 
   const handleRowClick = (problem) => {
-    navigate(`/problem/${problem.problemId._id}`);
+    const targetId = problem?.problemId?._id || problem?.problemId?.id || problem?.id;
+    if (targetId) {
+      navigate(`/problem/${targetId}`);
+    }
   };
 
   const getStatus = (problem) => {
-    const s = problem.userStatus || problem.status || "unsolved";
+    const s = problem?.userStatus || problem?.status || "unsolved";
     return STATUS_CONFIG[s] || STATUS_CONFIG.unsolved;
   };
 
   const getDiff = (problem) => {
-    const d = problem.problemId.difficulty || problem.problemId.level || "easy";
+    const d = problem?.problemId?.difficulty || problem?.difficulty || "easy";
     return DIFF_CONFIG[d] || DIFF_CONFIG.easy;
   };
 
   const solvedCount = problems.filter((p) => {
-    const s = p.userStatus || p.status || "";
+    const s = p?.userStatus || p?.status || "";
     return s === "solved" || s === "AC";
   }).length;
 
@@ -186,6 +187,8 @@ export default function DashboardSolvedProblems() {
               problems.map((item, idx) => {
                 const statusCfg = getStatus(item);
                 const diffCfg = getDiff(item);
+                const problemDetail = item.problemId || {};
+
                 return (
                   <tr
                     key={item.id || item._id || idx}
@@ -199,12 +202,12 @@ export default function DashboardSolvedProblems() {
                       </span>
                     </td>
                     <td className={styles.td}>
-                      <span className={styles.code_num}>#{item.code || item.number || idx + 1}</span>
+                      <span className={styles.code_num}>#{problemDetail.code || item.code || idx + 1}</span>
                     </td>
                     <td className={styles.td}>
-                      <span className={styles.problem_title}>{item.problemId.title}</span>
-                      {item.problemId.topic && (
-                        <span className={styles.topic_tag}>{item.problemId.topic}</span>
+                      <span className={styles.problem_title}>{problemDetail.title || item.title || "Bài tập"}</span>
+                      {(problemDetail.topic || item.topic) && (
+                        <span className={styles.topic_tag}>{problemDetail.topic || item.topic}</span>
                       )}
                     </td>
                     <td className={styles.td}>
@@ -214,7 +217,7 @@ export default function DashboardSolvedProblems() {
                     </td>
                     <td className={styles.td}>
                       <span className={styles.acceptance}>
-                        {item.acceptance || (item.acceptanceRate != null ? `${item.acceptanceRate}%` : "--")}
+                        {problemDetail.acceptance || item.acceptance || (item.acceptanceRate != null ? `${item.acceptanceRate}%` : "--")}
                       </span>
                     </td>
                   </tr>
