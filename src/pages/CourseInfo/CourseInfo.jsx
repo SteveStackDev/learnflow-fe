@@ -30,18 +30,23 @@ export default function CourseInfo() {
       setLoading(true);
       const courseRes = await courseService.getCourse(id);
       const curriculumRes = await courseService.getCurriculum(id);
-      const data = await courseService.getUserProgression(id);
-      if (
-        data &&
-        data.curriculum &&
-        data.curriculum.length === 0 &&
-        data.lastAccessedLessonId === null &&
-        data.progression === 0
-      ) {
-        setIsEnrolled(false);
-      } else if (data && (data.lastAccessedLessonId || data.progression > 0)) {
-        setIsEnrolled(true);
+
+      // Chỉ kiểm tra tiến độ nếu user đã đăng nhập
+      if (isAuthenticated) {
+        const data = await courseService.getUserProgression(id);
+        if (
+          data &&
+          data.curriculum &&
+          data.curriculum.length === 0 &&
+          data.lastAccessedLessonId === null &&
+          data.progression === 0
+        ) {
+          setIsEnrolled(false);
+        } else if (data && (data.lastAccessedLessonId || data.progression > 0)) {
+          setIsEnrolled(true);
+        }
       }
+
       setCurriculum(curriculumRes);
       setCourse(courseRes);
       setLoading(false);
@@ -50,7 +55,7 @@ export default function CourseInfo() {
     if (id) {
       fetchData();
     }
-  }, [id]);
+  }, [id, isAuthenticated]);
 
   const handleActionClick = async () => {
     if (isSubmitting) return;

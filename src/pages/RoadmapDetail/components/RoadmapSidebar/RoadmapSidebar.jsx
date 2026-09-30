@@ -10,14 +10,9 @@ export function RoadmapSidebar({ technologies, recommendedCourses, recommendedPr
   const { toast } = useToast();
   const { isAuthenticated } = useAuth();
 
-  const handleStartCourse = (title) => {
-    if (!isAuthenticated) {
-      toast.warning("Vui lòng đăng nhập để xem chi tiết khóa học!", "Yêu cầu đăng nhập");
-      navigate("/signin");
-      return;
-    }
-    toast.info(`Chuyển sang xem khóa học "${title}"...`, "Khóa học gợi ý");
-    navigate("/course/info");
+  const handleStartCourse = (course) => {
+    const id = course.id || course._id || course.slug;
+    navigate(`/course/${id}/info`);
   };
 
   const handleSolveProblem = (title) => {
@@ -72,7 +67,7 @@ export function RoadmapSidebar({ technologies, recommendedCourses, recommendedPr
                     variant="ghost"
                     size="sm"
                     leftIcon="Play"
-                    onClick={() => handleStartCourse(course.title)}
+                    onClick={() => handleStartCourse(course)}
                   >
                     Học ngay
                   </Button>

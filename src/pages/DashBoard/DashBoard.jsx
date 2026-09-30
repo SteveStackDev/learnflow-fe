@@ -1,21 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import { useAuth } from "~/context/AuthContext.jsx";
+import { useToast } from "~/context/ToastContext.jsx";
 import { dashboardData } from "~/constants/mockDashBoard";
-import { WidgetBlurWrapper } from "~/components/ui";
 
-// Sub-Components
+// Sub-Components (currently hidden)
 import DashboardCard from "./components/DashboardCard/DashboardCard";
-import DashboardHeroBanner from "./components/DashboardHeroBanner/DashboardHeroBanner";
-import DashboardSkillDiagnostics from "./components/DashboardSkillDiagnostics/DashboardSkillDiagnostics";
-import DashboardLearningRoadmap from "./components/DashboardLearningRoadmap/DashboardLearningRoadmap";
-import DashboardCommunityDigest from "./components/DashboardCommunityDigest/DashboardCommunityDigest";
-import DashboardContributionGoal from "./components/DashboardContributionGoal/DashboardContributionGoal";
 
-import DashboardAiTutorWidget from "./components/DashboardAiTutorWidget/DashboardAiTutorWidget";
-import DashboardUpcomingEvents from "./components/DashboardUpcomingEvents/DashboardUpcomingEvents";
-import DashboardOnlineFriends from "./components/DashboardOnlineFriends/DashboardOnlineFriends";
-import DashboardMiniLeaderboard from "./components/DashboardMiniLeaderboard/DashboardMiniLeaderboard";
+// New Active Widgets
+import DashboardFollowedRoadmaps from "./components/DashboardFollowedRoadmaps/DashboardFollowedRoadmaps";
+import DashboardEnrolledCourses from "./components/DashboardEnrolledCourses/DashboardEnrolledCourses";
+import DashboardSolvedProblems from "./components/DashboardSolvedProblems/DashboardSolvedProblems";
 
 import UserProfileCardModal from "~/components/UserProfileCardModal/UserProfileCardModal";
 
@@ -30,10 +26,19 @@ function getTimeBasedGreeting() {
 
 export default function DashBoard() {
   useScrollReveal();
-  const { user: currentUser } = useAuth();
+  const navigate = useNavigate();
+  const { user: currentUser, isAuthenticated } = useAuth();
+  const { toast } = useToast();
 
-  const [onlineFriends] = useState(dashboardData.onlineFriends || []);
   const [selectedUserForModal, setSelectedUserForModal] = useState(null);
+
+  // Auth guard: chỉ cho phép user đã đăng nhập xem Dashboard
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast.warning("Vui lòng đăng nhập để xem Dashboard cá nhân!", "Yêu cầu đăng nhập");
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate, toast]);
 
   const greetingPrefix = getTimeBasedGreeting();
   const userName =
@@ -44,8 +49,6 @@ export default function DashBoard() {
 
   const stats = {
     dailyStreak: currentUser?.dailyStreak || 5,
-    pomodoroStreak: currentUser?.pomodoroStreak || 3,
-    focusHours: currentUser?.focusHours || "42.5h",
     xp: currentUser?.experiencePoints || currentUser?.xp || 1250,
     rating: currentUser?.rating || 1520,
   };
@@ -76,92 +79,52 @@ export default function DashBoard() {
         {/* Top Student Overview Summary Card */}
         <DashboardCard student={studentInfo} />
 
-        {/* 3-Column Grid Layout: Column 2 (Main Content) & Column 3 (Interactive Right Panel) */}
-        <div className={styles.three_column_layout}>
-          {/* Main Content (Column 2 - Scrollable) */}
-          <main className={styles.main_content_col}>
-            {/* 1. Hero Action Banner (AI Powered) */}
-            <DashboardHeroBanner heroBanner={dashboardData.heroBanner} />
+        {/* === MAIN DASHBOARD CONTENT === */}
+        <div className={styles.widgets_grid}>
+          {/* Widget 1: Roadmap đã follow */}
+          <DashboardFollowedRoadmaps />
 
-            {/* 2. AI Skill Diagnostics & Radar (With Blur Effect) */}
-            <WidgetBlurWrapper
-              badge="SẮP RA MẮT"
-              icon="Sparkles"
-              tagColor="blue"
-              title="AI Skill Diagnostics & Radar"
-              description="Hệ thống AI chuẩn đoán kỹ năng & đề xuất bài tập tự động đang được hoàn thiện và sẽ sớm khả dụng!"
-            >
-              <DashboardSkillDiagnostics skillDiagnostics={dashboardData.skillDiagnostics} />
-            </WidgetBlurWrapper>
+          {/* Widget 2: Khoá học đang học + progress bar */}
+          <DashboardEnrolledCourses />
 
-            {/* 3. Learning Roadmap & Capstone Progress */}
-            <DashboardLearningRoadmap
-              enrolledCourses={dashboardData.enrolledCourses}
-              capstoneProject={dashboardData.capstoneProject}
-            />
-
-            {/* 4. Community Digest & Blog Highlights (With Blur Effect) */}
-            <WidgetBlurWrapper
-              badge="SẮP RA MẮT"
-              icon="MessageSquare"
-              tagColor="purple"
-              title="Community Digest & Diễn Đàn"
-              description="Khu vực kết nối cộng đồng, chia sẻ kinh nghiệm và thảo luận kỹ thuật sẽ sớm mở cửa cho toàn bộ học viên!"
-            >
-              <DashboardCommunityDigest
-                blogHighlights={dashboardData.blogHighlights}
-                hotDiscussions={dashboardData.hotDiscussions}
-                onSelectUser={(u) => setSelectedUserForModal(u)}
-              />
-            </WidgetBlurWrapper>
-          </main>
-
-          {/* Interactive Right Panel (Column 3 - Sticky) */}
-          <aside className={styles.right_panel_col}>
-            {/* 1. Contribution Heatmap & Weekly Goal */}
-            <DashboardContributionGoal
-              attendanceMatrix={dashboardData.attendanceMatrix}
-              weeklyGoal={dashboardData.weeklyGoal}
-            />
-
-            {/* 2. AI Tutor Quick Assistant Widget */}
-            <DashboardAiTutorWidget presets={dashboardData.aiTutorPresets} />
-
-            {/* 3. Upcoming Events & Deadlines Countdown */}
-            <DashboardUpcomingEvents upcomingEvents={dashboardData.upcomingEvents} />
-
-            {/* 4. Online Friends & Direct Messaging (With Blur Effect) */}
-            <WidgetBlurWrapper
-              badge="SẮP RA MẮT"
-              icon="Users"
-              tagColor="green"
-              title="Bạn Bè Trực Tuyến & Nhắn Tin"
-              description="Tính năng học nhóm cùng bạn bè và trò chuyện trực tiếp (Direct Messaging) đang được phát triển!"
-            >
-              <DashboardOnlineFriends
-                onlineFriends={onlineFriends}
-                onSelectUser={(u) => setSelectedUserForModal(u)}
-              />
-            </WidgetBlurWrapper>
-
-            {/* 5. Leaderboard Mini XP Weekly (With Blur Effect) */}
-            <WidgetBlurWrapper
-              badge="SẮP RA MẮT"
-              icon="Trophy"
-              tagColor="amber"
-              title="Top XP Bứt Phá Tuần"
-              description="Bảng xếp hạng học viên xuất sắc và vinh danh thành tích tuần đang được cập nhật!"
-            >
-              <DashboardMiniLeaderboard
-                leaderboard={dashboardData.miniLeaderboard}
-                onSelectUser={(u) => setSelectedUserForModal(u)}
-              />
-            </WidgetBlurWrapper>
-          </aside>
+          {/* Widget 3: Bài tập đã làm (table dạng ProblemList) */}
+          <DashboardSolvedProblems />
         </div>
+
+        {/*
+          === CÁC WIDGET TẠM THỜI ẨN ===
+          (sẽ bật lại khi cần)
+
+          import { WidgetBlurWrapper } from "~/components/ui";
+          import DashboardHeroBanner from "./components/DashboardHeroBanner/DashboardHeroBanner";
+          import DashboardSkillDiagnostics from "./components/DashboardSkillDiagnostics/DashboardSkillDiagnostics";
+          import DashboardLearningRoadmap from "./components/DashboardLearningRoadmap/DashboardLearningRoadmap";
+          import DashboardCommunityDigest from "./components/DashboardCommunityDigest/DashboardCommunityDigest";
+          import DashboardContributionGoal from "./components/DashboardContributionGoal/DashboardContributionGoal";
+          import DashboardAiTutorWidget from "./components/DashboardAiTutorWidget/DashboardAiTutorWidget";
+          import DashboardUpcomingEvents from "./components/DashboardUpcomingEvents/DashboardUpcomingEvents";
+          import DashboardOnlineFriends from "./components/DashboardOnlineFriends/DashboardOnlineFriends";
+          import DashboardMiniLeaderboard from "./components/DashboardMiniLeaderboard/DashboardMiniLeaderboard";
+
+          <DashboardHeroBanner heroBanner={dashboardData.heroBanner} />
+          <WidgetBlurWrapper badge="SẮP RA MẮT" icon="Sparkles" tagColor="blue" title="AI Skill Diagnostics & Radar" description="...">
+            <DashboardSkillDiagnostics skillDiagnostics={dashboardData.skillDiagnostics} />
+          </WidgetBlurWrapper>
+          <DashboardLearningRoadmap enrolledCourses={dashboardData.enrolledCourses} capstoneProject={dashboardData.capstoneProject} />
+          <WidgetBlurWrapper badge="SẮP RA MẮT" icon="MessageSquare" tagColor="purple" title="Community Digest & Diễn Đàn" description="...">
+            <DashboardCommunityDigest blogHighlights={dashboardData.blogHighlights} hotDiscussions={dashboardData.hotDiscussions} onSelectUser={(u) => setSelectedUserForModal(u)} />
+          </WidgetBlurWrapper>
+          <DashboardContributionGoal attendanceMatrix={dashboardData.attendanceMatrix} weeklyGoal={dashboardData.weeklyGoal} />
+          <DashboardAiTutorWidget presets={dashboardData.aiTutorPresets} />
+          <DashboardUpcomingEvents upcomingEvents={dashboardData.upcomingEvents} />
+          <WidgetBlurWrapper badge="SẮP RA MẮT" icon="Users" tagColor="green" title="Bạn Bè Trực Tuyến & Nhắn Tin" description="...">
+            <DashboardOnlineFriends onlineFriends={onlineFriends} onSelectUser={(u) => setSelectedUserForModal(u)} />
+          </WidgetBlurWrapper>
+          <WidgetBlurWrapper badge="SẮP RA MẮT" icon="Trophy" tagColor="amber" title="Top XP Bứt Phá Tuần" description="...">
+            <DashboardMiniLeaderboard leaderboard={dashboardData.miniLeaderboard} onSelectUser={(u) => setSelectedUserForModal(u)} />
+          </WidgetBlurWrapper>
+        */}
       </div>
-
-
 
       {/* User Profile Quick Card Modal */}
       <UserProfileCardModal
@@ -171,4 +134,4 @@ export default function DashBoard() {
       />
     </div>
   );
-}
+}

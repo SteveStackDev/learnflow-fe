@@ -1,0 +1,289 @@
+﻿/* DashboardSolvedProblems */
+.widget {
+  background: #ffffff;
+  border: 1px solid rgba(169, 183, 203, 0.35);
+  border-radius: 20px;
+  box-shadow: 0 8px 28px rgba(9, 80, 195, 0.05);
+  overflow: hidden;
+}
+
+.widget_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.2);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.header_left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header_icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.header_title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 2px 0;
+}
+
+.header_subtitle {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.view_all_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.view_all_btn:hover {
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+}
+
+/* Table */
+.table_wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.thead {
+  background-color: #f8fafc;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.25);
+}
+
+.th {
+  padding: 12px 16px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #475569;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tbody_row {
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: background 0.18s ease;
+  animation: rowIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes rowIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tbody_row:last-child { border-bottom: none; }
+
+.tbody_row:hover { background: #f8fafc; }
+
+.td {
+  padding: 13px 16px;
+  font-size: 0.85rem;
+  color: #334155;
+  vertical-align: middle;
+}
+
+/* Status Icons */
+.status_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+}
+
+.status_solved { color: #16a34a; }
+.status_attempted { color: #f59e0b; }
+.status_unsolved { color: #cbd5e1; }
+
+/* Code number */
+.code_num {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* Problem title + topic */
+.problem_title {
+  display: block;
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 0.875rem;
+  margin-bottom: 3px;
+  transition: color 0.18s;
+}
+
+.tbody_row:hover .problem_title {
+  color: #3b82f6;
+}
+
+.topic_tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 1px 7px;
+  border-radius: 5px;
+}
+
+/* Difficulty Badges */
+.diff_badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.diff_easy { background: #dcfce7; color: #15803d; }
+.diff_medium { background: #fef3c7; color: #b45309; }
+.diff_hard { background: #fee2e2; color: #b91c1c; }
+
+/* Acceptance rate */
+.acceptance {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Skeleton */
+.skeleton_row {
+  border-bottom: 1px solid #f1f5f9;
+  pointer-events: none;
+}
+
+.skel_icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  animation: shimmer 1.5s infinite;
+}
+
+.skel_sm {
+  height: 12px;
+  width: 40px;
+  border-radius: 5px;
+  background: #f1f5f9;
+  animation: shimmer 1.5s infinite;
+}
+
+.skel_md {
+  height: 12px;
+  width: 70px;
+  border-radius: 5px;
+  background: #f1f5f9;
+  animation: shimmer 1.5s infinite 0.1s;
+}
+
+.skel_lg {
+  height: 12px;
+  width: 150px;
+  border-radius: 5px;
+  background: #f1f5f9;
+  animation: shimmer 1.5s infinite 0.15s;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+/* Empty */
+.empty_cell {
+  text-align: center;
+  padding: 0;
+}
+
+.empty_state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  color: #94a3b8;
+  gap: 10px;
+}
+
+.empty_state p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.explore_btn {
+  margin-top: 4px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+  font-size: 0.825rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.2s;
+}
+
+.explore_btn:hover { opacity: 0.88; }
+
+/* Dark Mode */
+:global([data-theme="dark"]) .widget {
+  background: #131c31;
+  border-color: rgba(255,255,255,0.12);
+}
+:global([data-theme="dark"]) .widget_header {
+  border-bottom-color: rgba(255,255,255,0.08);
+}
+:global([data-theme="dark"]) .header_title { color: #f1f5f9; }
+:global([data-theme="dark"]) .thead { background-color: #1e293b; }
+:global([data-theme="dark"]) .th { color: #94a3b8; }
+:global([data-theme="dark"]) .tbody_row { border-bottom-color: rgba(255,255,255,0.06); }
+:global([data-theme="dark"]) .tbody_row:hover { background: rgba(255,255,255,0.04); }
+:global([data-theme="dark"]) .td { color: #cbd5e1; }
+:global([data-theme="dark"]) .problem_title { color: #f1f5f9; }
+:global([data-theme="dark"]) .topic_tag { background: #1e293b; color: #94a3b8; }
+:global([data-theme="dark"]) .diff_easy { background: rgba(6,78,59,0.8); color: #4ade80; }
+:global([data-theme="dark"]) .diff_medium { background: rgba(120,53,15,0.8); color: #fbbf24; }
+:global([data-theme="dark"]) .diff_hard { background: rgba(127,29,29,0.8); color: #f87171; }
+:global([data-theme="dark"]) .skel_icon,
+:global([data-theme="dark"]) .skel_sm,
+:global([data-theme="dark"]) .skel_md,
+:global([data-theme="dark"]) .skel_lg { background: #1e293b; }
