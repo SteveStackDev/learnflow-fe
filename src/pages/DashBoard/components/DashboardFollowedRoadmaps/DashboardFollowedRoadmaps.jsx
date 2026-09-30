@@ -4,36 +4,6 @@ import Icon from "~/components/Icon/Icon";
 import { roadmapService } from "~/services/roadmapService";
 import styles from "./DashboardFollowedRoadmaps.module.css";
 
-const MOCK_ROADMAPS = [
-  {
-    _id: "1",
-    title: "Frontend Developer Roadmap",
-    description: "Lộ trình học Frontend từ cơ bản đến nâng cao",
-    totalSteps: 24,
-    icon: "🌐",
-    level: "Beginner",
-    estimatedTime: "3 tháng",
-  },
-  {
-    _id: "2",
-    title: "Data Structures & Algorithms",
-    description: "Cấu trúc dữ liệu và thuật toán chuẩn phỏng vấn",
-    totalSteps: 18,
-    icon: "⚡",
-    level: "Intermediate",
-    estimatedTime: "2 tháng",
-  },
-  {
-    _id: "3",
-    title: "Backend Node.js Roadmap",
-    description: "Backend development với Node.js và Express",
-    totalSteps: 20,
-    icon: "🔧",
-    level: "Advanced",
-    estimatedTime: "4 tháng",
-  },
-];
-
 const LEVEL_COLOR = {
   Beginner: { bg: "#dcfce7", color: "#15803d" },
   Intermediate: { bg: "#fef3c7", color: "#b45309" },
@@ -48,25 +18,27 @@ export default function DashboardFollowedRoadmaps() {
   useEffect(() => {
     let isMounted = true;
     setIsLoading(true);
+
     roadmapService
       .getUserRoadmaps()
       .then((data) => {
         if (!isMounted) return;
-        const list = Array.isArray(data.roadmaps) ? data.roadmaps.slice(0, 5) : [];
-        setRoadmaps(list.length > 0 ? list : MOCK_ROADMAPS);
+        setRoadmaps(Array.isArray(data) ? data.slice(0, 5) : []);
       })
-      .catch(() => {
-        if (isMounted) setRoadmaps(MOCK_ROADMAPS);
+      .catch((err) => {
+        console.error("Failed to load user roadmaps:", err);
+        if (isMounted) setRoadmaps([]);
       })
       .finally(() => {
         if (isMounted) setIsLoading(false);
       });
+
     return () => { isMounted = false; };
   }, []);
 
   const handleClick = (roadmap) => {
-    const slug = roadmap.slug;
-    navigate(`/roadmap/${slug}`);
+    const slugOrId = roadmap?.slug || roadmap?._id || roadmap?.id;
+    if (slugOrId) navigate(`/roadmap/${slugOrId}`);
   };
 
   return (
@@ -137,16 +109,16 @@ export default function DashboardFollowedRoadmaps() {
                     </span>
                   </div>
                   <p className={styles.roadmap_desc}>
-                    {rm.description || "Lộ trình học tập chuyên sâu"}
+                    {rm.description}
                   </p>
                   <div className={styles.roadmap_meta}>
                     <span className={styles.meta_item}>
                       <Icon name="BookOpen" size={12} />
-                      {rm.totalSteps || "--"} bước
+                      {rm.totalSteps} bước
                     </span>
                     <span className={styles.meta_item}>
                       <Icon name="Clock" size={12} />
-                      {rm.estimatedTime || "Linh hoạt"}
+                      {rm.estimatedTime}
                     </span>
                   </div>
                 </div>
