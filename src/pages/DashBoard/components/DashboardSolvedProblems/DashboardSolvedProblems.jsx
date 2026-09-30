@@ -105,7 +105,7 @@ export default function DashboardSolvedProblems() {
   }, []);
 
   const handleRowClick = (problem) => {
-    navigate(`/problem/${problem.slug || problem.id}`);
+    navigate(`/problem/${problem.problemId._id}`);
   };
 
   const getStatus = (problem) => {
@@ -114,7 +114,7 @@ export default function DashboardSolvedProblems() {
   };
 
   const getDiff = (problem) => {
-    const d = problem.difficulty || problem.level || "easy";
+    const d = problem.problemId.difficulty || problem.problemId.level || "easy";
     return DIFF_CONFIG[d] || DIFF_CONFIG.easy;
   };
 
@@ -202,9 +202,9 @@ export default function DashboardSolvedProblems() {
                       <span className={styles.code_num}>#{item.code || item.number || idx + 1}</span>
                     </td>
                     <td className={styles.td}>
-                      <span className={styles.problem_title}>{item.title}</span>
-                      {item.topic && (
-                        <span className={styles.topic_tag}>{item.topic}</span>
+                      <span className={styles.problem_title}>{item.problemId.title}</span>
+                      {item.problemId.topic && (
+                        <span className={styles.topic_tag}>{item.problemId.topic}</span>
                       )}
                     </td>
                     <td className={styles.td}>

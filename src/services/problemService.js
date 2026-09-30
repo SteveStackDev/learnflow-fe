@@ -141,7 +141,7 @@ export const problemService = {
     try {
       let data;
       try {
-        data = await api.get("/problem/user/all");
+        data = await api.get("/problem/user");
       } catch (err) {
         if (err?.status === 404) {
           data = await api.get("/problem/user");

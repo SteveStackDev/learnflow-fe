@@ -10,6 +10,15 @@ export const roadmapService = {
     }
   },
 
+  getUserRoadmaps: async () => {
+    try {
+      const data = await api.get("/roadmap/user");
+      return data;
+    } catch (error) {
+      console.warn("⚠️ [roadmapService] Dùng mock danh hiệu dự phòng:", error.message);
+    }
+  },
+
   getRoadmap: async (id) => {
     try {
       const data = await api.get(`/roadmap/${id}`);

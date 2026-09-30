@@ -46,6 +46,21 @@ export const courseService = {
     }
   },
 
+  getUserCourses: async () => {
+    if (USE_MOCK) {
+      return courseData?.items || [];
+    }
+
+    try {
+      const data = await api.get("/course/user");
+
+      return data.map(adaptCourse);
+    } catch (error) {
+      console.warn("⚠️ [courseService] Dùng mock courses dự phòng:", error.message);
+      return courseData?.items || [];
+    }
+  },
+
   getCourse: async (id) => {
     if (USE_MOCK) {
       return courseData?.items || [];

@@ -49,10 +49,10 @@ export default function DashboardFollowedRoadmaps() {
     let isMounted = true;
     setIsLoading(true);
     roadmapService
-      .getAllRoadmaps()
+      .getUserRoadmaps()
       .then((data) => {
         if (!isMounted) return;
-        const list = Array.isArray(data) ? data.slice(0, 5) : [];
+        const list = Array.isArray(data.roadmaps) ? data.roadmaps.slice(0, 5) : [];
         setRoadmaps(list.length > 0 ? list : MOCK_ROADMAPS);
       })
       .catch(() => {
@@ -65,8 +65,8 @@ export default function DashboardFollowedRoadmaps() {
   }, []);
 
   const handleClick = (roadmap) => {
-    const id = roadmap._id || roadmap.id || roadmap.slug;
-    navigate(`/roadmap/${id}`);
+    const slug = roadmap.slug;
+    navigate(`/roadmap/${slug}`);
   };
 
   return (

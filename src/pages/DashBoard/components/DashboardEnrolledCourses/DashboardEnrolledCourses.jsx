@@ -55,7 +55,7 @@ export default function DashboardEnrolledCourses() {
     let isMounted = true;
     setIsLoading(true);
     courseService
-      .getAllCourses()
+      .getUserCourses()
       .then((data) => {
         if (!isMounted) return;
         const list = Array.isArray(data) ? data.slice(0, 5) : [];
@@ -71,7 +71,7 @@ export default function DashboardEnrolledCourses() {
   }, []);
 
   const handleClick = (course) => {
-    const id = course._id || course.id || course.slug;
+    const id = course.courseId._id;
     navigate(`/course/${id}`);
   };
 
@@ -131,7 +131,7 @@ export default function DashboardEnrolledCourses() {
           courses.map((course, idx) => {
             const pct = Math.min(100, Math.max(0, course.progression || 0));
             const prog = PROGRESS_COLOR(pct);
-            const levelGrad = LEVEL_GRADIENT[course.level] || LEVEL_GRADIENT["Cơ bản"];
+            const levelGrad = LEVEL_GRADIENT[course.courseId.level] || LEVEL_GRADIENT["Cơ bản"];
             return (
               <div
                 key={course.id || course._id || idx}
@@ -141,29 +141,29 @@ export default function DashboardEnrolledCourses() {
               >
                 {/* Thumbnail */}
                 <div className={styles.course_thumb}>
-                  {course.imageUrl || course.thumbnail ? (
+                  {course.courseId.imageUrl || course.courseId.thumbnail ? (
                     <img
-                      src={course.imageUrl || course.thumbnail}
-                      alt={course.title}
+                      src={course.courseId.imageUrl || course.courseId.thumbnail}
+                      alt={course.courseId.title}
                       className={styles.thumb_img}
                     />
                   ) : (
                     <div className={styles.thumb_placeholder}>
                       <span className={styles.thumb_initials}>
-                        {getInitials(course.title)}
+                        {getInitials(course.courseId.title)}
                       </span>
                     </div>
                   )}
                   <span
                     className={styles.level_dot}
                     style={{ background: levelGrad }}
-                    title={course.level}
+                    title={course.courseId.level}
                   />
                 </div>
 
                 {/* Info */}
                 <div className={styles.course_info}>
-                  <p className={styles.course_title}>{course.title}</p>
+                  <p className={styles.course_title}>{course.courseId.title}</p>
                   <p className={styles.course_instructor}>
                     <Icon name="User" size={11} />
                     {course.instructor || "FySet Mentor"}
