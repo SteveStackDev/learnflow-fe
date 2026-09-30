@@ -65,7 +65,7 @@ export const roadmapService = {
 
   saveRoadmap: async (roadmapId) => {
     try {
-      const response = await api.post("/roadmap/save", { roadmapId });
+      const response = await api.post("/user/roadmap/save", { roadmapId });
       return response?.data || response;
     } catch (error) {
       console.error("Lỗi khi saveRoadmap:", error);
