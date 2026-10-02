@@ -9,22 +9,7 @@ const NAV_SECTIONS = [
     items: [
       { id: "course", label: "COURSE", icon: "Book" },
       { id: "problem", label: "PROBLEM", icon: "Code" },
-      { id: "contest", label: "CONTEST", icon: "Trophy" },
-    ],
-  },
-  {
-    title: "NGƯỜI DÙNG & TƯƠNG TÁC",
-    items: [
-      { id: "user", label: "USER", icon: "Users" },
-      { id: "comment", label: "COMMENT", icon: "MessageSquare" },
-      { id: "blog", label: "BLOG", icon: "Newspaper" },
-    ],
-  },
-  {
-    title: "HỆ THỐNG",
-    items: [
-      { id: "message", label: "MESSAGE", icon: "Mail", badgeCount: 3 },
-      { id: "feedback", label: "FEEDBACK", icon: "HelpCircle" },
+      { id: "roadmap", label: "ROADMAP", icon: "Map" },
     ],
   },
 ];

@@ -72,6 +72,26 @@ export const roadmapService = {
       throw error;
     }
   },
+
+  createRoadmap: async (data) => {
+    try {
+      const response = await api.post("/roadmap", data);
+      return response?.data || response;
+    } catch (error) {
+      console.error("Lỗi khi tạo roadmap:", error);
+      throw error;
+    }
+  },
+
+  deleteRoadmap: async (id) => {
+    try {
+      const response = await api.delete(`/roadmap/${id}`);
+      return response?.data || response;
+    } catch (error) {
+      console.error(`Lỗi khi xóa roadmap #${id}:`, error);
+      throw error;
+    }
+  },
 };
 
 export default roadmapService;

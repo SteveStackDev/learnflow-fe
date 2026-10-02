@@ -121,6 +121,20 @@ export const problemService = {
     const response = await api.post("/problem/save", payload);
     return response?.data || response;
   },
+
+  getAdminProblems: async () => {
+    return await problemService.getAllProblems();
+  },
+
+  createProblem: async (data) => {
+    const response = await api.post("/problem", data);
+    return response?.data || response;
+  },
+
+  deleteProblem: async (id) => {
+    const response = await api.delete(`/problem/${id}`);
+    return response?.data || response;
+  },
 };
 
 export default problemService;

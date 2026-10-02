@@ -122,6 +122,26 @@ export const courseService = {
     const response = await api.post("/user/course/note/delete", { courseId, lessonId, note });
     return response?.data || response;
   },
+
+  createCourse: async (data) => {
+    try {
+      const response = await api.post("/course", data);
+      return response?.data || response;
+    } catch (error) {
+      console.error("Lỗi khi tạo khóa học:", error);
+      throw error;
+    }
+  },
+
+  deleteCourse: async (id) => {
+    try {
+      const response = await api.delete(`/course/${id}`);
+      return response?.data || response;
+    } catch (error) {
+      console.error(`Lỗi khi xóa khóa học #${id}:`, error);
+      throw error;
+    }
+  },
 };
 
 export default courseService;

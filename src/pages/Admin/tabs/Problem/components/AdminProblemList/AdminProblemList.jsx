@@ -1,3 +1,4 @@
+// /Users/stevestackdev/Desktop/learnflow-fe/src/pages/Admin/tabs/Problem/components/AdminProblemList/AdminProblemList.jsx
 import React, { useState, useEffect } from "react";
 import Icon from "~/components/Icon/Icon";
 import { Button, Badge, Pagination, DropdownMenu } from "~/components/ui";
@@ -15,12 +16,7 @@ const ITEMS_PER_PAGE = 4;
 export default function AdminProblemList({
   problems = [],
   onAddProblem,
-  onViewProblem,
-  onEditProblem,
-  onDuplicateProblem,
-  onToggleStatus,
   onDeleteProblem,
-  onClearAll,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState("all");
@@ -32,13 +28,13 @@ export default function AdminProblemList({
 
   // Filter Logic
   const filteredProblems = problems.filter((p) => {
-    const matchSearch = p.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchDiff = difficultyFilter === "all" || p.difficulty === difficultyFilter;
-    const matchTopic = topicFilter === "all" || p.topic === topicFilter;
+    const matchSearch = p?.title?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchDiff = difficultyFilter === "all" || p?.difficulty === difficultyFilter;
+    const matchTopic = topicFilter === "all" || p?.topic === topicFilter;
     const matchLang =
       languageFilter === "all" ||
-      (p.supportedLanguages && p.supportedLanguages.includes(languageFilter));
-    const matchStatus = statusFilter === "all" || p.status === statusFilter;
+      (p?.supportedLanguages && p?.supportedLanguages.includes(languageFilter));
+    const matchStatus = statusFilter === "all" || p?.status === statusFilter;
 
     return matchSearch && matchDiff && matchTopic && matchLang && matchStatus;
   });
@@ -87,7 +83,6 @@ export default function AdminProblemList({
 
   return (
     <div className={styles.container}>
-      {/* 1. Header Banner */}
       <div className={`${styles.header_banner} reveal-card`}>
         <div className={styles.banner_text}>
           <h2 className={styles.banner_title}>Problem Management</h2>
@@ -96,21 +91,6 @@ export default function AdminProblemList({
           </p>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          {problems.length > 0 && onClearAll && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClearAll}
-              style={{
-                color: "#ef4444",
-                borderColor: "rgba(239, 68, 68, 0.4)",
-                backgroundColor: "rgba(239, 68, 68, 0.06)",
-              }}
-            >
-              <Icon name="Trash2" size={16} />
-              <span>Xóa Toàn Bộ Bài Tập</span>
-            </Button>
-          )}
           <Button variant="primary" onClick={onAddProblem} className={styles.add_btn}>
             <Icon name="Plus" size={18} />
             <span>Add Problem</span>
@@ -118,7 +98,6 @@ export default function AdminProblemList({
         </div>
       </div>
 
-      {/* 2. Search & Filters Toolbar */}
       <div className={`${styles.toolbar} reveal-card`}>
         <div className={styles.search_wrapper}>
           <Icon name="Search" size={16} className={styles.search_icon} />
@@ -159,7 +138,6 @@ export default function AdminProblemList({
         </div>
       </div>
 
-      {/* 3. Data Table */}
       <div className={`${styles.table_wrapper} reveal-card`}>
         <table className={styles.table}>
           <thead>
@@ -203,12 +181,7 @@ export default function AdminProblemList({
                       <span className={styles.prob_id}>#{prob.code || prob.id}</span>
                     </td>
                     <td>
-                      <div
-                        className={styles.prob_meta}
-                        onClick={() => onViewProblem(prob.id)}
-                        role="button"
-                        tabIndex={0}
-                      >
+                      <div className={styles.prob_meta}>
                         <span className={styles.prob_title}>{prob.title}</span>
                         <span className={styles.topic_tag}>
                           <Icon name="Tag" size={12} />
@@ -254,41 +227,6 @@ export default function AdminProblemList({
                       <div className={styles.action_row}>
                         <button
                           type="button"
-                          className={styles.action_btn}
-                          onClick={() => onViewProblem(prob.id)}
-                          title="Open Problem Editor"
-                        >
-                          <Icon name="Eye" size={16} />
-                        </button>
-                        <button
-                          type="button"
-                          className={styles.action_btn}
-                          onClick={() => onEditProblem(prob)}
-                          title="Quick Edit"
-                        >
-                          <Icon name="Edit" size={16} />
-                        </button>
-                        <button
-                          type="button"
-                          className={styles.action_btn}
-                          onClick={() => onDuplicateProblem(prob)}
-                          title="Duplicate Problem"
-                        >
-                          <Icon name="Share" size={16} />
-                        </button>
-                        <button
-                          type="button"
-                          className={`${styles.action_btn} ${styles.action_toggle}`}
-                          onClick={() => onToggleStatus(prob.id)}
-                          title={prob.status === "Active" ? "Unpublish" : "Publish"}
-                        >
-                          <Icon
-                            name={prob.status === "Active" ? "EyeOff" : "CheckCircle2"}
-                            size={16}
-                          />
-                        </button>
-                        <button
-                          type="button"
                           className={`${styles.action_btn} ${styles.action_danger}`}
                           onClick={() => onDeleteProblem(prob.id)}
                           title="Delete Problem"
@@ -311,14 +249,13 @@ export default function AdminProblemList({
         </table>
       </div>
 
-      {/* 4. Pagination Bar */}
       <div className={`${styles.pagination_bar} reveal-card`}>
         <span className={styles.page_info}>
           {filteredProblems.length > 0
             ? `Hiển thị ${startIndex + 1} - ${Math.min(
-                startIndex + ITEMS_PER_PAGE,
-                filteredProblems.length
-              )} trên tổng số ${filteredProblems.length} bài tập`
+              startIndex + ITEMS_PER_PAGE,
+              filteredProblems.length
+            )} trên tổng số ${filteredProblems.length} bài tập`
             : "Hiển thị 0 bài tập"}
         </span>
         <Pagination

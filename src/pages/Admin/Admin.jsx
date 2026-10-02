@@ -5,12 +5,7 @@ import AdminStatsCards from "./components/AdminStatsCards/AdminStatsCards";
 import AdminEmptyState from "./components/AdminEmptyState/AdminEmptyState";
 import AdminCourseTab from "./tabs/Course/AdminCourseTab";
 import AdminProblemTab from "./tabs/Problem/AdminProblemTab";
-import AdminContestTab from "./tabs/Contest/AdminContestTab";
-import AdminUserTab from "./tabs/User/AdminUserTab";
-import AdminCommentTab from "./tabs/Comment/AdminCommentTab";
-import AdminBlogTab from "./tabs/Blog/AdminBlogTab";
-import AdminMessageTab from "./tabs/Message/AdminMessageTab";
-import AdminFeedbackTab from "./tabs/Feedback/AdminFeedbackTab";
+import AdminRoadmapTab from "./tabs/Roadmap/AdminRoadmapTab";
 import { Card, ScrollArea } from "~/components/ui";
 import styles from "./Admin.module.css";
 
@@ -31,28 +26,8 @@ export default function Admin() {
       return <AdminProblemTab />;
     }
 
-    if (activeTab === "contest") {
-      return <AdminContestTab />;
-    }
-
-    if (activeTab === "user") {
-      return <AdminUserTab />;
-    }
-
-    if (activeTab === "comment") {
-      return <AdminCommentTab />;
-    }
-
-    if (activeTab === "blog") {
-      return <AdminBlogTab />;
-    }
-
-    if (activeTab === "message") {
-      return <AdminMessageTab />;
-    }
-
-    if (activeTab === "feedback") {
-      return <AdminFeedbackTab />;
+    if (activeTab === "roadmap") {
+      return <AdminRoadmapTab />;
     }
 
     return (
@@ -88,18 +63,12 @@ export default function Admin() {
 
       {/* 2. Main Content Container */}
       <div className={styles.main_content}>
-        {/* Top Header */}
-        <AdminHeader
-          onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-        />
+        {/* Top Header Removed */}
 
         {/* Scrollable Workspace View */}
         <ScrollArea className={styles.scroll_workspace}>
           <div className={styles.workspace_inner}>
-            {/* Standard Metrics Cards */}
-            <div className={styles.stats_section}>
-              <AdminStatsCards />
-            </div>
+            {/* Standard Metrics Cards Removed */}
 
             {/* Dynamic Active Tab Render */}
             <div className={styles.tab_render_area}>

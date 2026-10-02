@@ -1,90 +1,92 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Icon from "~/components/Icon/Icon";
 import { Button, Badge, Pagination, DropdownMenu } from "~/components/ui";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import styles from "./AdminCourseList.module.css";
 
+// Đồng bộ danh mục và các option Sort giống trang Course Client
 const CATEGORY_OPTIONS = [
-  { value: "all", label: "Category: Tất cả" },
-  { value: "Lập trình Web", label: "Lập trình Web" },
-  { value: "Backend Development", label: "Backend Development" },
-  { value: "Data Science & AI", label: "Data Science & AI" },
-  { value: "Lập trình Mobile", label: "Lập trình Mobile" },
-];
-
-const LEVEL_OPTIONS = [
-  { value: "all", label: "Level: Tất cả" },
-  { value: "Basic", label: "Basic (Cơ bản)" },
-  { value: "Medium", label: "Medium (Trung cấp)" },
-  { value: "Advanced", label: "Advanced (Nâng cao)" },
-];
-
-const STATUS_OPTIONS = [
-  { value: "all", label: "Status: Tất cả" },
-  { value: "Active", label: "Active" },
-  { value: "Draft", label: "Draft" },
-  { value: "Archived", label: "Archived" },
+  { value: "Tất cả", label: "Category: Tất cả" },
+  { value: "Frontend", label: "Frontend" },
+  { value: "Backend", label: "Backend" },
+  { value: "Competitive Programming", label: "Competitive Programming" },
 ];
 
 const SORT_OPTIONS = [
-  { value: "newest", label: "Sort: Mới nhất" },
-  { value: "students", label: "Sort: Nhiều học viên" },
-  { value: "lessons", label: "Sort: Nhiều bài học" },
+  { value: "popular", label: "Sắp xếp: Phổ biến nhất" },
+  { value: "latest", label: "Sắp xếp: Mới nhất" },
+  { value: "rating", label: "Sắp xếp: Đánh giá cao nhất" },
 ];
 
 const ITEMS_PER_PAGE = 4;
 
 export default function AdminCourseList({
   courses = [],
+  isLoading,
   onAddCourse,
-  onViewCourse,
-  onEditCourse,
-  onDuplicateCourse,
-  onToggleStatus,
   onDeleteCourse,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [levelFilter, setLevelFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [sortOrder, setSortOrder] = useState("newest");
+  const [selectedCategory, setSelectedCategory] = useState("Tất cả");
+  const [selectedSort, setSelectedSort] = useState("popular");
   const [selectedIds, setSelectedIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Filter & Search Logic
-  const filteredCourses = courses
-    .filter((c) => {
-      const matchSearch = c.title.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchCategory = categoryFilter === "all" || c.category === categoryFilter;
-      const matchLevel = levelFilter === "all" || c.level === levelFilter;
-      const matchStatus = statusFilter === "all" || c.status === statusFilter;
-      return matchSearch && matchCategory && matchLevel && matchStatus;
-    })
-    .sort((a, b) => {
-      if (sortOrder === "students") return (b.students || 0) - (a.students || 0);
-      if (sortOrder === "lessons") return (b.lessons || 0) - (a.lessons || 0);
-      return b.id.localeCompare(a.id);
-    });
+  // Logic Lọc & Sắp Xếp giống hệt trang Client Course
+  const filteredAndSortedCourses = useMemo(() => {
+    return (courses || [])
+      .filter((item) => {
+        const title = (item.title || "").toLowerCase();
+        const description = (item.description || "").toLowerCase();
+        const query = (searchTerm || "").toLowerCase();
+        const matchesSearch = title.includes(query) || description.includes(query);
 
-  // Calculate Pagination Slicing
-  const totalPages = Math.max(Math.ceil(filteredCourses.length / ITEMS_PER_PAGE), 1);
+        let matchesCategory = true;
+        if (selectedCategory === "Frontend") {
+          matchesCategory = item.category?.toLowerCase() === "frontend";
+        } else if (selectedCategory === "Backend") {
+          matchesCategory = item.category?.toLowerCase() === "backend";
+        } else if (selectedCategory === "Competitive Programming") {
+          matchesCategory = item.category?.toLowerCase() === "competitive programming";
+        }
+
+        return matchesSearch && matchesCategory;
+      })
+      .sort((a, b) => {
+        if (selectedSort === "latest") {
+          return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+        }
+        if (selectedSort === "rating") {
+          const ratingA = a.rating ?? a.stats?.rating ?? 0;
+          const ratingB = b.rating ?? b.stats?.rating ?? 0;
+          return ratingB - ratingA;
+        }
+        // Mặc định: Phổ biến nhất (xếp theo số lượng học viên)
+        const studentsA = a.studentsCount ?? a.studentsNum ?? a.stats?.learners ?? 0;
+        const studentsB = b.studentsCount ?? b.studentsNum ?? b.stats?.learners ?? 0;
+        return studentsB - studentsA;
+      });
+  }, [courses, searchTerm, selectedCategory, selectedSort]);
+
+  // Slicing cho Phân trang
+  const totalPages = Math.max(1, Math.ceil(filteredAndSortedCourses.length / ITEMS_PER_PAGE));
   const activePage = Math.min(currentPage, totalPages);
   const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
-  const paginatedCourses = filteredCourses.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const paginatedCourses = filteredAndSortedCourses.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-  // Trigger ScrollReveal hook on page/filter change
-  useScrollReveal(".reveal-card", [activePage, searchTerm, categoryFilter, levelFilter, statusFilter, sortOrder]);
+  // ScrollReveal hiệu ứng mượt mà
+  useScrollReveal(".reveal-card", [activePage, searchTerm, selectedCategory, selectedSort]);
 
-  // Reset to page 1 whenever search or filters change
+  // Reset trang về 1 khi search/filter thay đổi
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, categoryFilter, levelFilter, statusFilter, sortOrder]);
+  }, [searchTerm, selectedCategory, selectedSort]);
 
   const toggleSelectAll = () => {
-    if (selectedIds.length === filteredCourses.length) {
+    if (selectedIds.length === filteredAndSortedCourses.length) {
       setSelectedIds([]);
     } else {
-      setSelectedIds(filteredCourses.map((c) => c.id));
+      setSelectedIds(filteredAndSortedCourses.map((c) => c._id || c.id));
     }
   };
 
@@ -97,20 +99,15 @@ export default function AdminCourseList({
   };
 
   const getLevelBadgeVariant = (level) => {
-    if (level === "Basic") return "success";
-    if (level === "Medium") return "warning";
+    const lvl = String(level || "").toLowerCase();
+    if (lvl === "beginner" || lvl === "cơ bản") return "success";
+    if (lvl === "intermediate" || lvl === "trung cấp") return "warning";
     return "danger";
-  };
-
-  const getStatusBadgeVariant = (status) => {
-    if (status === "Active") return "success";
-    if (status === "Draft") return "warning";
-    return "secondary";
   };
 
   return (
     <div className={styles.container}>
-      {/* 1. Header Banner */}
+      {/* Banner Header */}
       <div className={`${styles.header_banner} reveal-card`}>
         <div className={styles.banner_text}>
           <h2 className={styles.banner_title}>Course Management</h2>
@@ -122,13 +119,13 @@ export default function AdminCourseList({
         </Button>
       </div>
 
-      {/* 2. Toolbar */}
+      {/* Toolbar Search & Filter (Category + Sort) */}
       <div className={`${styles.toolbar} reveal-card`}>
         <div className={styles.search_wrapper}>
           <Icon name="Search" size={16} className={styles.search_icon} />
           <input
             type="text"
-            placeholder="Search course title..."
+            placeholder="Search course title or description..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.search_input}
@@ -138,32 +135,20 @@ export default function AdminCourseList({
         <div className={styles.filter_group}>
           <DropdownMenu
             options={CATEGORY_OPTIONS}
-            value={categoryFilter}
-            onChange={setCategoryFilter}
-            size="sm"
-          />
-          <DropdownMenu
-            options={LEVEL_OPTIONS}
-            value={levelFilter}
-            onChange={setLevelFilter}
-            size="sm"
-          />
-          <DropdownMenu
-            options={STATUS_OPTIONS}
-            value={statusFilter}
-            onChange={setStatusFilter}
+            value={selectedCategory}
+            onChange={setSelectedCategory}
             size="sm"
           />
           <DropdownMenu
             options={SORT_OPTIONS}
-            value={sortOrder}
-            onChange={setSortOrder}
+            value={selectedSort}
+            onChange={setSelectedSort}
             size="sm"
           />
         </div>
       </div>
 
-      {/* 3. Table Wrapper */}
+      {/* Table danh sách Course */}
       <div className={`${styles.table_wrapper} reveal-card`}>
         <table className={styles.table}>
           <thead>
@@ -172,8 +157,8 @@ export default function AdminCourseList({
                 <input
                   type="checkbox"
                   checked={
-                    filteredCourses.length > 0 &&
-                    selectedIds.length === filteredCourses.length
+                    filteredAndSortedCourses.length > 0 &&
+                    selectedIds.length === filteredAndSortedCourses.length
                   }
                   onChange={toggleSelectAll}
                   className={styles.checkbox}
@@ -182,110 +167,80 @@ export default function AdminCourseList({
               <th>Course Title</th>
               <th>Category</th>
               <th>Level</th>
-              <th>Lessons</th>
-              <th>Students</th>
-              <th>Status</th>
+              <th>Tổng bài (Lessons)</th>
+              <th>Học viên (Students)</th>
               <th style={{ textAlign: "right" }}>Thao tác</th>
             </tr>
           </thead>
           <tbody>
-            {paginatedCourses.length > 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan={7} className={styles.empty_td}>
+                  Đang tải danh sách khóa học...
+                </td>
+              </tr>
+            ) : paginatedCourses.length > 0 ? (
               paginatedCourses.map((course) => {
-                const isSelected = selectedIds.includes(course.id);
+                const courseId = course._id || course.id;
+                const isSelected = selectedIds.includes(courseId);
+                const lessonsCount = course.lessonsCount ?? course.stats?.lessons ?? 0;
+                const studentsCount = course.studentsCount ?? course.studentsNum ?? course.stats?.learners ?? 0;
+
                 return (
-                  <tr key={course.id} className={`${isSelected ? styles.row_selected : ""} reveal-card`}>
+                  <tr key={courseId} className={`${isSelected ? styles.row_selected : ""} reveal-card`}>
                     <td>
                       <input
                         type="checkbox"
                         checked={isSelected}
-                        onChange={() => toggleSelectOne(course.id)}
+                        onChange={() => toggleSelectOne(courseId)}
                         className={styles.checkbox}
                       />
                     </td>
                     <td>
-                      <div
-                        className={styles.course_meta}
-                        onClick={() => onViewCourse(course.id)}
-                        role="button"
-                        tabIndex={0}
-                      >
+                      <div className={styles.course_meta}>
                         <img
-                          src={course.thumbnail}
+                          src={course.thumbnail || course.imageUrl}
                           alt={course.title}
                           className={styles.thumbnail}
                         />
-                        <div className={styles.title_box}>
+                        <div className={styles.title_box} style={{ maxWidth: "260px" }}>
                           <span className={styles.course_title}>{course.title}</span>
-                          <span className={styles.course_desc_preview}>{course.description}</span>
+                          <span
+                            className={styles.course_desc_preview}
+                            style={{
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              display: "block",
+                            }}
+                          >
+                            {course.description}
+                          </span>
                         </div>
                       </div>
                     </td>
                     <td>
                       <Badge variant="primary" size="sm">
-                        {course.category}
+                        {course.category || "General"}
                       </Badge>
                     </td>
                     <td>
                       <Badge variant={getLevelBadgeVariant(course.level)} size="sm">
-                        {course.level}
+                        {course.level || "Beginner"}
                       </Badge>
                     </td>
                     <td>
-                      <span className={styles.num_text}>{course.lessons} bài</span>
+                      <span className={styles.num_text}>{lessonsCount} bài</span>
                     </td>
                     <td>
-                      <span className={styles.num_text}>
-                        {typeof course.students === "number"
-                          ? course.students.toLocaleString()
-                          : course.students}
-                      </span>
-                    </td>
-                    <td>
-                      <Badge variant={getStatusBadgeVariant(course.status)} size="sm">
-                        {course.status}
-                      </Badge>
+                      <span className={styles.num_text}>{studentsCount}</span>
                     </td>
                     <td>
                       <div className={styles.action_row}>
                         <button
                           type="button"
-                          className={styles.action_btn}
-                          onClick={() => onViewCourse(course.id)}
-                          title="View Course Details"
-                        >
-                          <Icon name="Eye" size={16} />
-                        </button>
-                        <button
-                          type="button"
-                          className={styles.action_btn}
-                          onClick={() => onEditCourse(course)}
-                          title="Edit Course"
-                        >
-                          <Icon name="Edit" size={16} />
-                        </button>
-                        <button
-                          type="button"
-                          className={styles.action_btn}
-                          onClick={() => onDuplicateCourse(course)}
-                          title="Duplicate Course"
-                        >
-                          <Icon name="Share" size={16} />
-                        </button>
-                        <button
-                          type="button"
-                          className={`${styles.action_btn} ${styles.action_toggle}`}
-                          onClick={() => onToggleStatus(course.id)}
-                          title={course.status === "Active" ? "Unpublish" : "Publish"}
-                        >
-                          <Icon
-                            name={course.status === "Active" ? "EyeOff" : "CheckCircle2"}
-                            size={16}
-                          />
-                        </button>
-                        <button
-                          type="button"
                           className={`${styles.action_btn} ${styles.action_danger}`}
-                          onClick={() => onDeleteCourse(course.id)}
+                          onClick={() => onDeleteCourse(courseId)}
                           title="Delete Course"
                         >
                           <Icon name="Trash2" size={16} />
@@ -297,7 +252,7 @@ export default function AdminCourseList({
               })
             ) : (
               <tr>
-                <td colSpan={8} className={styles.empty_td}>
+                <td colSpan={7} className={styles.empty_td}>
                   Không tìm thấy khóa học nào khớp với bộ lọc.
                 </td>
               </tr>
@@ -306,14 +261,14 @@ export default function AdminCourseList({
         </table>
       </div>
 
-      {/* 4. Pagination */}
+      {/* Pagination Footer */}
       <div className={`${styles.pagination_bar} reveal-card`}>
         <span className={styles.page_info}>
-          {filteredCourses.length > 0
+          {filteredAndSortedCourses.length > 0
             ? `Hiển thị ${startIndex + 1} - ${Math.min(
-                startIndex + ITEMS_PER_PAGE,
-                filteredCourses.length
-              )} trên tổng số ${filteredCourses.length} khóa học`
+              startIndex + ITEMS_PER_PAGE,
+              filteredAndSortedCourses.length
+            )} trên tổng số ${filteredAndSortedCourses.length} khóa học`
             : "Hiển thị 0 khóa học"}
         </span>
         <Pagination
