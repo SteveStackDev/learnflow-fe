@@ -303,6 +303,58 @@ function ProblemDetail() {
 
       // ===== THỰC HIỆN LƯU VÀO DATABASE QUA API POST /problem/save =====
       try {
+        // Format testResults có thuộc tính 'order'
+        const rawTestResults = Array.isArray(result.test_results) ? result.test_results : [];
+        const formattedTestResults = rawTestResults.map((t, idx) => ({
+          order: Number(t.order ?? t.id ?? idx + 1),
+          label: t.label || `Test #${idx + 1}`,
+          status: t.status || "WA",
+          score: Number(t.score ?? 0),
+          maxScore: Number(t.max_score ?? t.maxScore ?? 10),
+          time: Number(t.execution_time ?? t.time ?? 0),
+          runtime: `${t.execution_time || 0}ms`,
+          memory: t.memory || "0KB",
+          input: t.input || "",
+          stdout: t.stdout || "",
+          stderr: t.stderr || "",
+          expected: t.expected || "",
+          is_hidden: Boolean(t.is_hidden),
+          subtask_id: Number(t.subtask_id || 1),
+          subtask_name: t.subtask_name || "Subtask 1",
+        }));
+
+        // Format subtasksResult có thuộc tính 'order'
+        const rawSubtasks = Array.isArray(result.subtasks) ? result.subtasks : [];
+        const formattedSubtasksResult = rawSubtasks.map((st, idx) => ({
+          order: String(st.order ?? st.id ?? idx + 1),
+          title: st.title || st.name || `Subtask ${idx + 1}`,
+          label: st.label || `Subtask #${idx + 1}`,
+          status: st.status || "WA",
+          earnedScore: Number(st.earnedScore ?? st.score ?? 0),
+          maxScore: Number(st.max_score ?? st.maxScore ?? 100),
+          maxTime: st.maxTime || "0ms",
+          maxMemory: st.maxMemory || "0KB",
+          tests: Array.isArray(st.tests)
+            ? st.tests.map((t, tIdx) => ({
+              order: Number(t.order ?? t.id ?? tIdx + 1),
+              label: t.label || `Test #${tIdx + 1}`,
+              status: t.status || "WA",
+              score: Number(t.score ?? 0),
+              maxScore: Number(t.max_score ?? t.maxScore ?? 10),
+              time: Number(t.execution_time ?? t.time ?? 0),
+              runtime: `${t.execution_time || 0}ms`,
+              memory: t.memory || "0KB",
+              input: t.input || "",
+              stdout: t.stdout || "",
+              stderr: t.stderr || "",
+              expected: t.expected || "",
+              is_hidden: Boolean(t.is_hidden),
+              subtask_id: Number(t.subtask_id || idx + 1),
+              subtask_name: t.subtask_name || `Subtask ${idx + 1}`,
+            }))
+            : [],
+        }));
+
         const payloadToSave = {
           problemId: problem._id || problem.id || id,
           sourceCode: code,
@@ -315,8 +367,8 @@ function ProblemDetail() {
           maxScore: result.max_score || 100,
           passedTests: result.passed_tests || 0,
           totalTests: result.total_tests || 1,
-          testResults: result.test_results || [],
-          subtasksResult: result.subtasks || [],
+          testResults: formattedTestResults,
+          subtasksResult: formattedSubtasksResult,
           logs: result.logs || [],
         };
 
