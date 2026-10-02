@@ -7,6 +7,7 @@ import styles from "./DashboardSolvedProblems.module.css";
 const STATUS_CONFIG = {
   solved: { icon: "CheckCircle", label: "Đã giải", cls: "solved" },
   AC: { icon: "CheckCircle", label: "Đã giải", cls: "solved" },
+  ACCEPTED: { icon: "CheckCircle", label: "Đã giải", cls: "solved" },
   attempted: { icon: "Clock", label: "Đang làm", cls: "attempted" },
   unsolved: { icon: "Minus", label: "Chưa giải", cls: "unsolved" },
 };
@@ -43,7 +44,9 @@ export default function DashboardSolvedProblems() {
         if (isMounted) setIsLoading(false);
       });
 
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleRowClick = (item) => {
