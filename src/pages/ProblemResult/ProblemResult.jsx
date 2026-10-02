@@ -53,6 +53,8 @@ function ProblemResult() {
     ...(submissionState?.submittedCode ? { submittedCode: submissionState.submittedCode } : {}),
     ...(submissionState?.language ? { language: submissionState.language } : {}),
     ...(submissionState?.status ? { status: submissionState.status, statusCode: submissionState.status } : {}),
+    ...(submissionState?.score != null ? { score: submissionState.score, totalScore: submissionState.score } : {}),
+    ...(submissionState?.max_score != null ? { max_score: submissionState.max_score, maxPossibleScore: submissionState.max_score } : {}),
     ...(submissionState?.subtasks ? { subtasks: submissionState.subtasks } : {}),
     ...(submissionState?.passedTests != null ? { passedTestCases: submissionState.passedTests } : {}),
     ...(submissionState?.totalTests != null ? { totalTestCases: submissionState.totalTests } : {}),

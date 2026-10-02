@@ -657,7 +657,7 @@ class JudgeService:
         for s_idx, st in enumerate(subtasks_list):
             st_name = st.get("name") or f"Subtask {s_idx + 1}"
             st_points = int(st.get("points") or (max_points if len(subtasks_list) == 1 else 100))
-            st_tests = st.get("testCases") or []
+            st_tests = st.get("testCases") or st.get("test_cases") or st.get("tests") or []
 
             st_all_ac = True
             st_max_time = 0.0
@@ -666,10 +666,10 @@ class JudgeService:
 
             for t_idx, tc_item in enumerate(st_tests):
                 total_tests_count += 1
-                tc_input = tc_item.get("input", "")
-                tc_expected = tc_item.get("expected", "")
-                tc_points = int(tc_item.get("points", 100))
-                tc_hidden = tc_item.get("isHidden", False)
+                tc_input = tc_item.get("input") if tc_item.get("input") is not None else tc_item.get("input_data", "")
+                tc_expected = tc_item.get("expected") if tc_item.get("expected") is not None else (tc_item.get("expected_output") or tc_item.get("output", ""))
+                tc_points = int(tc_item.get("points") or tc_item.get("maxScore") or 100)
+                tc_hidden = bool(tc_item.get("isHidden") or tc_item.get("is_hidden", False))
 
                 run_res = cls.execute_code_single_test(
                     source_code=source_code,

@@ -81,7 +81,7 @@ function ProblemDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -355,7 +355,11 @@ function ProblemDetail() {
             : [],
         }));
 
+        const finalScore = result.score != null ? result.score : (result.status === "AC" ? (problem.points || 500) : 0);
+        const finalMaxScore = result.max_score || problem.points || 500;
+
         const payloadToSave = {
+          userId: user?._id || user?.id,
           problemId: problem._id || problem.id || id,
           sourceCode: code,
           language: selectedLanguage?.id || "cpp",
@@ -363,8 +367,8 @@ function ProblemDetail() {
           executionTime: parseFloat(result.execution_time) || 0,
           memoryUsed: parseFloat(result.memory) || 0,
           createdAt: new Date(),
-          score: result.score != null ? result.score : (result.status === "AC" ? 100 : 0),
-          maxScore: result.max_score || 100,
+          score: finalScore,
+          maxScore: finalMaxScore,
           passedTests: result.passed_tests || 0,
           totalTests: result.total_tests || 1,
           testResults: formattedTestResults,
@@ -395,6 +399,8 @@ function ProblemDetail() {
             problemTitle: pTitle,
             difficultyLabel: pDiffLabel,
             status: result.status,
+            score: result.score != null ? result.score : (result.status === "AC" ? (problem.points || 500) : 0),
+            max_score: result.max_score || problem.points || 500,
             executionTime: result.execution_time,
             submittedCode: code,
             language: selectedLanguage?.label || "C++",
