@@ -158,7 +158,11 @@ export function Submissions() {
 
         {/* Data Table */}
         <div className="reveal-card">
-          <SubmissionsTable submissions={filteredSubmissions} scopeType={scopeType} />
+          <SubmissionsTable
+            submissions={filteredSubmissions}
+            scopeType={scopeType}
+            isLoading={isLoading}
+          />
         </div>
 
         {/* Pagination Bar */}

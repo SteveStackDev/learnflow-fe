@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import AdminSidebar from "./components/AdminSidebar/AdminSidebar";
-import AdminHeader from "./components/AdminHeader/AdminHeader";
-import AdminStatsCards from "./components/AdminStatsCards/AdminStatsCards";
 import AdminEmptyState from "./components/AdminEmptyState/AdminEmptyState";
 import AdminCourseTab from "./tabs/Course/AdminCourseTab";
 import AdminProblemTab from "./tabs/Problem/AdminProblemTab";

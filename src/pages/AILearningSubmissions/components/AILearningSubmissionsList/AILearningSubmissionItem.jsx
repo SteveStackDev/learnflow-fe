@@ -11,7 +11,6 @@ const TAG_VARIANT_MAP = {
 
 function AILearningSubmissionItem({ submission, onViewCode }) {
   const isAC = submission.status === "AC";
-  const isWA = submission.status === "WA";
 
   return (
     <Card

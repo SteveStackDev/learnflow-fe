@@ -55,19 +55,121 @@ function ProblemList() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const toolbarRef = useRef(null);
 
-  // Load danh sách bài tập trực tiếp từ MongoDB Backend
+  // Load danh sách bài tập trực tiếp từ MongoDB Backend kèm trạng thái bài làm của người dùng
   useEffect(() => {
     let isMounted = true;
     setIsLoading(true);
-    problemService
-      .getProblems()
-      .then((data) => {
-        if (isMounted) {
-          setRawProblems(Array.isArray(data) ? data : []);
+
+    Promise.all([
+      problemService.getProblems(),
+      problemService.getUserProblems(),
+    ])
+      .then(([problemsData, userProblemsData]) => {
+        if (!isMounted) return;
+
+        const userStatusMap = new Map();
+
+        const applyStatus = (key, status) => {
+          if (key === undefined || key === null || key === "") return;
+          const k = String(key).trim().toLowerCase();
+          const existing = userStatusMap.get(k);
+          if (existing === "solved") return; // "solved" luôn có ưu tiên cao nhất
+          userStatusMap.set(k, status);
+        };
+
+        const registerUserProblem = (up) => {
+          if (!up) return;
+          const rawStatus = String(up.status || "").toUpperCase();
+          const isAC =
+            rawStatus === "AC" ||
+            rawStatus === "ACCEPTED" ||
+            rawStatus === "SOLVED" ||
+            up.userStatus === "solved" ||
+            (up.score != null && up.maxScore != null && Number(up.score) >= Number(up.maxScore) && Number(up.maxScore) > 0);
+
+          const status = isAC ? "solved" : up.userStatus === "attempted" || rawStatus ? "attempted" : "unsolved";
+
+          const pObj = up.problemId && typeof up.problemId === "object" ? up.problemId : {};
+          const candidateKeys = [
+            up._id,
+            up.id,
+            up.problemId?._id,
+            up.problemId?.id,
+            typeof up.problemId === "string" ? up.problemId : null,
+            pObj._id,
+            pObj.id,
+            pObj.slug,
+            up.slug,
+            pObj.title,
+            up.title,
+            pObj.code,
+            up.code,
+            up.order,
+            pObj.order,
+          ].filter(Boolean);
+
+          candidateKeys.forEach((keyVal) => {
+            applyStatus(keyVal, status);
+            const strVal = String(keyVal).trim();
+            if (/^\d+$/.test(strVal)) {
+              const num = Number(strVal);
+              applyStatus(num, status);
+              applyStatus(String(num).padStart(2, "0"), status);
+            }
+          });
+        };
+
+        if (Array.isArray(userProblemsData)) {
+          userProblemsData.forEach(registerUserProblem);
         }
+
+        // Đọc thêm từ localStorage để đảm bảo dữ liệu vừa nộp hiển thị ngay lập tức
+        try {
+          const cachedSolved = JSON.parse(localStorage.getItem("fyset_solved_problems") || "[]");
+          if (Array.isArray(cachedSolved)) {
+            cachedSolved.forEach(registerUserProblem);
+          }
+        } catch (storageErr) {
+          console.debug("Lỗi đọc cache fyset_solved_problems:", storageErr);
+        }
+
+        const mergedProblems = (Array.isArray(problemsData) ? problemsData : []).map((p, idx) => {
+          const checkKeys = [
+            p._id,
+            p.id,
+            p.slug,
+            p.title,
+            p.code,
+            p.order,
+            idx + 1,
+            String(idx + 1).padStart(2, "0"),
+          ].filter(Boolean);
+
+          let resolvedStatus = p.userStatus || p.status || "unsolved";
+          for (const key of checkKeys) {
+            const k = String(key).trim().toLowerCase();
+            if (userStatusMap.has(k)) {
+              const s = userStatusMap.get(k);
+              if (s === "solved") {
+                resolvedStatus = "solved";
+                break;
+              } else if (resolvedStatus !== "solved") {
+                resolvedStatus = s;
+              }
+            }
+          }
+
+          return {
+            ...p,
+            status: resolvedStatus,
+            userStatus: resolvedStatus,
+          };
+        });
+
+        setRawProblems(mergedProblems);
       })
       .catch((err) => {
-        console.warn("Lỗi tải danh sách bài tập:", err);
+        console.warn("Lỗi tải danh sách bài tập & trạng thái:", err);
       })
       .finally(() => {
         if (isMounted) {
@@ -150,9 +252,16 @@ function ProblemList() {
         selectedLanguage.id === "all" ||
         (item.supportedLanguages && item.supportedLanguages.some((l) => l.toLowerCase().includes(selectedLanguage.id)));
 
-      return matchesSearch && matchesDiff && matchesTopic && matchesLanguage;
+      // Status
+      const itemStatus = String(item.userStatus || item.status || "unsolved").toLowerCase();
+      const matchesStatus =
+        selectedStatus.id === "all" ||
+        itemStatus === selectedStatus.id.toLowerCase() ||
+        (selectedStatus.id === "solved" && (itemStatus === "ac" || itemStatus === "accepted"));
+
+      return matchesSearch && matchesDiff && matchesTopic && matchesLanguage && matchesStatus;
     });
-  }, [rawProblems, searchQuery, selectedDifficulty, selectedTopic, selectedLanguage]);
+  }, [rawProblems, searchQuery, selectedDifficulty, selectedTopic, selectedLanguage, selectedStatus]);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);

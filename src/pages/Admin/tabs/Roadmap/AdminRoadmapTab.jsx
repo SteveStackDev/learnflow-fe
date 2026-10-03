@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import roadmapService from "~/services/roadmapService";
 import { useToast } from "~/context/ToastContext.jsx";
 import AdminRoadmapList from "./components/AdminRoadmapList/AdminRoadmapList";
@@ -10,7 +10,7 @@ export default function AdminRoadmapTab() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadRoadmaps = async () => {
+  const loadRoadmaps = useCallback(async () => {
     try {
       setIsLoading(true);
       const data = await roadmapService.getAllRoadmaps();
@@ -22,11 +22,11 @@ export default function AdminRoadmapTab() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [toast]);
 
   useEffect(() => {
     loadRoadmaps();
-  }, []);
+  }, [loadRoadmaps]);
 
   const handleOpenAddModal = () => {
     setIsModalOpen(true);

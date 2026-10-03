@@ -112,6 +112,7 @@ export async function submitCode({
     if (error.name === "AbortError" || String(error.message || "").toLowerCase().includes("abort")) {
       throw new Error(
         `Thời gian chấm bài vượt quá ${Math.round(timeoutMs / 1000)} giây (Timeout). Máy chủ chấm bài có thể đang khởi động lại, vui lòng thử lại sau giây lát!`,
+        { cause: error }
       );
     }
 

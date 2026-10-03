@@ -6,12 +6,7 @@ import styles from "./Setting.module.css";
 // Modular Tab Components
 import SettingAccount from "./components/SettingAccount/SettingAccount";
 import SettingSecurity from "./components/SettingSecurity/SettingSecurity";
-import SettingPrivacy from "./components/SettingPrivacy/SettingPrivacy";
-import SettingNotifications from "./components/SettingNotifications/SettingNotifications";
-import SettingBilling from "./components/SettingBilling/SettingBilling";
 import SettingAppearance from "./components/SettingAppearance/SettingAppearance";
-import SettingIntegrations from "./components/SettingIntegrations/SettingIntegrations";
-import SettingData from "./components/SettingData/SettingData";
 
 function Setting() {
   const [activeTab, setActiveTab] = useState("account");
@@ -22,18 +17,8 @@ function Setting() {
         return <SettingAccount userData={mockUserData} />;
       case "security":
         return <SettingSecurity userData={mockUserData} />;
-      case "privacy":
-        return <SettingPrivacy userData={mockUserData} />;
-      case "notifications":
-        return <SettingNotifications userData={mockUserData} />;
-      case "billing":
-        return <SettingBilling userData={mockUserData} />;
       case "appearance":
         return <SettingAppearance />;
-      case "integrations":
-        return <SettingIntegrations />;
-      case "data":
-        return <SettingData />;
       default:
         return <SettingAccount userData={mockUserData} />;
     }

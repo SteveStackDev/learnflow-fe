@@ -3,12 +3,7 @@ import heroUrl from "~/assets/images/Home/hero.webp";
 export const SETTING_TABS = [
   { id: "account", label: "Tài khoản", iconName: "User" },
   { id: "security", label: "Bảo mật", iconName: "Shield" },
-  { id: "privacy", label: "Quyền riêng tư", iconName: "Lock" },
-  { id: "notifications", label: "Thông báo", iconName: "Bell" },
-  { id: "billing", label: "Thanh toán", iconName: "CreditCard" },
   { id: "appearance", label: "Giao diện", iconName: "Sun" },
-  { id: "integrations", label: "Tích hợp", iconName: "Grid" },
-  { id: "data", label: "Dữ liệu & Quyền riêng tư", iconName: "Database" },
 ];
 
 export const mockUserData = {

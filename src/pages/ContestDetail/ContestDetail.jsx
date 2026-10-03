@@ -13,6 +13,7 @@ import ProblemDetailConsole from "~/pages/ProblemDetail/components/ProblemDetail
 
 import styles from "./ContestDetail.module.css";
 import { submitCode, runCodeSample } from "~/services/judgeService";
+import { mockContestData } from "~/constants/mockContestDetail";
 
 export default function ContestDetail() {
   const { id } = useParams();

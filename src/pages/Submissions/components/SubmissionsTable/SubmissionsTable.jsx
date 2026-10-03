@@ -17,7 +17,7 @@ const STATUS_BADGE_MAP = {
   CE: { variant: "secondary", label: "Compilation Error" },
 };
 
-export function SubmissionsTable({ submissions, scopeType }) {
+export function SubmissionsTable({ submissions, scopeType, isLoading = false }) {
   const navigate = useNavigate();
 
   const handleRowClick = (sub) => {
@@ -45,7 +45,16 @@ export function SubmissionsTable({ submissions, scopeType }) {
             </tr>
           </thead>
           <tbody>
-            {submissions && submissions.length > 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan={scopeType !== "contest" ? 8 : 7} className={styles.empty_cell}>
+                  <div className={styles.empty_state}>
+                    <Icon name="Loader2" size={28} className="animate-spin" />
+                    <p>Đang tải danh sách bài nộp...</p>
+                  </div>
+                </td>
+              </tr>
+            ) : submissions && submissions.length > 0 ? (
               submissions.map((sub) => {
                 const badgeSpec = STATUS_BADGE_MAP[sub.status] || {
                   variant: "secondary",

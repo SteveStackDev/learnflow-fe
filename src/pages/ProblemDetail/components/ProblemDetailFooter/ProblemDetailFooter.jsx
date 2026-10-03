@@ -2,7 +2,6 @@ import { useRef } from "react";
 import styles from "./ProblemDetailFooter.module.css";
 import Icon from "~/components/Icon/Icon";
 import { Button } from "~/components/ui";
-import { useToast } from "~/context/ToastContext.jsx";
 
 function ProblemDetailFooter({
   onRunCode,
@@ -12,7 +11,6 @@ function ProblemDetailFooter({
   onFileUpload,
 }) {
   const fileInputRef = useRef(null);
-  const { toast } = useToast();
   const isDisabled = isSubmitting || isExecuting;
 
   const handleFileChange = (e) => {

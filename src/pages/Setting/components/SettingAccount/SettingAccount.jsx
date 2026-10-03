@@ -1,14 +1,9 @@
 import { useState, useRef } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
-import Icon from "~/components/Icon/Icon";
 import styles from "./SettingAccount.module.css";
 
 function SettingAccount({ userData }) {
-  const [fullname, setFullname] = useState(userData.fullname || "Nguyễn Văn A");
   const [username, setUsername] = useState(userData.username || "nguyenvana");
-  const [bio, setBio] = useState(userData.bio || "");
-  const [phone, setPhone] = useState(userData.phone || "+84 912 345 678");
-  const [phoneVerified, setPhoneVerified] = useState(userData.phoneVerified ?? true);
   const [avatarUrl, setAvatarUrl] = useState(() => {
     try {
       const u = JSON.parse(localStorage.getItem("fySet_user"));
@@ -23,6 +18,14 @@ function SettingAccount({ userData }) {
 
   const handleSave = (e) => {
     e.preventDefault();
+    try {
+      const saved = JSON.parse(localStorage.getItem("fySet_user")) || {};
+      saved.username = username;
+      saved.avatar = avatarUrl;
+      localStorage.setItem("fySet_user", JSON.stringify(saved));
+    } catch {
+      // ignore
+    }
     toast.success("Cập nhật thông tin hồ sơ tài khoản thành công!", "Tài khoản");
   };
 
@@ -66,15 +69,6 @@ function SettingAccount({ userData }) {
     }
   };
 
-  const handleVerifyPhone = () => {
-    if (!phoneVerified) {
-      setPhoneVerified(true);
-      toast.success("Xác thực số điện thoại thành công!", "Số điện thoại");
-    } else {
-      toast.info("Số điện thoại của bạn đã được xác thực trước đó.", "Số điện thoại");
-    }
-  };
-
   return (
     <div className={styles.container}>
       <h2 className={styles.section_title}>Tài khoản</h2>
@@ -114,60 +108,25 @@ function SettingAccount({ userData }) {
             </div>
           </div>
 
-          <div className={styles.grid_2cols}>
-            {/* Display Name */}
-            <div className={styles.field_group}>
-              <label htmlFor="setting-fullname" className={styles.label}>
-                Tên hiển thị (Display name)
-              </label>
+          {/* Username */}
+          <div className={styles.field_group}>
+            <label htmlFor="setting-username" className={styles.label}>
+              Tên người dùng (Username)
+            </label>
+            <div className={styles.input_prefix_wrapper}>
+              <span className={styles.prefix}>@</span>
               <input
-                id="setting-fullname"
+                id="setting-username"
                 type="text"
-                value={fullname}
-                onChange={(e) => setFullname(e.target.value)}
-                className={styles.input}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className={`${styles.input} ${styles.input_has_prefix}`}
               />
             </div>
-
-            {/* Username */}
-            <div className={styles.field_group}>
-              <label htmlFor="setting-username" className={styles.label}>
-                Tên người dùng (Username)
-              </label>
-              <div className={styles.input_prefix_wrapper}>
-                <span className={styles.prefix}>@</span>
-                <input
-                  id="setting-username"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className={`${styles.input} ${styles.input_has_prefix}`}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Bio */}
-          <div className={styles.field_group}>
-            <div className={styles.label_row}>
-              <label htmlFor="setting-bio" className={styles.label}>
-                Tiểu sử (Bio)
-              </label>
-              <span className={styles.char_counter}>{bio.length}/250</span>
-            </div>
-            <textarea
-              id="setting-bio"
-              rows={3}
-              maxLength={250}
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              placeholder="Chia sẻ một chút về bản thân bạn (tối đa 250 ký tự)..."
-              className={styles.textarea}
-            />
           </div>
         </div>
 
-        {/* SECTION 2: EMAIL & PHONE */}
+        {/* SECTION 2: CONTACT (EMAIL) */}
         <div className={styles.card_block}>
           <h3 className={styles.sub_title}>Thông tin liên hệ</h3>
 
@@ -193,37 +152,6 @@ function SettingAccount({ userData }) {
               className={styles.link_btn}
             >
               Thay đổi
-            </button>
-          </div>
-
-          {/* Phone Row */}
-          <div className={styles.info_row}>
-            <div className={styles.info_field_wrap}>
-              <div className={styles.phone_header}>
-                <label htmlFor="setting-phone" className={styles.label}>
-                  Số điện thoại
-                </label>
-                <span
-                  className={`${styles.verify_badge} ${
-                    phoneVerified
-                      ? styles["verify_badge--success"]
-                      : styles["verify_badge--warning"]
-                  }`}
-                >
-                  <Icon name={phoneVerified ? "CheckCircle2" : "AlertCircle"} size={13} />
-                  {phoneVerified ? "Đã xác thực" : "Chưa xác thực"}
-                </span>
-              </div>
-              <input
-                id="setting-phone"
-                type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className={`${styles.input} ${styles.input_wide}`}
-              />
-            </div>
-            <button type="button" onClick={handleVerifyPhone} className={styles.link_btn}>
-              {phoneVerified ? "Cập nhật" : "Xác thực ngay"}
             </button>
           </div>
         </div>

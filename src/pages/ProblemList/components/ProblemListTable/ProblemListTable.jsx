@@ -37,28 +37,29 @@ function ProblemListTable({
 
 
   const getStatusIcon = (status) => {
-    if (status === "solved" || status === "AC") {
+    const s = String(status || "").toLowerCase();
+    if (s === "solved" || s === "ac" || s === "accepted") {
       return (
         <span
           className={`${styles.status_icon} ${styles["status_icon--solved"]}`}
-          title="Đã giải thành công"
+          title="Đã giải thành công (Accepted)"
         >
-          <Icon name="CheckCircle" size={18} />
+          <Icon name="CheckCircle2" size={18} />
         </span>
       );
     }
-    if (status === "attempted") {
+    if (s === "attempted" || s === "wa" || s === "tle" || s === "re" || s === "ce") {
       return (
         <span
           className={`${styles.status_icon} ${styles["status_icon--attempted"]}`}
-          title="Đã làm nhưng chưa vượt qua toàn bộ test case"
+          title="Đang làm (Chưa đạt điểm tối đa)"
         >
           <Icon name="Clock" size={18} />
         </span>
       );
     }
     return (
-      <span className={styles.status_icon} title="Chưa giải">
+      <span className={`${styles.status_icon} ${styles["status_icon--unsolved"]}`} title="Chưa giải">
         <Icon name="Minus" size={16} />
       </span>
     );
@@ -116,7 +117,7 @@ function ProblemListTable({
                   onClick={() => handleRowClick(item)}
                   style={{ animationDelay: `${index * 85}ms` }}
                 >
-                  <td className={styles.td}>{getStatusIcon(item.status)}</td>
+                  <td className={styles.td}>{getStatusIcon(item.userStatus || item.status)}</td>
                   <td className={styles.td}>#{item.code || item.number || item.id}</td>
                   <td className={styles.td}>
                     <a

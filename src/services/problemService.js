@@ -89,16 +89,18 @@ export const adaptUserProblem = (item, index, problemMap) => {
     problemDetail = adaptProblem(rawProblem, index);
   }
 
-  const rawStatus = String(item.status || "").toUpperCase();
+  const rawStatus = String(item.status || item.userStatus || "").toUpperCase();
   let userStatus = "unsolved";
   if (
     ["SOLVED", "AC", "ACCEPTED"].includes(rawStatus) ||
-    (item.score != null && item.maxScore != null && item.score === item.maxScore && item.maxScore > 0)
+    item.userStatus === "solved" ||
+    (item.score != null && item.maxScore != null && Number(item.score) >= Number(item.maxScore) && Number(item.maxScore) > 0)
   ) {
     userStatus = "solved";
   } else if (
     ["ATTEMPTED", "WA", "WRONG", "TLE", "RE", "CE", "IN_PROGRESS"].includes(rawStatus) ||
-    (item.score > 0 && item.score < item.maxScore)
+    item.userStatus === "attempted" ||
+    (item.score > 0 && Number(item.score) < Number(item.maxScore))
   ) {
     userStatus = "attempted";
   }
@@ -193,7 +195,9 @@ export const problemService = {
         try {
           const savedUser = JSON.parse(localStorage.getItem("fyset_user") || localStorage.getItem("fySet_user"));
           currentUserId = savedUser?._id || savedUser?.id || "";
-        } catch {}
+        } catch (storageUserErr) {
+          console.debug("Lỗi đọc fyset_user từ storage:", storageUserErr);
+        }
 
         const qs = currentUserId ? `?userId=${encodeURIComponent(currentUserId)}` : "";
         const response = await api.get(`/problem/user${qs}`);
@@ -220,7 +224,9 @@ export const problemService = {
             }
           });
         }
-      } catch {}
+      } catch (cacheErr) {
+        console.debug("Lỗi đọc fyset_solved_problems từ storage:", cacheErr);
+      }
 
       return list.map((item, idx) => adaptUserProblem(item, idx, problemMap));
     } catch (error) {

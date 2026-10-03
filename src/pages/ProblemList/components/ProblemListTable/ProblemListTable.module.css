@@ -70,21 +70,32 @@
 }
 
 .status_icon {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.status_icon:hover {
+  transform: scale(1.15);
 }
 
 .status_icon--solved {
   color: #16a34a;
+  background-color: rgba(22, 163, 74, 0.12);
 }
 
 .status_icon--attempted {
-  color: #f59e0b;
+  color: #d97706;
+  background-color: rgba(217, 119, 6, 0.12);
 }
 
 .status_icon--unsolved {
-  color: #cbd5e1;
+  color: #94a3b8;
+  opacity: 0.6;
 }
 
 .title_link {
@@ -234,6 +245,22 @@
 
 :global([data-theme="dark"]) .td {
   color: #cbd5e1;
+}
+
+:global([data-theme="dark"]) .status_icon--solved {
+  color: #34d399;
+  background-color: rgba(52, 211, 153, 0.16);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.15);
+}
+
+:global([data-theme="dark"]) .status_icon--attempted {
+  color: #fbbf24;
+  background-color: rgba(251, 191, 36, 0.16);
+}
+
+:global([data-theme="dark"]) .status_icon--unsolved {
+  color: #64748b;
+  opacity: 0.6;
 }
 
 :global([data-theme="dark"]) .title_link {

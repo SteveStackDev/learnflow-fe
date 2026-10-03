@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AdminCourseList from "./components/AdminCourseList/AdminCourseList";
 import AdminCourseModal from "./components/AdminCourseModal/AdminCourseModal";
 import { useToast } from "~/context/ToastContext.jsx";
@@ -10,7 +10,7 @@ export default function AdminCourseTab() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadCourses = async () => {
+  const loadCourses = useCallback(async () => {
     try {
       setIsLoading(true);
       const res = await courseService.getAllCourses();
@@ -22,11 +22,11 @@ export default function AdminCourseTab() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [toast]);
 
   useEffect(() => {
     loadCourses();
-  }, []);
+  }, [loadCourses]);
 
   const handleOpenAddModal = () => {
     setIsModalOpen(true);
