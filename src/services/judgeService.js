@@ -10,7 +10,7 @@ const ENDPOINTS = [
   "http://127.0.0.1:8000/api/judge", // 3. Thử trực tiếp 127.0.0.1:8000
 ];
 
-const JUDGE_TIMEOUT_MS = 60000; // 60s timeout
+const JUDGE_TIMEOUT_MS = 120000; // 120s timeout (hỗ trợ Render cold start)
 
 /**
  * Hàm gọi API máy chấm với cơ chế tự động thử nhiều đường dẫn kết nối
@@ -43,13 +43,17 @@ async function callJudgeAPI(path, options = {}) {
       return data;
     } catch (err) {
       lastError = err;
+      // Nếu là AbortError do timeout hoặc người dùng hủy, dừng ngay
+      if (options.signal?.aborted || err.name === "AbortError" || String(err.message || "").toLowerCase().includes("abort")) {
+        throw err;
+      }
       // Thử tiếp endpoint dự phòng
       continue;
     }
   }
 
   throw new Error(
-    lastError?.message || "Không thể kết nối tới máy chủ máy chấm Docker trên cổng 8000!",
+    lastError?.message || "Không thể kết nối tới máy chủ máy chấm!",
   );
 }
 
@@ -105,9 +109,9 @@ export async function submitCode({
   } catch (error) {
     clearTimeout(timeoutId);
 
-    if (error.name === "AbortError") {
+    if (error.name === "AbortError" || String(error.message || "").toLowerCase().includes("abort")) {
       throw new Error(
-        `Thời gian chấm bài vượt quá ${timeoutMs / 1000} giây (Timeout). Vui lòng thử lại sau!`,
+        `Thời gian chấm bài vượt quá ${Math.round(timeoutMs / 1000)} giây (Timeout). Máy chủ chấm bài có thể đang khởi động lại, vui lòng thử lại sau giây lát!`,
       );
     }
 

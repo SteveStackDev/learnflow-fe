@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useLocation } from "react-router";
 import styles from "./ProblemResult.module.css";
-import { problemResultData } from "~/constants/mockProblemResult";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import Icon from "~/components/Icon/Icon";
 import { problemService } from "~/services/problemService";
@@ -32,32 +31,36 @@ function ProblemResult() {
       ? typeof submissionState.executionTime === "number"
         ? `${Math.round(submissionState.executionTime * 1000)} ms`
         : `${submissionState.executionTime}`
-      : "36 ms";
+      : "0 ms";
 
   const resolvedTitle =
     submissionState?.problemTitle ||
-    (problemInfo ? (problemInfo.code ? `#${problemInfo.code}: ${problemInfo.title}` : problemInfo.title) : null) ||
-    problemResultData.problemTitle;
+    (problemInfo ? (problemInfo.code ? `#${problemInfo.code}: ${problemInfo.title}` : problemInfo.title) : `Bài tập #${id || 1}`);
 
   const resolvedDifficulty =
     submissionState?.difficultyLabel ||
     problemInfo?.difficultyLabel ||
     problemInfo?.difficulty ||
-    problemResultData.difficultyLabel;
+    "Dễ";
 
   const resultData = {
-    ...problemResultData,
-    id: id || problemResultData.id,
+    id: id || "1",
     problemTitle: resolvedTitle,
     difficultyLabel: resolvedDifficulty,
-    ...(submissionState?.submittedCode ? { submittedCode: submissionState.submittedCode } : {}),
-    ...(submissionState?.language ? { language: submissionState.language } : {}),
-    ...(submissionState?.status ? { status: submissionState.status, statusCode: submissionState.status } : {}),
-    ...(submissionState?.score != null ? { score: submissionState.score, totalScore: submissionState.score } : {}),
-    ...(submissionState?.max_score != null ? { max_score: submissionState.max_score, maxPossibleScore: submissionState.max_score } : {}),
-    ...(submissionState?.subtasks ? { subtasks: submissionState.subtasks } : {}),
-    ...(submissionState?.passedTests != null ? { passedTestCases: submissionState.passedTests } : {}),
-    ...(submissionState?.totalTests != null ? { totalTestCases: submissionState.totalTests } : {}),
+    submittedCode: submissionState?.submittedCode || "",
+    language: submissionState?.language || "C++",
+    status: submissionState?.status || "AC",
+    statusCode: submissionState?.status || "AC",
+    score: submissionState?.score ?? 0,
+    totalScore: submissionState?.score ?? 0,
+    max_score: submissionState?.max_score ?? problemInfo?.points ?? 100,
+    maxPossibleScore: submissionState?.max_score ?? problemInfo?.points ?? 100,
+    subtasks: submissionState?.subtasks || [],
+    testResults: submissionState?.testResults || [],
+    passedTestCases: submissionState?.passedTests ?? 0,
+    totalTestCases: submissionState?.totalTests ?? 0,
+    logs: submissionState?.logs || [],
+    memory: submissionState?.memoryUsed ? `${submissionState.memoryUsed} MB` : "2.4 MB",
     runtime: submissionState?.status === "TLE" ? "> 2000 ms" : executionTimeMs,
   };
 

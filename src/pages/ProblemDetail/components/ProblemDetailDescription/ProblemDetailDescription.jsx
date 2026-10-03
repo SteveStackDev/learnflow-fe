@@ -4,31 +4,12 @@ import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import { ScrollArea, ChatInput } from "~/components/ui";
 
-const mockProblemDiscussions = [
-  {
-    id: "c-1",
-    name: "Elena Rostova",
-    avatar:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
-    time: "2 giờ trước",
-    text: "Bài này giải thuật Greedy sắp xếp tăng dần mảng a[i] là tối ưu nhất nha mọi người!",
-  },
-  {
-    id: "c-2",
-    name: "Michael Steve",
-    avatar:
-      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
-    time: "5 giờ trước",
-    text: "Lưu ý trường hợp T lớn (10^12) nên dùng kiểu long long trong C++ nhé.",
-  },
-];
-
 function ProblemDetailDescription({ problem, onSelectUser }) {
   const [activeTab, setActiveTab] = useState("desc"); // 'desc' | 'solution' | 'discussion'
   const [upvoteCount, setUpvoteCount] = useState(problem.upvotes ?? 0);
   const [downvoteCount, setDownvoteCount] = useState(problem.downvotes ?? 0);
   const [userVote, setUserVote] = useState(null); // 'up' | 'down' | null
-  const [discussions, setDiscussions] = useState(mockProblemDiscussions);
+  const [discussions, setDiscussions] = useState([]);
   const { toast } = useToast();
 
   useEffect(() => {

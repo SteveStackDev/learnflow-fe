@@ -1,6 +1,44 @@
 import api from "./api";
 
-export const adaptProblem = (problem) => {
+/**
+ * Hàm chuẩn hóa mã bài tập (code) dạng số tịnh tiến liên tục (01, 02, 03,...) hoàn toàn tự động
+ */
+export const formatSequentialCode = (problem, index) => {
+  if (!problem) return "01";
+
+  // 1. Ưu tiên số thứ tự index nếu có (khi render theo danh sách)
+  if (index !== undefined && index !== null && !isNaN(index)) {
+    const num = Number(index) + 1;
+    return String(num).padStart(2, "0");
+  }
+
+  // 2. Nếu bài tập có trường order hoặc orderNumber do server trả về
+  if (problem.order != null || problem.orderNumber != null) {
+    const num = Number(problem.order ?? problem.orderNumber);
+    if (!isNaN(num) && num > 0) {
+      return String(num).padStart(2, "0");
+    }
+  }
+
+  // 3. Nếu problem.code là số nguyên hợp lệ (ví dụ "1", "02", "3")
+  const rawCode = String(problem.code || "").trim();
+  if (/^\d+$/.test(rawCode)) {
+    const num = Number(rawCode);
+    if (!isNaN(num)) return String(num).padStart(2, "0");
+  }
+
+  // 4. Nếu problem._id hoặc problem.id là số ngắn (ví dụ "01", "2")
+  const rawId = String(problem._id || problem.id || "").trim();
+  if (/^\d+$/.test(rawId) && rawId.length <= 4) {
+    const num = Number(rawId);
+    if (!isNaN(num)) return String(num).padStart(2, "0");
+  }
+
+  // 5. Fallback giữ nguyên code đã có hoặc "01"
+  return rawCode || "01";
+};
+
+export const adaptProblem = (problem, index) => {
   if (!problem) return null;
 
   const rawDiff = String(problem.difficulty || problem.level || "easy").toLowerCase();
@@ -15,13 +53,14 @@ export const adaptProblem = (problem) => {
   }
 
   const id = problem._id?.toString() || problem.id || "";
-  const code = problem.code || (problem._id ? String(problem._id).slice(-4).toUpperCase() : "---");
+  const code = formatSequentialCode(problem, index);
 
   return {
     ...problem,
     id,
     _id: problem._id || id,
     code,
+    number: code,
     title: problem.title || "Bài tập thuật toán",
     difficulty: diffKey,
     difficultyLabel: diffLabel,
@@ -32,10 +71,11 @@ export const adaptProblem = (problem) => {
   };
 };
 
-export const adaptUserProblem = (item) => {
+export const adaptUserProblem = (item, index) => {
   if (!item) return null;
 
-  const problemDetail = item.problemId ? adaptProblem(item.problemId) : adaptProblem(item);
+  const rawProblem = item.problemId || item;
+  const problemDetail = adaptProblem(rawProblem, index);
 
   const rawStatus = String(item.status || "").toUpperCase();
   let userStatus = "unsolved";
@@ -51,6 +91,8 @@ export const adaptUserProblem = (item) => {
     userStatus = "attempted";
   }
 
+  const code = problemDetail?.code || formatSequentialCode(rawProblem, index);
+
   return {
     id: item._id?.toString() || item.id,
     _id: item._id || item.id,
@@ -62,11 +104,11 @@ export const adaptUserProblem = (item) => {
     problemId: problemDetail || {
       _id: item.problemId?._id || item.id,
       title: "Bài tập thuật toán",
-      code: "---",
+      code,
       difficulty: "easy",
       topic: "General",
     },
-    code: problemDetail?.code || "---",
+    code,
     title: problemDetail?.title || "Chưa có tên bài tập",
     difficulty: problemDetail?.difficulty || "easy",
     topic: problemDetail?.topic || "",
@@ -87,7 +129,7 @@ export const problemService = {
       const rawData = response?.data || response;
       const list = Array.isArray(rawData) ? rawData : (rawData?.data || []);
 
-      return list.map(adaptProblem);
+      return list.map((p, idx) => adaptProblem(p, idx));
     } catch (error) {
       console.error("Lỗi khi lấy tất cả bài tập:", error);
       return [];
@@ -124,7 +166,7 @@ export const problemService = {
       const rawData = response?.data || response;
       const list = Array.isArray(rawData) ? rawData : (rawData?.data || []);
 
-      return list.map(adaptUserProblem);
+      return list.map((item, idx) => adaptUserProblem(item, idx));
     } catch (error) {
       console.error("Lỗi khi lấy danh sách bài tập của user:", error);
       return [];

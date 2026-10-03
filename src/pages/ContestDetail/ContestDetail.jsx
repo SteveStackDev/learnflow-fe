@@ -12,8 +12,7 @@ import ContestLiveLeaderboard from "./components/ContestLiveLeaderboard/ContestL
 import ProblemDetailConsole from "~/pages/ProblemDetail/components/ProblemDetailConsole/ProblemDetailConsole";
 
 import styles from "./ContestDetail.module.css";
-import { mockContestData } from "~/constants/mockContestDetail";
-import { mockRunCodeLogs, mockJudgingSequence } from "~/constants/mockJudgingLogs";
+import { submitCode, runCodeSample } from "~/services/judgeService";
 
 export default function ContestDetail() {
   const { id } = useParams();
@@ -92,55 +91,93 @@ export default function ContestDetail() {
     toast.info("Đã đặt lại mã nguồn mặc định!", "Mã nguồn");
   };
 
-  const handleRunCode = () => {
+  const handleRunCode = async () => {
     if (isSubmitting || isExecuting) return;
 
     setIsExecuting(true);
     setIsConsoleExpanded(true);
-    setConsoleLogs(mockRunCodeLogs(activeProblem.title || `Bài ${activeProblem.id || "A"}`));
+    const timeStr = new Date().toLocaleTimeString();
+    setConsoleLogs([
+      { type: "info", text: `[${timeStr}] ⚙️ Đang thực thi mã nguồn cho bài tập #${activeProblem.id || "A"}...` },
+    ]);
 
-    setTimeout(() => {
+    try {
+      const res = await runCodeSample({
+        sourceCode: currentCode,
+        language: "cpp",
+        sampleInput: activeProblem.sampleInput || "1 2",
+        expectedOutput: activeProblem.sampleOutput || "3",
+      });
+
+      if (res.success) {
+        setConsoleLogs((prev) => [
+          ...prev,
+          { type: "stdout", text: `--- Your Output ---\n${res.stdout}` },
+          { type: "success", text: `✅ Chạy thử thành công! (${res.executionTime})` },
+        ]);
+        toast.success("Chạy thử mã nguồn thành công!", "Kết quả chạy thử");
+      } else {
+        setConsoleLogs((prev) => [
+          ...prev,
+          { type: "error", text: `❌ Lỗi: ${res.error}` },
+        ]);
+        toast.error(res.error || "Chạy thử thất bại!", "Lỗi chạy thử");
+      }
+    } catch (err) {
+      setConsoleLogs((prev) => [
+        ...prev,
+        { type: "error", text: `❌ Lỗi hệ thống: ${err.message}` },
+      ]);
+    } finally {
       setIsExecuting(false);
-      toast.success("Chạy thử mã nguồn thành công!", "Biên dịch C++");
-    }, 800);
+    }
   };
 
-  const handleSubmitCode = () => {
+  const handleSubmitCode = async () => {
     if (isSubmitting || isExecuting) return;
-
-    const s1 = mockJudgingSequence.step1(activeProblem.id || "A");
-    const s2 = mockJudgingSequence.step2;
-    const s3 = mockJudgingSequence.step3;
 
     setIsSubmitting(true);
     setIsConsoleExpanded(true);
-    setJudgingStep(s1.stepLabel);
-    setConsoleLogs(s1.logs);
+    const timeStr = new Date().toLocaleTimeString();
 
-    setTimeout(() => {
-      setJudgingStep(s2.stepLabel);
-      setConsoleLogs((prev) => [...prev, ...s2.logs]);
-    }, 1100);
+    setJudgingStep("[1/3] Đang gửi mã nguồn tới FySet Judge Engine...");
+    setConsoleLogs([
+      { type: "info", text: `[${timeStr}] 🚀 Bắt đầu quá trình nộp bài #${activeProblem.id || "A"}...` },
+    ]);
 
-    setTimeout(() => {
-      setJudgingStep(s3.stepLabel);
-      setConsoleLogs((prev) => [...prev, ...s3.logs]);
-    }, 2200);
+    try {
+      const result = await submitCode({
+        problemId: activeProblem.id || "A",
+        sourceCode: currentCode,
+        language: "cpp",
+        timeLimit: 2.0,
+        memoryLimit: 256,
+      });
 
-    setTimeout(() => {
       setIsSubmitting(false);
       setJudgingStep("");
+
       navigate(`/contest/${activeProblem.id || "A"}/result`, {
         state: {
           submissionResult: {
-            status: "Accepted",
-            statusLabel: "Chấp nhận (Accepted)",
+            status: result.status === "AC" ? "Accepted" : result.status,
+            statusLabel: result.status === "AC" ? "Chấp nhận (Accepted)" : result.status,
             submittedCode: currentCode,
             language: "C++",
+            score: result.score,
+            max_score: result.max_score,
           },
         },
       });
-    }, 3000);
+    } catch (err) {
+      setIsSubmitting(false);
+      setJudgingStep("");
+      setConsoleLogs((prev) => [
+        ...prev,
+        { type: "error", text: `❌ Lỗi khi nộp bài: ${err.message}` },
+      ]);
+      toast.error(err.message || "Lỗi nộp bài!", "Lỗi máy chấm");
+    }
   };
 
   return (
