@@ -274,7 +274,7 @@ function ProblemDetail() {
     setConsoleLogs([
       {
         type: "info",
-        text: `[${timeStr}] 🚀 Bắt đầu quá trình nộp và chấm bài (Bài #${problem.code || problem.id}: ${problem.title})...`,
+        text: `[${timeStr}] Bắt đầu quá trình nộp và chấm bài (Bài #${problem.code || problem.id}: ${problem.title})...`,
       },
       {
         type: "info",
@@ -377,49 +377,8 @@ function ProblemDetail() {
         };
 
         await problemService.saveProblem(payloadToSave);
-
-        // Lưu vào localStorage cache để Dashboard cập nhật tức thì 100%
-        try {
-          const existingSolved = JSON.parse(localStorage.getItem("fyset_solved_problems") || "[]");
-          const isAC = result.status === "AC" || result.status === "ACCEPTED" || finalScore === finalMaxScore;
-          const userStatus = isAC ? "solved" : "attempted";
-          const newRecord = {
-            id: result.submission_id || `sub_${Date.now()}`,
-            _id: result.submission_id || `sub_${Date.now()}`,
-            problemId: {
-              _id: problem._id || problem.id || id,
-              id: problem.id || id,
-              title: problem.title || "Bài tập thuật toán",
-              code: problem.code || "01",
-              difficulty: problem.difficulty || problem.difficultyLabel || "easy",
-              topic: problem.topic || "Thuật toán",
-              acceptanceRate: problem.acceptanceRate || 0,
-              acceptance: problem.acceptance || `${problem.acceptanceRate || 0}%`,
-            },
-            code: problem.code || "01",
-            title: problem.title || "Bài tập thuật toán",
-            difficulty: problem.difficulty || "easy",
-            topic: problem.topic || "Thuật toán",
-            acceptanceRate: problem.acceptanceRate || 0,
-            userStatus,
-            status: result.status || "AC",
-            score: finalScore,
-            maxScore: finalMaxScore,
-            executionTime: result.execution_time,
-            memoryUsed: parseFloat(result.memory) || 0,
-            createdAt: new Date().toISOString(),
-          };
-
-          const filtered = existingSolved.filter(
-            (s) => String(s.problemId?._id || s.problemId?.id || s.id) !== String(newRecord.problemId._id)
-          );
-          filtered.unshift(newRecord);
-          localStorage.setItem("fyset_solved_problems", JSON.stringify(filtered));
-        } catch (storageErr) {
-          console.warn("Lỗi lưu local storage solved problem:", storageErr);
-        }
       } catch (saveErr) {
-        console.error("Lỗi lưu kết quả vào CSDL:", saveErr);
+        console.error("Lỗi lưu kết quả vào CSDL Backend:", saveErr);
       }
       // =================================================================
 

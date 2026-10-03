@@ -3,9 +3,10 @@ import styles from "./ProblemDetailDescription.module.css";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import { ScrollArea, ChatInput } from "~/components/ui";
+import ProblemDetailSubmissions from "../ProblemDetailSubmissions/ProblemDetailSubmissions";
 
 function ProblemDetailDescription({ problem, onSelectUser }) {
-  const [activeTab, setActiveTab] = useState("desc"); // 'desc' | 'solution' | 'discussion'
+  const [activeTab, setActiveTab] = useState("desc"); // 'desc' | 'solution' | 'discussion' | 'submissions'
   const [upvoteCount, setUpvoteCount] = useState(problem.upvotes ?? 0);
   const [downvoteCount, setDownvoteCount] = useState(problem.downvotes ?? 0);
   const [userVote, setUserVote] = useState(null); // 'up' | 'down' | null
@@ -110,6 +111,17 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
         >
           <Icon name="MessageSquare" size={16} />
           <span>Thảo luận</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab("submissions")}
+          className={`${styles.tab_btn} ${
+            activeTab === "submissions" ? styles["tab_btn--active"] : ""
+          }`}
+        >
+          <Icon name="History" size={16} />
+          <span>Bài nộp của tôi</span>
         </button>
       </div>
 
@@ -433,6 +445,11 @@ function ProblemDetailDescription({ problem, onSelectUser }) {
               ))}
             </div>
           </div>
+        )}
+
+        {/* Tab 4: My Submissions */}
+        {activeTab === "submissions" && (
+          <ProblemDetailSubmissions problem={problem} />
         )}
       </ScrollArea>
 

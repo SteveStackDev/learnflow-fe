@@ -176,7 +176,7 @@ export const problemService = {
 
   getUserProblems: async () => {
     try {
-      // 1. Lấy danh sách tất cả problems để map đúng mã bài tập tịnh tiến (#01, #02) và thông tin tiêu đề
+      // 1. Lấy danh sách tất cả problems để map đúng thông tin bài tập
       let problemMap = new Map();
       try {
         const allProblems = await problemService.getAllProblems();
@@ -189,48 +189,22 @@ export const problemService = {
         console.warn("Không thể map allProblems trong getUserProblems:", e);
       }
 
-      let list = [];
+      let currentUserId = "";
       try {
-        let currentUserId = "";
-        try {
-          const savedUser = JSON.parse(localStorage.getItem("fyset_user") || localStorage.getItem("fySet_user"));
-          currentUserId = savedUser?._id || savedUser?.id || "";
-        } catch (storageUserErr) {
-          console.debug("Lỗi đọc fyset_user từ storage:", storageUserErr);
-        }
-
-        const qs = currentUserId ? `?userId=${encodeURIComponent(currentUserId)}` : "";
-        const response = await api.get(`/problem/user${qs}`);
-        const rawData = response?.data || response;
-        list = Array.isArray(rawData) ? rawData : (rawData?.data || []);
-      } catch (apiErr) {
-        console.warn("API /problem/user error, fallback to local storage:", apiErr);
+        const savedUser = JSON.parse(localStorage.getItem("fyset_user") || localStorage.getItem("fySet_user"));
+        currentUserId = savedUser?._id || savedUser?.id || "";
+      } catch (storageUserErr) {
+        console.debug("Lỗi đọc fyset_user từ storage:", storageUserErr);
       }
 
-      // 2. Merge với dữ liệu cache từ localStorage (nếu có) để đảm bảo các bài đã AC không bao giờ bị mất
-      try {
-        const cachedSolved = JSON.parse(localStorage.getItem("fyset_solved_problems") || "[]");
-        if (Array.isArray(cachedSolved) && cachedSolved.length > 0) {
-          const apiProblemIds = new Set(
-            list.map((item) => String(item.problemId?._id || item.problemId?.id || item.problemId || item.id || ""))
-          );
-          cachedSolved.forEach((cacheItem) => {
-            const cachePid = String(
-              cacheItem.problemId?._id || cacheItem.problemId?.id || cacheItem.problemId || cacheItem.id || ""
-            );
-            if (!apiProblemIds.has(cachePid)) {
-              list.unshift(cacheItem);
-              apiProblemIds.add(cachePid);
-            }
-          });
-        }
-      } catch (cacheErr) {
-        console.debug("Lỗi đọc fyset_solved_problems từ storage:", cacheErr);
-      }
+      const qs = currentUserId ? `?userId=${encodeURIComponent(currentUserId)}` : "";
+      const response = await api.get(`/problem/user${qs}`);
+      const rawData = response?.data || response;
+      const list = Array.isArray(rawData) ? rawData : (rawData?.data || []);
 
       return list.map((item, idx) => adaptUserProblem(item, idx, problemMap));
     } catch (error) {
-      console.error("Lỗi khi lấy danh sách bài tập của user:", error);
+      console.error("Lỗi khi lấy danh sách bài tập của user từ Backend:", error);
       return [];
     }
   },

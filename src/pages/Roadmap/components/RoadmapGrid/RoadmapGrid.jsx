@@ -55,7 +55,6 @@ function RoadmapGrid({
                 const labelsList = rawLabels
                   .map((l) => (typeof l === "string" ? l : l.name || l.title || ""))
                   .filter(Boolean);
-                console.log(labelsList);
                 const rawTags = Array.isArray(card.tags) && card.tags.length > 0 ? card.tags : [];
                 const tagsList = rawTags
                   .map((t) => (typeof t === "string" ? t : t.name || t.title || ""))

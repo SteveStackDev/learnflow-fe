@@ -34,7 +34,80 @@ export default function DashboardSolvedProblems() {
       .getUserProblems()
       .then((data) => {
         if (!isMounted) return;
-        setProblems(Array.isArray(data) ? data.slice(0, 8) : []);
+        const rawList = Array.isArray(data) ? data : [];
+
+        // Deduplicate submissions: Mỗi bài tập chỉ hiển thị đúng 1 dòng duy nhất
+        const uniqueMap = new Map();
+
+        rawList.forEach((item) => {
+          if (!item) return;
+          const p = item.problemId || item;
+          const pId = String(p._id || p.id || item.problemId || item.id || "");
+          const pCode = String(p.code || item.code || "");
+          const pTitle = String(p.title || item.title || "").trim().toLowerCase();
+
+          // Tìm xem bài này đã có trong Map chưa (khớp theo ID, Code hoặc Tiêu đề)
+          let existingKey = null;
+          for (const [key, existing] of uniqueMap.entries()) {
+            const exP = existing.problemId || existing;
+            const exId = String(exP._id || exP.id || existing.problemId || existing.id || "");
+            const exCode = String(exP.code || existing.code || "");
+            const exTitle = String(exP.title || existing.title || "").trim().toLowerCase();
+
+            if (
+              (pId && exId && pId === exId) ||
+              (pCode && exCode && pCode === exCode) ||
+              (pTitle && exTitle && pTitle === exTitle)
+            ) {
+              existingKey = key;
+              break;
+            }
+          }
+
+          const rawStatus = String(item.status || "").toUpperCase();
+          const isAC =
+            item.userStatus === "solved" ||
+            rawStatus === "AC" ||
+            rawStatus === "ACCEPTED" ||
+            rawStatus === "SOLVED" ||
+            (item.score != null && item.maxScore != null && Number(item.score) >= Number(item.maxScore) && Number(item.maxScore) > 0);
+
+          const canonicalKey = pId || pCode || pTitle || `p_${uniqueMap.size}`;
+
+          if (existingKey) {
+            const existing = uniqueMap.get(existingKey);
+            const existingIsAC =
+              existing.userStatus === "solved" ||
+              existing.status === "AC" ||
+              existing.status === "ACCEPTED" ||
+              existing.status === "SOLVED";
+
+            const finalUserStatus = isAC || existingIsAC ? "solved" : "attempted";
+            const finalStatus = isAC || existingIsAC ? "AC" : (item.status || existing.status);
+
+            uniqueMap.set(existingKey, {
+              ...existing,
+              ...item,
+              userStatus: finalUserStatus,
+              status: finalStatus,
+              problemId: {
+                ...(existing.problemId || {}),
+                ...(item.problemId || {}),
+                code: pCode || existing.code || existing.problemId?.code,
+                title: p.title || item.title || existing.title || existing.problemId?.title,
+              },
+            });
+          } else {
+            uniqueMap.set(canonicalKey, {
+              ...item,
+              userStatus: isAC ? "solved" : "attempted",
+              status: isAC ? "AC" : item.status,
+            });
+          }
+        });
+
+        const uniqueList = Array.from(uniqueMap.values());
+        setProblems(uniqueList.slice(0, 8));
       })
       .catch((err) => {
         console.error("Failed to load user problems:", err);
@@ -55,8 +128,14 @@ export default function DashboardSolvedProblems() {
   };
 
   const getStatus = (item) => {
-    const s = item?.userStatus || item?.status || "unsolved";
-    return STATUS_CONFIG[s] || STATUS_CONFIG.unsolved;
+    const s = String(item?.userStatus || item?.status || "unsolved").toLowerCase();
+    if (s === "solved" || s === "ac" || s === "accepted") {
+      return STATUS_CONFIG.solved;
+    }
+    if (s === "attempted" || s === "wa" || s === "tle" || s === "re" || s === "ce") {
+      return STATUS_CONFIG.attempted;
+    }
+    return STATUS_CONFIG.unsolved;
   };
 
   const getDiff = (item) => {
@@ -64,7 +143,10 @@ export default function DashboardSolvedProblems() {
     return DIFF_CONFIG[d] || DIFF_CONFIG.easy;
   };
 
-  const solvedCount = problems.filter((p) => p?.userStatus === "solved").length;
+  const solvedCount = problems.filter((p) => {
+    const s = String(p?.userStatus || p?.status || "").toLowerCase();
+    return s === "solved" || s === "ac" || s === "accepted";
+  }).length;
 
   return (
     <section className={styles.widget}>

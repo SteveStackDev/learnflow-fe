@@ -143,7 +143,7 @@ export default function ContestDetail() {
 
     setJudgingStep("[1/3] Đang gửi mã nguồn tới FySet Judge Engine...");
     setConsoleLogs([
-      { type: "info", text: `[${timeStr}] 🚀 Bắt đầu quá trình nộp bài #${activeProblem.id || "A"}...` },
+      { type: "info", text: `[${timeStr}] Bắt đầu quá trình nộp bài #${activeProblem.id || "A"}...` },
     ]);
 
     try {

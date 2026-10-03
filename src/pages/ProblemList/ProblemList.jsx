@@ -123,16 +123,6 @@ function ProblemList() {
           userProblemsData.forEach(registerUserProblem);
         }
 
-        // Đọc thêm từ localStorage để đảm bảo dữ liệu vừa nộp hiển thị ngay lập tức
-        try {
-          const cachedSolved = JSON.parse(localStorage.getItem("fyset_solved_problems") || "[]");
-          if (Array.isArray(cachedSolved)) {
-            cachedSolved.forEach(registerUserProblem);
-          }
-        } catch (storageErr) {
-          console.debug("Lỗi đọc cache fyset_solved_problems:", storageErr);
-        }
-
         const mergedProblems = (Array.isArray(problemsData) ? problemsData : []).map((p, idx) => {
           const checkKeys = [
             p._id,
