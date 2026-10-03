@@ -165,43 +165,81 @@ function ProblemResultJudge({ resultData, initialStatus }) {
       </div>
 
       {/* Metrics Summary Grid */}
-      <div className={styles.metrics_grid}>
-        {/* Metric 1: Runtime */}
-        <div className={styles.metric_card}>
-          <div className={styles.metric_header}>
-            <Icon name="Clock" size={18} />
-            <span>Thời gian chạy lớn nhất</span>
-          </div>
-          <div className={styles.metric_value}>
-            {activeStatusKey === "TLE" ? "> 2000 ms" : (resultData?.runtime || "36 ms")}
-          </div>
-          <div className={styles.metric_percentile}>Nhanh hơn 94.2% bài nộp C++20</div>
-        </div>
+      {(() => {
+        const displayLang = resultData?.language || "C++";
+        const parsedRuntime = parseFloat(String(resultData?.runtime || "").replace(/[^\d.]/g, "")) || 0;
+        const getTimePercentile = (ms) => {
+          if (!ms || ms <= 0) return "99.2%";
+          if (ms <= 15) return "98.5%";
+          if (ms <= 50) return "92.4%";
+          if (ms <= 100) return "85.1%";
+          if (ms <= 250) return "74.8%";
+          if (ms <= 500) return "63.2%";
+          return "51.0%";
+        };
 
-        {/* Metric 2: Memory */}
-        <div className={styles.metric_card}>
-          <div className={styles.metric_header}>
-            <Icon name="Cpu" size={18} />
-            <span>Bộ nhớ dùng tối đa</span>
-          </div>
-          <div className={styles.metric_value}>16.4 MB</div>
-          <div className={styles.metric_percentile}>Tiết kiệm bộ nhớ hơn 88.5% C++20</div>
-        </div>
+        const parsedMem = parseFloat(String(resultData?.memory || "").replace(/[^\d.]/g, "")) || 0;
+        const displayMemory =
+          parsedMem > 0
+            ? `${parsedMem} MB`
+            : displayLang.includes("Java")
+            ? "34.2 MB"
+            : displayLang.includes("Python")
+            ? "12.8 MB"
+            : "2.4 MB";
+        const memNum = parseFloat(displayMemory);
+        const getMemPercentile = (mb) => {
+          if (mb <= 3) return "95.6%";
+          if (mb <= 10) return "89.4%";
+          if (mb <= 25) return "81.2%";
+          if (mb <= 50) return "72.5%";
+          return "60.1%";
+        };
 
-        {/* Metric 3: Subtasks Score */}
-        <div className={styles.metric_card}>
-          <div className={styles.metric_header}>
-            <Icon name="Award" size={18} />
-            <span>Tổng điểm Subtasks</span>
+        return (
+          <div className={styles.metrics_grid}>
+            {/* Metric 1: Runtime */}
+            <div className={styles.metric_card}>
+              <div className={styles.metric_header}>
+                <Icon name="Clock" size={18} />
+                <span>Thời gian chạy lớn nhất</span>
+              </div>
+              <div className={styles.metric_value}>
+                {activeStatusKey === "TLE" ? "> 2000 ms" : (resultData?.runtime || "12 ms")}
+              </div>
+              <div className={styles.metric_percentile}>
+                Nhanh hơn {getTimePercentile(parsedRuntime)} bài nộp {displayLang}
+              </div>
+            </div>
+
+            {/* Metric 2: Memory */}
+            <div className={styles.metric_card}>
+              <div className={styles.metric_header}>
+                <Icon name="Cpu" size={18} />
+                <span>Bộ nhớ dùng tối đa</span>
+              </div>
+              <div className={styles.metric_value}>{displayMemory}</div>
+              <div className={styles.metric_percentile}>
+                Tiết kiệm bộ nhớ hơn {getMemPercentile(memNum)} {displayLang}
+              </div>
+            </div>
+
+            {/* Metric 3: Subtasks Score */}
+            <div className={styles.metric_card}>
+              <div className={styles.metric_header}>
+                <Icon name="Award" size={18} />
+                <span>Tổng điểm Subtasks</span>
+              </div>
+              <div className={styles.metric_value}>
+                {totalEarnedScore}/{totalPossibleScore} pts
+              </div>
+              <div className={styles.metric_percentile}>
+                {totalEarnedScore === totalPossibleScore ? "100% Subtasks Passed" : "Chưa hoàn thành 100%"}
+              </div>
+            </div>
           </div>
-          <div className={styles.metric_value}>
-            {totalEarnedScore}/{totalPossibleScore} pts
-          </div>
-          <div className={styles.metric_percentile}>
-            {totalEarnedScore === totalPossibleScore ? "100% Subtasks Passed" : "Chưa hoàn thành 100%"}
-          </div>
-        </div>
-      </div>
+        );
+      })()}
 
       {/* Subtasks Section (`Sub 1`, `Sub 2`, `Sub 3`) */}
       <div className={styles.subtask_section}>
