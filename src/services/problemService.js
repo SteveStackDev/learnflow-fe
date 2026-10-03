@@ -106,14 +106,29 @@ export const adaptUserProblem = (item, index, problemMap) => {
   }
 
   const code = problemDetail?.code || formatSequentialCode(rawProblem, index);
+  const sourceCode = item.sourceCode || item.submittedCode || item.codeContent || item.code || "";
+  const lang = item.language || "cpp";
+  const execTime = item.executionTime != null ? Number(item.executionTime) : (item.runtime ? parseFloat(item.runtime) : 0);
+  const memUsed = item.memoryUsed != null ? Number(item.memoryUsed) : (item.memory ? parseFloat(item.memory) : 2.4);
 
   return {
+    ...item,
     id: item._id?.toString() || item.id,
     _id: item._id || item.id,
     userStatus,
     status: rawStatus,
-    score: item.score || 0,
-    maxScore: item.maxScore || 100,
+    score: item.score != null ? Number(item.score) : 0,
+    maxScore: item.maxScore != null ? Number(item.maxScore) : 100,
+    sourceCode,
+    submittedCode: sourceCode,
+    language: lang,
+    executionTime: execTime,
+    memoryUsed: memUsed,
+    testResults: Array.isArray(item.testResults) ? item.testResults : [],
+    subtasksResult: Array.isArray(item.subtasksResult) ? item.subtasksResult : (Array.isArray(item.subtasks) ? item.subtasks : []),
+    passedTests: item.passedTests ?? (["AC", "ACCEPTED", "SOLVED"].includes(rawStatus) ? 5 : 0),
+    totalTests: item.totalTests ?? (item.testResults?.length || 5),
+    logs: Array.isArray(item.logs) ? item.logs : [],
     createdAt: item.createdAt,
     problemId: problemDetail || {
       _id: item.problemId?._id || item.id,

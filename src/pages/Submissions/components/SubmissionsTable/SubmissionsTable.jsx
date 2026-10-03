@@ -21,10 +21,58 @@ export function SubmissionsTable({ submissions, scopeType, isLoading = false }) 
   const navigate = useNavigate();
 
   const handleRowClick = (sub) => {
+    const pId = sub.problemId?._id || sub.problemId?.id || sub.problemId || sub.id || 1;
+    const pTitle = sub.problemTitle || sub.title || (sub.problemId?.title ? `#${sub.problemId.code || '01'}: ${sub.problemId.title}` : "Bài tập thuật toán");
+    const pDiff = sub.difficultyLabel || sub.difficulty || sub.problemId?.difficultyLabel || "Dễ";
+
     if (scopeType === "contest" || sub.contestId) {
-      navigate(`/contest/${sub.problemId || "B"}/result`);
+      navigate(`/contest/${sub.contestId || sub.problemId || "B"}/result`, {
+        state: {
+          submissionResult: {
+            id: sub.id || sub._id,
+            problemId: pId,
+            problemTitle: pTitle,
+            difficultyLabel: pDiff,
+            status: sub.status || "AC",
+            score: sub.score ?? 0,
+            max_score: sub.maxScore ?? sub.max_score ?? 100,
+            executionTime: sub.executionTime ?? sub.runtime ?? 0,
+            memory: sub.memoryUsed ? `${sub.memoryUsed} MB` : (sub.memory || "2.4 MB"),
+            memoryUsed: sub.memoryUsed ?? 2.4,
+            language: sub.language || "C++",
+            submittedCode: sub.sourceCode || sub.submittedCode || sub.code || "",
+            testResults: sub.testResults || [],
+            subtasks: sub.subtasksResult || sub.subtasks || [],
+            passedTests: sub.passedTests ?? (sub.status === "AC" ? 5 : 0),
+            totalTests: sub.totalTests ?? 5,
+            logs: sub.logs || [],
+          },
+        },
+      });
     } else {
-      navigate(`/problem/${sub.problemId || 1}/result`);
+      navigate(`/problem/${sub.problemId?.slug || sub.problemSlug || pId}/result`, {
+        state: {
+          submissionResult: {
+            id: sub.id || sub._id,
+            problemId: pId,
+            problemTitle: pTitle,
+            difficultyLabel: pDiff,
+            status: sub.status || "AC",
+            score: sub.score ?? 0,
+            max_score: sub.maxScore ?? sub.max_score ?? 100,
+            executionTime: sub.executionTime ?? sub.runtime ?? 0,
+            memory: sub.memoryUsed ? `${sub.memoryUsed} MB` : (sub.memory || "2.4 MB"),
+            memoryUsed: sub.memoryUsed ?? 2.4,
+            language: sub.language || "C++",
+            submittedCode: sub.sourceCode || sub.submittedCode || sub.code || "",
+            testResults: sub.testResults || [],
+            subtasks: sub.subtasksResult || sub.subtasks || [],
+            passedTests: sub.passedTests ?? (sub.status === "AC" ? 5 : 0),
+            totalTests: sub.totalTests ?? 5,
+            logs: sub.logs || [],
+          },
+        },
+      });
     }
   };
 

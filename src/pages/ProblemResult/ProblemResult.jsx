@@ -15,6 +15,7 @@ function ProblemResult() {
 
   const submissionState = location.state?.submissionResult;
   const [problemInfo, setProblemInfo] = useState(null);
+  const [fetchedSubmission, setFetchedSubmission] = useState(null);
 
   useEffect(() => {
     if (id) {
@@ -23,56 +24,80 @@ function ProblemResult() {
           if (p) setProblemInfo(p);
         })
         .catch(() => {});
+
+      // Nếu không có state từ navigation (ví dụ refresh F5), tự động lấy bài nộp gần nhất từ CSDL Backend
+      if (!submissionState) {
+        problemService.getUserProblems()
+          .then((userProblems) => {
+            if (Array.isArray(userProblems)) {
+              const matched = userProblems.filter((sub) => {
+                const p = sub.problemId || {};
+                const pid = String(p._id || p.id || sub.problemId || sub.id || "");
+                const pslug = String(p.slug || sub.slug || "").toLowerCase();
+                const pcode = String(p.code || sub.code || "");
+                return pid === String(id) || pslug === String(id).toLowerCase() || pcode === String(id);
+              });
+              if (matched.length > 0) {
+                setFetchedSubmission(matched[0]);
+              }
+            }
+          })
+          .catch(() => {});
+      }
     }
-  }, [id]);
+  }, [id, submissionState]);
+
+  const activeSub = submissionState || fetchedSubmission;
 
   const executionTimeMs =
-    submissionState?.executionTime != null
-      ? typeof submissionState.executionTime === "number"
-        ? `${Math.round(submissionState.executionTime * 1000)} ms`
-        : `${submissionState.executionTime}`
+    activeSub?.executionTime != null
+      ? typeof activeSub.executionTime === "number"
+        ? `${Math.round(activeSub.executionTime * 1000)} ms`
+        : `${activeSub.executionTime}`
       : "0 ms";
 
-  const titleCodeMatch = submissionState?.problemTitle?.match(/^#?(\d+)/);
+  const titleCodeMatch = activeSub?.problemTitle?.match(/^#?(\d+)/);
   const displayCode =
     problemInfo?.code ||
     (titleCodeMatch ? titleCodeMatch[1].padStart(2, "0") : null) ||
     (/^\d+$/.test(id) ? String(id).padStart(2, "0") : "01");
 
   const resolvedTitle =
-    submissionState?.problemTitle ||
+    activeSub?.problemTitle ||
     (problemInfo ? (problemInfo.code ? `#${problemInfo.code}: ${problemInfo.title}` : `#${displayCode}: ${problemInfo.title}`) : `Bài tập #${displayCode}`);
 
   const resolvedDifficulty =
-    submissionState?.difficultyLabel ||
+    activeSub?.difficultyLabel ||
     problemInfo?.difficultyLabel ||
     problemInfo?.difficulty ||
     "Dễ";
 
-  const rawScore = submissionState?.score ?? 0;
-  const rawMaxScore = submissionState?.max_score ?? problemInfo?.points ?? 100;
+  const rawScore = activeSub?.score ?? 0;
+  const rawMaxScore = activeSub?.max_score ?? activeSub?.maxScore ?? problemInfo?.points ?? 100;
   const resolvedMaxScore = Math.max(Number(rawMaxScore), Number(rawScore));
+  const rawSourceCode = activeSub?.submittedCode || activeSub?.sourceCode || "";
 
   const resultData = {
     id: id || "1",
     displayCode,
     problemTitle: resolvedTitle,
     difficultyLabel: resolvedDifficulty,
-    submittedCode: submissionState?.submittedCode || "",
-    language: submissionState?.language || "C++",
-    status: submissionState?.status || "AC",
-    statusCode: submissionState?.status || "AC",
+    submittedCode: rawSourceCode,
+    sourceCode: rawSourceCode,
+    language: activeSub?.language || "C++",
+    status: activeSub?.status || "AC",
+    statusCode: activeSub?.status || "AC",
     score: rawScore,
     totalScore: rawScore,
     max_score: resolvedMaxScore,
     maxPossibleScore: resolvedMaxScore,
-    subtasks: submissionState?.subtasks || [],
-    testResults: submissionState?.testResults || [],
-    passedTestCases: submissionState?.passedTests ?? 0,
-    totalTestCases: submissionState?.totalTests ?? 0,
-    logs: submissionState?.logs || [],
-    memory: submissionState?.memoryUsed ? `${submissionState.memoryUsed} MB` : "2.4 MB",
-    runtime: submissionState?.status === "TLE" ? "> 2000 ms" : executionTimeMs,
+    subtasks: activeSub?.subtasks || activeSub?.subtasksResult || [],
+    testResults: activeSub?.testResults || [],
+    passedTestCases: activeSub?.passedTests ?? (activeSub?.status === "AC" ? 5 : 0),
+    totalTestCases: activeSub?.totalTests ?? 5,
+    logs: activeSub?.logs || [],
+    memory: activeSub?.memoryUsed ? `${activeSub.memoryUsed} MB` : (activeSub?.memory || "2.4 MB"),
+    runtime: activeSub?.status === "TLE" ? "> 2000 ms" : executionTimeMs,
   };
 
   return (
