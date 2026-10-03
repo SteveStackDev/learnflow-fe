@@ -104,7 +104,10 @@ export const problemService = {
       const response = await api.get(`/problem/${idOrSlug}`);
       const rawData = response?.data || response;
       const problem = Array.isArray(rawData) ? rawData[0] : (rawData?.data || rawData);
-      return adaptProblem(problem);
+      if (problem) {
+        return adaptProblem(problem);
+      }
+      return null;
     } catch (error) {
       console.error(`Lỗi khi lấy chi tiết bài tập #${idOrSlug}:`, error);
       return null;
@@ -149,3 +152,4 @@ export const problemService = {
 };
 
 export default problemService;
+
