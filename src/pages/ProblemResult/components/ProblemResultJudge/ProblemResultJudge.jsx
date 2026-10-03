@@ -29,6 +29,14 @@ const JUDGE_STATUS_MAP = {
     iconName: "Clock",
     colorTheme: "#f59e0b",
   },
+  MLE: {
+    code: "MLE",
+    badgeClass: "tle",
+    statusLabel: "Vượt quá bộ nhớ (Memory Limit Exceeded)",
+    statusDescription: "Chương trình sử dụng bộ nhớ RAM vượt quá giới hạn tối đa cho phép của bài tập.",
+    iconName: "Cpu",
+    colorTheme: "#3b82f6",
+  },
   RE: {
     code: "RE",
     badgeClass: "re",
@@ -45,17 +53,27 @@ const JUDGE_STATUS_MAP = {
     iconName: "Code",
     colorTheme: "#dc2626",
   },
+  UNSUBMITTED: {
+    code: "UNSUBMITTED",
+    badgeClass: "unsubmitted",
+    statusLabel: "Chưa có bài nộp",
+    statusDescription: "Bạn chưa gửi bài nộp nào cho bài tập này. Hãy quay lại khung soạn thảo và bấm Nộp bài!",
+    iconName: "Inbox",
+    colorTheme: "#94a3b8",
+  },
 };
 
 const resolveStatusKey = (status) => {
   if (!status) return "AC";
   const s = String(status).toUpperCase();
-  if (s.includes("ACCEPTED") || s === "AC") return "AC";
+  if (s === "UNSUBMITTED" || s === "UNSOLVED") return "UNSUBMITTED";
+  if (s.includes("ACCEPTED") || s === "AC" || s === "SOLVED") return "AC";
   if (s.includes("WRONG") || s === "WA") return "WA";
   if (s.includes("TIME") || s.includes("LIMIT") || s === "TLE") return "TLE";
+  if (s.includes("MEMORY") || s === "MLE") return "MLE";
   if (s.includes("RUNTIME") || s === "RE") return "RE";
   if (s.includes("COMPILATION") || s === "CE") return "CE";
-  return "AC";
+  return s;
 };
 
 function ProblemResultJudge({ resultData, initialStatus }) {

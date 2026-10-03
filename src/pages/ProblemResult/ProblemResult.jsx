@@ -21,29 +21,51 @@ function ProblemResult() {
     if (id) {
       problemService.getProblemById(id)
         .then((p) => {
-          if (p) setProblemInfo(p);
+          if (p) {
+            setProblemInfo(p);
+            // Sau khi có problemInfo, truy vấn lại bài nộp nếu chưa có
+            if (!submissionState) {
+              problemService.getUserProblems()
+                .then((userProblems) => {
+                  if (Array.isArray(userProblems)) {
+                    const matched = userProblems.filter((sub) => {
+                      const sp = sub.problemId || {};
+                      const spId = String(sp._id || sp.id || sub.problemId || sub.id || "");
+                      const spCode = String(sp.code || sub.code || "");
+                      const spSlug = String(sp.slug || sub.slug || "").trim().toLowerCase();
+                      const spTitle = String(sp.title || sub.title || "").trim().toLowerCase();
+
+                      const tId = String(p._id || p.id || id || "");
+                      const tCode = String(p.code || id || "");
+                      const tSlug = String(p.slug || id || "").trim().toLowerCase();
+                      const tTitle = String(p.title || "").trim().toLowerCase();
+
+                      if (tId && (spId === tId || sub._id === tId || sub.id === tId)) return true;
+                      if (spCode && tCode) {
+                        if (spCode === tCode) return true;
+                        if (/^\d+$/.test(spCode) && /^\d+$/.test(tCode) && Number(spCode) === Number(tCode)) return true;
+                      }
+                      if (tSlug && (spSlug === tSlug || spId === tSlug)) return true;
+                      if (tTitle && spTitle && (spTitle === tTitle || spTitle.includes(tTitle) || tTitle.includes(spTitle))) return true;
+
+                      return false;
+                    });
+
+                    if (matched.length > 0) {
+                      matched.sort((a, b) => {
+                        const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                        const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+                        return timeB - timeA;
+                      });
+                      setFetchedSubmission(matched[0]);
+                    }
+                  }
+                })
+                .catch(() => {});
+            }
+          }
         })
         .catch(() => {});
-
-      // Nếu không có state từ navigation (ví dụ refresh F5), tự động lấy bài nộp gần nhất từ CSDL Backend
-      if (!submissionState) {
-        problemService.getUserProblems()
-          .then((userProblems) => {
-            if (Array.isArray(userProblems)) {
-              const matched = userProblems.filter((sub) => {
-                const p = sub.problemId || {};
-                const pid = String(p._id || p.id || sub.problemId || sub.id || "");
-                const pslug = String(p.slug || sub.slug || "").toLowerCase();
-                const pcode = String(p.code || sub.code || "");
-                return pid === String(id) || pslug === String(id).toLowerCase() || pcode === String(id);
-              });
-              if (matched.length > 0) {
-                setFetchedSubmission(matched[0]);
-              }
-            }
-          })
-          .catch(() => {});
-      }
     }
   }, [id, submissionState]);
 
@@ -72,10 +94,11 @@ function ProblemResult() {
     problemInfo?.difficulty ||
     "Dễ";
 
-  const rawScore = activeSub?.score ?? 0;
+  const rawScore = activeSub?.score ?? (activeSub ? 0 : 0);
   const rawMaxScore = activeSub?.max_score ?? activeSub?.maxScore ?? problemInfo?.points ?? 100;
   const resolvedMaxScore = Math.max(Number(rawMaxScore), Number(rawScore));
-  const rawSourceCode = activeSub?.submittedCode || activeSub?.sourceCode || "";
+  const rawSourceCode = activeSub?.submittedCode || activeSub?.sourceCode || (activeSub ? "" : (problemInfo?.starterCode || problemInfo?.initialCode || "// Chưa có bài nộp nào được ghi nhận cho bài tập này.\n// Vui lòng quay lại làm bài và bấm Nộp bài để xem kết quả!"));
+  const resolvedStatus = activeSub?.status || (activeSub ? "WA" : "UNSUBMITTED");
 
   const resultData = {
     id: id || "1",
@@ -85,19 +108,19 @@ function ProblemResult() {
     submittedCode: rawSourceCode,
     sourceCode: rawSourceCode,
     language: activeSub?.language || "C++",
-    status: activeSub?.status || "AC",
-    statusCode: activeSub?.status || "AC",
+    status: resolvedStatus,
+    statusCode: resolvedStatus,
     score: rawScore,
     totalScore: rawScore,
     max_score: resolvedMaxScore,
     maxPossibleScore: resolvedMaxScore,
     subtasks: activeSub?.subtasks || activeSub?.subtasksResult || [],
     testResults: activeSub?.testResults || [],
-    passedTestCases: activeSub?.passedTests ?? (activeSub?.status === "AC" ? 5 : 0),
+    passedTestCases: activeSub?.passedTests ?? (resolvedStatus === "AC" ? 5 : 0),
     totalTestCases: activeSub?.totalTests ?? 5,
     logs: activeSub?.logs || [],
     memory: activeSub?.memoryUsed ? `${activeSub.memoryUsed} MB` : (activeSub?.memory || "2.4 MB"),
-    runtime: activeSub?.status === "TLE" ? "> 2000 ms" : executionTimeMs,
+    runtime: resolvedStatus === "TLE" ? "> 2000 ms" : executionTimeMs,
   };
 
   return (
