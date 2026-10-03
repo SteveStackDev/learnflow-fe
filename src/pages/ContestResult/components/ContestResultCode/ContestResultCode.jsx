@@ -3,54 +3,7 @@ import { Button, ScrollArea } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./ContestResultCode.module.css";
-
-function escapeHtml(str) {
-  if (!str) return "";
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-function highlightCode(code) {
-  if (!code) return { __html: "" };
-
-  let rawCode = code;
-  if (rawCode.endsWith("\n")) {
-    rawCode += " ";
-  }
-
-  const tokenRegex =
-    /(#.*|\/\/.*|\/\*[\s\S]*?\*\/)|("[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\]*(?:\\.[^'\\]*)*')|\b(class|def|return|if|else|for|while|in|import|from|public|private|protected|using|namespace|include|var|let|const|function|new|pass|cout|endl|print|console|log)\b|\b(vector|unordered_map|HashMap|List|Map|Set|int|string|bool|void|double|float|char|auto|self|System|out|println)\b|\b(\d+)\b|(\b[a-zA-Z_]\w*\b(?=\s*\())/g;
-
-  let result = "";
-  let lastIndex = 0;
-  let match;
-
-  while ((match = tokenRegex.exec(rawCode)) !== null) {
-    const textBefore = rawCode.slice(lastIndex, match.index);
-    result += escapeHtml(textBefore);
-
-    const [, comment, str, keyword, typeToken, numToken, funcToken] = match;
-
-    if (comment) {
-      result += `<span class="syn_comment">${escapeHtml(comment)}</span>`;
-    } else if (str) {
-      result += `<span class="syn_string">${escapeHtml(str)}</span>`;
-    } else if (keyword) {
-      result += `<span class="syn_keyword">${escapeHtml(keyword)}</span>`;
-    } else if (typeToken) {
-      result += `<span class="syn_type">${escapeHtml(typeToken)}</span>`;
-    } else if (numToken) {
-      result += `<span class="syn_number">${escapeHtml(numToken)}</span>`;
-    } else if (funcToken) {
-      result += `<span class="syn_function">${escapeHtml(funcToken)}</span>`;
-    }
-
-    lastIndex = tokenRegex.lastIndex;
-  }
-
-  result += escapeHtml(rawCode.slice(lastIndex));
-
-  return { __html: result };
-}
+import { highlightCode } from "~/utils/codeHighlighter";
 
 export function ContestResultCode({ resultData }) {
   const { toast } = useToast();
@@ -59,6 +12,13 @@ export function ContestResultCode({ resultData }) {
 
   const lines = (resultData.code || "").split("\n");
   const lineNumbers = Array.from({ length: Math.max(lines.length, 1) }, (_, i) => i + 1);
+
+  const getDifficultyClass = (diff) => {
+    const d = String(diff || "").toLowerCase();
+    if (d.includes("khó") || d.includes("hard")) return styles.badge_hard;
+    if (d.includes("trung bình") || d.includes("medium")) return styles.badge_medium;
+    return styles.badge_easy;
+  };
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(resultData.code);
@@ -79,7 +39,13 @@ export function ContestResultCode({ resultData }) {
       <div className={styles.header_bar}>
         <div className={styles.title_group}>
           <h2 className={styles.problem_title}>{resultData.problemTitle}</h2>
-          <span className={styles.badge}>{resultData.level}</span>
+          <span
+            className={`${styles.badge} ${getDifficultyClass(
+              resultData.level || resultData.difficulty
+            )}`}
+          >
+            {resultData.level || "Dễ"}
+          </span>
         </div>
 
         <div className={styles.meta_info}>
@@ -124,7 +90,7 @@ export function ContestResultCode({ resultData }) {
         <ScrollArea className={styles.code_content_wrap} onScroll={handleScroll}>
           <pre
             className={styles.code_highlight_layer}
-            dangerouslySetInnerHTML={highlightCode(resultData.code)}
+            dangerouslySetInnerHTML={highlightCode(resultData.code, resultData.language || "cpp")}
           />
         </ScrollArea>
       </div>

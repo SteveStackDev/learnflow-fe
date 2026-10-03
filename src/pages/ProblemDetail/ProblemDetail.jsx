@@ -356,7 +356,7 @@ function ProblemDetail() {
         }));
 
         const finalScore = result.score != null ? result.score : (result.status === "AC" ? (problem.points || 500) : 0);
-        const finalMaxScore = result.max_score || problem.points || 500;
+        const finalMaxScore = result.max_score || (result.score != null ? Math.max(Number(result.score), Number(problem.points || 100)) : (problem.points || 500));
 
         const payloadToSave = {
           userId: user?._id || user?.id,
@@ -388,8 +388,11 @@ function ProblemDetail() {
 
       const pTitle = problem.code
         ? `#${problem.code}: ${problem.title}`
-        : `${problem.id}. ${problem.title}`;
+        : `#${String(problem.id || 1).padStart(2, "0")}: ${problem.title}`;
       const pDiffLabel = problem.difficultyLabel || problem.difficulty || "Dễ";
+
+      const finalScore = result.score != null ? result.score : (result.status === "AC" ? (problem.points || 500) : 0);
+      const finalMaxScore = result.max_score || (result.score != null ? Math.max(Number(result.score), Number(problem.points || 100)) : (problem.points || 500));
 
       navigate(`/problem/${problem.slug || problem.id || id}/result`, {
         state: {
@@ -399,8 +402,8 @@ function ProblemDetail() {
             problemTitle: pTitle,
             difficultyLabel: pDiffLabel,
             status: result.status,
-            score: result.score != null ? result.score : (result.status === "AC" ? (problem.points || 500) : 0),
-            max_score: result.max_score || problem.points || 500,
+            score: finalScore,
+            max_score: finalMaxScore,
             executionTime: result.execution_time,
             submittedCode: code,
             language: selectedLanguage?.label || "C++",

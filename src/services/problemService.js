@@ -71,11 +71,23 @@ export const adaptProblem = (problem, index) => {
   };
 };
 
-export const adaptUserProblem = (item, index) => {
+export const adaptUserProblem = (item, index, problemMap) => {
   if (!item) return null;
 
   const rawProblem = item.problemId || item;
-  const problemDetail = adaptProblem(rawProblem, index);
+  let problemDetail = null;
+
+  if (problemMap) {
+    const rawPId = String(rawProblem?._id || rawProblem?.id || rawProblem || "");
+    const matched = problemMap.get(rawPId) || (typeof rawProblem === "object" && rawProblem.title ? rawProblem : null);
+    if (matched) {
+      problemDetail = adaptProblem(matched);
+    }
+  }
+
+  if (!problemDetail) {
+    problemDetail = adaptProblem(rawProblem, index);
+  }
 
   const rawStatus = String(item.status || "").toUpperCase();
   let userStatus = "unsolved";
@@ -162,11 +174,24 @@ export const problemService = {
 
   getUserProblems: async () => {
     try {
+      // 1. Lấy danh sách tất cả problems để map đúng mã bài tập tịnh tiến (#01, #02) và thông tin tiêu đề
+      let problemMap = new Map();
+      try {
+        const allProblems = await problemService.getAllProblems();
+        allProblems.forEach((p) => {
+          if (p._id) problemMap.set(String(p._id), p);
+          if (p.id) problemMap.set(String(p.id), p);
+          if (p.code) problemMap.set(String(p.code), p);
+        });
+      } catch (e) {
+        console.warn("Không thể map allProblems trong getUserProblems:", e);
+      }
+
       const response = await api.get("/problem/user");
       const rawData = response?.data || response;
       const list = Array.isArray(rawData) ? rawData : (rawData?.data || []);
 
-      return list.map((item, idx) => adaptUserProblem(item, idx));
+      return list.map((item, idx) => adaptUserProblem(item, idx, problemMap));
     } catch (error) {
       console.error("Lỗi khi lấy danh sách bài tập của user:", error);
       return [];

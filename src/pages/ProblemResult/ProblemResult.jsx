@@ -33,9 +33,15 @@ function ProblemResult() {
         : `${submissionState.executionTime}`
       : "0 ms";
 
+  const titleCodeMatch = submissionState?.problemTitle?.match(/^#?(\d+)/);
+  const displayCode =
+    problemInfo?.code ||
+    (titleCodeMatch ? titleCodeMatch[1].padStart(2, "0") : null) ||
+    (/^\d+$/.test(id) ? String(id).padStart(2, "0") : "01");
+
   const resolvedTitle =
     submissionState?.problemTitle ||
-    (problemInfo ? (problemInfo.code ? `#${problemInfo.code}: ${problemInfo.title}` : problemInfo.title) : `Bài tập #${id || 1}`);
+    (problemInfo ? (problemInfo.code ? `#${problemInfo.code}: ${problemInfo.title}` : `#${displayCode}: ${problemInfo.title}`) : `Bài tập #${displayCode}`);
 
   const resolvedDifficulty =
     submissionState?.difficultyLabel ||
@@ -43,18 +49,23 @@ function ProblemResult() {
     problemInfo?.difficulty ||
     "Dễ";
 
+  const rawScore = submissionState?.score ?? 0;
+  const rawMaxScore = submissionState?.max_score ?? problemInfo?.points ?? 100;
+  const resolvedMaxScore = Math.max(Number(rawMaxScore), Number(rawScore));
+
   const resultData = {
     id: id || "1",
+    displayCode,
     problemTitle: resolvedTitle,
     difficultyLabel: resolvedDifficulty,
     submittedCode: submissionState?.submittedCode || "",
     language: submissionState?.language || "C++",
     status: submissionState?.status || "AC",
     statusCode: submissionState?.status || "AC",
-    score: submissionState?.score ?? 0,
-    totalScore: submissionState?.score ?? 0,
-    max_score: submissionState?.max_score ?? problemInfo?.points ?? 100,
-    maxPossibleScore: submissionState?.max_score ?? problemInfo?.points ?? 100,
+    score: rawScore,
+    totalScore: rawScore,
+    max_score: resolvedMaxScore,
+    maxPossibleScore: resolvedMaxScore,
     subtasks: submissionState?.subtasks || [],
     testResults: submissionState?.testResults || [],
     passedTestCases: submissionState?.passedTests ?? 0,
@@ -70,7 +81,7 @@ function ProblemResult() {
       <div className={styles.top_bar}>
         <Link to={`/problem/${id || 1}`} className={styles.back_btn}>
           <Icon name="ArrowLeft" size={16} />
-          <span>Quay lại bài tập #{id || 1}</span>
+          <span>Quay lại bài tập #{displayCode}</span>
         </Link>
 
         <Link to="/problem/list" className={styles.secondary_nav_link}>

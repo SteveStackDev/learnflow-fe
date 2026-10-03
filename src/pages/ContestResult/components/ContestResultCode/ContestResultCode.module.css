@@ -41,9 +41,24 @@
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 9999px;
+}
+
+.badge_easy {
   background-color: #dcfce7;
   color: #15803d;
   border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.badge_medium {
+  background-color: #fef3c7;
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge_hard {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .meta_info {
@@ -226,4 +241,25 @@
 :global([data-theme="dark"]) .code_highlight_layer,
 :global(.theme-dark) .code_highlight_layer {
   color: #f8fafc;
+}
+
+:global([data-theme="dark"]) .badge_easy,
+:global(.theme-dark) .badge_easy {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+:global([data-theme="dark"]) .badge_medium,
+:global(.theme-dark) .badge_medium {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+:global([data-theme="dark"]) .badge_hard,
+:global(.theme-dark) .badge_hard {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.35);
 }

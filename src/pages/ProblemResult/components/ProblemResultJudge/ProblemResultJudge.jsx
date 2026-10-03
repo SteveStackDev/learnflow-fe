@@ -103,8 +103,29 @@ function ProblemResultJudge({ resultData, initialStatus }) {
   const [activeSubtaskId, setActiveSubtaskId] = useState(() => currentSubtasks[0]?.id || "sub-1");
   const activeSubtask = currentSubtasks.find((s) => s.id === activeSubtaskId) || currentSubtasks[0];
 
-  const totalEarnedScore = resultData?.score != null ? Number(resultData.score) : currentSubtasks.reduce((sum, s) => sum + s.earnedScore, 0);
-  const totalPossibleScore = resultData?.max_score != null ? Number(resultData.max_score) : (currentSubtasks.reduce((sum, s) => sum + s.maxScore, 0) || 100);
+  const subtasksMaxSum = currentSubtasks.reduce((sum, s) => sum + Number(s.maxScore || 0), 0);
+  const subtasksEarnedSum = currentSubtasks.reduce((sum, s) => sum + Number(s.earnedScore || 0), 0);
+
+  let totalEarnedScore = 0;
+  let totalPossibleScore = 100;
+
+  if (currentSubtasks.length > 0 && subtasksMaxSum > 0) {
+    totalEarnedScore = subtasksEarnedSum;
+    totalPossibleScore = subtasksMaxSum;
+  } else {
+    const rawScore = resultData?.score != null ? Number(resultData.score) : 0;
+    const rawMax = resultData?.max_score != null ? Number(resultData.max_score) : 100;
+    totalEarnedScore = rawScore;
+    totalPossibleScore = Math.max(rawMax, rawScore);
+  }
+
+  if (
+    activeStatusKey === "AC" &&
+    totalEarnedScore < totalPossibleScore &&
+    (currentSubtasks.length === 0 || currentSubtasks.every((s) => s.status === "AC"))
+  ) {
+    totalEarnedScore = totalPossibleScore;
+  }
 
   return (
     <div className={styles.result_judge_card}>

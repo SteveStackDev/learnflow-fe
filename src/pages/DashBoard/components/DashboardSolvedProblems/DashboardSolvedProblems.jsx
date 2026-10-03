@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import Icon from "~/components/Icon/Icon";
 import { problemService } from "~/services/problemService";
@@ -144,12 +144,12 @@ export default function DashboardSolvedProblems() {
                       </span>
                     </td>
                     <td className={styles.td}>
-                      <span className={styles.code_num}>#{problemDetail.code || "---"}</span>
+                      <span className={styles.code_num}>#{problemDetail.code || item.code || "01"}</span>
                     </td>
                     <td className={styles.td}>
-                      <span className={styles.problem_title}>{problemDetail.title || "Bài tập"}</span>
-                      {problemDetail.topic && (
-                        <span className={styles.topic_tag}>{problemDetail.topic}</span>
+                      <span className={styles.problem_title}>{problemDetail.title || item.title || "Bài tập thuật toán"}</span>
+                      {(problemDetail.topic || item.topic) && (
+                        <span className={styles.topic_tag}>{problemDetail.topic || item.topic}</span>
                       )}
                     </td>
                     <td className={styles.td}>

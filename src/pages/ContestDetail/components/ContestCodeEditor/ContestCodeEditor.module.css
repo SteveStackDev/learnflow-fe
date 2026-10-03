@@ -221,6 +221,11 @@
 }
 
 /* Light Mode Syntax Tokens */
+:global(.syn_preprocessor) {
+  color: #e11d48;
+  font-weight: 700;
+}
+
 :global(.syn_comment) {
   color: #64748b;
   font-style: italic;
@@ -238,15 +243,26 @@
 
 :global(.syn_type) {
   color: #d97706;
+  font-weight: 700;
+}
+
+:global(.syn_builtin) {
+  color: #0284c7;
   font-weight: 600;
 }
 
 :global(.syn_number) {
   color: #ea580c;
+  font-weight: 500;
 }
 
 :global(.syn_function) {
   color: #0950c3;
+  font-weight: 600;
+}
+
+:global(.syn_operator) {
+  color: #dc2626;
   font-weight: 600;
 }
 
@@ -448,6 +464,11 @@
   color: #38bdf8;
 }
 
+:global([data-theme="dark"]) :global(.syn_preprocessor) {
+  color: #f38ba8;
+  font-weight: 700;
+}
+
 :global([data-theme="dark"]) :global(.syn_comment) {
   color: #6c7086;
   font-style: italic;
@@ -465,15 +486,26 @@
 
 :global([data-theme="dark"]) :global(.syn_type) {
   color: #f9e2af;
+  font-weight: 700;
+}
+
+:global([data-theme="dark"]) :global(.syn_builtin) {
+  color: #89dceb;
   font-weight: 600;
 }
 
 :global([data-theme="dark"]) :global(.syn_number) {
   color: #fab387;
+  font-weight: 500;
 }
 
 :global([data-theme="dark"]) :global(.syn_function) {
   color: #89b4fa;
+  font-weight: 600;
+}
+
+:global([data-theme="dark"]) :global(.syn_operator) {
+  color: #f5c2e7;
   font-weight: 600;
 }
 

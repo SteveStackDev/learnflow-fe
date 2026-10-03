@@ -240,7 +240,7 @@ export default function AdminProblemList({
               })
             ) : (
               <tr>
-                <td colSpan={8} className={styles.empty_td}>
+                <td colSpan={9} className={styles.empty_td}>
                   Không tìm thấy bài tập nào khớp với bộ lọc.
                 </td>
               </tr>

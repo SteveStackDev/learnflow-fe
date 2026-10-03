@@ -3,48 +3,7 @@ import styles from "./SubmissionCodePanel.module.css";
 import Icon from "~/components/Icon/Icon";
 import { useToast } from "~/context/ToastContext";
 import { Card, Badge, Button, ScrollArea } from "~/components/ui";
-
-function escapeHtml(str) {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-function highlightCode(code) {
-  if (!code) return { __html: "" };
-
-  const tokenRegex =
-    /(#.*|\/\/.*|\/\*[\s\S]*?\*\/)|("[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\]*(?:\\.[^'\\]*)*')|\b(class|def|return|if|else|for|while|in|import|from|public|private|protected|using|namespace|include|var|let|const|function|new|pass|cout|endl|print|console|log)\b|\b(vector|unordered_map|HashMap|List|Map|Set|int|string|bool|void|double|float|char|auto|self|System|out|println)\b|\b(\d+)\b|(\b[a-zA-Z_]\w*\b(?=\s*\())/g;
-
-  let result = "";
-  let lastIndex = 0;
-  let match;
-
-  while ((match = tokenRegex.exec(code)) !== null) {
-    const textBefore = code.slice(lastIndex, match.index);
-    result += escapeHtml(textBefore);
-
-    const [, comment, str, keyword, typeToken, numToken, funcToken] = match;
-
-    if (comment) {
-      result += `<span class="syn_comment">${escapeHtml(comment)}</span>`;
-    } else if (str) {
-      result += `<span class="syn_string">${escapeHtml(str)}</span>`;
-    } else if (keyword) {
-      result += `<span class="syn_keyword">${escapeHtml(keyword)}</span>`;
-    } else if (typeToken) {
-      result += `<span class="syn_type">${escapeHtml(typeToken)}</span>`;
-    } else if (numToken) {
-      result += `<span class="syn_number">${escapeHtml(numToken)}</span>`;
-    } else if (funcToken) {
-      result += `<span class="syn_function">${escapeHtml(funcToken)}</span>`;
-    }
-
-    lastIndex = tokenRegex.lastIndex;
-  }
-
-  result += escapeHtml(code.slice(lastIndex));
-
-  return { __html: result };
-}
+import { highlightCode } from "~/utils/codeHighlighter";
 
 function SubmissionCodePanel({ submission, suspectedLines = [] }) {
   const { toast } = useToast();
@@ -121,7 +80,7 @@ function SubmissionCodePanel({ submission, suspectedLines = [] }) {
                 >
                   <pre
                     className={styles.code_text}
-                    dangerouslySetInnerHTML={highlightCode(line || " ")}
+                    dangerouslySetInnerHTML={highlightCode(line || " ", submission.language || "cpp")}
                   />
                   {isSuspected && (
                     <span className={styles.suspected_flag} title="AI phát hiện vị trí nghi vấn lỗi">
