@@ -13,7 +13,7 @@ export const authService = {
     const data = await api.post("/user/reset-password", payload);
 
 
-    return formattedData;
+    return data;
   },
 };
 
