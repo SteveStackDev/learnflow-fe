@@ -1,32 +1,70 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
+import userService from "./userService"; // Đảm bảo đường dẫn import đúng vị trí file userService của bạn
 import styles from "./SettingAccount.module.css";
 
 function SettingAccount({ userData }) {
-  const [username, setUsername] = useState(userData.username || "nguyenvana");
+  const [username, setUsername] = useState(userData?.username || "nguyenvana");
   const [avatarUrl, setAvatarUrl] = useState(() => {
     try {
       const u = JSON.parse(localStorage.getItem("fySet_user"));
-      return u?.avatar || userData.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+      return (
+        u?.avatar?.url ||
+        u?.avatar ||
+        userData?.avatar?.url ||
+        userData?.avatarUrl ||
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+      );
     } catch {
-      return userData.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+      return (
+        userData?.avatar?.url ||
+        userData?.avatarUrl ||
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+      );
     }
   });
+
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [isSavingUsername, setIsSavingUsername] = useState(false);
   const fileInputRef = useRef(null);
   const { toast } = useToast();
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    try {
-      const saved = JSON.parse(localStorage.getItem("fySet_user")) || {};
-      saved.username = username;
-      saved.avatar = avatarUrl;
-      localStorage.setItem("fySet_user", JSON.stringify(saved));
-    } catch {
-      // ignore
+  useEffect(() => {
+    if (userData?.username) {
+      setUsername(userData.username);
     }
-    toast.success("Cập nhật thông tin hồ sơ tài khoản thành công!", "Tài khoản");
+    const currentAvatar = userData?.avatar?.url || userData?.avatarUrl;
+    if (currentAvatar) {
+      setAvatarUrl(currentAvatar);
+    }
+  }, [userData]);
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    if (!username || !username.trim()) {
+      toast.error("Tên người dùng không được để trống!", "Tài khoản");
+      return;
+    }
+
+    setIsSavingUsername(true);
+    try {
+      await userService.changeUsername(username.trim());
+
+      // Đồng bộ thông tin tên người dùng mới vào localStorage
+      try {
+        const saved = JSON.parse(localStorage.getItem("fySet_user")) || {};
+        saved.username = username.trim();
+        localStorage.setItem("fySet_user", JSON.stringify(saved));
+      } catch {
+        // ignore
+      }
+
+      toast.success("Cập nhật tên người dùng thành công!", "Tài khoản");
+    } catch (err) {
+      toast.error(err.message || "Đổi tên người dùng thất bại!", "Tài khoản");
+    } finally {
+      setIsSavingUsername(false);
+    }
   };
 
   const handleAvatarClick = () => {
@@ -49,13 +87,18 @@ function SettingAccount({ userData }) {
 
     setIsUploadingAvatar(true);
     try {
-      const newUrl = URL.createObjectURL(file);
-      setAvatarUrl(newUrl);
+      // Gọi API tải ảnh lên server
+      const updatedUser = await userService.updateAvatar(file);
+      
+      // Backend trả về User document chứa avatar dạng { url, urlId }
+      const newAvatarUrl = updatedUser?.avatar?.url || avatarUrl;
 
-      // Đồng bộ vào localStorage để Header và Dashboard nhận ảnh mới
+      setAvatarUrl(newAvatarUrl);
+
+      // Đồng bộ vào localStorage để Header và các component khác nhận ảnh mới từ Cloudinary
       try {
         const saved = JSON.parse(localStorage.getItem("fySet_user")) || {};
-        saved.avatar = newUrl;
+        saved.avatar = updatedUser?.avatar || newAvatarUrl;
         localStorage.setItem("fySet_user", JSON.stringify(saved));
       } catch {
         // ignore
@@ -66,6 +109,7 @@ function SettingAccount({ userData }) {
       toast.error(err.message || "Tải ảnh lên thất bại!", "Đổi ảnh");
     } finally {
       setIsUploadingAvatar(false);
+      if (e.target) e.target.value = ""; // Reset file input
     }
   };
 
@@ -84,7 +128,7 @@ function SettingAccount({ userData }) {
             <div className={styles.avatar_row}>
               <img
                 src={avatarUrl}
-                alt={`Ảnh đại diện của ${userData.fullName || userData.name || "người dùng"}`}
+                alt={`Ảnh đại diện của ${userData?.fullName || userData?.name || "người dùng"}`}
                 className={styles.avatar_img}
               />
               <div className={styles.avatar_meta}>
@@ -139,7 +183,7 @@ function SettingAccount({ userData }) {
               <input
                 id="setting-email"
                 type="email"
-                value={userData.email}
+                value={userData?.email || ""}
                 readOnly
                 className={`${styles.input} ${styles.input_wide}`}
               />
@@ -162,19 +206,19 @@ function SettingAccount({ userData }) {
           <div className={styles.grid_2cols}>
             <div className={styles.meta_box}>
               <span className={styles.meta_label}>Ngày tham gia (Joined date)</span>
-              <span className={styles.meta_val}>{userData.joinedDate || "15/01/2026"}</span>
+              <span className={styles.meta_val}>{userData?.joinedDate || "15/01/2026"}</span>
             </div>
             <div className={styles.meta_box}>
               <span className={styles.meta_label}>Mã tài khoản (Account ID)</span>
-              <span className={styles.meta_val_code}>#{userData.accountId || "FYSET-89412"}</span>
+              <span className={styles.meta_val_code}>#{userData?.accountId || userData?._id || "FYSET-89412"}</span>
             </div>
           </div>
         </div>
 
         {/* Save Bar */}
         <div className={styles.actions_bar}>
-          <button type="submit" className={styles.submit_btn}>
-            Lưu thay đổi
+          <button type="submit" disabled={isSavingUsername} className={styles.submit_btn}>
+            {isSavingUsername ? "Đang lưu..." : "Lưu thay đổi"}
           </button>
         </div>
       </form>
