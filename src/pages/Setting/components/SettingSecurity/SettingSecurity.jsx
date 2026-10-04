@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./SettingSecurity.module.css";
+import userService from "~/services/userService.js";
 
 function SettingSecurity() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -8,7 +9,7 @@ function SettingSecurity() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const { toast } = useToast();
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = async (e) => {
     e.preventDefault();
     if (!currentPassword) {
       toast.error("Vui lòng nhập mật khẩu hiện tại!", "Bảo mật");
@@ -20,6 +21,17 @@ function SettingSecurity() {
     }
     if (newPassword !== confirmPassword) {
       toast.error("Mật khẩu xác nhận không trùng khớp!", "Bảo mật");
+      return;
+    }
+
+    const data = await userService.changePassword({
+      oldPassword: currentPassword,
+      newPassword,
+      confirmPassword,
+    });
+
+    if (!data.success) {
+      toast.error(data.message || "Đổi mật khẩu thất bại!", "Bảo mật");
       return;
     }
 
