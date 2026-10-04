@@ -2,42 +2,54 @@ import { useState, useRef, useEffect } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./SettingAccount.module.css";
 import userService from "~/services/userService.js";
+import authService from "~/services/authService.js";
 
-function SettingAccount({ userData }) {
-  const [username, setUsername] = useState(userData?.username || "nguyenvana");
-  const [avatarUrl, setAvatarUrl] = useState(() => {
-    try {
-      const u = JSON.parse(localStorage.getItem("fySet_user"));
-      return (
-        u?.avatar?.url ||
-        u?.avatar ||
-        userData?.avatar?.url ||
-        userData?.avatarUrl ||
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
-      );
-    } catch {
-      return (
-        userData?.avatar?.url ||
-        userData?.avatarUrl ||
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
-      );
-    }
-  });
-
+function SettingAccount({ userData: initialUserData }) {
+  const [currentUser, setCurrentUser] = useState(initialUserData || null);
+  const [username, setUsername] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
+  
+  const [isLoading, setIsLoading] = useState(true);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [isSavingUsername, setIsSavingUsername] = useState(false);
+
   const fileInputRef = useRef(null);
   const { toast } = useToast();
 
+  // Hàm load dữ liệu mới nhất từ server
+  const fetchLatestUserData = async () => {
+    try {
+      setIsLoading(true);
+      const me = await authService.getMe();
+      if (me) {
+        setCurrentUser(me);
+        setUsername(me.username || me.name || "");
+        
+        // authService.getMe() đã format avatar thành chuỗi URL
+        const avatar = me.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+        setAvatarUrl(avatar);
+
+        // Lưu bản sao mới nhất vào localStorage để đồng bộ với các phần khác (Header/Sidebar)
+        try {
+          const saved = JSON.parse(localStorage.getItem("fySet_user")) || {};
+          saved.username = me.username;
+          saved.avatar = me.avatar;
+          localStorage.setItem("fySet_user", JSON.stringify(saved));
+        } catch {
+          // ignore
+        }
+      }
+    } catch (error) {
+      console.error("Lỗi khi tải thông tin người dùng:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Khởi tạo & Lấy dữ liệu mới mỗi khi reload trang / mount component
   useEffect(() => {
-    if (userData?.username) {
-      setUsername(userData.username);
-    }
-    const currentAvatar = userData?.avatar?.url || userData?.avatarUrl;
-    if (currentAvatar) {
-      setAvatarUrl(currentAvatar);
-    }
-  }, [userData]);
+    fetchLatestUserData();
+  }, []);
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -50,14 +62,8 @@ function SettingAccount({ userData }) {
     try {
       await userService.changeUsername(username.trim());
 
-      // Đồng bộ thông tin tên người dùng mới vào localStorage
-      try {
-        const saved = JSON.parse(localStorage.getItem("fySet_user")) || {};
-        saved.username = username.trim();
-        localStorage.setItem("fySet_user", JSON.stringify(saved));
-      } catch {
-        // ignore
-      }
+      // Lấy lại data mới nhất sau khi đổi username thành công
+      await fetchLatestUserData();
 
       toast.success("Cập nhật tên người dùng thành công!", "Tài khoản");
     } catch (err) {
@@ -87,31 +93,24 @@ function SettingAccount({ userData }) {
 
     setIsUploadingAvatar(true);
     try {
-      // Gọi API tải ảnh lên server
-      const updatedUser = await userService.updateAvatar(file);
-      
-      // Backend trả về User document chứa avatar dạng { url, urlId }
-      const newAvatarUrl = updatedUser?.avatar?.url || avatarUrl;
+      // Tải ảnh lên qua API
+      await userService.updateAvatar(file);
 
-      setAvatarUrl(newAvatarUrl);
-
-      // Đồng bộ vào localStorage để Header và các component khác nhận ảnh mới từ Cloudinary
-      try {
-        const saved = JSON.parse(localStorage.getItem("fySet_user")) || {};
-        saved.avatar = updatedUser?.avatar || newAvatarUrl;
-        localStorage.setItem("fySet_user", JSON.stringify(saved));
-      } catch {
-        // ignore
-      }
+      // Refresh lại dữ liệu từ getMe() để lấy đúng avatar.url mới từ Cloudinary
+      await fetchLatestUserData();
 
       toast.success("Cập nhật ảnh đại diện thành công!", "Ảnh đại diện");
     } catch (err) {
       toast.error(err.message || "Tải ảnh lên thất bại!", "Đổi ảnh");
     } finally {
       setIsUploadingAvatar(false);
-      if (e.target) e.target.value = ""; // Reset file input
+      if (e.target) e.target.value = ""; // Reset input file
     }
   };
+
+  if (isLoading) {
+    return <div className={styles.container}>Đang tải thông tin tài khoản...</div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -128,7 +127,7 @@ function SettingAccount({ userData }) {
             <div className={styles.avatar_row}>
               <img
                 src={avatarUrl}
-                alt={`Ảnh đại diện của ${userData?.fullName || userData?.name || "người dùng"}`}
+                alt={`Ảnh đại diện của ${currentUser?.name || currentUser?.username || "người dùng"}`}
                 className={styles.avatar_img}
               />
               <div className={styles.avatar_meta}>
@@ -183,7 +182,7 @@ function SettingAccount({ userData }) {
               <input
                 id="setting-email"
                 type="email"
-                value={userData?.email || ""}
+                value={currentUser?.email || ""}
                 readOnly
                 className={`${styles.input} ${styles.input_wide}`}
               />
@@ -206,11 +205,13 @@ function SettingAccount({ userData }) {
           <div className={styles.grid_2cols}>
             <div className={styles.meta_box}>
               <span className={styles.meta_label}>Ngày tham gia (Joined date)</span>
-              <span className={styles.meta_val}>{userData?.joinedDate || "15/01/2026"}</span>
+              <span className={styles.meta_val}>{currentUser?.joinedDate || "15/01/2026"}</span>
             </div>
             <div className={styles.meta_box}>
               <span className={styles.meta_label}>Mã tài khoản (Account ID)</span>
-              <span className={styles.meta_val_code}>#{userData?.accountId || userData?._id || "FYSET-89412"}</span>
+              <span className={styles.meta_val_code}>
+                #{currentUser?.accountId || currentUser?._id || "FYSET-89412"}
+              </span>
             </div>
           </div>
         </div>
