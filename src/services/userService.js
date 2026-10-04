@@ -1,14 +1,12 @@
 import api from "./api";
 
-export const authService = {
+export const userService = {
   changePassword: async ({ oldPassword, newPassword, confirmPassword }) => {
     const payload = {
       oldPassword,
       newPassword,
       confirmPassword,
     };
-
-    console.log(payload);
 
     const data = await api.post("/user/reset-password", payload);
 
@@ -17,5 +15,5 @@ export const authService = {
   },
 };
 
-export default authService;
+export default userService;
 
