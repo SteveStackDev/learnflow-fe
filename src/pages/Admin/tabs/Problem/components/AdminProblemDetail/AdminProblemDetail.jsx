@@ -33,9 +33,19 @@ export default function AdminProblemDetail({ problem, onBack, onSave }) {
   };
 
   const getDiffVariant = (diff) => {
-    if (diff === "Easy") return "success";
-    if (diff === "Medium") return "warning";
-    return "danger";
+    const d = String(diff || "").toLowerCase().trim();
+    if (d === "easy" || d === "dễ") return "success";
+    if (d === "medium" || d === "trung bình") return "warning";
+    if (d === "hard" || d === "khó") return "danger";
+    return "primary";
+  };
+
+  const getDiffLabel = (diff) => {
+    const d = String(diff || "").toLowerCase().trim();
+    if (d === "easy" || d === "dễ") return "Easy";
+    if (d === "medium" || d === "trung bình") return "Medium";
+    if (d === "hard" || d === "khó") return "Hard";
+    return diff || "Easy";
   };
 
   return (
@@ -49,7 +59,7 @@ export default function AdminProblemDetail({ problem, onBack, onSave }) {
           </button>
           <h2 className={styles.detail_title}>PROBLEM: {problemState.title}</h2>
           <Badge variant={getDiffVariant(problemState.difficulty)} size="sm">
-            {problemState.difficulty}
+            {getDiffLabel(problemState.difficulty)}
           </Badge>
           <Badge variant={problemState.status === "Active" ? "success" : "secondary"} size="sm">
             {problemState.status}

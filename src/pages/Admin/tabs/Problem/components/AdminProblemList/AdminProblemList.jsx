@@ -26,10 +26,38 @@ export default function AdminProblemList({
   const [selectedIds, setSelectedIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Filter Logic
+  // Helper chuẩn hóa Variant màu cho Badge độ khó (hỗ trợ cả tiếng Anh lẫn tiếng Việt, hoa/thường)
+  const getDiffBadgeVariant = (diff) => {
+    const d = String(diff || "").toLowerCase().trim();
+    if (d === "easy" || d === "dễ") return "success";
+    if (d === "medium" || d === "trung bình") return "warning";
+    if (d === "hard" || d === "khó") return "danger";
+    return "primary";
+  };
+
+  // Helper chuẩn hóa Text hiển thị đẹp Title Case (Easy / Medium / Hard)
+  const getDiffLabel = (diff) => {
+    const d = String(diff || "").toLowerCase().trim();
+    if (d === "easy" || d === "dễ") return "Easy";
+    if (d === "medium" || d === "trung bình") return "Medium";
+    if (d === "hard" || d === "khó") return "Hard";
+    return diff || "Easy";
+  };
+
+  // Filter Logic (Case-insensitive)
   const filteredProblems = problems.filter((p) => {
     const matchSearch = p?.title?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchDiff = difficultyFilter === "all" || p?.difficulty === difficultyFilter;
+    const probDiff = String(p?.difficulty || "").toLowerCase();
+    const probDiffLabel = String(p?.difficultyLabel || "").toLowerCase();
+    const filterDiff = difficultyFilter.toLowerCase();
+    const matchDiff =
+      difficultyFilter === "all" ||
+      probDiff === filterDiff ||
+      probDiffLabel === filterDiff ||
+      (filterDiff === "easy" && (probDiff === "dễ" || probDiff === "easy")) ||
+      (filterDiff === "medium" && (probDiff === "trung bình" || probDiff === "medium")) ||
+      (filterDiff === "hard" && (probDiff === "khó" || probDiff === "hard"));
+
     const matchTopic = topicFilter === "all" || p?.topic === topicFilter;
     const matchLang =
       languageFilter === "all" ||
@@ -67,12 +95,6 @@ export default function AdminProblemList({
     } else {
       setSelectedIds([...selectedIds, id]);
     }
-  };
-
-  const getDiffBadgeVariant = (diff) => {
-    if (diff === "Easy") return "success";
-    if (diff === "Medium") return "warning";
-    return "danger";
   };
 
   const getStatusBadgeVariant = (status) => {
@@ -190,8 +212,8 @@ export default function AdminProblemList({
                       </div>
                     </td>
                     <td>
-                      <Badge variant={getDiffBadgeVariant(prob.difficulty)} size="sm">
-                        {prob.difficulty}
+                      <Badge variant={getDiffBadgeVariant(prob.difficulty || prob.level || prob.difficultyLabel)} size="sm">
+                        {getDiffLabel(prob.difficulty || prob.level || prob.difficultyLabel)}
                       </Badge>
                     </td>
                     <td>

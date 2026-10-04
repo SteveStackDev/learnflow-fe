@@ -5,6 +5,22 @@ import { Badge } from "~/components/ui";
 export default function AdminUserProblemsTab({ userState }) {
   const problems = userState.solvedProblems || [];
 
+  const getDiffVariant = (diff) => {
+    const d = String(diff || "").toLowerCase().trim();
+    if (d === "easy" || d === "dễ") return "success";
+    if (d === "medium" || d === "trung bình") return "warning";
+    if (d === "hard" || d === "khó") return "danger";
+    return "primary";
+  };
+
+  const getDiffLabel = (diff) => {
+    const d = String(diff || "").toLowerCase().trim();
+    if (d === "easy" || d === "dễ") return "Easy";
+    if (d === "medium" || d === "trung bình") return "Medium";
+    if (d === "hard" || d === "khó") return "Hard";
+    return diff || "Easy";
+  };
+
   return (
     <div style={{
       backgroundColor: "var(--theme-card-bg, #ffffff)",
@@ -34,7 +50,9 @@ export default function AdminUserProblemsTab({ userState }) {
               <td style={{ padding: "14px 16px", fontFamily: "monospace", fontWeight: 700 }}>{p.code}</td>
               <td style={{ padding: "14px 16px", fontWeight: 700 }}>{p.title}</td>
               <td style={{ padding: "14px 16px" }}>
-                <Badge variant={p.difficulty === "Easy" ? "success" : "warning"} size="sm">{p.difficulty}</Badge>
+                <Badge variant={getDiffVariant(p.difficulty)} size="sm">
+                  {getDiffLabel(p.difficulty)}
+                </Badge>
               </td>
               <td style={{ padding: "14px 16px", fontSize: "0.85rem", opacity: 0.7 }}>{p.solvedAt}</td>
             </tr>

@@ -28,9 +28,19 @@ export default function AdminContestProblemsTab({ contestState, setContestState 
   };
 
   const getDiffVariant = (diff) => {
-    if (diff === "Easy") return "success";
-    if (diff === "Medium") return "warning";
-    return "danger";
+    const d = String(diff || "").toLowerCase().trim();
+    if (d === "easy" || d === "dễ") return "success";
+    if (d === "medium" || d === "trung bình") return "warning";
+    if (d === "hard" || d === "khó") return "danger";
+    return "primary";
+  };
+
+  const getDiffLabel = (diff) => {
+    const d = String(diff || "").toLowerCase().trim();
+    if (d === "easy" || d === "dễ") return "Easy";
+    if (d === "medium" || d === "trung bình") return "Medium";
+    if (d === "hard" || d === "khó") return "Hard";
+    return diff || "Easy";
   };
 
   return (
@@ -64,7 +74,7 @@ export default function AdminContestProblemsTab({ contestState, setContestState 
               <td><span className={styles.score_badge}>{prob.score} pts</span></td>
               <td>
                 <Badge variant={getDiffVariant(prob.difficulty)} size="sm">
-                  {prob.difficulty}
+                  {getDiffLabel(prob.difficulty)}
                 </Badge>
               </td>
               <td>
