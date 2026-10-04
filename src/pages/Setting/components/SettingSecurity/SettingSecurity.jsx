@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./SettingSecurity.module.css";
-import authService from "~/services/authService.js";
+import userService from "~/services/userService.js";
 
 function SettingSecurity() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -24,7 +24,7 @@ function SettingSecurity() {
       return;
     }
 
-    const data = await authService.changePassword({
+    const data = await userService.changePassword({
       oldPassword: currentPassword,
       newPassword,
       confirmPassword,
