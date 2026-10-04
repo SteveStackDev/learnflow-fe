@@ -8,6 +8,8 @@ export const authService = {
       confirmPassword,
     };
 
+    console.log(payload);
+
     const data = await api.post("/user/reset-password", payload);
 
 
