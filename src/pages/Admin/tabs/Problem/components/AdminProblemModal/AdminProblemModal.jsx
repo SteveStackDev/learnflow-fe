@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Icon from "~/components/Icon/Icon";
 import { Button, FormField, DropdownMenu } from "~/components/ui";
 import { useToast } from "~/context/ToastContext.jsx";
+import TestCaseCard from "./TestCaseCard";
 import {
   FORM_DIFFICULTY_OPTIONS,
   FORM_TOPIC_OPTIONS,
@@ -239,7 +240,7 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
     setCurrentStep(1);
   }, [initialData, isOpen]);
 
-  // 2. Tự động lưu bản nháp vào localStorage mỗi khi người dùng nhập dữ liệu
+  // 2. Tự động lưu bản nháp vào localStorage mỗi khi người dùng nhập dữ liệu (debounced 1500ms để không lag khi nhập test 10^5 phần tử)
   useEffect(() => {
     if (!isOpen || initialData) return;
 
@@ -254,12 +255,24 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
       subtasks.some((s) => s.testCases && s.testCases.some((t) => t.input || t.expected))
     );
 
-    if (hasContent) {
+    if (!hasContent) return;
+
+    const timer = setTimeout(() => {
       try {
+        // Cắt bớt nếu testcase quá lớn trong draft (> 50KB) để bảo vệ quota localStorage và không bao giờ nghẽn CPU
+        const sanitizedSubtasks = subtasks.map((st) => ({
+          ...st,
+          testCases: st.testCases?.map((tc) => ({
+            ...tc,
+            input: tc.input && tc.input.length > 30000 ? tc.input.slice(0, 30000) : tc.input,
+            expected: tc.expected && tc.expected.length > 30000 ? tc.expected.slice(0, 30000) : tc.expected,
+          })),
+        }));
+
         const payload = {
           formData,
           examples,
-          subtasks,
+          subtasks: sanitizedSubtasks,
           savedAt: Date.now(),
         };
         localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(payload));
@@ -267,7 +280,9 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
       } catch (err) {
         console.warn("[AdminProblemModal] Lỗi auto-save draft:", err);
       }
-    }
+    }, 1500);
+
+    return () => clearTimeout(timer);
   }, [formData, examples, subtasks, isOpen, initialData]);
 
   // Xóa bản nháp và làm mới toàn bộ form
@@ -424,7 +439,7 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
     );
   };
 
-  const handleRemoveTestCaseFromSubtask = (sIdx, tcIdx) => {
+  const handleRemoveTestCaseFromSubtask = useCallback((sIdx, tcIdx) => {
     setSubtasks((prev) =>
       prev.map((st, idx) => {
         if (idx !== sIdx) return st;
@@ -442,9 +457,9 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
         return { ...st, testCases: updatedTests };
       })
     );
-  };
+  }, [toast]);
 
-  const handleTestCaseChangeInSubtask = (sIdx, tcIdx, field, value) => {
+  const handleTestCaseChangeInSubtask = useCallback((sIdx, tcIdx, field, value) => {
     setSubtasks((prev) =>
       prev.map((st, idx) => {
         if (idx !== sIdx) return st;
@@ -462,7 +477,7 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
         return { ...st, testCases: updatedTests };
       })
     );
-  };
+  }, []);
 
   // Nút hỗ trợ: Tự động chia đều điểm test trong 1 Subtask
   const handleAutoDistributeTestPoints = (sIdx) => {
@@ -1101,97 +1116,15 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
 
                 <div className={styles.examples_list}>
                   {subtasks[activeSubtaskIdx].testCases?.map((tc, tcIdx) => (
-                    <div key={tc.id || tcIdx} className={styles.tc_card}>
-                      <div className={styles.tc_header}>
-                        <div className={styles.tc_header_left}>
-                          <span className={styles.tc_badge_num}>
-                            <Icon name="Code" size={14} />
-                            Test #{tcIdx + 1}
-                          </span>
-                          {tc.isHidden ? (
-                            <span className={styles.tc_type_tag_hidden}>
-                              <Icon name="Lock" size={12} />
-                              Test Ẩn (Hidden)
-                            </span>
-                          ) : (
-                            <span className={styles.tc_type_tag_public}>
-                              <Icon name="Eye" size={12} />
-                              Công Khai (Public)
-                            </span>
-                          )}
-                        </div>
-                        {subtasks[activeSubtaskIdx].testCases.length > 1 && (
-                          <button
-                            type="button"
-                            className={styles.remove_btn}
-                            onClick={() => handleRemoveTestCaseFromSubtask(activeSubtaskIdx, tcIdx)}
-                            title="Xóa Test Case này"
-                          >
-                            <Icon name="Trash2" size={14} />
-                            <span>Xóa Test</span>
-                          </button>
-                        )}
-                      </div>
-
-                      <div className={styles.tc_body}>
-                        <div className={styles.tc_code_grid}>
-                          <div className={styles.tc_code_box}>
-                            <label className={`${styles.tc_code_label} ${styles.tc_code_label_stdin}`}>
-                              <Icon name="Terminal" size={13} />
-                              INPUT (stdin) <span className={styles.required_mark}>*</span>
-                            </label>
-                            <textarea
-                              className={styles.tc_textarea}
-                              placeholder="Dữ liệu truyền vào stdin..."
-                              value={tc.input}
-                              onChange={(e) => handleTestCaseChangeInSubtask(activeSubtaskIdx, tcIdx, "input", e.target.value)}
-                              rows={3}
-                              required
-                            />
-                          </div>
-
-                          <div className={styles.tc_code_box}>
-                            <label className={`${styles.tc_code_label} ${styles.tc_code_label_stdout}`}>
-                              <Icon name="Play" size={13} />
-                              KẾT QUẢ KỲ VỌNG (Expected stdout) <span className={styles.required_mark}>*</span>
-                            </label>
-                            <textarea
-                              className={styles.tc_textarea}
-                              placeholder="Kết quả stdout mong đợi..."
-                              value={tc.expected}
-                              onChange={(e) => handleTestCaseChangeInSubtask(activeSubtaskIdx, tcIdx, "expected", e.target.value)}
-                              rows={3}
-                              required
-                            />
-                          </div>
-                        </div>
-
-                        <div className={styles.tc_footer_row}>
-                          <div className={styles.tc_points_group}>
-                            <span className={styles.tc_points_label}>Điểm test:</span>
-                            <input
-                              type="number"
-                              className={styles.tc_points_input}
-                              placeholder="100"
-                              value={tc.points !== undefined && tc.points !== null ? tc.points : 0}
-                              onChange={(e) => handleTestCaseChangeInSubtask(activeSubtaskIdx, tcIdx, "points", Number(e.target.value))}
-                            />
-                            <span className={styles.tc_points_label}>pt</span>
-                          </div>
-
-                          <div className={styles.checkbox_row} style={{ margin: 0 }}>
-                            <label className={styles.checkbox_label}>
-                              <input
-                                type="checkbox"
-                                checked={tc.isHidden}
-                                onChange={(e) => handleTestCaseChangeInSubtask(activeSubtaskIdx, tcIdx, "isHidden", e.target.checked)}
-                              />
-                              <span>Đặt làm Test Case Ẩn (Hidden Case)</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <TestCaseCard
+                      key={tc.id || `${activeSubtaskIdx}_${tcIdx}`}
+                      tc={tc}
+                      tcIdx={tcIdx}
+                      sIdx={activeSubtaskIdx}
+                      canDelete={subtasks[activeSubtaskIdx].testCases.length > 1}
+                      onRemove={handleRemoveTestCaseFromSubtask}
+                      onChange={handleTestCaseChangeInSubtask}
+                    />
                   ))}
                 </div>
               </div>

@@ -3,6 +3,12 @@ import Icon from "~/components/Icon/Icon";
 import { Button, Badge } from "~/components/ui";
 import styles from "./AdminProblemTestCasesTab.module.css";
 
+const formatPreview = (val, maxLen = 80) => {
+  const str = String(val || "");
+  if (str.length <= maxLen) return str;
+  return `${str.slice(0, maxLen)}... (${str.length.toLocaleString()} chars)`;
+};
+
 export default function AdminProblemTestCasesTab({ problemState }) {
   const [testCases, setTestCases] = useState(
     problemState.testCases || [
@@ -49,8 +55,8 @@ export default function AdminProblemTestCasesTab({ problemState }) {
           {testCases.map((tc, idx) => (
             <tr key={tc.id}>
               <td>#{idx + 1}</td>
-              <td><span className={styles.code_box}>{tc.input}</span></td>
-              <td><span className={styles.code_box}>{tc.expected}</span></td>
+              <td><span className={styles.code_box} title={tc.input}>{formatPreview(tc.input)}</span></td>
+              <td><span className={styles.code_box} title={tc.expected}>{formatPreview(tc.expected)}</span></td>
               <td>
                 <Badge variant={tc.isHidden ? "warning" : "success"} size="sm">
                   {tc.isHidden ? "Hidden (Bảo mật)" : "Public (Công khai)"}
