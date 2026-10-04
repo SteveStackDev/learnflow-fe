@@ -333,8 +333,6 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
     toast.info("Đã xóa bản nháp và làm mới form điền!", "Làm mới form");
   };
 
-  if (!isOpen) return null;
-
   // Example Handlers
   const handleAddExample = () => {
     setExamples((prev) => [...prev, { input: "", output: "", explanation: "" }]);
@@ -653,6 +651,8 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
     );
     onSave(formattedData);
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className={styles.modal_overlay} onClick={onClose}>
