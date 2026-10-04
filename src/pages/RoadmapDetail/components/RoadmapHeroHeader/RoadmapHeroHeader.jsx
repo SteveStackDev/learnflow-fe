@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Button, Badge, Card } from "~/components/ui";
 import Icon from "~/components/Icon/Icon";
@@ -17,6 +17,24 @@ export function RoadmapHeroHeader({ roadmapData }) {
   const hasStarted = roadmapData.roadmap?.some(
     (step) => step.status === "completed" || step.status === "in_progress",
   );
+
+  useEffect(() => {
+    const checkSavedStatus = async () => {
+      if (isAuthenticated) {
+        try {
+          const userRoadmaps = await roadmapService.getUserRoadmaps();
+          const isRoadmapSaved = userRoadmaps.some((rm) => rm._id === roadmapData._id);
+          setIsSaved(isRoadmapSaved);
+        } catch (error) {
+          console.error("Lỗi khi kiểm tra trạng thái lưu lộ trình:", error);
+        }
+      } else {
+        setIsSaved(false);
+      }
+    };
+
+    checkSavedStatus();
+  }, [roadmapData, isAuthenticated]);
 
   const handleStartOrContinue = () => {
     if (!isAuthenticated) {
