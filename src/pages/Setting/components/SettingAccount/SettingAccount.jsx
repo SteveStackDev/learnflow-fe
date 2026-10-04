@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
-import userService from "./userService"; // Đảm bảo đường dẫn import đúng vị trí file userService của bạn
 import styles from "./SettingAccount.module.css";
+import userService from "~/services/userService.js";
 
 function SettingAccount({ userData }) {
   const [username, setUsername] = useState(userData?.username || "nguyenvana");
