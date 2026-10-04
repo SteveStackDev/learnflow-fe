@@ -8,7 +8,7 @@ function SettingSecurity() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const { toast } = useToast();
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = async (e) => {
     e.preventDefault();
     if (!currentPassword) {
       toast.error("Vui lòng nhập mật khẩu hiện tại!", "Bảo mật");
@@ -22,6 +22,14 @@ function SettingSecurity() {
       toast.error("Mật khẩu xác nhận không trùng khớp!", "Bảo mật");
       return;
     }
+
+    const data = await authService.changePassword({
+      oldPassword: currentPassword,
+      newPassword,
+      confirmPassword,
+    });
+
+    if (!data.success === true)  return;
 
     toast.success("Đổi mật khẩu thành công!", "Bảo mật");
     setCurrentPassword("");
