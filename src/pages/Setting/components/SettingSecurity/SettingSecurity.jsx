@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
 import styles from "./SettingSecurity.module.css";
+import authService from "~/services/authService.js";
 
 function SettingSecurity() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -29,7 +30,10 @@ function SettingSecurity() {
       confirmPassword,
     });
 
-    if (!data.success === true)  return;
+    if (!data.success) {
+      toast.error(data.message || "Đổi mật khẩu thất bại!", "Bảo mật");
+      return;
+    }
 
     toast.success("Đổi mật khẩu thành công!", "Bảo mật");
     setCurrentPassword("");
