@@ -1,55 +1,45 @@
 import { useState, useRef, useEffect } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
+import { useAuth } from "~/context/AuthContext.jsx"; // Nhập useAuth từ AuthContext
 import styles from "./SettingAccount.module.css";
-import userService from "~/services/userService.js";
-import authService from "~/services/authService.js";
+import userService from "~/services/userService.js"; // Import userService
 
-function SettingAccount({ userData: initialUserData }) {
-  const [currentUser, setCurrentUser] = useState(initialUserData || null);
+function SettingAccount() {
+  const { user, refreshUser } = useAuth(); // Lấy user và refreshUser từ AuthContext
+
   const [username, setUsername] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [isSavingUsername, setIsSavingUsername] = useState(false);
 
   const fileInputRef = useRef(null);
   const { toast } = useToast();
 
-  // Hàm load dữ liệu mới nhất từ server
-  const fetchLatestUserData = async () => {
-    try {
-      setIsLoading(true);
-      const me = await authService.getMe();
-      if (me) {
-        setCurrentUser(me);
-        setUsername(me.username || me.name || "");
-        
-        // authService.getMe() đã format avatar thành chuỗi URL
-        const avatar = me.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
-        setAvatarUrl(avatar);
-
-        // Lưu bản sao mới nhất vào localStorage để đồng bộ với các phần khác (Header/Sidebar)
-        try {
-          const saved = JSON.parse(localStorage.getItem("fySet_user")) || {};
-          saved.username = me.username;
-          saved.avatar = me.avatar;
-          localStorage.setItem("fySet_user", JSON.stringify(saved));
-        } catch {
-          // ignore
-        }
-      }
-    } catch (error) {
-      console.error("Lỗi khi tải thông tin người dùng:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Khởi tạo & Lấy dữ liệu mới mỗi khi reload trang / mount component
+  // Load lại thông tin mới nhất từ API khi component mount/reload
   useEffect(() => {
-    fetchLatestUserData();
-  }, []);
+    const initData = async () => {
+      setIsLoading(true);
+      await refreshUser(); // Gọi API getMe ép buộc lấy dữ liệu mới nhất
+      setIsLoading(false);
+    };
+    initData();
+  }, [refreshUser]);
+
+  // Cập nhật local state mỗi khi user trong AuthContext thay đổi
+  useEffect(() => {
+    if (user && Object.keys(user).length > 0) {
+      setUsername(user.username || user.name || "");
+      
+      const currentAvatar =
+        user.avatar ||
+        user.avatarUrl ||
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+      
+      setAvatarUrl(currentAvatar);
+    }
+  }, [user]);
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -62,8 +52,8 @@ function SettingAccount({ userData: initialUserData }) {
     try {
       await userService.changeUsername(username.trim());
 
-      // Lấy lại data mới nhất sau khi đổi username thành công
-      await fetchLatestUserData();
+      // Gọi refreshUser để fetch lại /auth/get-me và sync toàn bộ App
+      await refreshUser();
 
       toast.success("Cập nhật tên người dùng thành công!", "Tài khoản");
     } catch (err) {
@@ -93,22 +83,22 @@ function SettingAccount({ userData: initialUserData }) {
 
     setIsUploadingAvatar(true);
     try {
-      // Tải ảnh lên qua API
+      // Upload ảnh
       await userService.updateAvatar(file);
 
-      // Refresh lại dữ liệu từ getMe() để lấy đúng avatar.url mới từ Cloudinary
-      await fetchLatestUserData();
+      // Đồng bộ lại dữ liệu mới nhất từ server
+      await refreshUser();
 
       toast.success("Cập nhật ảnh đại diện thành công!", "Ảnh đại diện");
     } catch (err) {
       toast.error(err.message || "Tải ảnh lên thất bại!", "Đổi ảnh");
     } finally {
       setIsUploadingAvatar(false);
-      if (e.target) e.target.value = ""; // Reset input file
+      if (e.target) e.target.value = ""; // Reset input
     }
   };
 
-  if (isLoading) {
+  if (isLoading && (!user || Object.keys(user).length === 0)) {
     return <div className={styles.container}>Đang tải thông tin tài khoản...</div>;
   }
 
@@ -127,7 +117,7 @@ function SettingAccount({ userData: initialUserData }) {
             <div className={styles.avatar_row}>
               <img
                 src={avatarUrl}
-                alt={`Ảnh đại diện của ${currentUser?.name || currentUser?.username || "người dùng"}`}
+                alt={`Ảnh đại diện của ${user?.name || user?.username || "người dùng"}`}
                 className={styles.avatar_img}
               />
               <div className={styles.avatar_meta}>
@@ -173,7 +163,6 @@ function SettingAccount({ userData: initialUserData }) {
         <div className={styles.card_block}>
           <h3 className={styles.sub_title}>Thông tin liên hệ</h3>
 
-          {/* Email Row */}
           <div className={styles.info_row}>
             <div className={styles.info_field_wrap}>
               <label htmlFor="setting-email" className={styles.label}>
@@ -182,7 +171,7 @@ function SettingAccount({ userData: initialUserData }) {
               <input
                 id="setting-email"
                 type="email"
-                value={currentUser?.email || ""}
+                value={user?.email || ""}
                 readOnly
                 className={`${styles.input} ${styles.input_wide}`}
               />
@@ -205,12 +194,12 @@ function SettingAccount({ userData: initialUserData }) {
           <div className={styles.grid_2cols}>
             <div className={styles.meta_box}>
               <span className={styles.meta_label}>Ngày tham gia (Joined date)</span>
-              <span className={styles.meta_val}>{currentUser?.joinedDate || "15/01/2026"}</span>
+              <span className={styles.meta_val}>{user?.joinedDate || "15/01/2026"}</span>
             </div>
             <div className={styles.meta_box}>
               <span className={styles.meta_label}>Mã tài khoản (Account ID)</span>
               <span className={styles.meta_val_code}>
-                #{currentUser?.accountId || currentUser?._id || "FYSET-89412"}
+                #{user?.accountId || user?._id || "FYSET-89412"}
               </span>
             </div>
           </div>

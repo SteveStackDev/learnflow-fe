@@ -1,14 +1,30 @@
-import { createContext, useState, useCallback, useContext } from "react";
+import { createContext, useState, useCallback, useContext, useEffect } from "react";
 import { authService } from "~/services";
 
 export const AuthContext = createContext({});
 
+// Hàm helper dọn dẹp key chuẩn hóa duy nhất 1 key là "fyset_user"
+const STORAGE_KEY = "fyset_user";
+const OLD_STORAGE_KEY = "fySet_user";
+
+const clearUserStorage = () => {
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(OLD_STORAGE_KEY);
+};
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
-      const savedUser = JSON.parse(localStorage.getItem("fyset_user"));
-      if (savedUser && typeof savedUser === "object") {
-        return savedUser;
+      // Ưu tiên đọc key chuẩn, dọn dẹp key cũ nếu có
+      const savedUser = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(OLD_STORAGE_KEY);
+      if (savedUser) {
+        const parsed = JSON.parse(savedUser);
+        if (parsed && typeof parsed === "object") {
+          // Xóa key hoa cũ để tránh rác
+          localStorage.removeItem(OLD_STORAGE_KEY);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+          return parsed;
+        }
       }
     } catch {
       // ignore
@@ -16,48 +32,46 @@ export function AuthProvider({ children }) {
     return {};
   });
 
-  const getUser = useCallback(async () => {
-    const userLocalStorage = localStorage.getItem("fyset_user") || localStorage.getItem("fySet_user");
-
-    if (userLocalStorage) {
-      try {
-        const parsed = JSON.parse(userLocalStorage);
-        if (
-          parsed &&
-          Object.keys(parsed).length > 0 &&
-          (parsed.id || parsed._id || parsed.email || parsed.name || parsed.username)
-        ) {
-          return parsed;
-        }
-      } catch {
-        // fallback to getMe
-      }
-    }
-
-    // Try fetching from backend session (critical for Google OAuth redirect)
-    try {
-      const u = await authService.getMe();
-      if (u && (u.id || u._id || u.email || u.name || u.username)) {
-        localStorage.setItem("fyset_user", JSON.stringify(u));
-        setUser(u);
-        return u;
-      }
-    } catch {
-      // not logged in
-    }
-
-    return {};
-  }, []);
-
+  // Hàm cập nhật state + localStorage
   const updateUser = useCallback((newUser) => {
     if (newUser && Object.keys(newUser).length > 0) {
-      localStorage.setItem("fyset_user", JSON.stringify(newUser));
+      localStorage.removeItem(OLD_STORAGE_KEY); // Xóa key hoa cũ
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
+      setUser(newUser);
     } else {
-      localStorage.removeItem("fyset_user");
-      localStorage.removeItem("fySet_user");
+      clearUserStorage();
+      setUser({});
     }
-    setUser(newUser || {});
   }, []);
+
+  // Hàm bắt buộc lấy dữ liệu mới nhất từ server (Get Me Fresh Data)
+  const refreshUser = useCallback(async () => {
+    try {
+      const freshUser = await authService.getMe();
+      if (freshUser && (freshUser.id || freshUser._id || freshUser.email || freshUser.name || freshUser.username)) {
+        updateUser(freshUser);
+        return freshUser;
+      }
+    } catch (err) {
+      console.warn("Lỗi khi refresh user data từ server:", err);
+    }
+    return null;
+  }, [updateUser]);
+
+  // Hàm lấy user (Ưu tiên fetch mới nếu forceFetch = true, hoặc tự động sync nếu chưa có)
+  const getUser = useCallback(async (forceFetch = false) => {
+    if (forceFetch) {
+      return await refreshUser();
+    }
+
+    // Nếu đã có thông tin trong state thì trả về luôn
+    if (user && Object.keys(user).length > 0) {
+      return user;
+    }
+
+    // Nếu chưa có thì thử fetch từ backend (session / OAuth)
+    return await refreshUser();
+  }, [user, refreshUser]);
 
   const deleteUser = useCallback(async () => {
     try {
@@ -65,14 +79,18 @@ export function AuthProvider({ children }) {
     } catch (err) {
       console.warn("Sign out request error:", err);
     } finally {
-      localStorage.removeItem("fyset_user");
-      localStorage.removeItem("fySet_user");
+      clearUserStorage();
       sessionStorage.removeItem("fyset_temp_token");
       setUser({});
     }
   }, []);
 
-
+  // Khi app mount, xóa sạch key cũ fySet_user nếu tồn tại
+  useEffect(() => {
+    if (localStorage.getItem(OLD_STORAGE_KEY)) {
+      localStorage.removeItem(OLD_STORAGE_KEY);
+    }
+  }, []);
 
   const isAuthenticated = Boolean(
     user &&
@@ -81,7 +99,16 @@ export function AuthProvider({ children }) {
   );
 
   return (
-    <AuthContext.Provider value={{ user, getUser, deleteUser, updateUser, isAuthenticated }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        getUser,
+        refreshUser, // Export thêm hàm này để gọi trực tiếp ở Setting
+        deleteUser,
+        updateUser,
+        isAuthenticated,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -93,6 +120,7 @@ export function useAuth() {
     return {
       user: {},
       getUser: async () => ({}),
+      refreshUser: async () => null,
       deleteUser: () => {},
       updateUser: () => {},
       isAuthenticated: false,
@@ -100,4 +128,3 @@ export function useAuth() {
   }
   return context;
 }
-
