@@ -6,7 +6,7 @@ import userService from "~/services/userService.js";
 import styles from "./SettingSecurity.module.css";
 
 function SettingSecurity() {
-  const { user, refreshUser } = useAuth();
+  const { user, refreshUser, updateUser } = useAuth();
   const { toast } = useToast();
 
   // State cho Đổi Username
@@ -63,6 +63,13 @@ function SettingSecurity() {
     setIsSavingUsername(true);
     try {
       await userService.changeUsername(cleanUsername);
+
+      // Cập nhật ngay vào state và localStorage để duy trì sau khi F5
+      updateUser({
+        ...user,
+        username: cleanUsername,
+        name: cleanUsername,
+      });
 
       // Đồng bộ thông tin người dùng mới nhất vào toàn bộ App
       await refreshUser();

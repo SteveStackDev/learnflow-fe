@@ -8,11 +8,13 @@ export const authService = {
     };
 
     const data = await api.post("/auth/sign-in", payload);
+    const raw = data?.data !== undefined ? data.data : data;
 
     const formattedData = {
-      ...data,
-      name: data.username,
-      avatar: data.avatar.url,
+      ...raw,
+      username: raw?.username || raw?.name,
+      name: raw?.username || raw?.name,
+      avatar: typeof raw?.avatar === "object" ? raw?.avatar?.url : raw?.avatar,
     };
 
     return formattedData;
@@ -27,11 +29,13 @@ export const authService = {
     };
 
     const data = await api.post("/auth/sign-up", payload);
+    const raw = data?.data !== undefined ? data.data : data;
 
     const formattedData = {
-      ...data,
-      name: data.username,
-      avatar: data.avatar.url,
+      ...raw,
+      username: raw?.username || username,
+      name: raw?.username || username,
+      avatar: typeof raw?.avatar === "object" ? raw?.avatar?.url : raw?.avatar,
     };
 
     return formattedData;
@@ -59,10 +63,12 @@ export const authService = {
       const data = await api.get("/auth/get-me");
       if (!data || Object.keys(data).length === 0) return null;
 
+      const raw = data?.data !== undefined ? data.data : data;
       const formattedData = {
-        ...data,
-        name: data.name || data.username,
-        avatar: typeof data.avatar === "object" ? data.avatar?.url : data.avatar,
+        ...raw,
+        username: raw?.username || raw?.name,
+        name: raw?.name || raw?.username,
+        avatar: typeof raw?.avatar === "object" ? raw?.avatar?.url : (raw?.avatar || ""),
       };
 
       return formattedData;

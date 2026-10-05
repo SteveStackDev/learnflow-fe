@@ -32,12 +32,18 @@ export function AuthProvider({ children }) {
     return {};
   });
 
-  // Hàm cập nhật state + localStorage
+  // Hàm cập nhật state + localStorage (hỗ trợ partial & full update)
   const updateUser = useCallback((newUser) => {
     if (newUser && Object.keys(newUser).length > 0) {
-      localStorage.removeItem(OLD_STORAGE_KEY); // Xóa key hoa cũ
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
-      setUser(newUser);
+      setUser((prevUser) => {
+        const merged = {
+          ...(prevUser || {}),
+          ...newUser,
+        };
+        localStorage.removeItem(OLD_STORAGE_KEY); // Xóa key hoa cũ
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        return merged;
+      });
     } else {
       clearUserStorage();
       setUser({});

@@ -6,7 +6,7 @@ import styles from "./SettingAccount.module.css";
 import userService from "~/services/userService.js";
 
 function SettingAccount() {
-  const { user, refreshUser } = useAuth(); // Lấy user và refreshUser từ AuthContext
+  const { user, refreshUser, updateUser } = useAuth(); // Lấy user, refreshUser và updateUser từ AuthContext
 
   const [username, setUsername] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
@@ -64,7 +64,14 @@ function SettingAccount() {
     try {
       await userService.changeUsername(cleanUsername);
 
-      // Gọi refreshUser để fetch lại /auth/get-me và sync toàn bộ App
+      // Cập nhật ngay lập tức vào state và localStorage để duy trì sau khi F5
+      updateUser({
+        ...user,
+        username: cleanUsername,
+        name: cleanUsername,
+      });
+
+      // Gọi refreshUser để đồng bộ toàn bộ app
       await refreshUser();
 
       toast.success("Cập nhật tên người dùng thành công!", "Tài khoản");
@@ -96,7 +103,21 @@ function SettingAccount() {
     setIsUploadingAvatar(true);
     try {
       // Upload ảnh
-      await userService.updateAvatar(file);
+      const result = await userService.updateAvatar(file);
+      const newAvatarUrl =
+        result?.avatar?.url ||
+        result?.url ||
+        result?.data?.avatar?.url ||
+        (typeof result === "string" ? result : "");
+
+      if (newAvatarUrl) {
+        setAvatarUrl(newAvatarUrl);
+        updateUser({
+          ...user,
+          avatar: newAvatarUrl,
+          avatarUrl: newAvatarUrl,
+        });
+      }
 
       // Đồng bộ lại dữ liệu mới nhất từ server
       await refreshUser();
