@@ -23,14 +23,13 @@ function DashboardCard({ student }) {
         </div>
       </div>
 
-      {/* Middle Section: Name, Role Pill & Progress Bar */}
+      {/* Middle Section: Name & Progress Bar */}
       <div className={styles.dashboard_card__middle}>
         <div className={styles.dashboard_card__identity}>
           <h2 className={styles.dashboard_card__name}>{student.name}</h2>
-          <span className={styles.dashboard_card__role_pill}>{student.role}</span>
         </div>
 
-        {/* Progress Bar under FRONTEND DEVELOPER role */}
+        {/* Progress Bar under student name */}
         <div className={styles.dashboard_card__progress_block}>
           <div className={styles.dashboard_card__progress_header}>
             <span>TỔNG THỂ KHÓA HỌC</span>

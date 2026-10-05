@@ -27,8 +27,8 @@ export const adaptCourse = (course) => {
 };
 
 export const adaptUserCourse = (item) => {
-  if (!item) return null;
-  const courseDetail = item.courseId ? adaptCourse(item.courseId) : {};
+  if (!item || !item.courseId) return null;
+  const courseDetail = typeof item.courseId === "object" ? adaptCourse(item.courseId) : {};
 
   return {
     id: item._id?.toString() || item.id,
@@ -37,10 +37,10 @@ export const adaptUserCourse = (item) => {
     completedAt: item.completedAt,
     courseId: {
       ...courseDetail,
-      _id: courseDetail.id || item.courseId?._id,
+      _id: courseDetail?.id || item.courseId?._id || item.courseId,
     },
-    instructor: courseDetail.instructor || "FySet Mentor",
-    lessonsCount: courseDetail.lessonsCount || 0,
+    instructor: courseDetail?.instructor || "FySet Mentor",
+    lessonsCount: courseDetail?.lessonsCount || 0,
   };
 };
 
@@ -50,7 +50,7 @@ export const courseService = {
       const response = await api.get("/course/all");
       const rawData = response?.data || response;
       const list = Array.isArray(rawData) ? rawData : (rawData?.data || []);
-      return list.map(adaptCourse);
+      return list.map(adaptCourse).filter(Boolean);
     } catch (error) {
       console.error("Lỗi khi tải danh sách khóa học:", error);
       return [];
@@ -62,7 +62,7 @@ export const courseService = {
       const response = await api.get("/course/user");
       const rawData = response?.data || response;
       const list = Array.isArray(rawData) ? rawData : (rawData?.data || []);
-      return list.map(adaptUserCourse);
+      return list.map(adaptUserCourse).filter(Boolean);
     } catch (error) {
       console.error("Lỗi khi tải khóa học người dùng:", error);
       return [];
@@ -129,6 +129,16 @@ export const courseService = {
       return response?.data || response;
     } catch (error) {
       console.error("Lỗi khi tạo khóa học:", error);
+      throw error;
+    }
+  },
+
+  updateCourse: async (id, data) => {
+    try {
+      const response = await api.put(`/course/${id}`, data);
+      return response?.data || response;
+    } catch (error) {
+      console.error(`Lỗi khi cập nhật khóa học #${id}:`, error);
       throw error;
     }
   },

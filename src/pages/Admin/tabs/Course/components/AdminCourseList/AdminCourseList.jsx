@@ -24,6 +24,7 @@ export default function AdminCourseList({
   courses = [],
   isLoading,
   onAddCourse,
+  onEditCourse,
   onDeleteCourse,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -187,7 +188,15 @@ export default function AdminCourseList({
                 const studentsCount = course.studentsCount ?? course.studentsNum ?? course.stats?.learners ?? 0;
 
                 return (
-                  <tr key={courseId} className={`${isSelected ? styles.row_selected : ""} reveal-card`}>
+                  <tr
+                    key={courseId}
+                    className={`${isSelected ? styles.row_selected : ""} reveal-card`}
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      if (e.target.closest("input") || e.target.closest("button")) return;
+                      if (onEditCourse) onEditCourse(course);
+                    }}
+                  >
                     <td>
                       <input
                         type="checkbox"
@@ -197,9 +206,13 @@ export default function AdminCourseList({
                       />
                     </td>
                     <td>
-                      <div className={styles.course_meta}>
+                      <div
+                        className={styles.course_meta}
+                        onClick={() => onEditCourse && onEditCourse(course)}
+                        title="Bấm để chỉnh sửa khóa học này"
+                      >
                         <img
-                          src={course.thumbnail || course.imageUrl}
+                          src={course.thumbnail || course.imageUrl || "https://placehold.co/600x400/1a1d24/fff?text=Course"}
                           alt={course.title}
                           className={styles.thumbnail}
                         />
@@ -239,11 +252,25 @@ export default function AdminCourseList({
                       <div className={styles.action_row}>
                         <button
                           type="button"
-                          className={`${styles.action_btn} ${styles.action_danger}`}
-                          onClick={() => onDeleteCourse(courseId)}
-                          title="Delete Course"
+                          className={styles.action_btn}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (onEditCourse) onEditCourse(course);
+                          }}
+                          title="Chỉnh sửa khóa học"
                         >
-                          <Icon name="Trash2" size={16} />
+                          <Icon name="Edit3" size={15} />
+                        </button>
+                        <button
+                          type="button"
+                          className={`${styles.action_btn} ${styles.action_danger}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeleteCourse(courseId);
+                          }}
+                          title="Xóa khóa học"
+                        >
+                          <Icon name="Trash2" size={15} />
                         </button>
                       </div>
                     </td>
@@ -266,9 +293,9 @@ export default function AdminCourseList({
         <span className={styles.page_info}>
           {filteredAndSortedCourses.length > 0
             ? `Hiển thị ${startIndex + 1} - ${Math.min(
-              startIndex + ITEMS_PER_PAGE,
-              filteredAndSortedCourses.length
-            )} trên tổng số ${filteredAndSortedCourses.length} khóa học`
+                startIndex + ITEMS_PER_PAGE,
+                filteredAndSortedCourses.length
+              )} trên tổng số ${filteredAndSortedCourses.length} khóa học`
             : "Hiển thị 0 khóa học"}
         </span>
         <Pagination

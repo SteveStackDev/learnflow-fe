@@ -23,6 +23,7 @@ export default function AdminRoadmapList({
   roadmaps = [],
   isLoading,
   onAddRoadmap,
+  onEditRoadmap,
   onDeleteRoadmap,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -184,7 +185,15 @@ export default function AdminRoadmapList({
                 const totalSteps = rm.totalSteps || (Array.isArray(rm.roadmap) ? rm.roadmap.length : 0);
 
                 return (
-                  <tr key={rmId} className={`${isSelected ? styles.row_selected : ""} reveal-card`}>
+                  <tr
+                    key={rmId}
+                    className={`${isSelected ? styles.row_selected : ""} reveal-card`}
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      if (e.target.closest("input") || e.target.closest("button")) return;
+                      if (onEditRoadmap) onEditRoadmap(rm);
+                    }}
+                  >
                     <td>
                       <input
                         type="checkbox"
@@ -194,7 +203,11 @@ export default function AdminRoadmapList({
                       />
                     </td>
                     <td>
-                      <div className={styles.course_meta}>
+                      <div
+                        className={styles.course_meta}
+                        onClick={() => onEditRoadmap && onEditRoadmap(rm)}
+                        title="Bấm để chỉnh sửa lộ trình này"
+                      >
                         <img
                           src={rm.thumbnail || "https://placehold.co/600x400/1a1d24/fff?text=Roadmap"}
                           alt={rm.title}
@@ -231,11 +244,25 @@ export default function AdminRoadmapList({
                       <div className={styles.action_row}>
                         <button
                           type="button"
-                          className={`${styles.action_btn} ${styles.action_danger}`}
-                          onClick={() => onDeleteRoadmap(rmId)}
-                          title="Delete Roadmap"
+                          className={styles.action_btn}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (onEditRoadmap) onEditRoadmap(rm);
+                          }}
+                          title="Chỉnh sửa lộ trình"
                         >
-                          <Icon name="Trash2" size={16} />
+                          <Icon name="Edit3" size={15} />
+                        </button>
+                        <button
+                          type="button"
+                          className={`${styles.action_btn} ${styles.action_danger}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeleteRoadmap(rmId);
+                          }}
+                          title="Xóa lộ trình"
+                        >
+                          <Icon name="Trash2" size={15} />
                         </button>
                       </div>
                     </td>
@@ -258,9 +285,9 @@ export default function AdminRoadmapList({
         <span className={styles.page_info}>
           {filteredAndSortedRoadmaps.length > 0
             ? `Hiển thị ${startIndex + 1} - ${Math.min(
-              startIndex + ITEMS_PER_PAGE,
-              filteredAndSortedRoadmaps.length
-            )} trên tổng số ${filteredAndSortedRoadmaps.length} lộ trình`
+                startIndex + ITEMS_PER_PAGE,
+                filteredAndSortedRoadmaps.length
+              )} trên tổng số ${filteredAndSortedRoadmaps.length} lộ trình`
             : "Hiển thị 0 lộ trình"}
         </span>
         <Pagination

@@ -8,6 +8,7 @@ export default function AdminCourseTab() {
   const { toast } = useToast();
   const [courses, setCourses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCourse, setEditingCourse] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadCourses = useCallback(async () => {
@@ -29,17 +30,58 @@ export default function AdminCourseTab() {
   }, [loadCourses]);
 
   const handleOpenAddModal = () => {
+    setEditingCourse(null);
     setIsModalOpen(true);
+  };
+
+  const handleEditCourse = async (course) => {
+    try {
+      const courseId = course._id || course.id;
+      const curriculum = await courseService.getCurriculum(courseId);
+      const fullCourseData = {
+        ...course,
+        chapters: Array.isArray(curriculum)
+          ? curriculum.map((ch, cIdx) => ({
+              id: ch.chapterId || ch._id || cIdx + 1,
+              title: ch.title || `Chương ${cIdx + 1}`,
+              order: ch.order || cIdx + 1,
+              lessons: Array.isArray(ch.lessons)
+                ? ch.lessons.map((ls, lIdx) => ({
+                    id: ls.lessonId || ls._id || lIdx + 1,
+                    title: ls.title || `Bài học ${lIdx + 1}`,
+                    videoUrl: ls.videoUrl || "",
+                    duration: ls.duration || 10,
+                    description: ls.description || "",
+                    isPreview: Boolean(ls.isPreview),
+                  }))
+                : [],
+            }))
+          : [],
+      };
+      setEditingCourse(fullCourseData);
+    } catch (err) {
+      console.warn("Lỗi tải curriculum khi edit khóa học:", err);
+      setEditingCourse(course);
+    } finally {
+      setIsModalOpen(true);
+    }
   };
 
   const handleSaveCourse = async (formData) => {
     try {
-      await courseService.createCourse(formData);
-      toast?.success(`Đã tạo khóa học mới "${formData.title}" thành công!`, "Thành công");
+      if (editingCourse) {
+        const id = editingCourse._id || editingCourse.id;
+        await courseService.updateCourse(id, formData);
+        toast?.success(`Đã cập nhật khóa học "${formData.title}" thành công!`, "Thành công");
+      } else {
+        await courseService.createCourse(formData);
+        toast?.success(`Đã tạo khóa học mới "${formData.title}" thành công!`, "Thành công");
+      }
       setIsModalOpen(false);
+      setEditingCourse(null);
       await loadCourses();
     } catch (err) {
-      toast?.error(`Có lỗi xảy ra: ${err.message || err}`, "Lỗi");
+      toast?.error(err.response?.data?.message || err.message || "Có lỗi xảy ra khi lưu khóa học", "Lỗi");
     }
   };
 
@@ -61,12 +103,17 @@ export default function AdminCourseTab() {
         courses={courses}
         isLoading={isLoading}
         onAddCourse={handleOpenAddModal}
+        onEditCourse={handleEditCourse}
         onDeleteCourse={handleDeleteCourse}
       />
 
       <AdminCourseModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        initialData={editingCourse}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingCourse(null);
+        }}
         onSave={handleSaveCourse}
       />
     </div>

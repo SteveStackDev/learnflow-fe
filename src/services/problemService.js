@@ -238,6 +238,11 @@ export const problemService = {
     return response?.data || response;
   },
 
+  updateProblem: async (id, data) => {
+    const response = await api.put(`/problem/${id}`, data);
+    return response?.data || response;
+  },
+
   deleteProblem: async (id) => {
     const response = await api.delete(`/problem/${id}`);
     return response?.data || response;

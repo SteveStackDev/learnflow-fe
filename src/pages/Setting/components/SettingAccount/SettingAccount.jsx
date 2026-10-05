@@ -43,14 +43,25 @@ function SettingAccount() {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!username || !username.trim()) {
+    const cleanUsername = username.trim();
+    if (!cleanUsername) {
       toast.error("Tên người dùng không được để trống!", "Tài khoản");
+      return;
+    }
+
+    if (cleanUsername.length < 3 || cleanUsername.length > 30) {
+      toast.error("Tên người dùng phải có độ dài từ 3 đến 30 ký tự!", "Tài khoản");
+      return;
+    }
+
+    if (cleanUsername === (user?.username || user?.name)) {
+      toast.info("Tên người dùng không có thay đổi!", "Tài khoản");
       return;
     }
 
     setIsSavingUsername(true);
     try {
-      await userService.changeUsername(username.trim());
+      await userService.changeUsername(cleanUsername);
 
       // Gọi refreshUser để fetch lại /auth/get-me và sync toàn bộ App
       await refreshUser();
@@ -194,7 +205,11 @@ function SettingAccount() {
           <div className={styles.grid_2cols}>
             <div className={styles.meta_box}>
               <span className={styles.meta_label}>Ngày tham gia (Joined date)</span>
-              <span className={styles.meta_val}>{user?.joinedDate || "15/01/2026"}</span>
+              <span className={styles.meta_val}>
+                {user?.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString("vi-VN")
+                  : user?.joinedDate || "15/01/2026"}
+              </span>
             </div>
             <div className={styles.meta_box}>
               <span className={styles.meta_label}>Mã tài khoản (Account ID)</span>

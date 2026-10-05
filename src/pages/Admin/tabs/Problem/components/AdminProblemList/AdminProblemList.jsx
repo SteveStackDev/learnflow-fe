@@ -16,7 +16,9 @@ const ITEMS_PER_PAGE = 4;
 export default function AdminProblemList({
   problems = [],
   onAddProblem,
+  onEditProblem,
   onDeleteProblem,
+  isFetchingDetail = false,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState("all");
@@ -190,7 +192,15 @@ export default function AdminProblemList({
               paginatedProblems.map((prob) => {
                 const isSelected = selectedIds.includes(prob.id);
                 return (
-                  <tr key={prob.id} className={`${isSelected ? styles.row_selected : ""} reveal-card`}>
+                  <tr
+                    key={prob.id}
+                    className={`${isSelected ? styles.row_selected : ""} reveal-card`}
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      if (e.target.closest("input") || e.target.closest("button")) return;
+                      if (onEditProblem) onEditProblem(prob);
+                    }}
+                  >
                     <td>
                       <input
                         type="checkbox"
@@ -203,7 +213,11 @@ export default function AdminProblemList({
                       <span className={styles.prob_id}>#{prob.code || prob.id}</span>
                     </td>
                     <td>
-                      <div className={styles.prob_meta}>
+                      <div
+                        className={styles.prob_meta}
+                        onClick={() => onEditProblem && onEditProblem(prob)}
+                        title="Bấm để chỉnh sửa bài tập này"
+                      >
                         <span className={styles.prob_title}>{prob.title}</span>
                         <span className={styles.topic_tag}>
                           <Icon name="Tag" size={12} />
@@ -249,11 +263,25 @@ export default function AdminProblemList({
                       <div className={styles.action_row}>
                         <button
                           type="button"
-                          className={`${styles.action_btn} ${styles.action_danger}`}
-                          onClick={() => onDeleteProblem(prob.id)}
-                          title="Delete Problem"
+                          className={`${styles.action_btn} ${styles.action_edit}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (onEditProblem) onEditProblem(prob);
+                          }}
+                          title="Chỉnh sửa bài tập"
                         >
-                          <Icon name="Trash2" size={16} />
+                          <Icon name="Edit3" size={15} />
+                        </button>
+                        <button
+                          type="button"
+                          className={`${styles.action_btn} ${styles.action_danger}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeleteProblem(prob.id);
+                          }}
+                          title="Xóa bài tập"
+                        >
+                          <Icon name="Trash2" size={15} />
                         </button>
                       </div>
                     </td>

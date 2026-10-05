@@ -8,9 +8,11 @@ export default function AdminProblemTab() {
   const { toast } = useToast();
   const [problems, setProblems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProblem, setEditingProblem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFetchingDetail, setIsFetchingDetail] = useState(false);
 
-  // Load danh sách bài tập từ SQLite Backend
+  // Load danh sách bài tập từ Backend
   const loadProblems = async () => {
     try {
       setIsLoading(true);
@@ -28,16 +30,43 @@ export default function AdminProblemTab() {
     loadProblems();
   }, []);
 
-  // Quick Modal Add / Edit
+  // Quick Modal: Thêm mới bài tập
   const handleOpenAddModal = () => {
+    setEditingProblem(null);
     setIsModalOpen(true);
+  };
+
+  // Quick Modal: Chỉnh sửa bài tập hiện có
+  const handleEditProblem = async (problem) => {
+    if (!problem) return;
+    try {
+      setIsFetchingDetail(true);
+      const targetId = problem._id || problem.id;
+      // Tải chi tiết bài tập đầy đủ (bao gồm subtasks, examples, và test cases từ ProblemTestCase)
+      const fullDetail = await problemService.getProblemById(targetId);
+      setEditingProblem(fullDetail || problem);
+      setIsModalOpen(true);
+    } catch (err) {
+      console.warn("Lỗi tải chi tiết bài tập để sửa:", err);
+      setEditingProblem(problem);
+      setIsModalOpen(true);
+    } finally {
+      setIsFetchingDetail(false);
+    }
   };
 
   const handleSaveModal = async (formData) => {
     try {
-      await problemService.createProblem(formData);
-      toast.success(`Đã tạo mới bài tập "${formData.title}" vào cơ sở dữ liệu!`, "Thành công");
+      if (editingProblem) {
+        const targetId = editingProblem._id || editingProblem.id;
+        await problemService.updateProblem(targetId, formData);
+        toast.success(`Đã cập nhật bài tập "${formData.title}" thành công!`, "Thành công");
+      } else {
+        await problemService.createProblem(formData);
+        toast.success(`Đã tạo mới bài tập "${formData.title}" vào cơ sở dữ liệu!`, "Thành công");
+      }
       setIsModalOpen(false);
+      setEditingProblem(null);
       await loadProblems();
     } catch (err) {
       toast.error(`Lỗi lưu bài tập: ${err.message}`, "Lỗi lưu dữ liệu");
@@ -62,14 +91,20 @@ export default function AdminProblemTab() {
       <AdminProblemList
         problems={problems}
         isLoading={isLoading}
+        isFetchingDetail={isFetchingDetail}
         onAddProblem={handleOpenAddModal}
+        onEditProblem={handleEditProblem}
         onDeleteProblem={handleDeleteProblem}
       />
 
-      {/* Quick Modal */}
+      {/* Quick Modal: Add / Edit Problem */}
       <AdminProblemModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        initialData={editingProblem}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingProblem(null);
+        }}
         onSave={handleSaveModal}
       />
     </div>

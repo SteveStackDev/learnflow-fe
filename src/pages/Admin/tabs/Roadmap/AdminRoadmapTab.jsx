@@ -8,6 +8,7 @@ export default function AdminRoadmapTab() {
   const { toast } = useToast();
   const [roadmaps, setRoadmaps] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingRoadmap, setEditingRoadmap] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadRoadmaps = useCallback(async () => {
@@ -29,17 +30,30 @@ export default function AdminRoadmapTab() {
   }, [loadRoadmaps]);
 
   const handleOpenAddModal = () => {
+    setEditingRoadmap(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEditRoadmap = (rm) => {
+    setEditingRoadmap(rm);
     setIsModalOpen(true);
   };
 
   const handleSaveModal = async (formData) => {
     try {
-      await roadmapService.createRoadmap(formData);
-      toast.success(`Đã tạo mới lộ trình "${formData.title}"!`, "Thành công");
+      if (editingRoadmap) {
+        const id = editingRoadmap._id || editingRoadmap.id || editingRoadmap.slug;
+        await roadmapService.updateRoadmap(id, formData);
+        toast.success(`Đã cập nhật lộ trình "${formData.title}" thành công!`, "Thành công");
+      } else {
+        await roadmapService.createRoadmap(formData);
+        toast.success(`Đã tạo mới lộ trình "${formData.title}"!`, "Thành công");
+      }
       setIsModalOpen(false);
+      setEditingRoadmap(null);
       await loadRoadmaps();
     } catch (err) {
-      toast.error(`Lỗi lưu lộ trình: ${err.message}`, "Lỗi");
+      toast?.error(err.response?.data?.message || err.message || "Có lỗi xảy ra khi lưu lộ trình", "Lỗi");
     }
   };
 
@@ -50,7 +64,7 @@ export default function AdminRoadmapTab() {
         toast.success("Đã xóa lộ trình thành công!", "Xóa lộ trình");
         await loadRoadmaps();
       } catch (err) {
-        toast.error(`Lỗi xóa lộ trình: ${err.message}`, "Lỗi");
+        toast.error(`Lỗi xóa lộ trình: ${err.message || err}`, "Lỗi");
       }
     }
   };
@@ -61,12 +75,17 @@ export default function AdminRoadmapTab() {
         roadmaps={roadmaps}
         isLoading={isLoading}
         onAddRoadmap={handleOpenAddModal}
+        onEditRoadmap={handleEditRoadmap}
         onDeleteRoadmap={handleDeleteRoadmap}
       />
 
       <AdminRoadmapModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        initialData={editingRoadmap}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingRoadmap(null);
+        }}
         onSave={handleSaveModal}
       />
     </div>

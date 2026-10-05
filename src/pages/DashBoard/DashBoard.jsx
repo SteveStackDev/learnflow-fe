@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import useScrollReveal from "~/hooks/useScrollReveal";
 import { useAuth } from "~/context/AuthContext.jsx";
 import { useToast } from "~/context/ToastContext.jsx";
-import { dashboardData } from "~/constants/mockDashBoard";
+import { courseService } from "~/services/courseService";
 
 // Sub-Components (currently hidden)
 import DashboardCard from "./components/DashboardCard/DashboardCard";
@@ -31,6 +31,10 @@ export default function DashBoard() {
   const { toast } = useToast();
 
   const [selectedUserForModal, setSelectedUserForModal] = useState(null);
+  const [coursesSummary, setCoursesSummary] = useState({
+    overallProgress: 0,
+    completedLessonsCount: "",
+  });
 
   // Auth guard: chỉ cho phép user đã đăng nhập xem Dashboard
   useEffect(() => {
@@ -40,24 +44,94 @@ export default function DashBoard() {
     }
   }, [isAuthenticated, navigate, toast]);
 
+  // Tải dữ liệu các khóa học thực tế của học viên để tính tổng thể khóa học
+  useEffect(() => {
+    let isMounted = true;
+    courseService
+      .getUserCourses()
+      .then((userCourses) => {
+        if (!isMounted || !Array.isArray(userCourses)) return;
+
+        let totalLessonsCount = 0;
+        let totalCompletedLessons = 0;
+        let sumProgression = 0;
+
+        userCourses.forEach((uc) => {
+          const lessons = uc.lessonsCount || 0;
+          const prog = uc.progression || 0;
+          sumProgression += prog;
+
+          if (lessons > 0) {
+            totalLessonsCount += lessons;
+            const completed = Math.round((prog / 100) * lessons);
+            totalCompletedLessons += completed;
+          }
+        });
+
+        const overallProgress =
+          totalLessonsCount > 0
+            ? Math.round((totalCompletedLessons / totalLessonsCount) * 100)
+            : userCourses.length > 0
+              ? Math.round(sumProgression / userCourses.length)
+              : 0;
+
+        const completedLessonsCount =
+          totalLessonsCount > 0
+            ? `${totalCompletedLessons}/${totalLessonsCount} bài`
+            : userCourses.length > 0
+              ? `${userCourses.length} khóa học`
+              : "0/0 bài";
+
+        setCoursesSummary({
+          overallProgress,
+          completedLessonsCount,
+        });
+      })
+      .catch((err) => {
+        console.error("Lỗi khi tải tổng thể khóa học:", err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const greetingPrefix = getTimeBasedGreeting();
   const userName =
     currentUser?.name ||
     currentUser?.username ||
-    dashboardData?.student?.name ||
     "Học viên";
 
-  const stats = {
-    dailyStreak: currentUser?.dailyStreak || 5,
-    xp: currentUser?.experiencePoints || currentUser?.xp || 1250,
-    rating: currentUser?.rating || 1520,
-  };
+  const studentId = currentUser?._id
+    ? `FYSET-${String(currentUser._id).slice(-5).toUpperCase()}`
+    : currentUser?.id
+      ? `FYSET-${String(currentUser.id).slice(-5).toUpperCase()}`
+      : "FYSET-MEMBER";
+
+  const joinDate = currentUser?.createdAt
+    ? new Date(currentUser.createdAt).toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    : "01/01/2026";
+
+  const streakDays = currentUser?.dailyStreak || 1;
+
   const studentInfo = {
-    ...(dashboardData?.student || {}),
+    badgeLevel: "THẺ HỌC VIÊN CAO CẤP",
     name: userName,
-    streakDays: stats.dailyStreak,
-    xp: stats.xp,
-    rating: stats.rating,
+    id: studentId,
+    joinDate: joinDate,
+    streakDays: streakDays,
+    overallProgress: coursesSummary.overallProgress,
+    completedLessonsCount: coursesSummary.completedLessonsCount,
+    badgeIcons: [
+      { name: "Award", label: "Chứng nhận Thành tựu" },
+      { name: "Trophy", label: "Top 10% Contest" },
+      { name: "CheckCircle", label: "Học viên Xác thực" },
+      { name: "Zap", label: `Streak ${streakDays} ngày` },
+    ],
   };
 
   return (
@@ -134,4 +208,4 @@ export default function DashBoard() {
       />
     </div>
   );
-}
+}

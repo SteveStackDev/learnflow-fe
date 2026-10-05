@@ -72,6 +72,9 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
   useEffect(() => {
     if (!isOpen) return;
 
+    setCurrentStep(1);
+    setActiveSubtaskIdx(0);
+
     if (initialData) {
       setHasDraft(false);
       setFormData({
