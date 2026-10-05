@@ -305,7 +305,7 @@ export function Header() {
 
           {/* Desktop Right Actions: Auth buttons OR User Menu */}
           <div className={styles.header__actions}>
-            {Object.keys(user).length > 0 ? (
+            {user && Object.keys(user).length > 0 ? (
               <div className={styles.header__user_menu_wrapper} ref={userMenuRef}>
                 <button
                   type="button"
@@ -313,16 +313,16 @@ export function Header() {
                   className={styles.header__user_btn}
                   aria-label="User Menu"
                 >
-                  <img src={userAvatar} alt={user.name} className={styles.header__user_avatar} />
-                  <span className={styles.header__user_name}>{user.name}</span>
+                  <img src={userAvatar} alt={userDisplayName} className={styles.header__user_avatar} />
+                  <span className={styles.header__user_name}>{userDisplayName}</span>
                   <Icon name="ChevronDown" size={14} />
                 </button>
 
                 {isUserMenuOpen && (
                   <div className={styles.header__user_dropdown}>
                     <div className={styles.header__user_header}>
-                      <div className={styles.header__user_fullname}>{user.name}</div>
-                      <div className={styles.header__user_email}>{user.email}</div>
+                      <div className={styles.header__user_fullname}>{userDisplayName}</div>
+                      <div className={styles.header__user_email}>{user.email || ""}</div>
                     </div>
 
                     <div className={styles.header__user_divider} />
@@ -477,13 +477,13 @@ export function Header() {
 
             {/* Mobile Actions */}
             <div className={styles["header__mobile-actions"]}>
-              {Object.keys(user).length > 0 ? (
+              {user && Object.keys(user).length > 0 ? (
                 <div className={styles.header__mobile_user_box}>
                   <div className={styles.header__mobile_user_info}>
-                    <img src={userAvatar} alt={user.name} className={styles.header__user_avatar} />
+                    <img src={userAvatar} alt={userDisplayName} className={styles.header__user_avatar} />
                     <div>
-                      <div className={styles.header__user_fullname}>{user.name}</div>
-                      <div className={styles.header__user_email}>{user.email}</div>
+                      <div className={styles.header__user_fullname}>{userDisplayName}</div>
+                      <div className={styles.header__user_email}>{user.email || ""}</div>
                     </div>
                   </div>
                   <Link

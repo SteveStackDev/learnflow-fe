@@ -645,7 +645,8 @@
 }
 
 /* User Profile Menu Styling */
-.header__user_wrapper {
+.header__user_wrapper,
+.header__user_menu_wrapper {
   position: relative;
 }
 
