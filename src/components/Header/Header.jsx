@@ -87,17 +87,18 @@ export function Header() {
   ].some((p) => location.pathname.startsWith(p));
 
   useEffect(() => {
-    async function fetchData() {
-      const user = await getUser();
-
-      if (!user || user.status === "failed" || Object.keys(user).length === 0) {
-        return updateUser({});
-      }
-      updateUser(user);
+    let isMounted = true;
+    if (!user || Object.keys(user).length === 0) {
+      getUser().then((fetched) => {
+        if (isMounted && fetched && Object.keys(fetched).length > 0) {
+          updateUser(fetched);
+        }
+      });
     }
-
-    fetchData();
-  }, [getUser, updateUser]);
+    return () => {
+      isMounted = false;
+    };
+  }, [getUser, updateUser, user]);
 
   // Close User Menu on Outside Click
   useEffect(() => {
@@ -133,7 +134,6 @@ export function Header() {
     toast.success("Đã đăng xuất tài khoản thành công!", "Đăng xuất");
     navigate("/signin");
   };
-
 
   // Helper render Top Nav Link
   const renderNavLink = ({ to, label, end, isMobile = false }) => (
@@ -176,7 +176,11 @@ export function Header() {
     </div>
   );
 
-  const userAvatar = user.avatar;
+  const userAvatar =
+    (typeof user?.avatar === "object" ? user?.avatar?.url : user?.avatar) ||
+    user?.avatarUrl ||
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+  const userDisplayName = user?.name || user?.username || "Học viên";
 
   return (
     <header className={styles.header}>

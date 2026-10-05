@@ -50,6 +50,11 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  const userRef = useRef(user);
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
+
   // Hàm bắt buộc lấy dữ liệu mới nhất từ server (Get Me Fresh Data)
   const refreshUser = useCallback(async () => {
     try {
@@ -71,13 +76,13 @@ export function AuthProvider({ children }) {
     }
 
     // Nếu đã có thông tin trong state thì trả về luôn
-    if (user && Object.keys(user).length > 0) {
-      return user;
+    if (userRef.current && Object.keys(userRef.current).length > 0) {
+      return userRef.current;
     }
 
     // Nếu chưa có thì thử fetch từ backend (session / OAuth)
     return await refreshUser();
-  }, [user, refreshUser]);
+  }, [refreshUser]);
 
   const deleteUser = useCallback(async () => {
     try {
