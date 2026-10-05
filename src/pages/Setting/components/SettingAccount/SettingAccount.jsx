@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useToast } from "~/context/ToastContext.jsx";
-import { useAuth } from "~/context/AuthContext.jsx"; // Nhập useAuth từ AuthContext
+import { useAuth } from "~/context/AuthContext.jsx";
+import Icon from "~/components/Icon/Icon";
 import styles from "./SettingAccount.module.css";
-import userService from "~/services/userService.js"; // Import userService
+import userService from "~/services/userService.js";
 
 function SettingAccount() {
   const { user, refreshUser } = useAuth(); // Lấy user và refreshUser từ AuthContext
