@@ -261,6 +261,85 @@
   color: #0950c3;
 }
 
+.card_header_row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(169, 183, 203, 0.2);
+}
+
+.card_desc {
+  font-size: 0.825rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.username_action_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.username_action_row .input_prefix_wrapper {
+  flex: 1;
+}
+
+.inline_save_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #003a95;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.inline_save_btn:hover:not(:disabled) {
+  background-color: #0950c3;
+  transform: translateY(-1px);
+}
+
+.inline_save_btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.profile_card_actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 12px;
+  border-top: 1px solid rgba(169, 183, 203, 0.2);
+  margin-top: 4px;
+}
+
+.hint_text {
+  font-size: 0.775rem;
+  color: #64748b;
+}
+
+.spinner_sm {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .actions_bar {
   display: flex;
   justify-content: flex-end;
@@ -268,8 +347,11 @@
 }
 
 .submit_btn {
-  padding: 12px 28px;
-  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 26px;
+  font-size: 0.875rem;
   font-weight: 700;
   color: #ffffff;
   background-color: #003a95;
@@ -280,10 +362,16 @@
   box-shadow: 0 4px 14px rgba(0, 58, 149, 0.25);
 }
 
-.submit_btn:hover {
+.submit_btn:hover:not(:disabled) {
   background-color: #0950c3;
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(9, 80, 195, 0.35);
+}
+
+.submit_btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Dark Mode Overrides */
@@ -338,8 +426,31 @@
   color: #38bdf8;
 }
 
+:global([data-theme="dark"]) .card_header_row,
+:global([data-theme="dark"]) .profile_card_actions {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme="dark"]) .card_desc,
+:global([data-theme="dark"]) .hint_text {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .inline_save_btn {
+  background-color: #0056d2;
+}
+
+:global([data-theme="dark"]) .inline_save_btn:hover:not(:disabled) {
+  background-color: #0284c7;
+}
+
 @media (max-width: 576px) {
   .grid_2cols {
     grid-template-columns: 1fr;
+  }
+
+  .username_action_row {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

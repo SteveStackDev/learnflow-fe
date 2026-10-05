@@ -120,7 +120,14 @@ function SettingAccount() {
       <form onSubmit={handleSave} className={styles.form}>
         {/* SECTION 1: PROFILE */}
         <div className={styles.card_block}>
-          <h3 className={styles.sub_title}>Hồ sơ cá nhân (Profile)</h3>
+          <div className={styles.card_header_row}>
+            <div>
+              <h3 className={styles.sub_title}>Hồ sơ cá nhân (Profile)</h3>
+              <p className={styles.card_desc}>
+                Cập nhật ảnh đại diện và tên người dùng của bạn trên hệ thống.
+              </p>
+            </div>
+          </div>
 
           {/* Avatar Group */}
           <div className={styles.avatar_group}>
@@ -145,9 +152,10 @@ function SettingAccount() {
                   disabled={isUploadingAvatar}
                   className={styles.avatar_btn}
                 >
-                  {isUploadingAvatar ? "Đang tải..." : "Đổi ảnh"}
+                  <Icon name="Upload" size={14} />
+                  {isUploadingAvatar ? "Đang tải ảnh..." : "Đổi ảnh đại diện"}
                 </button>
-                <span className={styles.avatar_hint}>JPG, GIF hoặc PNG. Tối đa 2MB.</span>
+                <span className={styles.avatar_hint}>Hỗ trợ JPG, PNG, GIF hoặc WEBP. Tối đa 2MB.</span>
               </div>
             </div>
           </div>
@@ -157,16 +165,66 @@ function SettingAccount() {
             <label htmlFor="setting-username" className={styles.label}>
               Tên người dùng (Username)
             </label>
-            <div className={styles.input_prefix_wrapper}>
-              <span className={styles.prefix}>@</span>
-              <input
-                id="setting-username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className={`${styles.input} ${styles.input_has_prefix}`}
-              />
+            <div className={styles.username_action_row}>
+              <div className={styles.input_prefix_wrapper}>
+                <span className={styles.prefix}>@</span>
+                <input
+                  id="setting-username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Nhập tên người dùng mới"
+                  maxLength={30}
+                  className={`${styles.input} ${styles.input_has_prefix}`}
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={
+                  isSavingUsername ||
+                  !username.trim() ||
+                  username.trim() === (user?.username || user?.name)
+                }
+                className={styles.inline_save_btn}
+              >
+                {isSavingUsername ? (
+                  <>
+                    <span className={styles.spinner_sm} />
+                    <span>Đang lưu...</span>
+                  </>
+                ) : (
+                  <>
+                    <Icon name="Check" size={14} />
+                    <span>Lưu tên</span>
+                  </>
+                )}
+              </button>
             </div>
+            <span className={styles.hint_text}>
+              Từ 3 đến 30 ký tự, có thể dùng chữ cái, chữ số, dấu gạch dưới (_), gạch ngang (-) hoặc dấu chấm (.).
+            </span>
+          </div>
+
+          {/* Card Footer Action */}
+          <div className={styles.profile_card_actions}>
+            <button
+              type="submit"
+              disabled={
+                isSavingUsername ||
+                !username.trim() ||
+                username.trim() === (user?.username || user?.name)
+              }
+              className={styles.submit_btn}
+            >
+              {isSavingUsername ? (
+                <>
+                  <span className={styles.spinner_sm} />
+                  <span>Đang lưu thay đổi...</span>
+                </>
+              ) : (
+                "Lưu thay đổi hồ sơ"
+              )}
+            </button>
           </div>
         </div>
 
