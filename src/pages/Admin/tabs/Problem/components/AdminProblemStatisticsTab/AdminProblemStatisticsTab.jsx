@@ -3,13 +3,18 @@ import Icon from "~/components/Icon/Icon";
 import styles from "./AdminProblemStatisticsTab.module.css";
 
 export default function AdminProblemStatisticsTab({ problemState }) {
+  const solved = typeof problemState?.solved === "number" ? problemState.solved : (Number(problemState?.solved) || 0);
+  const totalSubmissions = typeof problemState?.totalSubmissions === "number" ? problemState.totalSubmissions : (Number(problemState?.totalSubmissions) || solved);
+  const totalUsers = typeof problemState?.totalUsers === "number" ? problemState.totalUsers : (Number(problemState?.totalUsers) || solved);
+  const acceptanceRate = typeof problemState?.acceptanceRate === "number" ? problemState.acceptanceRate : (parseInt(problemState?.acceptanceRate) || 0);
+
   const stats = [
-    { label: "Total Submissions", value: "14,250", icon: "Send" },
-    { label: "Accepted Submissions", value: "7,840", icon: "CheckCircle2" },
-    { label: "Acceptance Rate", value: `${problemState.acceptanceRate || 55}%`, icon: "TrendingUp" },
-    { label: "Average Memory", value: "14.2 MB", icon: "Cpu" },
-    { label: "Average Runtime", value: "48 ms", icon: "Clock" },
-    { label: "Discussion Posts", value: "128 threads", icon: "MessageSquare" },
+    { label: "Total Submissions", value: totalSubmissions.toLocaleString(), icon: "Send" },
+    { label: "Solved Users (AC)", value: `${solved.toLocaleString()} người`, icon: "CheckCircle" },
+    { label: "Acceptance Rate", value: `${acceptanceRate}%`, icon: "TrendingUp" },
+    { label: "Total Users Attempted", value: `${totalUsers.toLocaleString()} người`, icon: "Users" },
+    { label: "Time Limit", value: `${problemState?.timeLimit || 1.0}s`, icon: "Clock" },
+    { label: "Memory Limit", value: `${problemState?.memoryLimit || 256} MB`, icon: "Cpu" },
   ];
 
   return (

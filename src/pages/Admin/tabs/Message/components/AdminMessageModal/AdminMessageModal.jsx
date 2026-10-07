@@ -7,8 +7,8 @@ export default function AdminMessageModal({ isOpen, onClose, onConfirm, conversa
   if (!isOpen || !conversation) return null;
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
         <div className={styles.header}>
           <h3 className={styles.title}>Conversation Moderation</h3>
           <button type="button" className={styles.close_btn} onClick={onClose}>

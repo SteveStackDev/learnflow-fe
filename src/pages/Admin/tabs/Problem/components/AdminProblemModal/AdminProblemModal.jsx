@@ -658,8 +658,8 @@ export default function AdminProblemModal({ isOpen, onClose, onSave, initialData
   if (!isOpen) return null;
 
   return (
-    <div className={styles.modal_overlay} onClick={onClose}>
-      <div className={styles.modal_container} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.modal_overlay}>
+      <div className={styles.modal_container}>
         {/* Header with Step Indicator */}
         <div className={styles.modal_header}>
           <div className={styles.header_title}>

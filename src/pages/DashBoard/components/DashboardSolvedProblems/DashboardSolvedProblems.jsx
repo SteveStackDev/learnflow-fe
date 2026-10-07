@@ -241,7 +241,7 @@ export default function DashboardSolvedProblems() {
                     </td>
                     <td className={styles.td}>
                       <span className={styles.acceptance}>
-                        {problemDetail.acceptance ? problemDetail.acceptance : `${problemDetail.acceptanceRate || 0}%`}
+                        {problemDetail.acceptance ? problemDetail.acceptance : `${problemDetail.acceptanceRate ?? 0}%`}
                       </span>
                     </td>
                   </tr>

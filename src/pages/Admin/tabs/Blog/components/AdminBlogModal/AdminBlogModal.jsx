@@ -33,8 +33,8 @@ export default function AdminBlogModal({ isOpen, onClose, onSave, blog }) {
   const authorOptions = BLOG_AUTHOR_OPTIONS.filter((a) => a.value !== "all");
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
         <div className={styles.header}>
           <h3 className={styles.title}>
             {isEdit ? "Edit Blog Article" : "Create New Blog Article"}

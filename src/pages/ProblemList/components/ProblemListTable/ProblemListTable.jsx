@@ -134,7 +134,9 @@ function ProblemListTable({
                     </span>
                   </td>
                   <td className={styles.td}>
-                    {item.acceptance || item.successRate || `${item.acceptanceRate || 0}%`}
+                    <span style={{ fontWeight: 600, color: (item.acceptanceRate ?? 0) > 0 ? "#10b981" : "inherit" }}>
+                      {item.acceptance || `${item.acceptanceRate ?? 0}%`}
+                    </span>
                   </td>
                   <td className={styles.td}>
                     <div className={styles.tags_wrap}>

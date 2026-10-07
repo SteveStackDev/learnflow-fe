@@ -309,8 +309,8 @@ export default function AdminRoadmapModal({ isOpen, onClose, onSave, initialData
   };
 
   return (
-    <div className={styles.modal_overlay} onClick={onClose}>
-      <div className={styles.modal_container} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.modal_overlay}>
+      <div className={styles.modal_container}>
         {/* Header */}
         <div className={styles.modal_header}>
           <div className={styles.header_title}>

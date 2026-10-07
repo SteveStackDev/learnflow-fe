@@ -248,10 +248,13 @@ export default function AdminProblemList({
                         <div className={styles.rate_bar}>
                           <div
                             className={styles.rate_fill}
-                            style={{ width: `${prob.acceptanceRate || 50}%` }}
+                            style={{
+                              width: `${Math.min(100, Math.max(0, prob.acceptanceRate ?? 0))}%`,
+                              backgroundColor: (prob.acceptanceRate ?? 0) > 0 ? "#10b981" : "rgba(255, 255, 255, 0.15)",
+                            }}
                           />
                         </div>
-                        <span className={styles.num_text}>{prob.acceptanceRate || 50}%</span>
+                        <span className={styles.num_text}>{prob.acceptanceRate ?? 0}%</span>
                       </div>
                     </td>
                     <td>

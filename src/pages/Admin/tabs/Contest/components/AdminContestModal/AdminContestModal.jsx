@@ -34,8 +34,8 @@ export default function AdminContestModal({ isOpen, onClose, onSave, contest }) 
   const typeOptions = CONTEST_TYPE_OPTIONS.filter((o) => o.value !== "all");
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
         <div className={styles.header}>
           <h3 className={styles.title}>
             {isEdit ? "Edit Contest" : "Create New Contest"}

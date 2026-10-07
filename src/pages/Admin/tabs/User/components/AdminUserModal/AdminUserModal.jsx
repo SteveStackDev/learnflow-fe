@@ -32,8 +32,8 @@ export default function AdminUserModal({ isOpen, onClose, onSave, user }) {
   };
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
         <div className={styles.header}>
           <h3 className={styles.title}>
             {isEdit ? "Edit User Account" : "Create New User Account"}

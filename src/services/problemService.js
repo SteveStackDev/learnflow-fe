@@ -54,6 +54,8 @@ export const adaptProblem = (problem, index) => {
 
   const id = problem._id?.toString() || problem.id || "";
   const code = formatSequentialCode(problem, index);
+  const solved = typeof problem.solved === "number" ? problem.solved : Number(problem.solved) || 0;
+  const acceptanceRate = typeof problem.acceptanceRate === "number" ? problem.acceptanceRate : Number(problem.acceptanceRate) || 0;
 
   return {
     ...problem,
@@ -66,8 +68,11 @@ export const adaptProblem = (problem, index) => {
     difficultyLabel: diffLabel,
     level: diffLabel,
     topic: problem.topic || "Thuật toán",
-    acceptance: problem.acceptance || (problem.acceptanceRate != null ? `${problem.acceptanceRate}%` : "0%"),
-    acceptanceRate: problem.acceptanceRate ?? 0,
+    solved,
+    totalUsers: problem.totalUsers ?? 0,
+    totalSubmissions: problem.totalSubmissions ?? 0,
+    acceptance: problem.acceptance || `${acceptanceRate}%`,
+    acceptanceRate,
   };
 };
 
