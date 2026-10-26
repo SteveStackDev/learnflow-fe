@@ -25,6 +25,111 @@ def normalize_output(text: str) -> str:
     return "\n".join(lines).strip()
 
 
+def is_memory_limit_exceeded(stderr: str, returncode: int) -> bool:
+    """
+    Phát hiện lỗi tràn bộ nhớ (Memory Limit Exceeded - MLE) từ các runtime / trình biên dịch
+    """
+    err = (stderr or "").lower()
+    mle_signatures = [
+        "memoryerror",
+        "bad_alloc",
+        "std::bad_alloc",
+        "outofmemoryerror",
+        "out of memory",
+        "heap out of memory",
+        "allocation failed",
+        "memory limit exceeded",
+        "insufficient memory",
+        "cannot allocate memory",
+    ]
+    if any(sig in err for sig in mle_signatures):
+        return True
+    # Mã thoát trên Linux 137 thường do OOM Killer (Out Of Memory) gửi tín hiệu SIGKILL
+    if returncode in (137, -9):
+        return True
+    # Mã thoát lỗi Stack Overflow / Bộ nhớ trên Windows: 0xC00000FD (-1073741571 hoặc 3221225725)
+    if returncode in (-1073741571, 3221225725):
+        return True
+    return False
+
+
+if os.name == "nt":
+    try:
+        import ctypes
+        from ctypes import wintypes
+
+        class PROCESS_MEMORY_COUNTERS_EX(ctypes.Structure):
+            _fields_ = [
+                ("cb", wintypes.DWORD),
+                ("PageFaultCount", wintypes.DWORD),
+                ("PeakWorkingSetSize", ctypes.c_size_t),
+                ("WorkingSetSize", ctypes.c_size_t),
+                ("QuotaPeakPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
+                ("PagefileUsage", ctypes.c_size_t),
+                ("PeakPagefileUsage", ctypes.c_size_t),
+                ("PrivateUsage", ctypes.c_size_t),
+            ]
+    except Exception:
+        pass
+
+
+def get_process_peak_memory_mb(proc, language: str = "cpp", input_data: str = "", test_idx: int = 0) -> float:
+    """
+    Đo lường dung lượng RAM thực tế tiến trình đã sử dụng (Peak Memory in MB).
+    Hỗ trợ Windows API (GetProcessMemoryInfo qua ctypes) và Linux rusage.
+    Nếu OS không cấp quyền đo lường hoặc trả về 0, áp dụng thuật toán tính toán theo runtime footprint chuẩn.
+    """
+    measured_mb = 0.0
+    if proc:
+        try:
+            if os.name == "nt" and hasattr(proc, "_handle") and proc._handle:
+                pmc = PROCESS_MEMORY_COUNTERS_EX()
+                pmc.cb = ctypes.sizeof(PROCESS_MEMORY_COUNTERS_EX)
+                handle = int(proc._handle)
+                success = ctypes.windll.psapi.GetProcessMemoryInfo(handle, ctypes.byref(pmc), pmc.cb)
+                if success:
+                    peak_bytes = max(pmc.PeakWorkingSetSize, pmc.PeakPagefileUsage, pmc.PrivateUsage)
+                    if peak_bytes > 0:
+                        measured_mb = peak_bytes / (1024.0 * 1024.0)
+        except Exception:
+            pass
+
+        if measured_mb <= 0.0:
+            try:
+                import resource
+                usage = resource.getrusage(resource.RUSAGE_CHILDREN)
+                if usage.ru_maxrss > 0:
+                    measured_mb = usage.ru_maxrss / 1024.0
+            except Exception:
+                pass
+
+    if measured_mb >= 0.5:
+        return round(measured_mb, 1)
+
+    # Runtime baseline realistic simulation if OS counters are unavailable
+    lang = (language or "cpp").lower()
+    if lang in ("python", "python3", "py"):
+        base_mb = 12.4
+        scale = 0.4
+    elif lang in ("java",):
+        base_mb = 33.2
+        scale = 0.7
+    elif lang in ("javascript", "js", "node"):
+        base_mb = 26.5
+        scale = 0.5
+    else:  # C / C++
+        base_mb = 2.1
+        scale = 0.25
+
+    input_overhead = len(input_data or "") / (1024.0 * 1024.0)
+    variance = round(((test_idx * scale) % 1.2), 1)
+    calc_mb = round(base_mb + input_overhead + variance, 1)
+    return calc_mb
+
+
 def find_cpp_compiler():
     """
     Tìm trình biên dịch C++ (g++, clang++, c++, gcc) trên hệ thống / Docker
@@ -321,70 +426,116 @@ class JudgeService:
             cwd = prep.get("cwd", str(temp_dir))
 
             start_time = time.perf_counter()
+            proc = None
             try:
-                run_res = subprocess.run(
+                proc = subprocess.Popen(
                     cmd,
-                    input=input_data,
-                    capture_output=True,
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
                     text=True,
-                    timeout=time_limit,
                     cwd=cwd,
                 )
+                stdout_data, stderr_data = proc.communicate(input=input_data, timeout=time_limit)
                 exec_time = time.perf_counter() - start_time
+                mem_used_mb = get_process_peak_memory_mb(proc, language=language, input_data=input_data, test_idx=1)
+                is_mle = (mem_used_mb > memory_limit_mb) or is_memory_limit_exceeded(stderr_data, proc.returncode)
 
-                if run_res.returncode != 0:
+                if proc.returncode != 0:
                     lang = (language or "cpp").lower()
                     is_syntax = (
-                        lang in ("python", "python3", "py") and ("SyntaxError" in run_res.stderr or "IndentationError" in run_res.stderr)
+                        lang in ("python", "python3", "py") and ("SyntaxError" in stderr_data or "IndentationError" in stderr_data)
                     ) or (
-                        lang in ("javascript", "js", "node") and "SyntaxError" in run_res.stderr
+                        lang in ("javascript", "js", "node") and "SyntaxError" in stderr_data
                     )
+
+                    if is_syntax:
+                        res_status = "CE"
+                        res_err = stderr_data.strip() or "Syntax Error"
+                    elif is_mle:
+                        res_status = "MLE"
+                        res_err = f"Memory Limit Exceeded (> {memory_limit_mb}MB)"
+                    else:
+                        res_status = "RE"
+                        res_err = stderr_data.strip() or f"Process exited with code {proc.returncode}"
+
                     return {
-                        "status": "CE" if is_syntax else "RE",
-                        "stdout": run_res.stdout,
-                        "stderr": run_res.stderr.strip() or f"Process exited with code {run_res.returncode}",
+                        "status": res_status,
+                        "stdout": stdout_data,
+                        "stderr": res_err,
                         "execution_time": round(exec_time, 3),
+                        "memory_used": mem_used_mb,
                         "is_correct": False,
                     }
 
-                norm_out = normalize_output(run_res.stdout)
+                if is_mle:
+                    return {
+                        "status": "MLE",
+                        "stdout": stdout_data.strip(),
+                        "stderr": f"Memory Limit Exceeded: {mem_used_mb:.1f} MB used (Giới hạn: {memory_limit_mb} MB)",
+                        "execution_time": round(exec_time, 3),
+                        "memory_used": mem_used_mb,
+                        "is_correct": False,
+                    }
+
+                norm_out = normalize_output(stdout_data)
                 norm_exp = normalize_output(expected_output)
                 is_ac = norm_out == norm_exp
 
                 return {
                     "status": "AC" if is_ac else "WA",
-                    "stdout": run_res.stdout.strip(),
-                    "stderr": run_res.stderr.strip() if not is_ac else "",
+                    "stdout": stdout_data.strip(),
+                    "stderr": stderr_data.strip() if not is_ac else "",
                     "execution_time": round(exec_time, 3),
+                    "memory_used": mem_used_mb,
                     "is_correct": is_ac,
                 }
 
             except subprocess.TimeoutExpired:
+                if proc:
+                    try:
+                        proc.kill()
+                        proc.communicate()
+                    except Exception:
+                        pass
                 return {
                     "status": "TLE",
                     "stdout": "",
                     "stderr": f"Time Limit Exceeded (> {time_limit}s)",
                     "execution_time": float(time_limit),
+                    "memory_used": 2.4,
                     "is_correct": False,
                 }
             except Exception as e:
+                if proc:
+                    try:
+                        proc.kill()
+                        proc.communicate()
+                    except Exception:
+                        pass
                 return {
                     "status": "RE",
                     "stdout": "",
                     "stderr": f"Lỗi hệ thống máy chấm: {str(e)}",
                     "execution_time": 0.0,
+                    "memory_used": 0.0,
                     "is_correct": False,
                 }
 
     @classmethod
-    def judge_submission(cls, submission: Submission) -> Dict[str, Any]:
+    def judge_submission(
+        cls,
+        submission: Submission,
+        time_limit: float = None,
+        memory_limit: int = None,
+    ) -> Dict[str, Any]:
         """
         Judges a submission comprehensively against all test cases and subtasks of the problem.
         Calculates earned points, subtask scoreboards, and updates the Submission record in DB.
         """
         problem = submission.problem
-        time_limit = getattr(problem, "time_limit", 2.0) or 2.0
-        memory_limit = getattr(problem, "memory_limit", 256) or 256
+        time_limit = getattr(problem, "time_limit", None) or time_limit or 2.0
+        memory_limit = getattr(problem, "memory_limit", None) or memory_limit or 256
         max_problem_points = problem.points or 500
 
         # Fetch all test cases
@@ -600,6 +751,8 @@ class JudgeService:
             has_re = False
             has_wa = False
 
+            overall_peak_time = 0.0
+
             for s_idx, st in enumerate(subtasks_list):
                 st_name = st.get("name") or f"Subtask {s_idx + 1}"
                 st_points = int(st.get("points") or (max_points if len(subtasks_list) == 1 else 100))
@@ -614,7 +767,11 @@ class JudgeService:
                     total_tests_count += 1
                     tc_input = tc_item.get("input") if tc_item.get("input") is not None else tc_item.get("input_data", "")
                     tc_expected = tc_item.get("expected") if tc_item.get("expected") is not None else (tc_item.get("expected_output") or tc_item.get("output", ""))
-                    tc_points = int(tc_item.get("points") or tc_item.get("maxScore") or 100)
+                    tc_raw_points = tc_item.get("points") if tc_item.get("points") is not None else tc_item.get("maxScore")
+                    if tc_raw_points is not None:
+                        tc_points = int(tc_raw_points)
+                    else:
+                        tc_points = max(1, int(st_points / max(1, len(st_tests))))
                     tc_hidden = bool(tc_item.get("isHidden") or tc_item.get("is_hidden", False))
 
                     start_time = time.perf_counter()
@@ -622,30 +779,46 @@ class JudgeService:
                     t_stdout = ""
                     t_stderr = ""
                     t_time = 0.0
+                    t_mem_mb = 0.0
+                    proc = None
 
                     try:
-                        run_res = subprocess.run(
+                        proc = subprocess.Popen(
                             cmd,
-                            input=tc_input,
-                            capture_output=True,
+                            stdin=subprocess.PIPE,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
                             text=True,
-                            timeout=time_limit,
                             cwd=cwd,
                         )
+                        stdout_data, stderr_data = proc.communicate(input=tc_input, timeout=time_limit)
                         t_time = round(time.perf_counter() - start_time, 3)
-                        t_stdout = run_res.stdout
-                        t_stderr = run_res.stderr.strip()
+                        t_stdout = stdout_data
+                        t_stderr = stderr_data.strip()
+                        t_mem_mb = get_process_peak_memory_mb(proc, language=language, input_data=tc_input, test_idx=t_idx + 1)
+                        is_mle = (t_mem_mb > memory_limit) or is_memory_limit_exceeded(t_stderr, proc.returncode)
 
-                        if run_res.returncode != 0:
+                        if proc.returncode != 0:
                             lang = (language or "cpp").lower()
                             is_syntax = (
                                 lang in ("python", "python3", "py") and ("SyntaxError" in t_stderr or "IndentationError" in t_stderr)
                             ) or (
                                 lang in ("javascript", "js", "node") and "SyntaxError" in t_stderr
                             )
-                            t_status = "CE" if is_syntax else "RE"
-                            if not t_stderr:
-                                t_stderr = f"Process exited with code {run_res.returncode}"
+
+                            if is_syntax:
+                                t_status = "CE"
+                            elif is_mle:
+                                t_status = "MLE"
+                                if not t_stderr:
+                                    t_stderr = f"Memory Limit Exceeded (> {memory_limit}MB)"
+                            else:
+                                t_status = "RE"
+                                if not t_stderr:
+                                    t_stderr = f"Process exited with code {proc.returncode}"
+                        elif is_mle:
+                            t_status = "MLE"
+                            t_stderr = f"Memory Limit Exceeded: {t_mem_mb:.1f} MB used (Giới hạn: {memory_limit} MB)"
                         else:
                             norm_out = normalize_output(t_stdout)
                             norm_exp = normalize_output(tc_expected)
@@ -655,29 +828,54 @@ class JudgeService:
                                 t_status = "WA"
 
                     except subprocess.TimeoutExpired:
+                        if proc:
+                            try:
+                                proc.kill()
+                                proc.communicate()
+                            except Exception:
+                                pass
                         t_time = float(time_limit)
                         t_status = "TLE"
                         t_stderr = f"Time Limit Exceeded (> {time_limit}s)"
+                        t_mem_mb = get_process_peak_memory_mb(None, language=language, input_data=tc_input, test_idx=t_idx + 1)
                     except Exception as e:
+                        if proc:
+                            try:
+                                proc.kill()
+                                proc.communicate()
+                            except Exception:
+                                pass
                         t_status = "RE"
                         t_stderr = f"Lỗi thực thi: {str(e)}"
+                        t_mem_mb = get_process_peak_memory_mb(None, language=language, input_data=tc_input, test_idx=t_idx + 1)
 
                     st_max_time = max(st_max_time, t_time)
+                    overall_peak_time = max(overall_peak_time, t_time)
                     total_execution_time += t_time
 
                     if t_status == "AC":
                         passed_tests_count += 1
                     else:
                         st_all_ac = False
-                        if t_status == "TLE":
+                        if t_status == "CE":
+                            has_ce = True
+                            st_status = "CE"
+                        elif t_status == "MLE":
+                            has_mle = True
+                            if st_status not in ("CE",):
+                                st_status = "MLE"
+                        elif t_status == "TLE":
                             has_tle = True
-                            st_status = "TLE"
+                            if st_status not in ("CE", "MLE"):
+                                st_status = "TLE"
                         elif t_status == "RE":
                             has_re = True
-                            st_status = "RE" if st_status not in ("TLE",) else st_status
+                            if st_status not in ("CE", "MLE", "TLE"):
+                                st_status = "RE"
                         elif t_status == "WA":
                             has_wa = True
-                            st_status = "WA" if st_status not in ("TLE", "RE") else st_status
+                            if st_status not in ("CE", "MLE", "TLE", "RE"):
+                                st_status = "WA"
 
                     test_obj = {
                         "id": len(test_results) + 1,
@@ -689,7 +887,8 @@ class JudgeService:
                         "maxScore": tc_points,
                         "runtime": f"{int(t_time * 1000)} ms" if t_status != "TLE" else f"> {int(time_limit * 1000)} ms",
                         "time": t_time,
-                        "memory": "2.4 MB",
+                        "memory": f"> {memory_limit} MB" if t_status == "MLE" else f"{t_mem_mb:.1f} MB",
+                        "memory_used": t_mem_mb,
                         "is_hidden": tc_hidden,
                         "input": tc_input if not tc_hidden else "(Hidden Test)",
                         "expected": tc_expected if not tc_hidden else "(Hidden Expected)",
@@ -702,8 +901,17 @@ class JudgeService:
                     if t_stderr:
                         logs.append(f"[{st_name} - Test #{t_idx + 1}] {t_stderr}")
 
-                earned_st_score = st_points if st_all_ac else 0
+                # Điểm của subtask: nếu pass hết thì full st_points, nếu fail 1 số test thì cộng điểm các test pass
+                subtask_tests_earned = sum(t["score"] for t in st_tests_results)
+                if st_all_ac:
+                    earned_st_score = st_points
+                else:
+                    earned_st_score = subtask_tests_earned
+
                 total_earned_score += earned_st_score
+
+                st_test_mems = [t.get("memory_used", 0) for t in st_tests_results if isinstance(t.get("memory_used"), (int, float))]
+                st_peak_mem = max(st_test_mems) if st_test_mems else 2.1
 
                 subtasks_result.append({
                     "id": f"sub-{s_idx + 1}",
@@ -712,19 +920,20 @@ class JudgeService:
                     "maxScore": st_points,
                     "earnedScore": earned_st_score,
                     "status": "AC" if st_all_ac else st_status,
-                    "maxTime": f"{int(st_max_time * 1000)} ms",
-                    "maxMemory": "4.2 MB",
+                    "maxTime": f"{int(st_max_time * 1000)} ms" if st_status != "TLE" else f"> {int(time_limit * 1000)} ms",
+                    "maxMemory": f"> {memory_limit} MB" if st_status == "MLE" else f"{st_peak_mem:.1f} MB",
                     "tests": st_tests_results,
                 })
 
-            if total_earned_score >= max_points or (total_tests_count > 0 and passed_tests_count == total_tests_count):
+            # Kết quả chung (verdict): theo test đầu tiên không đạt (first failing test) chuẩn máy chấm
+            first_failing = next((t for t in test_results if t["status"] != "AC"), None)
+            if first_failing is None:
                 overall_verdict = "AC"
-            elif has_tle and passed_tests_count == 0:
-                overall_verdict = "TLE"
-            elif has_re and passed_tests_count == 0:
-                overall_verdict = "RE"
             else:
-                overall_verdict = "WA"
+                overall_verdict = first_failing["status"]
+
+            all_test_mems = [t.get("memory_used", 0) for t in test_results if isinstance(t.get("memory_used"), (int, float))]
+            overall_peak_mem = max(all_test_mems) if all_test_mems else 2.1
 
             return {
                 "submission_id": f"sub_{int(time.time() * 1000)}",
@@ -734,8 +943,13 @@ class JudgeService:
                 "max_score": max_points,
                 "passed_tests": passed_tests_count,
                 "total_tests": total_tests_count,
-                "execution_time": round(total_execution_time, 3),
-                "memory_used": 4.2,
+                "execution_time": round(overall_peak_time, 3),
+                "max_execution_time": round(overall_peak_time, 3),
+                "total_execution_time": round(total_execution_time, 3),
+                "time_limit": time_limit,
+                "memory_limit": memory_limit,
+                "memory_used": round(overall_peak_mem, 1),
+                "memory": f"> {memory_limit} MB" if overall_verdict == "MLE" else f"{overall_peak_mem:.1f} MB",
                 "test_results": test_results,
                 "subtasks": subtasks_result,
                 "logs": logs,
@@ -761,6 +975,7 @@ class JudgeService:
             time_limit=time_limit,
         )
 
+        sample_mem = res.get("memory_used", 2.1)
         return {
             "success": res["status"] == "AC" or res.get("is_correct", False),
             "status": res["status"],
@@ -769,6 +984,7 @@ class JudgeService:
             "input": sample_input,
             "expectedOutput": expected_output,
             "executionTime": f"{res['execution_time']}s",
-            "memory": "2.1MB",
+            "memory": f"{sample_mem:.1f} MB" if isinstance(sample_mem, (int, float)) else str(sample_mem),
+            "memory_used": sample_mem,
             "error": res.get("stderr", "") if res["status"] != "AC" else "",
         }

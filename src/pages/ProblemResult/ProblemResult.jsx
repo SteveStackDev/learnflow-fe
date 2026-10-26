@@ -71,12 +71,35 @@ function ProblemResult() {
 
   const activeSub = submissionState || fetchedSubmission;
 
+  // Lấy thời gian chạy lớn nhất (peak execution time) thay vì tổng thời gian của toàn bộ test
+  let peakExecTimeMs = 0;
+  const rawSubtasksList = activeSub?.subtasks || activeSub?.subtasksResult || [];
+  if (Array.isArray(rawSubtasksList) && rawSubtasksList.length > 0) {
+    rawSubtasksList.forEach((st) => {
+      const stMax = parseFloat(String(st.maxTime || "").replace(/[^\d.]/g, ""));
+      if (!isNaN(stMax) && stMax > peakExecTimeMs) peakExecTimeMs = Math.round(stMax);
+      const tests = st.tests || st.testCases || [];
+      tests.forEach((t) => {
+        const tTime = typeof t.time === "number" ? (t.time < 5 ? t.time * 1000 : t.time) : parseFloat(String(t.runtime || "").replace(/[^\d.]/g, ""));
+        if (!isNaN(tTime) && tTime > peakExecTimeMs) peakExecTimeMs = Math.round(tTime);
+      });
+    });
+  }
+  if (peakExecTimeMs === 0 && Array.isArray(activeSub?.testResults)) {
+    activeSub.testResults.forEach((t) => {
+      const tTime = typeof t.time === "number" ? (t.time < 5 ? t.time * 1000 : t.time) : parseFloat(String(t.runtime || t.execution_time || "").replace(/[^\d.]/g, ""));
+      if (!isNaN(tTime) && tTime > peakExecTimeMs) peakExecTimeMs = Math.round(tTime);
+    });
+  }
+
   const executionTimeMs =
-    activeSub?.executionTime != null
-      ? typeof activeSub.executionTime === "number"
-        ? `${Math.round(activeSub.executionTime * 1000)} ms`
-        : `${activeSub.executionTime}`
-      : "0 ms";
+    peakExecTimeMs > 0
+      ? `${peakExecTimeMs} ms`
+      : activeSub?.executionTime != null
+        ? typeof activeSub.executionTime === "number"
+          ? `${Math.round(activeSub.executionTime < 5 ? activeSub.executionTime * 1000 : activeSub.executionTime)} ms`
+          : `${activeSub.executionTime}`
+        : "0 ms";
 
   const titleCodeMatch = activeSub?.problemTitle?.match(/^#?(\d+)/);
   const displayCode =
@@ -119,8 +142,14 @@ function ProblemResult() {
     passedTestCases: activeSub?.passedTests ?? (resolvedStatus === "AC" ? 5 : 0),
     totalTestCases: activeSub?.totalTests ?? 5,
     logs: activeSub?.logs || [],
-    memory: activeSub?.memoryUsed ? `${activeSub.memoryUsed} MB` : (activeSub?.memory || "2.4 MB"),
-    runtime: resolvedStatus === "TLE" ? "> 2000 ms" : executionTimeMs,
+    timeLimit: problemInfo?.timeLimit || activeSub?.timeLimit || activeSub?.time_limit || "2.0s",
+    memoryLimit: problemInfo?.memoryLimit || activeSub?.memoryLimit || activeSub?.memory_limit || "256MB",
+    memory: activeSub?.status === "MLE"
+      ? `> ${parseInt(String(problemInfo?.memoryLimit || activeSub?.memoryLimit || "256").replace(/[^\d.]/g, "")) || 256} MB`
+      : activeSub?.memoryUsed ? `${activeSub.memoryUsed} MB` : (activeSub?.memory || "2.1 MB"),
+    runtime: resolvedStatus === "TLE"
+      ? `> ${Math.round((parseFloat(String(problemInfo?.timeLimit || "2.0").replace(/[^\d.]/g, "")) || 2.0) * 1000)} ms`
+      : executionTimeMs,
   };
 
   return (
@@ -152,7 +181,7 @@ function ProblemResult() {
 
         {/* Component 2 (Bottom): Result & Subtask Inspection */}
         <div>
-          <ProblemResultJudge resultData={resultData} initialStatus={submissionState?.status || "Accepted"} />
+          <ProblemResultJudge resultData={resultData} initialStatus={activeSub?.status || "WA"} />
         </div>
       </div>
     </div>

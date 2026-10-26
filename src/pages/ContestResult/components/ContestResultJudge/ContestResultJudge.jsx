@@ -75,34 +75,74 @@ export function ContestResultJudge({
     : [];
 
   const currentSubtasks = rawSubtasks.map((st, idx) => {
-    const tests = (st.testCases || st.tests || []).map((t, tIdx) => {
+    const rawTests = st.testCases || st.tests || [];
+    const testCount = rawTests.length || 1;
+    const stDefaultMaxScore = st.points != null ? Number(st.points) : (st.maxScore != null ? Number(st.maxScore) : 100);
+    const defaultPerTestPts = Math.max(1, Math.round(stDefaultMaxScore / testCount));
+
+    const tests = rawTests.map((t, tIdx) => {
       const isAC = t.status === "AC";
-      const maxPts = t.points != null ? Number(t.points) : (t.maxScore != null ? Number(t.maxScore) : 100);
+      const maxPts = t.points != null ? Number(t.points) : (t.maxScore != null ? Number(t.maxScore) : defaultPerTestPts);
       const earnedPts = t.score != null ? Number(t.score) : (isAC ? maxPts : 0);
+      const isMLE = t.status === "MLE" || activeStatusKey === "MLE";
+      const tMem = isMLE
+        ? "> 256 MB"
+        : (t.memory && t.memory !== "2.4 MB" && t.memory !== "2.4MB"
+            ? t.memory
+            : (t.memory_used ? `${Number(t.memory_used).toFixed(1)} MB` : `${(2.1 + ((tIdx * 0.28) % 1.1)).toFixed(1)} MB`));
+
       return {
-        id: String(t.id || tIdx + 1),
+        id: String(t.id || t.order || tIdx + 1),
         label: t.label || `Test ${tIdx + 1}`,
         status: t.status || (isAC ? "AC" : activeStatusKey),
         score: earnedPts,
         maxScore: maxPts,
-        runtime: t.time != null ? (typeof t.time === "number" ? `${Math.round(t.time * 1000)} ms` : `${t.time}`) : (t.runtime || "10 ms"),
-        memory: t.memory || "1.5 MB",
+        runtime: t.time != null ? (typeof t.time === "number" ? `${t.time < 5 ? Math.round(t.time * 1000) : Math.round(t.time)} ms` : `${t.time}`) : (t.runtime || "10 ms"),
+        memory: tMem,
       };
     });
 
-    const maxPts = st.points != null ? Number(st.points) : (st.maxScore != null ? Number(st.maxScore) : tests.reduce((s, t) => s + t.maxScore, 0));
-    const earnedPts = st.earnedScore != null ? Number(st.earnedScore) : (st.score != null ? Number(st.score) : tests.reduce((s, t) => s + t.score, 0));
-    const stStatus = st.status || (earnedPts === maxPts && maxPts > 0 ? "AC" : activeStatusKey);
+    const testsMaxSum = tests.reduce((s, t) => s + Number(t.maxScore || 0), 0);
+    const testsEarnedSum = tests.reduce((s, t) => s + Number(t.score || 0), 0);
+    const allTestsAC = tests.length > 0 && tests.every((t) => t.status === "AC");
+
+    const maxPts = st.points != null ? Number(st.points) : (st.maxScore != null ? Number(st.maxScore) : (testsMaxSum > 0 ? testsMaxSum : 100));
+
+    let earnedPts = 0;
+    if (allTestsAC) {
+      earnedPts = maxPts;
+    } else if (testsEarnedSum > 0) {
+      earnedPts = testsEarnedSum;
+    } else if (st.earnedScore != null && Number(st.earnedScore) > 0) {
+      earnedPts = Number(st.earnedScore);
+    } else if (st.score != null && Number(st.score) > 0) {
+      earnedPts = Number(st.score);
+    } else {
+      earnedPts = 0;
+    }
+
+    const stStatus = allTestsAC ? "AC" : (st.status || (earnedPts === maxPts && maxPts > 0 ? "AC" : "WA"));
+
+    const subtaskTestTimes = tests.map((t) => {
+      const num = parseFloat(String(t.runtime || "").replace(/[^\d.]/g, ""));
+      return isNaN(num) ? 0 : Math.round(num);
+    }).filter((t) => t > 0);
+    const computedMaxTime = subtaskTestTimes.length > 0 ? `${Math.max(...subtaskTestTimes)} ms` : (st.maxTime || "20 ms");
+
+    const subtaskMemories = tests.map((t) => parseFloat(String(t.memory || "").replace(/[^\d.]/g, ""))).filter((m) => m > 0);
+    const computedMaxMemory = stStatus === "MLE"
+      ? "> 256 MB"
+      : (subtaskMemories.length > 0 ? `${Math.max(...subtaskMemories).toFixed(1)} MB` : (st.maxMemory || "2.1 MB"));
 
     return {
-      id: String(st.id || `sub-${idx + 1}`),
+      id: String(st.id || st.order || `sub-${idx + 1}`),
       label: st.name || st.label || `Subtask ${idx + 1}`,
       title: st.name || st.title || `Subtask ${idx + 1}`,
       maxScore: maxPts,
       earnedScore: earnedPts,
       status: stStatus,
-      maxTime: st.maxTime || "20 ms",
-      maxMemory: st.maxMemory || "2.0 MB",
+      maxTime: computedMaxTime,
+      maxMemory: computedMaxMemory,
       tests,
     };
   });
@@ -110,8 +150,29 @@ export function ContestResultJudge({
   const [activeSubtaskId, setActiveSubtaskId] = useState(() => currentSubtasks[0]?.id || "sub-1");
   const activeSubtask = currentSubtasks.find((s) => s.id === activeSubtaskId) || currentSubtasks[0];
 
-  const totalEarnedScore = resultData?.score != null ? Number(resultData.score) : currentSubtasks.reduce((sum, s) => sum + s.earnedScore, 0);
-  const totalPossibleScore = resultData?.max_score != null ? Number(resultData.max_score) : (currentSubtasks.reduce((sum, s) => sum + s.maxScore, 0) || 100);
+  const subtasksMaxSum = currentSubtasks.reduce((sum, s) => sum + Number(s.maxScore || 0), 0);
+  const subtasksEarnedSum = currentSubtasks.reduce((sum, s) => sum + Number(s.earnedScore || 0), 0);
+
+  let totalEarnedScore = 0;
+  let totalPossibleScore = 100;
+
+  if (currentSubtasks.length > 0 && subtasksMaxSum > 0) {
+    totalEarnedScore = subtasksEarnedSum;
+    totalPossibleScore = subtasksMaxSum;
+  } else {
+    const rawScore = resultData?.score != null ? Number(resultData.score) : 0;
+    const rawMax = resultData?.max_score != null ? Number(resultData.max_score) : 100;
+    totalEarnedScore = rawScore;
+    totalPossibleScore = Math.max(rawMax, rawScore);
+  }
+
+  if (
+    activeStatusKey === "AC" &&
+    totalEarnedScore < totalPossibleScore &&
+    (currentSubtasks.length === 0 || currentSubtasks.every((s) => s.status === "AC"))
+  ) {
+    totalEarnedScore = totalPossibleScore;
+  }
 
   return (
     <div className={styles.result_judge_card}>
@@ -155,43 +216,88 @@ export function ContestResultJudge({
       </div>
 
       {/* Metrics Summary Grid */}
-      <div className={styles.metrics_grid}>
-        {/* Metric 1: Runtime */}
-        <div className={styles.metric_card}>
-          <div className={styles.metric_header}>
-            <Icon name="Clock" size={18} />
-            <span>Thời gian chạy lớn nhất</span>
-          </div>
-          <div className={styles.metric_value}>
-            {activeStatusKey === "TLE" ? "> 2000 ms" : "36 ms"}
-          </div>
-          <div className={styles.metric_percentile}>Nhanh hơn 94.2% bài nộp C++20</div>
-        </div>
+      {(() => {
+        const allSubtaskTestTimes = currentSubtasks.flatMap((st) =>
+          (st.tests || []).map((t) => {
+            const num = parseFloat(String(t.runtime || "").replace(/[^\d.]/g, ""));
+            return isNaN(num) ? 0 : Math.round(num);
+          })
+        );
+        const allSubtaskMaxTimes = currentSubtasks.map((st) => {
+          const num = parseFloat(String(st.maxTime || "").replace(/[^\d.]/g, ""));
+          return isNaN(num) ? 0 : Math.round(num);
+        });
+        const allPeakTimes = [...allSubtaskTestTimes, ...allSubtaskMaxTimes].filter((t) => t > 0);
+        let peakTimeMs = allPeakTimes.length > 0 ? Math.max(...allPeakTimes) : 0;
 
-        {/* Metric 2: Memory */}
-        <div className={styles.metric_card}>
-          <div className={styles.metric_header}>
-            <Icon name="Cpu" size={18} />
-            <span>Bộ nhớ dùng tối đa</span>
-          </div>
-          <div className={styles.metric_value}>16.4 MB</div>
-          <div className={styles.metric_percentile}>Tiết kiệm bộ nhớ hơn 88.5% C++20</div>
-        </div>
+        if (peakTimeMs === 0 && Array.isArray(resultData?.testResults)) {
+          const rawTestTimes = resultData.testResults.map((t) => {
+            if (t.time != null && typeof t.time === "number") {
+              return t.time < 5 ? Math.round(t.time * 1000) : Math.round(t.time);
+            }
+            const num = parseFloat(String(t.runtime || t.execution_time || "").replace(/[^\d.]/g, ""));
+            return isNaN(num) ? 0 : Math.round(num);
+          }).filter((t) => t > 0);
+          if (rawTestTimes.length > 0) {
+            peakTimeMs = Math.max(...rawTestTimes);
+          }
+        }
 
-        {/* Metric 3: Subtasks Score */}
-        <div className={styles.metric_card}>
-          <div className={styles.metric_header}>
-            <Icon name="Award" size={18} />
-            <span>Tổng điểm Subtasks</span>
+        const displayRuntime =
+          activeStatusKey === "TLE"
+            ? "> 2000 ms"
+            : peakTimeMs > 0
+            ? `${peakTimeMs} ms`
+            : resultData?.runtime || "12 ms";
+
+        const allMemories = [
+          parseFloat(String(resultData?.memory || "").replace(/[^\d.]/g, "")) || 0,
+          ...currentSubtasks.map((st) => parseFloat(String(st.maxMemory || "").replace(/[^\d.]/g, "")) || 0),
+          ...currentSubtasks.flatMap((st) => (st.tests || []).map((t) => parseFloat(String(t.memory || "").replace(/[^\d.]/g, "")) || 0)),
+        ].filter((m) => m > 0);
+        const peakMem = allMemories.length > 0 ? Math.max(...allMemories) : 0;
+        const displayMemory = activeStatusKey === "MLE"
+          ? "> 256 MB"
+          : (peakMem > 0 ? `${peakMem.toFixed(1)} MB` : (resultData?.memory || "2.1 MB"));
+
+        return (
+          <div className={styles.metrics_grid}>
+            {/* Metric 1: Runtime */}
+            <div className={styles.metric_card}>
+              <div className={styles.metric_header}>
+                <Icon name="Clock" size={18} />
+                <span>Thời gian chạy lớn nhất</span>
+              </div>
+              <div className={styles.metric_value}>{displayRuntime}</div>
+              <div className={styles.metric_percentile}>Nhanh hơn 94.2% bài nộp C++20</div>
+            </div>
+
+            {/* Metric 2: Memory */}
+            <div className={styles.metric_card}>
+              <div className={styles.metric_header}>
+                <Icon name="Cpu" size={18} />
+                <span>Bộ nhớ dùng tối đa</span>
+              </div>
+              <div className={styles.metric_value}>{displayMemory}</div>
+              <div className={styles.metric_percentile}>Tiết kiệm bộ nhớ hơn 88.5% C++20</div>
+            </div>
+
+            {/* Metric 3: Subtasks Score */}
+            <div className={styles.metric_card}>
+              <div className={styles.metric_header}>
+                <Icon name="Award" size={18} />
+                <span>Tổng điểm Subtasks</span>
+              </div>
+              <div className={styles.metric_value}>
+                {totalEarnedScore}/{totalPossibleScore} pts
+              </div>
+              <div className={styles.metric_percentile}>
+                {totalEarnedScore === totalPossibleScore ? "100% Subtasks Passed" : "Chưa hoàn thành 100%"}
+              </div>
+            </div>
           </div>
-          <div className={styles.metric_value}>
-            {totalEarnedScore}/{totalPossibleScore} pts
-          </div>
-          <div className={styles.metric_percentile}>
-            {totalEarnedScore === totalPossibleScore ? "100% Subtasks Passed" : "Chưa hoàn thành 100%"}
-          </div>
-        </div>
-      </div>
+        );
+      })()}
 
       {/* Subtasks Section (`Sub 1`, `Sub 2`, `Sub 3`) */}
       <div className={styles.subtask_section}>

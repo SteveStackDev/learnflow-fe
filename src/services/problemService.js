@@ -114,7 +114,7 @@ export const adaptUserProblem = (item, index, problemMap) => {
   const sourceCode = item.sourceCode || item.submittedCode || item.codeContent || item.code || "";
   const lang = item.language || "cpp";
   const execTime = item.executionTime != null ? Number(item.executionTime) : (item.runtime ? parseFloat(item.runtime) : 0);
-  const memUsed = item.memoryUsed != null ? Number(item.memoryUsed) : (item.memory ? parseFloat(item.memory) : 2.4);
+  const memUsed = item.memoryUsed != null ? Number(item.memoryUsed) : (item.memory ? parseFloat(item.memory) : 2.1);
 
   return {
     ...item,

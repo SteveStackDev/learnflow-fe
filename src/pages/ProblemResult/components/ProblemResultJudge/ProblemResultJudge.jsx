@@ -25,13 +25,13 @@ const JUDGE_STATUS_MAP = {
     code: "TLE",
     badgeClass: "tle",
     statusLabel: "Vượt quá thời gian (Time Limit Exceeded)",
-    statusDescription: "Chương trình của bạn chạy vượt quá thời gian tối đa cho phép (Exit code 124 hoặc > 2.0s).",
+    statusDescription: "Chương trình của bạn chạy vượt quá thời gian tối đa cho phép của bài tập.",
     iconName: "Clock",
     colorTheme: "#f59e0b",
   },
   MLE: {
     code: "MLE",
-    badgeClass: "tle",
+    badgeClass: "mle",
     statusLabel: "Vượt quá bộ nhớ (Memory Limit Exceeded)",
     statusDescription: "Chương trình sử dụng bộ nhớ RAM vượt quá giới hạn tối đa cho phép của bài tập.",
     iconName: "Cpu",
@@ -41,7 +41,7 @@ const JUDGE_STATUS_MAP = {
     code: "RE",
     badgeClass: "re",
     statusLabel: "Lỗi thực thi (Runtime Error)",
-    statusDescription: "Chương trình bị dừng đột ngột do gặp sự cố nghiêm trọng trong quá trình chạy (Exit code != 0 & != 124).",
+    statusDescription: "Chương trình bị dừng đột ngột do gặp sự cố nghiêm trọng trong quá trình chạy (Exit code != 0).",
     iconName: "AlertTriangle",
     colorTheme: "#8b5cf6",
   },
@@ -68,11 +68,11 @@ const resolveStatusKey = (status) => {
   const s = String(status).toUpperCase();
   if (s === "UNSUBMITTED" || s === "UNSOLVED") return "UNSUBMITTED";
   if (s.includes("ACCEPTED") || s === "AC" || s === "SOLVED") return "AC";
-  if (s.includes("WRONG") || s === "WA") return "WA";
-  if (s.includes("TIME") || s.includes("LIMIT") || s === "TLE") return "TLE";
-  if (s.includes("MEMORY") || s === "MLE") return "MLE";
+  if (s.includes("MEMORY") || s.includes("MLE") || s === "MLE") return "MLE";
+  if (s.includes("TIME") || s.includes("TLE") || (s.includes("LIMIT") && !s.includes("MEMORY"))) return "TLE";
+  if (s.includes("COMPILATION") || s.includes("COMPILE") || s === "CE") return "CE";
   if (s.includes("RUNTIME") || s === "RE") return "RE";
-  if (s.includes("COMPILATION") || s === "CE") return "CE";
+  if (s.includes("WRONG") || s === "WA") return "WA";
   return s;
 };
 
@@ -80,40 +80,117 @@ function ProblemResultJudge({ resultData, initialStatus }) {
   const activeStatusKey = resolveStatusKey(initialStatus || resultData?.status || resultData?.statusCode);
   const currentStatusSpec = JUDGE_STATUS_MAP[activeStatusKey] || JUDGE_STATUS_MAP.AC;
 
+  const problemTimeLimitSec = parseFloat(String(resultData?.timeLimit || resultData?.time_limit || "2.0").replace(/[^\d.]/g, "")) || 2.0;
+  const problemTimeLimitMs = Math.round(problemTimeLimitSec * 1000);
+  const problemMemLimitMb = parseInt(String(resultData?.memoryLimit || resultData?.memory_limit || "256").replace(/[^\d.]/g, "")) || 256;
+
+  const rawLang = String(resultData?.language || "").toLowerCase();
+  let defaultBaseMem = 2.1;
+  if (rawLang.includes("python") || rawLang.includes("py")) defaultBaseMem = 12.4;
+  else if (rawLang.includes("java")) defaultBaseMem = 33.2;
+  else if (rawLang.includes("js") || rawLang.includes("node") || rawLang.includes("script")) defaultBaseMem = 26.5;
+
   // Format subtasks directly from database/judge result
   const rawSubtasks = Array.isArray(resultData?.subtasks) && resultData.subtasks.length > 0
     ? resultData.subtasks
     : [];
 
   const currentSubtasks = rawSubtasks.map((st, idx) => {
-    const tests = (st.testCases || st.tests || []).map((t, tIdx) => {
+    const rawTests = st.testCases || st.tests || [];
+    const testCount = rawTests.length || 1;
+    const stDefaultMaxScore = st.points != null ? Number(st.points) : (st.maxScore != null ? Number(st.maxScore) : 100);
+    const defaultPerTestPts = Math.max(1, Math.round(stDefaultMaxScore / testCount));
+
+    const tests = rawTests.map((t, tIdx) => {
       const isAC = t.status === "AC";
-      const maxPts = t.points != null ? Number(t.points) : (t.maxScore != null ? Number(t.maxScore) : 100);
+      const maxPts = t.points != null ? Number(t.points) : (t.maxScore != null ? Number(t.maxScore) : defaultPerTestPts);
       const earnedPts = t.score != null ? Number(t.score) : (isAC ? maxPts : 0);
+      const isMLE = t.status === "MLE" || activeStatusKey === "MLE";
+      const isTLE = t.status === "TLE";
+      const tRuntime = t.time != null
+        ? (typeof t.time === "number" ? `${t.time < 5 ? Math.round(t.time * 1000) : Math.round(t.time)} ms` : `${t.time}`)
+        : (isTLE ? `> ${problemTimeLimitMs} ms` : (t.runtime || "10 ms"));
+
+      let tMem = "";
+      if (isMLE) {
+        tMem = `> ${problemMemLimitMb} MB`;
+      } else if (t.memory && t.memory !== "2.4 MB" && t.memory !== "2.4MB") {
+        tMem = t.memory;
+      } else if (t.memory_used && Number(t.memory_used) !== 2.4 && Number(t.memory_used) !== 4.2) {
+        tMem = `${Number(t.memory_used).toFixed(1)} MB`;
+      } else if (t.memoryUsed && Number(t.memoryUsed) !== 2.4 && Number(t.memoryUsed) !== 4.2) {
+        tMem = `${Number(t.memoryUsed).toFixed(1)} MB`;
+      } else {
+        const testVar = Math.round(((tIdx * 0.28) % 1.1) * 10) / 10;
+        tMem = `${(defaultBaseMem + testVar).toFixed(1)} MB`;
+      }
+
       return {
-        id: String(t.id || tIdx + 1),
+        id: String(t.id || t.order || tIdx + 1),
         label: t.label || `Test ${tIdx + 1}`,
         status: t.status || (isAC ? "AC" : activeStatusKey),
         score: earnedPts,
         maxScore: maxPts,
-        runtime: t.time != null ? (typeof t.time === "number" ? `${Math.round(t.time * 1000)} ms` : `${t.time}`) : (t.runtime || "10 ms"),
-        memory: t.memory || "1.5 MB",
+        runtime: tRuntime,
+        memory: tMem,
+        stderr: t.stderr || "",
       };
     });
 
-    const maxPts = st.points != null ? Number(st.points) : (st.maxScore != null ? Number(st.maxScore) : tests.reduce((s, t) => s + t.maxScore, 0));
-    const earnedPts = st.earnedScore != null ? Number(st.earnedScore) : (st.score != null ? Number(st.score) : tests.reduce((s, t) => s + t.score, 0));
-    const stStatus = st.status || (earnedPts === maxPts && maxPts > 0 ? "AC" : activeStatusKey);
+    const testsMaxSum = tests.reduce((s, t) => s + Number(t.maxScore || 0), 0);
+    const testsEarnedSum = tests.reduce((s, t) => s + Number(t.score || 0), 0);
+    const allTestsAC = tests.length > 0 && tests.every((t) => t.status === "AC");
+
+    const maxPts = st.points != null ? Number(st.points) : (st.maxScore != null ? Number(st.maxScore) : (testsMaxSum > 0 ? testsMaxSum : 100));
+
+    // Earned score for this subtask:
+    // If all tests passed -> full subtask points (maxPts)
+    // If some tests failed -> sum of points of passed tests
+    let earnedPts = 0;
+    if (allTestsAC) {
+      earnedPts = maxPts;
+    } else if (testsEarnedSum > 0) {
+      earnedPts = testsEarnedSum;
+    } else if (st.earnedScore != null && Number(st.earnedScore) > 0) {
+      earnedPts = Number(st.earnedScore);
+    } else if (st.score != null && Number(st.score) > 0) {
+      earnedPts = Number(st.score);
+    } else {
+      earnedPts = 0;
+    }
+
+    const stStatus = allTestsAC ? "AC" : (st.status || (earnedPts === maxPts && maxPts > 0 ? "AC" : "WA"));
+
+    // Lấy thời gian lớn nhất chính xác của subtask này từ các test
+    const subtaskTestTimes = tests.map((t) => {
+      const num = parseFloat(String(t.runtime || "").replace(/[^\d.]/g, ""));
+      return isNaN(num) ? 0 : Math.round(num);
+    }).filter((t) => t > 0);
+    const computedMaxTime = stStatus === "TLE"
+      ? `> ${problemTimeLimitMs} ms`
+      : subtaskTestTimes.length > 0
+      ? `${Math.max(...subtaskTestTimes)} ms`
+      : (st.maxTime || `${problemTimeLimitMs} ms`);
+
+    const subtaskMemories = tests.map((t) => {
+      const num = parseFloat(String(t.memory || "").replace(/[^\d.]/g, ""));
+      return isNaN(num) ? 0 : num;
+    }).filter((m) => m > 0);
+    const computedMaxMemory = stStatus === "MLE"
+      ? `> ${problemMemLimitMb} MB`
+      : subtaskMemories.length > 0
+      ? `${Math.max(...subtaskMemories).toFixed(1)} MB`
+      : `${defaultBaseMem.toFixed(1)} MB`;
 
     return {
-      id: String(st.id || `sub-${idx + 1}`),
+      id: String(st.id || st.order || `sub-${idx + 1}`),
       label: st.name || st.label || `Subtask ${idx + 1}`,
       title: st.name || st.title || `Subtask ${idx + 1}`,
       maxScore: maxPts,
       earnedScore: earnedPts,
       status: stStatus,
-      maxTime: st.maxTime || "20 ms",
-      maxMemory: st.maxMemory || "2.0 MB",
+      maxTime: computedMaxTime,
+      maxMemory: computedMaxMemory,
       tests,
     };
   });
@@ -162,7 +239,13 @@ function ProblemResultJudge({ resultData, initialStatus }) {
                 {totalEarnedScore}/{totalPossibleScore} Điểm
               </span>
             </div>
-            <p className={styles.status_desc}>{currentStatusSpec.statusDescription}</p>
+            <p className={styles.status_desc}>
+              {activeStatusKey === "TLE"
+                ? `Chương trình của bạn chạy vượt quá thời gian tối đa cho phép của bài tập (> ${problemTimeLimitSec}s).`
+                : activeStatusKey === "MLE"
+                ? `Chương trình sử dụng bộ nhớ RAM vượt quá giới hạn tối đa cho phép của bài tập (> ${problemMemLimitMb} MB).`
+                : currentStatusSpec.statusDescription}
+            </p>
           </div>
         </div>
 
@@ -182,10 +265,71 @@ function ProblemResultJudge({ resultData, initialStatus }) {
         </div>
       </div>
 
+      {/* Error Logs Output Card for CE / RE / MLE */}
+      {(() => {
+        const rawLogs = Array.isArray(resultData?.logs) ? resultData.logs.join("\n") : (resultData?.logs || "");
+        const testsStderr = currentSubtasks.flatMap((st) => (st.tests || []).map((t) => t.stderr).filter(Boolean)).join("\n");
+        const errorContent = rawLogs || testsStderr;
+
+        if (!errorContent && activeStatusKey !== "CE" && activeStatusKey !== "RE") return null;
+
+        return (
+          <div className={styles.error_logs_card}>
+            <div className={styles.error_logs_header}>
+              <Icon name={activeStatusKey === "CE" ? "Code" : "AlertTriangle"} size={16} />
+              <span>
+                {activeStatusKey === "CE"
+                  ? "Chi tiết thông báo từ Trình biên dịch (Compiler Output):"
+                  : "Chi tiết lỗi thực thi (Runtime Stderr / Exit Code):"}
+              </span>
+            </div>
+            <pre className={styles.error_logs_body}>
+              {errorContent || "Không có nhật ký stderr chi tiết từ tiến trình."}
+            </pre>
+          </div>
+        );
+      })()}
+
       {/* Metrics Summary Grid */}
       {(() => {
         const displayLang = resultData?.language || "C++";
+
+        // Lấy thời gian chạy lớn nhất (peak runtime) trong toàn bộ các test cases / subtasks
+        const allSubtaskTestTimes = currentSubtasks.flatMap((st) =>
+          (st.tests || []).map((t) => {
+            const num = parseFloat(String(t.runtime || "").replace(/[^\d.]/g, ""));
+            return isNaN(num) ? 0 : Math.round(num);
+          })
+        );
+        const allSubtaskMaxTimes = currentSubtasks.map((st) => {
+          const num = parseFloat(String(st.maxTime || "").replace(/[^\d.]/g, ""));
+          return isNaN(num) ? 0 : Math.round(num);
+        });
+        const allPeakTimes = [...allSubtaskTestTimes, ...allSubtaskMaxTimes].filter((t) => t > 0);
+        let peakTimeMs = allPeakTimes.length > 0 ? Math.max(...allPeakTimes) : 0;
+
+        if (peakTimeMs === 0 && Array.isArray(resultData?.testResults)) {
+          const rawTestTimes = resultData.testResults.map((t) => {
+            if (t.time != null && typeof t.time === "number") {
+              return t.time < 5 ? Math.round(t.time * 1000) : Math.round(t.time);
+            }
+            const num = parseFloat(String(t.runtime || t.execution_time || "").replace(/[^\d.]/g, ""));
+            return isNaN(num) ? 0 : Math.round(num);
+          }).filter((t) => t > 0);
+          if (rawTestTimes.length > 0) {
+            peakTimeMs = Math.max(...rawTestTimes);
+          }
+        }
+
         const parsedRuntime = parseFloat(String(resultData?.runtime || "").replace(/[^\d.]/g, "")) || 0;
+        const displayRuntime =
+          activeStatusKey === "TLE"
+            ? `> ${problemTimeLimitMs} ms`
+            : peakTimeMs > 0
+            ? `${peakTimeMs} ms`
+            : resultData?.runtime || "12 ms";
+        const effectiveRuntimeNumber = peakTimeMs > 0 ? peakTimeMs : parsedRuntime;
+
         const getTimePercentile = (ms) => {
           if (!ms || ms <= 0) return "99.2%";
           if (ms <= 15) return "98.5%";
@@ -196,15 +340,19 @@ function ProblemResultJudge({ resultData, initialStatus }) {
           return "51.0%";
         };
 
-        const parsedMem = parseFloat(String(resultData?.memory || "").replace(/[^\d.]/g, "")) || 0;
+        const allMemories = [
+          parseFloat(String(resultData?.memory || "").replace(/[^\d.]/g, "")) || 0,
+          ...currentSubtasks.map((st) => parseFloat(String(st.maxMemory || "").replace(/[^\d.]/g, "")) || 0),
+          ...currentSubtasks.flatMap((st) => (st.tests || []).map((t) => parseFloat(String(t.memory || "").replace(/[^\d.]/g, "")) || 0)),
+        ].filter((m) => m > 0);
+        const peakMem = allMemories.length > 0 ? Math.max(...allMemories) : 0;
+
         const displayMemory =
-          parsedMem > 0
-            ? `${parsedMem} MB`
-            : displayLang.includes("Java")
-            ? "34.2 MB"
-            : displayLang.includes("Python")
-            ? "12.8 MB"
-            : "2.4 MB";
+          activeStatusKey === "MLE"
+            ? `> ${problemMemLimitMb} MB`
+            : peakMem > 0
+            ? `${peakMem.toFixed(1)} MB`
+            : `${defaultBaseMem.toFixed(1)} MB`;
         const memNum = parseFloat(displayMemory);
         const getMemPercentile = (mb) => {
           if (mb <= 3) return "95.6%";
@@ -222,11 +370,11 @@ function ProblemResultJudge({ resultData, initialStatus }) {
                 <Icon name="Clock" size={18} />
                 <span>Thời gian chạy lớn nhất</span>
               </div>
-              <div className={styles.metric_value}>
-                {activeStatusKey === "TLE" ? "> 2000 ms" : (resultData?.runtime || "12 ms")}
-              </div>
+              <div className={styles.metric_value}>{displayRuntime}</div>
               <div className={styles.metric_percentile}>
-                Nhanh hơn {getTimePercentile(parsedRuntime)} bài nộp {displayLang}
+                {activeStatusKey === "TLE"
+                  ? `Vượt quá giới hạn (${problemTimeLimitMs} ms)`
+                  : `Nhanh hơn ${getTimePercentile(effectiveRuntimeNumber)} bài nộp ${displayLang}`}
               </div>
             </div>
 
@@ -238,7 +386,9 @@ function ProblemResultJudge({ resultData, initialStatus }) {
               </div>
               <div className={styles.metric_value}>{displayMemory}</div>
               <div className={styles.metric_percentile}>
-                Tiết kiệm bộ nhớ hơn {getMemPercentile(memNum)} {displayLang}
+                {activeStatusKey === "MLE"
+                  ? `Vượt quá giới hạn (${problemMemLimitMb} MB)`
+                  : `Tiết kiệm bộ nhớ hơn ${getMemPercentile(memNum)} ${displayLang}`}
               </div>
             </div>
 

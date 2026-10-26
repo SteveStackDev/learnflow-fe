@@ -7,6 +7,7 @@ from datetime import timedelta
 import json
 import sys
 import os
+import re
 
 from .models import Problem, TestCase, Submission
 from .services import JudgeService, find_cpp_compiler, find_java_compiler, find_java_runtime, find_js_runtime
@@ -522,13 +523,19 @@ def submit_code(request):
         test_cases = data.get("test_cases") or data.get("testCases") or []
         examples = data.get("examples") or []
 
+        raw_time = data.get("time_limit") or data.get("timeLimit") or 2.0
         try:
-            time_limit = float(data.get("time_limit") or data.get("timeLimit") or 2.0)
+            if isinstance(raw_time, str):
+                raw_time = re.sub(r"[^\d.]", "", raw_time)
+            time_limit = float(raw_time) if raw_time else 2.0
         except (ValueError, TypeError):
             time_limit = 2.0
 
+        raw_mem = data.get("memory_limit") or data.get("memoryLimit") or 256
         try:
-            memory_limit = int(data.get("memory_limit") or data.get("memoryLimit") or 256)
+            if isinstance(raw_mem, str):
+                raw_mem = re.sub(r"[^\d.]", "", raw_mem)
+            memory_limit = int(float(raw_mem)) if raw_mem else 256
         except (ValueError, TypeError):
             memory_limit = 256
 
@@ -550,7 +557,11 @@ def submit_code(request):
                 language=language,
                 status="RUNNING",
             )
-            judge_result = JudgeService.judge_submission(submission)
+            judge_result = JudgeService.judge_submission(
+                submission,
+                time_limit=time_limit,
+                memory_limit=memory_limit,
+            )
             return JsonResponse(judge_result)
 
         # 2. Nếu không có trong SQLite (bài tập từ MongoDB), chấm trực tiếp qua Judge Engine

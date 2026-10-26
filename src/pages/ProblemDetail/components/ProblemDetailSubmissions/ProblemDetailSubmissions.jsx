@@ -93,8 +93,8 @@ function ProblemDetailSubmissions({ problem }) {
           score: sub.score ?? 0,
           max_score: sub.maxScore ?? problem.points ?? 100,
           executionTime: sub.executionTime ?? 0.024,
-          memory: sub.memoryUsed ? `${sub.memoryUsed} MB` : (sub.memory || "2.4 MB"),
-          memoryUsed: sub.memoryUsed ?? 2.4,
+          memory: sub.status === "MLE" ? `> ${problem.memoryLimit || 256} MB` : (sub.memoryUsed ? `${sub.memoryUsed} MB` : (sub.memory || "2.1 MB")),
+          memoryUsed: sub.memoryUsed ?? 2.1,
           language: sub.language || "C++",
           submittedCode: sub.sourceCode || sub.submittedCode || "",
           testResults: sub.testResults || [],
@@ -215,7 +215,10 @@ function ProblemDetailSubmissions({ problem }) {
             const runtimeMs = sub.executionTime
               ? (Number(sub.executionTime) < 1 ? Math.round(Number(sub.executionTime) * 1000) : Math.round(Number(sub.executionTime)))
               : (sub.runtime || 24);
-            const memoryMb = sub.memoryUsed || sub.memory || "2.4";
+            const rawMemStr = String(sub.memoryUsed || sub.memory || "").trim();
+            const memoryMb = sub.status === "MLE"
+              ? `> ${problem.memoryLimit || 256} MB`
+              : (rawMemStr ? (rawMemStr.toLowerCase().includes("mb") ? rawMemStr : `${rawMemStr} MB`) : "2.1 MB");
             const scoreVal = sub.score ?? (sub.status === "AC" ? (problem.points || 500) : 0);
             const maxScoreVal = sub.maxScore ?? (problem.points || 500);
 
@@ -271,7 +274,7 @@ function ProblemDetailSubmissions({ problem }) {
 
                   <span className={styles.meta_pill}>
                     <Icon name="Cpu" size={13} />
-                    <span>{memoryMb} MB</span>
+                    <span>{memoryMb}</span>
                   </span>
 
                   <span className={styles.meta_time}>

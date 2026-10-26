@@ -33,6 +33,11 @@
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.02) 100%);
 }
 
+.status_banner--mle {
+  border-color: rgba(59, 130, 246, 0.35);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.02) 100%);
+}
+
 .status_banner--re {
   border-color: rgba(139, 92, 246, 0.35);
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(139, 92, 246, 0.02) 100%);
@@ -65,6 +70,7 @@
 
 .status_banner--wa .status_icon_wrap { background: #ef4444; }
 .status_banner--tle .status_icon_wrap { background: #f59e0b; }
+.status_banner--mle .status_icon_wrap { background: #3b82f6; }
 .status_banner--re .status_icon_wrap { background: #8b5cf6; }
 .status_banner--ce .status_icon_wrap { background: #dc2626; }
 
@@ -94,6 +100,7 @@
 
 .status_tag--wa { background: #ef4444; }
 .status_tag--tle { background: #f59e0b; }
+.status_tag--mle { background: #3b82f6; }
 .status_tag--re { background: #8b5cf6; }
 .status_tag--ce { background: #dc2626; }
 
@@ -215,6 +222,7 @@
 
 .subtask_tab_btn--wa .subtask_status_dot { background: #ef4444; }
 .subtask_tab_btn--tle .subtask_status_dot { background: #f59e0b; }
+.subtask_tab_btn--mle .subtask_status_dot { background: #3b82f6; }
 .subtask_tab_btn--re .subtask_status_dot { background: #8b5cf6; }
 .subtask_tab_btn--ce .subtask_status_dot { background: #dc2626; }
 
@@ -294,6 +302,7 @@
 
 .subtask_card_badge--wa { background: #fee2e2; color: #dc2626; }
 .subtask_card_badge--tle { background: #fef3c7; color: #d97706; }
+.subtask_card_badge--mle { background: #dbeafe; color: #1d4ed8; }
 .subtask_card_badge--re { background: #f3e8ff; color: #7c3aed; }
 .subtask_card_badge--ce { background: #fee2e2; color: #b91c1c; }
 
@@ -358,6 +367,7 @@
 
 .test_row_badge--wa { background: #fee2e2; color: #dc2626; }
 .test_row_badge--tle { background: #fef3c7; color: #d97706; }
+.test_row_badge--mle { background: #dbeafe; color: #1d4ed8; }
 .test_row_badge--re { background: #f3e8ff; color: #7c3aed; }
 .test_row_badge--ce { background: #fee2e2; color: #b91c1c; }
 

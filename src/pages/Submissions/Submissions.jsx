@@ -55,7 +55,7 @@ export function Submissions() {
               score: item.score ?? 0,
               maxScore: item.maxScore ?? 100,
               runtime: item.executionTime ? `${Math.round(item.executionTime * 1000)} ms` : "24 ms",
-              memory: item.memoryUsed ? `${item.memoryUsed} MB` : "2.4 MB",
+              memory: item.status === "MLE" ? "> 256 MB" : (item.memoryUsed ? `${item.memoryUsed} MB` : (item.memory || "2.1 MB")),
               submittedAt: item.createdAt ? new Date(item.createdAt).toLocaleString("vi-VN") : "Vừa xong",
             }))
           : [];
