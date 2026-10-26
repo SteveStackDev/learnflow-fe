@@ -301,124 +301,145 @@ function ProblemDetail() {
 
       const result = await judgePromise;
 
-      // ===== THỰC HIỆN LƯU VÀO DATABASE QUA API POST /problem/save =====
-      try {
-        // Format testResults có thuộc tính 'order'
-        const rawTestResults = Array.isArray(result.test_results) ? result.test_results : [];
-        const formattedTestResults = rawTestResults.map((t, idx) => ({
-          order: Number(t.order ?? t.id ?? idx + 1),
-          label: t.label || `Test #${idx + 1}`,
-          status: t.status || "WA",
-          score: Number(t.score ?? 0),
-          maxScore: Number(t.max_score ?? t.maxScore ?? 10),
-          time: Number(t.execution_time ?? t.time ?? 0),
-          runtime: `${t.execution_time || 0}ms`,
-          memory: t.memory && t.memory !== "2.4 MB" && t.memory !== "2.4MB"
-            ? t.memory
-            : (t.memory_used ? `${Number(t.memory_used).toFixed(1)} MB` : "2.1 MB"),
-          memory_used: t.memory_used ?? 2.1,
-          input: t.input || "",
-          stdout: t.stdout || "",
-          stderr: t.stderr || "",
-          expected: t.expected || "",
-          is_hidden: Boolean(t.is_hidden),
-          subtask_id: Number(t.subtask_id || 1),
-          subtask_name: t.subtask_name || "Subtask 1",
-        }));
+      // Format testResults có thuộc tính 'order'
+      const rawTestResults = Array.isArray(result.test_results) ? result.test_results : [];
+      const formattedTestResults = rawTestResults.map((t, idx) => ({
+        order: Number(t.order ?? t.id ?? idx + 1),
+        label: t.label || `Test #${idx + 1}`,
+        status: t.status || "WA",
+        score: Number(t.score ?? 0),
+        maxScore: Number(t.max_score ?? t.maxScore ?? 10),
+        time: Number(t.execution_time ?? t.time ?? 0),
+        runtime: `${t.execution_time || 0}ms`,
+        memory: t.memory && t.memory !== "2.4 MB" && t.memory !== "2.4MB"
+          ? t.memory
+          : (t.memory_used ? `${Number(t.memory_used).toFixed(1)} MB` : "2.1 MB"),
+        memory_used: t.memory_used ?? 2.1,
+        input: t.input || "",
+        stdout: t.stdout || "",
+        stderr: t.stderr || "",
+        expected: t.expected || "",
+        is_hidden: Boolean(t.is_hidden),
+        subtask_id: Number(t.subtask_id || 1),
+        subtask_name: t.subtask_name || "Subtask 1",
+      }));
 
-        // Format subtasksResult có thuộc tính 'order'
-        const rawSubtasks = Array.isArray(result.subtasks) ? result.subtasks : [];
-        const formattedSubtasksResult = rawSubtasks.map((st, idx) => {
-          const rawStTests = Array.isArray(st.tests) ? st.tests : (Array.isArray(st.testCases) ? st.testCases : []);
-          const testsCount = rawStTests.length || 1;
-          const defaultPerTestMax = Math.max(1, Math.round(Number(st.max_score ?? st.maxScore ?? st.points ?? 100) / testsCount));
+      // Format subtasksResult có thuộc tính 'order'
+      const rawSubtasks = Array.isArray(result.subtasks) ? result.subtasks : [];
+      const formattedSubtasksResult = rawSubtasks.map((st, idx) => {
+        const rawStTests = Array.isArray(st.tests) ? st.tests : (Array.isArray(st.testCases) ? st.testCases : []);
+        const testsCount = rawStTests.length || 1;
+        const defaultPerTestMax = Math.max(1, Math.round(Number(st.max_score ?? st.maxScore ?? st.points ?? 100) / testsCount));
 
-          const formattedTests = rawStTests.map((t, tIdx) => {
-            const isAC = t.status === "AC";
-            const maxScore = Number(t.max_score ?? t.maxScore ?? t.points ?? defaultPerTestMax);
-            const score = Number(t.score ?? (isAC ? maxScore : 0));
-            const tTime = Number(t.execution_time ?? t.time ?? 0);
-            return {
-              order: Number(t.order ?? t.id ?? tIdx + 1),
-              label: t.label || `Test #${tIdx + 1}`,
-              status: t.status || (isAC ? "AC" : "WA"),
-              score,
-              maxScore,
-              time: tTime,
-              runtime: `${t.runtime || (tTime < 5 ? Math.round(tTime * 1000) : Math.round(tTime))}ms`,
-              memory: t.memory && t.memory !== "2.4 MB" && t.memory !== "2.4MB"
-                ? t.memory
-                : (t.memory_used ? `${Number(t.memory_used).toFixed(1)} MB` : "2.1 MB"),
-              memory_used: t.memory_used ?? 2.1,
-              input: t.input || "",
-              stdout: t.stdout || "",
-              stderr: t.stderr || "",
-              expected: t.expected || "",
-              is_hidden: Boolean(t.is_hidden),
-              subtask_id: Number(t.subtask_id || idx + 1),
-              subtask_name: t.subtask_name || `Subtask ${idx + 1}`,
-            };
-          });
-
-          const testsEarnedSum = formattedTests.reduce((sum, t) => sum + Number(t.score || 0), 0);
-          const testsMaxSum = formattedTests.reduce((sum, t) => sum + Number(t.maxScore || 0), 0);
-          const allAc = formattedTests.length > 0 && formattedTests.every((t) => t.status === "AC");
-          const stMaxScore = Number(st.max_score ?? st.maxScore ?? (testsMaxSum > 0 ? testsMaxSum : 100));
-
-          let earned = 0;
-          if (allAc) {
-            earned = stMaxScore;
-          } else if (testsEarnedSum > 0) {
-            earned = testsEarnedSum;
-          } else if (st.earnedScore != null && Number(st.earnedScore) > 0) {
-            earned = Number(st.earnedScore);
-          } else {
-            earned = 0;
-          }
-
-          // Lấy thời gian lớn nhất của subtask này
-          const subtaskTimes = formattedTests.map((t) => {
-            const num = parseFloat(String(t.runtime || "").replace(/[^\d.]/g, ""));
-            return isNaN(num) ? 0 : Math.round(num);
-          }).filter((t) => t > 0);
-          const computedMaxTime = subtaskTimes.length > 0 ? `${Math.max(...subtaskTimes)}ms` : (st.maxTime || "0ms");
-
+        const formattedTests = rawStTests.map((t, tIdx) => {
+          const isAC = t.status === "AC";
+          const maxScore = Number(t.max_score ?? t.maxScore ?? t.points ?? defaultPerTestMax);
+          const score = Number(t.score ?? (isAC ? maxScore : 0));
+          const tTime = Number(t.execution_time ?? t.time ?? 0);
           return {
-            order: String(st.order ?? st.id ?? idx + 1),
-            title: st.title || st.name || `Subtask ${idx + 1}`,
-            label: st.label || `Subtask #${idx + 1}`,
-            status: allAc ? "AC" : (st.status || "WA"),
-            earnedScore: earned,
-            maxScore: stMaxScore,
-            maxTime: computedMaxTime,
-            maxMemory: st.maxMemory || "0KB",
-            tests: formattedTests,
+            order: Number(t.order ?? t.id ?? tIdx + 1),
+            label: t.label || `Test #${tIdx + 1}`,
+            status: t.status || (isAC ? "AC" : "WA"),
+            score,
+            maxScore,
+            time: tTime,
+            runtime: `${t.runtime || (tTime < 5 ? Math.round(tTime * 1000) : Math.round(tTime))}ms`,
+            memory: t.memory && t.memory !== "2.4 MB" && t.memory !== "2.4MB"
+              ? t.memory
+              : (t.memory_used ? `${Number(t.memory_used).toFixed(1)} MB` : "2.1 MB"),
+            memory_used: t.memory_used ?? 2.1,
+            input: t.input || "",
+            stdout: t.stdout || "",
+            stderr: t.stderr || "",
+            expected: t.expected || "",
+            is_hidden: Boolean(t.is_hidden),
+            subtask_id: Number(t.subtask_id || idx + 1),
+            subtask_name: t.subtask_name || `Subtask ${idx + 1}`,
           };
         });
 
-        const subtasksEarnedSum = formattedSubtasksResult.reduce((sum, s) => sum + Number(s.earnedScore || 0), 0);
-        const testResultsEarnedSum = formattedTestResults.reduce((sum, t) => sum + Number(t.score || 0), 0);
-        const calcEarned = subtasksEarnedSum > 0 ? subtasksEarnedSum : testResultsEarnedSum;
+        const testsEarnedSum = formattedTests.reduce((sum, t) => sum + Number(t.score || 0), 0);
+        const testsMaxSum = formattedTests.reduce((sum, t) => sum + Number(t.maxScore || 0), 0);
+        const allAc = formattedTests.length > 0 && formattedTests.every((t) => t.status === "AC");
+        const stMaxScore = Number(st.max_score ?? st.maxScore ?? (testsMaxSum > 0 ? testsMaxSum : 100));
 
-        const subtasksMaxSum = formattedSubtasksResult.reduce((sum, s) => sum + Number(s.maxScore || 0), 0);
-        const finalMaxScore = subtasksMaxSum > 0
-          ? subtasksMaxSum
-          : (result.max_score || (problem.points || 500));
+        let earned = 0;
+        if (allAc) {
+          earned = stMaxScore;
+        } else if (testsEarnedSum > 0) {
+          earned = testsEarnedSum;
+        } else if (st.earnedScore != null && Number(st.earnedScore) > 0) {
+          earned = Number(st.earnedScore);
+        } else {
+          earned = 0;
+        }
 
-        const finalScore = result.status === "AC"
-          ? finalMaxScore
-          : (calcEarned > 0 ? calcEarned : (result.score != null ? Number(result.score) : 0));
+        // Lấy thời gian lớn nhất của subtask này
+        const subtaskTimes = formattedTests.map((t) => {
+          const num = parseFloat(String(t.runtime || "").replace(/[^\d.]/g, ""));
+          return isNaN(num) ? 0 : Math.round(num);
+        }).filter((t) => t > 0);
+        const computedMaxTime = subtaskTimes.length > 0 ? `${Math.max(...subtaskTimes)}ms` : (st.maxTime || "0ms");
 
-        // Lấy thời gian chạy lớn nhất trong toàn bộ các test cases
-        const allTestTimes = formattedTestResults
-          .map((t) => {
-            const num = parseFloat(String(t.runtime || t.time || 0).replace(/[^\d.]/g, ""));
-            return isNaN(num) ? 0 : (num < 5 ? Math.round(num * 1000) : Math.round(num));
-          })
-          .filter((t) => t > 0);
-        const peakTimeMs = allTestTimes.length > 0 ? Math.max(...allTestTimes) : Math.round((parseFloat(result.execution_time) || 0) * 1000);
-        const peakTimeSeconds = peakTimeMs / 1000;
+        // Lấy bộ nhớ lớn nhất của subtask này
+        const subtaskMems = formattedTests.map((t) => {
+          const num = parseFloat(String(t.memory || t.memory_used || "").replace(/[^\d.]/g, ""));
+          return isNaN(num) ? 0 : num;
+        }).filter((m) => m > 0);
+        const computedMaxMemory = st.maxMemory && st.maxMemory !== "0KB" && st.maxMemory !== "0 KB"
+          ? st.maxMemory
+          : (subtaskMems.length > 0 ? `${Math.max(...subtaskMems).toFixed(1)} MB` : (st.maxMemory || "0 KB"));
 
+        return {
+          order: String(st.order ?? st.id ?? idx + 1),
+          title: st.title || st.name || `Subtask ${idx + 1}`,
+          label: st.label || `Subtask #${idx + 1}`,
+          status: allAc ? "AC" : (st.status || "WA"),
+          earnedScore: earned,
+          maxScore: stMaxScore,
+          maxTime: computedMaxTime,
+          maxMemory: computedMaxMemory,
+          tests: formattedTests,
+        };
+      });
+
+      const subtasksEarnedSum = formattedSubtasksResult.reduce((sum, s) => sum + Number(s.earnedScore || 0), 0);
+      const testResultsEarnedSum = formattedTestResults.reduce((sum, t) => sum + Number(t.score || 0), 0);
+      const calcEarned = subtasksEarnedSum > 0 ? subtasksEarnedSum : testResultsEarnedSum;
+
+      const subtasksMaxSum = formattedSubtasksResult.reduce((sum, s) => sum + Number(s.maxScore || 0), 0);
+      const finalMaxScore = subtasksMaxSum > 0
+        ? subtasksMaxSum
+        : (result.max_score || (problem.points || 500));
+
+      const finalScore = result.status === "AC"
+        ? finalMaxScore
+        : (calcEarned > 0 ? calcEarned : (result.score != null ? Number(result.score) : 0));
+
+      // Lấy thời gian chạy lớn nhất trong toàn bộ các test cases
+      const allTestTimes = formattedTestResults
+        .map((t) => {
+          const num = parseFloat(String(t.runtime || t.time || 0).replace(/[^\d.]/g, ""));
+          return isNaN(num) ? 0 : (num < 5 ? Math.round(num * 1000) : Math.round(num));
+        })
+        .filter((t) => t > 0);
+      const peakTimeMs = allTestTimes.length > 0 ? Math.max(...allTestTimes) : Math.round((parseFloat(result.execution_time) || 0) * 1000);
+      const peakTimeSeconds = peakTimeMs / 1000;
+
+      // Lấy bộ nhớ lớn nhất trong toàn bộ các test cases / subtasks
+      const allTestMems = [
+        ...formattedTestResults.map((t) => parseFloat(String(t.memory || t.memory_used || "").replace(/[^\d.]/g, ""))),
+        ...formattedSubtasksResult.map((st) => parseFloat(String(st.maxMemory || "").replace(/[^\d.]/g, ""))),
+        ...formattedSubtasksResult.flatMap((st) => (st.tests || []).map((t) => parseFloat(String(t.memory || t.memory_used || "").replace(/[^\d.]/g, "")))),
+        parseFloat(String(result.memory_used || "").replace(/[^\d.]/g, "")) || 0,
+        parseFloat(String(result.memory || "").replace(/[^\d.]/g, "")) || 0,
+      ].filter((m) => !isNaN(m) && m > 0);
+      const peakMemMb = allTestMems.length > 0
+        ? Math.max(...allTestMems)
+        : (parseFloat(result.memory_used) || parseFloat(result.memory) || 2.1);
+
+      // ===== THỰC HIỆN LƯU VÀO DATABASE QUA API POST /problem/save =====
+      try {
         const payloadToSave = {
           userId: user?._id || user?.id,
           problemId: problem._id || problem.id || id,
@@ -426,7 +447,7 @@ function ProblemDetail() {
           language: selectedLanguage?.id || "cpp",
           status: result.status || "WA",
           executionTime: peakTimeSeconds,
-          memoryUsed: parseFloat(result.memory) || 0,
+          memoryUsed: peakMemMb,
           createdAt: new Date(),
           score: finalScore,
           maxScore: finalMaxScore,
@@ -451,31 +472,6 @@ function ProblemDetail() {
         ? `#${problem.code}: ${problem.title}`
         : `#${String(problem.id || 1).padStart(2, "0")}: ${problem.title}`;
       const pDiffLabel = problem.difficultyLabel || problem.difficulty || "Dễ";
-
-      const subtasksEarnedSum = formattedSubtasksResult.reduce((sum, s) => sum + Number(s.earnedScore || 0), 0);
-      const testResultsEarnedSum = formattedTestResults.reduce((sum, t) => sum + Number(t.score || 0), 0);
-      const calcEarned = subtasksEarnedSum > 0 ? subtasksEarnedSum : testResultsEarnedSum;
-      const subtasksMaxSum = formattedSubtasksResult.reduce((sum, s) => sum + Number(s.maxScore || 0), 0);
-      const finalMaxScore = subtasksMaxSum > 0 ? subtasksMaxSum : (result.max_score || (problem.points || 500));
-      const finalScore = result.status === "AC"
-        ? finalMaxScore
-        : (calcEarned > 0 ? calcEarned : (result.score != null ? Number(result.score) : 0));
-
-      const allTestTimes = formattedTestResults
-        .map((t) => {
-          const num = parseFloat(String(t.runtime || t.time || 0).replace(/[^\d.]/g, ""));
-          return isNaN(num) ? 0 : (num < 5 ? Math.round(num * 1000) : Math.round(num));
-        })
-        .filter((t) => t > 0);
-      const peakTimeMs = allTestTimes.length > 0 ? Math.max(...allTestTimes) : Math.round((parseFloat(result.execution_time) || 0) * 1000);
-      const peakTimeSeconds = peakTimeMs / 1000;
-
-      const allTestMems = formattedTestResults
-        .map((t) => parseFloat(String(t.memory || t.memory_used || "").replace(/[^\d.]/g, "")))
-        .filter((m) => m > 0);
-      const peakMemMb = allTestMems.length > 0
-        ? Math.max(...allTestMems)
-        : (parseFloat(result.memory_used) || parseFloat(result.memory) || 2.1);
 
       const memDisplay = result.status === "MLE"
         ? `> ${parsedMemoryLimit} MB`

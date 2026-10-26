@@ -114,11 +114,11 @@ function ProblemResultJudge({ resultData, initialStatus }) {
       let tMem = "";
       if (isMLE) {
         tMem = `> ${problemMemLimitMb} MB`;
-      } else if (t.memory && t.memory !== "2.4 MB" && t.memory !== "2.4MB") {
-        tMem = t.memory;
-      } else if (t.memory_used && Number(t.memory_used) !== 2.4 && Number(t.memory_used) !== 4.2) {
+      } else if (t.memory && typeof t.memory === "string" && t.memory.trim().length > 0) {
+        tMem = t.memory.toLowerCase().includes("mb") ? t.memory : `${t.memory} MB`;
+      } else if (t.memory_used != null && Number(t.memory_used) > 0) {
         tMem = `${Number(t.memory_used).toFixed(1)} MB`;
-      } else if (t.memoryUsed && Number(t.memoryUsed) !== 2.4 && Number(t.memoryUsed) !== 4.2) {
+      } else if (t.memoryUsed != null && Number(t.memoryUsed) > 0) {
         tMem = `${Number(t.memoryUsed).toFixed(1)} MB`;
       } else {
         const testVar = Math.round(((tIdx * 0.28) % 1.1) * 10) / 10;
@@ -180,7 +180,7 @@ function ProblemResultJudge({ resultData, initialStatus }) {
       ? `> ${problemMemLimitMb} MB`
       : subtaskMemories.length > 0
       ? `${Math.max(...subtaskMemories).toFixed(1)} MB`
-      : `${defaultBaseMem.toFixed(1)} MB`;
+      : (st.maxMemory && st.maxMemory !== "0KB" && st.maxMemory !== "0 KB" ? st.maxMemory : `${defaultBaseMem.toFixed(1)} MB`);
 
     return {
       id: String(st.id || st.order || `sub-${idx + 1}`),
@@ -341,9 +341,11 @@ function ProblemResultJudge({ resultData, initialStatus }) {
         };
 
         const allMemories = [
+          resultData?.memoryUsed > 0 ? Number(resultData.memoryUsed) : 0,
           parseFloat(String(resultData?.memory || "").replace(/[^\d.]/g, "")) || 0,
           ...currentSubtasks.map((st) => parseFloat(String(st.maxMemory || "").replace(/[^\d.]/g, "")) || 0),
           ...currentSubtasks.flatMap((st) => (st.tests || []).map((t) => parseFloat(String(t.memory || "").replace(/[^\d.]/g, "")) || 0)),
+          ...(resultData?.testResults || []).map((t) => parseFloat(String(t.memory || "").replace(/[^\d.]/g, "")) || 0),
         ].filter((m) => m > 0);
         const peakMem = allMemories.length > 0 ? Math.max(...allMemories) : 0;
 

@@ -123,6 +123,30 @@ function ProblemResult() {
   const rawSourceCode = activeSub?.submittedCode || activeSub?.sourceCode || (activeSub ? "" : (problemInfo?.starterCode || problemInfo?.initialCode || "// Chưa có bài nộp nào được ghi nhận cho bài tập này.\n// Vui lòng quay lại làm bài và bấm Nộp bài để xem kết quả!"));
   const resolvedStatus = activeSub?.status || (activeSub ? "WA" : "UNSUBMITTED");
 
+  const peakMemoryMb = (() => {
+    const directNum = activeSub?.memoryUsed != null ? Number(activeSub.memoryUsed) : 0;
+    if (directNum > 0) return directNum;
+    const subs = activeSub?.subtasks || activeSub?.subtasksResult || [];
+    let stMax = 0;
+    subs.forEach((st) => {
+      const stMem = parseFloat(String(st.maxMemory || "").replace(/[^\d.]/g, ""));
+      if (!isNaN(stMem) && stMem > stMax) stMax = stMem;
+      (st.tests || st.testCases || []).forEach((t) => {
+        const tMem = parseFloat(String(t.memory || t.memory_used || "").replace(/[^\d.]/g, ""));
+        if (!isNaN(tMem) && tMem > stMax) stMax = tMem;
+      });
+    });
+    (activeSub?.testResults || []).forEach((t) => {
+      const tMem = parseFloat(String(t.memory || t.memory_used || "").replace(/[^\d.]/g, ""));
+      if (!isNaN(tMem) && tMem > stMax) stMax = tMem;
+    });
+    if (stMax > 0) return stMax;
+    const fromStr = parseFloat(String(activeSub?.memory || "").replace(/[^\d.]/g, ""));
+    return isNaN(fromStr) ? 0 : fromStr;
+  })();
+
+  const resolvedMemoryLimitMb = parseInt(String(problemInfo?.memoryLimit || activeSub?.memoryLimit || "256").replace(/[^\d.]/g, "")) || 256;
+
   const resultData = {
     id: id || "1",
     displayCode,
@@ -144,9 +168,12 @@ function ProblemResult() {
     logs: activeSub?.logs || [],
     timeLimit: problemInfo?.timeLimit || activeSub?.timeLimit || activeSub?.time_limit || "2.0s",
     memoryLimit: problemInfo?.memoryLimit || activeSub?.memoryLimit || activeSub?.memory_limit || "256MB",
-    memory: activeSub?.status === "MLE"
-      ? `> ${parseInt(String(problemInfo?.memoryLimit || activeSub?.memoryLimit || "256").replace(/[^\d.]/g, "")) || 256} MB`
-      : activeSub?.memoryUsed ? `${activeSub.memoryUsed} MB` : (activeSub?.memory || "2.1 MB"),
+    memory: resolvedStatus === "MLE"
+      ? `> ${resolvedMemoryLimitMb} MB`
+      : peakMemoryMb > 0
+      ? `${peakMemoryMb.toFixed(1)} MB`
+      : (activeSub?.memory || "2.1 MB"),
+    memoryUsed: peakMemoryMb,
     runtime: resolvedStatus === "TLE"
       ? `> ${Math.round((parseFloat(String(problemInfo?.timeLimit || "2.0").replace(/[^\d.]/g, "")) || 2.0) * 1000)} ms`
       : executionTimeMs,
